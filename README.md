@@ -19,6 +19,8 @@ Send a PR to add a new one if you happen to find or write one.
 
 # Badge
 
+Include this badge in your readme if you make a new module that uses abstract-stream-muxer API.
+
 ![](/img/badge.png)
 
 # How to use
@@ -30,17 +32,31 @@ A valid (read: that follows this abstraction) stream muxer, must implement the f
 
 ### Attach muxer to a transport
 
-- `Node.js` muxer.attach(transport, function (err, conn)) 
-- `Go` conn, err := muxer.attach(transport)
+- `Node.js` muxer.attach(transport, function (err, conn))
+- `Go` conn, err := muxer.Attach(transport)
 
+This method attaches our stream muxer to the desired transport (UDP, TCP) and returns/callbacks with the `err, conn`(error, connection).
+
+If `err` is passed, no operation should be made in `conn`.
+
+`conn` abstracts our established Connection with the other endpoint, it must offer an interface to open a stream inside this connection and to receive incomming stream requests.
 
 ### Dial(open/create) a new stream
 
 - `Node.js` conn.dialStream(function (err, stream))
-- `Go` stream, err := conn.dialStream()
+- `Go` stream, err := conn.DialStream()
 
+This method negotiates and opens a new stream with the other endpoint.
 
-### Listen(wait/receive) a new incoming stream
+If `err` is passed, no operation should be made in `stream`.
+
+`stream` abstract our established Stream with the other endpoint, it must implement the [Duplex Stream interface](https://nodejs.org/api/stream.html#stream_class_stream_duplex) in Node.js or the [ReadWriteCloser](http://golang.org/pkg/io/#ReadWriteCloser) in Go.
+
+### Listen(wait/accept) a new incoming stream
 
 - `Node.js` conn.on('stream', function (stream)) 
-- `Go` stream := conn.listen()
+- `Go` stream := conn.Accept()
+
+Each time a dialing peer initiates the new stream handshake, a new stream is created on the listening side.
+
+In Node.js, the Event Emitter pattern is expected to be used in order to receive new incoming streams, while in Go, it expects to wait when Accept is called.
