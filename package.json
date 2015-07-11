@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/diasdavid/abstract-stream-muxer/issues"
   },
-  "homepage": "https://github.com/diasdavid/abstract-stream-muxer"
+  "homepage": "https://github.com/diasdavid/abstract-stream-muxer",
+  "dependencies": {
+    "stream-pair": "^1.0.3"
+  }
 }
