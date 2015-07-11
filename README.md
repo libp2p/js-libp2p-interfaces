@@ -32,12 +32,14 @@ A valid (read: that follows this abstraction) stream muxer, must implement the f
 
 ### Attach muxer to a transport
 
-- `Node.js` muxer.attach(transport, function (err, conn))
-- `Go` conn, err := muxer.Attach(transport)
+- `Node.js` muxer.attach(transport, isListener, function (err, conn))
+- `Go` conn, err := muxer.Attach(transport, isListener)
 
 This method attaches our stream muxer to the desired transport (UDP, TCP) and returns/callbacks with the `err, conn`(error, connection).
 
 If `err` is passed, no operation should be made in `conn`.
+
+`isListener` is a bool that tells the side of the socket we are, `isListener = true` for listener/server and `isListener = false` for dialer/client side.
 
 `conn` abstracts our established Connection with the other endpoint, it must offer an interface to open a stream inside this connection and to receive incomming stream requests.
 
