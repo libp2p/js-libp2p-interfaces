@@ -13,7 +13,7 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 # Modules that implement the interface
 
-- 
+- [https://github.com/diasdavid/node-spdy-stream-muxer](Node.js spdy-stream-muxer) - stream-muxer abstraction on top of [spdy-transport](https://github.com/indutny/spdy-transport)
 
 Send a PR to add a new one if you happen to find or write one.
 

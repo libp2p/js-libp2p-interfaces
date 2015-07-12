@@ -1,30 +1,22 @@
-/* knobs - nStreams, nMsg, sizeMsg[low, high] */
-
 var streamPair = require('stream-pair')
+var devNull = require('dev-null')
 
 module.exports.all = function (test, common) {
 
-  test('Open a stream from the dealer', function (t) {
+  test('1 stream with 10Mb file', function (t) {
     common.setup(test, function (err, Muxer) {
-      t.plan(4)
-      t.ifError(err, 'Should not throw')
-
+      t.ifError(err, 'should not throw')
       var pair = streamPair.create()
-      var dialer = new Muxer()
-      var listener = new Muxer()
 
-      var connDialer = dialer.attach(pair)
-      var connListener = listener.attach(pair.other)
-
-      connDialer.dialStream(function (err, stream) {
-        t.ifError(err, 'Should not throw')
-        t.pass('dialed stream')
-      })
-
-      connListener.on('stream', function (stream) {
-        t.pass('got stream')
-      })
+      spawnGeneration(t, Muxer, pair, pair.other, 1, [10, 10])
     })
   })
+}
 
+function spawnGeneration (t, Muxer, dialerSocket, listenerSocket, nStreams, sizeWindow) {
+
+}
+
+function randSizeMsg (sizeWindow) {
+  return Math.floor(Math.random() * (sizeWindow[1] - sizeWindow[0] + 1)) + sizeWindow[0]
 }
