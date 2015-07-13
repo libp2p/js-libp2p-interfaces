@@ -12,29 +12,39 @@ module.exports.all = function (test, common) {
       spawnGeneration(t, Muxer, pair, pair.other, 1, 1)
     })
   })
+
+  test('1 stream with 10 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 1, 10)
+    })
+  })
+
 }
 
-function spawnGeneration (t, Muxer, dialerSocket, listenerSocket, nStreams, nMsg, sizeWindow) {
-  t.plan(6)
+function spawnGeneration (t, Muxer, dialerSocket, listenerSocket, nStreams, nMsg, size) {
+  t.plan(6 + (nStreams * nMsg))
 
-  var msg = 'simple msg'
+  var msg = !size ? 'simple msg' : 'aaa'
 
   var listenerMuxer = new Muxer()
   var dialerMuxer = new Muxer()
 
-  var listenerConn = listenerMuxer.attach(listenerSocket)
-  var dialerConn = dialerMuxer.attach(dialerSocket)
+  var listenerConn = listenerMuxer.attach(listenerSocket, true)
+  var dialerConn = dialerMuxer.attach(dialerSocket, false)
 
   listenerConn.on('stream', function (stream) {
     t.pass('Incoming stream')
 
     stream.on('data', function (chunk) {
-
+      t.pass('Received message')
     })
 
     stream.on('end', function () {
       t.pass('Stream ended on Listener')
-      // stream.end()
+      stream.end()
     })
 
   })

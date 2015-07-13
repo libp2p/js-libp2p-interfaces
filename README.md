@@ -5,7 +5,7 @@ abstract-stream-muxer
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 
-> A test suite and interface you can use to implement a stream muxer.
+> A test suite and interface you can use to implement a stream muxer. "A one stop shop for all your muxing needs"
 
 The primary goal of this module is to enable developers to pick and swap their stream muxing module as they see fit for their application, without having to go through shims or compatibility issues. This module and test suite was heavily inspired by [abstract-blog-store](https://github.com/maxogden/abstract-blob-store).
 
@@ -34,7 +34,7 @@ A valid (read: that follows this abstraction) stream muxer, must implement the f
 
 ### Attach muxer to a transport
 
-- `Node.js` muxer.attach(transport, isListener, function (err, conn))
+- `Node.js` conn = muxer.attach(transport, isListener)
 - `Go` conn, err := muxer.Attach(transport, isListener)
 
 This method attaches our stream muxer to the desired transport (UDP, TCP) and returns/callbacks with the `err, conn`(error, connection).
