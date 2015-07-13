@@ -1,6 +1,4 @@
 var streamPair = require('stream-pair')
-// var devNull = require('dev-null')
-// var bytesStream = require('random-bytes-stream')
 
 module.exports.all = function (test, common) {
 
@@ -22,12 +20,101 @@ module.exports.all = function (test, common) {
     })
   })
 
+  test('1 stream with 100 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 1, 100)
+    })
+  })
+
+  test('10 stream with 1 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 10, 1)
+    })
+  })
+
+  test('10 stream with 10 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 10, 10)
+    })
+  })
+
+  test('10 stream with 100 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 10, 10)
+    })
+  })
+
+  test('100 stream with 1 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 100, 1)
+    })
+  })
+
+  test('100 stream with 10 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 100, 10)
+    })
+  })
+
+  test('100 stream with 100 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 100, 10)
+    })
+  })
+
+  test('1000 stream with 1 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 1000, 1)
+    })
+  })
+
+  test('1000 stream with 10 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 1000, 10)
+    })
+  })
+
+  test('1000 stream with 100 msg', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.ifError(err, 'should not throw')
+      var pair = streamPair.create()
+
+      spawnGeneration(t, Muxer, pair, pair.other, 1000, 100)
+    })
+  })
 }
 
 function spawnGeneration (t, Muxer, dialerSocket, listenerSocket, nStreams, nMsg, size) {
-  t.plan(6 + (nStreams * nMsg))
+  t.plan(1 + (5 * nStreams) + (nStreams * nMsg))
 
-  var msg = !size ? 'simple msg' : 'aaa'
+  var msg = !size ? 'simple msg' : 'make the msg bigger'
 
   var listenerMuxer = new Muxer()
   var dialerMuxer = new Muxer()
@@ -71,15 +158,3 @@ function spawnGeneration (t, Muxer, dialerSocket, listenerSocket, nStreams, nMsg
   }
 
 }
-
-// function randSizeMsg (sizeWindow) {
-//   return Math.floor(Math.random() * (sizeWindow[1] - sizeWindow[0] + 1)) + sizeWindow[0]
-// }
-
-// tests list:
-// SubtestStress1Conn1Stream1Msg
-// SubtestStress1Conn1Stream100Msg
-// SubtestStress1Conn100Stream100Msg
-// SubtestStress1Conn1000Stream10Msg
-// SubtestStress1Conn1000Stream100Msg10MB
-

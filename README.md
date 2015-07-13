@@ -1,8 +1,6 @@
 abstract-stream-muxer
 =====================
 
-> **STILL WIP**
-
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 
 > A test suite and interface you can use to implement a stream muxer. "A one stop shop for all your muxing needs"
@@ -25,8 +23,32 @@ Include this badge in your readme if you make a new module that uses abstract-st
 
 ![](/img/badge.png)
 
-# How to use
+# How to use the battery tests
 
+## Node.js
+
+Install abstract-stream-muxer as one of the dependencies of your project and as a test file, using `tap`, `tape` or a test runner with compatible API, do:
+
+```
+var tape = require('tape')
+var tests = require('abstract-stream-muxer/tests')
+var YourStreamMuxer = require('../src')
+
+var common = {
+  setup: function (t, cb) {
+    cb(null, YourStreamMuxer)
+  },
+  teardown: function (t, cb) {
+    cb()
+  }
+}
+
+tests(tape, common)
+```
+
+## Go
+
+> WIP - being written
 
 # API
 
