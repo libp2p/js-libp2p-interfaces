@@ -11,8 +11,8 @@ module.exports.all = function (test, common) {
       var dialer = new Muxer()
       var listener = new Muxer()
 
-      var connDialer = dialer.attach(pair)
-      var connListener = listener.attach(pair.other)
+      var connDialer = dialer.attach(pair, false)
+      var connListener = listener.attach(pair.other, true)
 
       connDialer.dialStream(function (err, stream) {
         t.ifError(err, 'Should not throw')
@@ -34,8 +34,8 @@ module.exports.all = function (test, common) {
       var dialer = new Muxer()
       var listener = new Muxer()
 
-      var connDialer = dialer.attach(pair)
-      var connListener = listener.attach(pair.other)
+      var connDialer = dialer.attach(pair, false)
+      var connListener = listener.attach(pair.other, true)
 
       connListener.dialStream(function (err, stream) {
         t.ifError(err, 'Should not throw')
@@ -57,8 +57,8 @@ module.exports.all = function (test, common) {
       var dialer = new Muxer()
       var listener = new Muxer()
 
-      var connDialer = dialer.attach(pair)
-      var connListener = listener.attach(pair.other)
+      var connDialer = dialer.attach(pair, false)
+      var connListener = listener.attach(pair.other, true)
 
       var stream = connListener.dialStream()
 
@@ -85,8 +85,8 @@ module.exports.all = function (test, common) {
       var dialer = new Muxer()
       var listener = new Muxer()
 
-      var connDialer = dialer.attach(pair)
-      var connListener = listener.attach(pair.other)
+      var connDialer = dialer.attach(pair, false)
+      var connListener = listener.attach(pair.other, true)
 
       var stream = connListener.dialStream()
 
