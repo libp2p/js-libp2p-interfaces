@@ -13,7 +13,9 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 # Modules that implement the interface
 
-- [https://github.com/diasdavid/node-spdy-stream-muxer](Node.js spdy-stream-muxer) - stream-muxer abstraction on top of [spdy-transport](https://github.com/indutny/spdy-transport)
+- [Node.js spdy-stream-muxer](https://github.com/diasdavid/node-spdy-stream-muxer) - stream-muxer abstraction on top of [spdy-transport](https://github.com/indutny/spdy-transport)
+- [Node.js multiplex-stream-muxer](https://github.com/diasdavid/node-multiplex-stream-muxer) - stream-muxer abstraction on top of [multiplex](https://github.com/maxogden/multiplex)
+- [Go spdy, muxado, yamux and multiplex](https://github.com/jbenet/go-stream-muxer)
 
 Send a PR to add a new one if you happen to find or write one.
 
