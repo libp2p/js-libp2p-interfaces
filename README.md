@@ -45,7 +45,9 @@ var common = {
   }
 }
 
-tests(tape, common)
+var megaTest = false // a really really intensive test case
+
+tests(tape, common, megaTest)
 ```
 
 ## Go
@@ -71,7 +73,8 @@ If `err` is passed, no operation should be made in `conn`.
 
 ### Dial(open/create) a new stream
 
-- `Node.js` conn.dialStream(function (err, stream))
+
+- `Node.js` stream = conn.dialStream([function (err, stream)])
 - `Go` stream, err := conn.DialStream()
 
 This method negotiates and opens a new stream with the other endpoint.
@@ -79,6 +82,8 @@ This method negotiates and opens a new stream with the other endpoint.
 If `err` is passed, no operation should be made in `stream`.
 
 `stream` abstract our established Stream with the other endpoint, it must implement the [Duplex Stream interface](https://nodejs.org/api/stream.html#stream_class_stream_duplex) in Node.js or the [ReadWriteCloser](http://golang.org/pkg/io/#ReadWriteCloser) in Go.
+
+In the Node.js case, if no callback is passed, stream will emit an 'ready' event when it is prepared or a 'error' event if it fails to establish the connection, until then, it will buffer the 'write' calls.
 
 ### Listen(wait/accept) a new incoming stream
 
