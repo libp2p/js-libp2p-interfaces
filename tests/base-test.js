@@ -48,6 +48,38 @@ module.exports.all = function (test, common) {
     })
   })
 
+  test('Open a stream on both sides', function (t) {
+    common.setup(test, function (err, Muxer) {
+      t.plan(7)
+      t.ifError(err, 'Should not throw')
+
+      var pair = streamPair.create()
+      var dialer = new Muxer()
+      var listener = new Muxer()
+
+      var connDialer = dialer.attach(pair, false)
+      var connListener = listener.attach(pair.other, true)
+
+      connDialer.dialStream(function (err, stream) {
+        t.ifError(err, 'Should not throw')
+        t.pass('dialed stream from dialer')
+      })
+
+      connListener.on('stream', function (stream) {
+        t.pass('listener got stream')
+      })
+
+      connListener.dialStream(function (err, stream) {
+        t.ifError(err, 'Should not throw')
+        t.pass('dialed stream from listener')
+      })
+
+      connDialer.on('stream', function (stream) {
+        t.pass('dialer got stream')
+      })
+    })
+  })
+
   test('Open a stream using the net.connect pattern', function (t) {
     common.setup(test, function (err, Muxer) {
       t.plan(3)

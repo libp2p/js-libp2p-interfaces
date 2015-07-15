@@ -109,6 +109,7 @@ module.exports.all = function (test, common) {
       spawnGeneration(t, Muxer, pair, pair.other, 1000, 100)
     })
   })
+
 }
 
 function spawnGeneration (t, Muxer, dialerSocket, listenerSocket, nStreams, nMsg, size) {
