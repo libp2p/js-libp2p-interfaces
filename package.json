@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/diasdavid/abstract-stream-muxer",
   "dependencies": {
-    "stream-pair": "^1.0.3"
+    "stream-pair": "^1.0.3",
+    "timed-tape": "^0.1.0"
   }
 }
