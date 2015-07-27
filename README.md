@@ -5,7 +5,7 @@ abstract-stream-muxer
 
 > A test suite and interface you can use to implement a stream muxer. "A one stop shop for all your muxing needs"
 
-The primary goal of this module is to enable developers to pick and swap their stream muxing module as they see fit for their application, without having to go through shims or compatibility issues. This module and test suite was heavily inspired by [abstract-blog-store](https://github.com/maxogden/abstract-blob-store).
+The primary goal of this module is to enable developers to pick and swap their stream muxing module as they see fit for their application, without having to go through shims or compatibility issues. This module and test suite was heavily inspired by [abstract-blob-store](https://github.com/maxogden/abstract-blob-store).
 
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
