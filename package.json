@@ -1,6 +1,6 @@
 {
   "name": "abstract-record-store",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A test suite and interface you can use to implement a a IPRS compliant(https://github.com/ipfs/specs/tree/master/records) Record Store",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
