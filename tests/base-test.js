@@ -71,8 +71,13 @@ module.exports.all = function (test, common) {
 
       recordStore.put('bananas', mdagObj_record_signature, function (err) {
         t.ifError(err, 'Should not throw')
-        t.pass('record was stored successfully')
-        t.end()
+        recordStore.get('bananas', function (err, records) {
+          t.ifError(err, 'Should not throw')
+          t.equal(records.length, 1)
+          t.pass('record was stored successfully')
+          t.end()
+        })
+
       })
     })
   })
