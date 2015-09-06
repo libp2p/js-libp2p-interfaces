@@ -28,12 +28,12 @@ Include this badge in your readme if you make a module that is compatible with t
 
 ```
 var tape = require('tape')
-var tests = require('abstract-stream-muxer/tests')
+var tests = require('abstract-record-store/tests')
 var YourRecordStore = require('../src')
 
 var common = {
   setup: function (t, cb) {
-    cb(null, YourStreamMuxer)
+    cb(null, YourRecordStore)
   },
   teardown: function (t, cb) {
     cb()
