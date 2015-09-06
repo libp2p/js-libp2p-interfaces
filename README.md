@@ -20,11 +20,28 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 Include this badge in your readme if you make a module that is compatible with the abstract-record-store API. You can validate this by running the tests.
 
-
+![](https://raw.githubusercontent.com/diasdavid/abstract-record-store/master/img/badge.png)
 
 # How to use the battery of tests
 
 ## Node.js
+
+```
+var tape = require('tape')
+var tests = require('abstract-stream-muxer/tests')
+var YourRecordStore = require('../src')
+
+var common = {
+  setup: function (t, cb) {
+    cb(null, YourStreamMuxer)
+  },
+  teardown: function (t, cb) {
+    cb()
+  }
+}
+
+tests(tape, common)
+```
 
 ## Go
 
@@ -32,4 +49,32 @@ Include this badge in your readme if you make a module that is compatible with t
 
 # API
 
+A valid (read: that follows this abstraction) stream muxer, must implement the following API.
 
+### Obtain a Record
+
+- `Node.js` rs.get(key, function (err, records) {})
+
+This method returns an array of records, found in the Record Store.
+
+If `err` is passed, `records` will be a `undefined` value.
+
+`key` is a multihash value that represents any arbitraty random value, that may have records associated with it.
+
+### Store a Record
+
+- `Node.js` rs.put(key, recordSignatureMultiHash, function (err) {})
+
+`recordSignatureMultihash` is multihash of the Record Signature MerkleDAG obj, as described by IPRS - InterPlanetary Record Spec
+
+if `err` is passed, means that the record wasn't stored properly or it was unvalid.
+
+### Implementation considerations
+
+
+- the key is a multihash but not necessarily the hash of the record signature object.
+- a DRS instance must have a mapping of key->[hash(recordSignature)] to know which records belong to a given key (provided value)
+- DRS implements the abstract-record-store interface
+- DRS may levarage other implementations of abstract-record-store to find records in the network or other storage mechanisms
+- DRS should return every valid record it can find in a query
+- all unvalid records detected in the process should be discarded/deleted
