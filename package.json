@@ -1,0 +1,24 @@
+{
+  "name": "abstract-record-store",
+  "version": "0.0.0",
+  "description": "A test suite and interface you can use to implement a a IPRS compliant(https://github.com/ipfs/specs/tree/master/records) Record Store",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diasdavid/abstract-record-store.git"
+  },
+  "keywords": [
+    "IPFS"
+  ],
+  "author": "David Dias <daviddias@ipfs.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/diasdavid/abstract-record-store/issues"
+  },
+  "homepage": "https://github.com/diasdavid/abstract-record-store",
+  "dependencies": {
+    "timed-tape": "^0.1.0"
+  }
+}
