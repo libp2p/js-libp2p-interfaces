@@ -12,6 +12,7 @@
   "keywords": [
     "IPFS"
   ],
+  "engines" : { "node" : "^4.0.0" },
   "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
@@ -20,7 +21,7 @@
   "homepage": "https://github.com/diasdavid/abstract-record-store",
   "dependencies": {
     "ecdsa": "^0.6.0",
-    "ipld": "^0.1.3",
+    "ipld": "^0.2.0",
     "multihashing": "^0.1.3",
     "timed-tape": "^0.1.0"
   }
