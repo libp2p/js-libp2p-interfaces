@@ -1,0 +1,25 @@
+{
+  "name": "abstract-connection",
+  "version": "0.0.0",
+  "description": "A test suite and interface you can use to implement a connection.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diasdavid/abstract-connection.git"
+  },
+  "keywords": [
+    "IPFS"
+  ],
+  "author": "David Dias <daviddias@ipfs.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/diasdavid/abstract-connection/issues"
+  },
+  "homepage": "https://github.com/diasdavid/abstract-connection"
+}
