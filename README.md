@@ -11,10 +11,11 @@ Publishing a test suite as a module lets multiple modules all ensure compatibili
 
 The API is presented with both Node.js and Go primitives, however, there is not actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
 
-
 # Modules that implement the interface
 
 - [node-libp2p-tcp](https://github.com/diasdavid/node-libp2p-tcp)
+
+note: for any new given implementation that adds one more option to the multiaddr space that was not expected yet, the respective multiaddr should be added to the PeerInfo objects available on the tests, so that implementation can be properly tested.
 
 # Badge
 
@@ -51,6 +52,24 @@ tests(tape, common)
 
 A valid (read: that follows this abstraction) connection, must implement the following API.
 
-note: a `stream` should be a stream that implements the [abstract-stream](https://github.com/diasdavid/abstract-stream) interface.
+### Dialing to another Peer
 
+- `Node.js` stream = conn.dial(peerInfo, [<options>])
 
+This method dials a connection to the Peer referenced by the peerInfo object.
+
+peerInfo must be of the type `PeerInfo`.
+
+stream must be a stream that implements the [abstract-stream](https://github.com/diasdavid/abstract-stream) interface.
+
+[<options>] are not mandatory fields for all the implementations that might be passed for certain implementations for them to work (e.g. a Signalling Server for a WebRTC transport/connection implementation)
+
+### Listening for incoming connections from other Peers
+
+- `Node.js` conn.listen(options, function (stream) {})
+
+This method waits and listens for incoming connections by other peers.
+
+stream must be a stream that implements the [abstract-stream](https://github.com/diasdavid/abstract-stream) interface.
+
+Options are the properties this listener must have access in order to properly listen on a given transport/socket
