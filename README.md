@@ -20,7 +20,7 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 Include this badge in your readme if you make a module that is compatible with the abstract-connection API. You can validate this by running the tests.
 
-![](https://raw.githubusercontent.com/diasdavid/abstract-connection/master/img/badge.svg)
+![](https://raw.githubusercontent.com/diasdavid/abstract-connection/master/img/badge.png)
 
 # How to use the battery of tests
 
