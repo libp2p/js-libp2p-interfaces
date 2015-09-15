@@ -9,6 +9,8 @@ The primary goal of this module is to enable developers to pick and swap their R
 
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
+The purpose of this abstraction is not to reinvent any wheels when it comes to dialing and listening to connections, instead, it tries to uniform several transports through a shimmed interface.
+
 The API is presented with both Node.js and Go primitives, however, there is not actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
 
 # Modules that implement the interface
@@ -54,22 +56,37 @@ A valid (read: that follows this abstraction) connection, must implement the fol
 
 ### Dialing to another Peer
 
-- `Node.js` stream = conn.dial(peerInfo, [<options>])
+- `Node.js` var stream = conn.dial(multiaddr, [options])
 
 This method dials a connection to the Peer referenced by the peerInfo object.
 
-peerInfo must be of the type `PeerInfo`.
+multiaddr must be of the type [`multiaddr`](http://npmjs.org/multiaddr).
 
-stream must be a stream that implements the [abstract-stream](https://github.com/diasdavid/abstract-stream) interface.
+`stream` must implements the [abstract-stream](https://github.com/diasdavid/abstract-stream) interface.
 
-[<options>] are not mandatory fields for all the implementations that might be passed for certain implementations for them to work (e.g. a Signalling Server for a WebRTC transport/connection implementation)
+`[options]` are not mandatory fields for all the implementations that might be passed for certain implementations for them to work (e.g. a Signalling Server for a WebRTC transport/connection implementation)
 
 ### Listening for incoming connections from other Peers
 
-- `Node.js` conn.listen(options, function (stream) {})
+- `Node.js` var listener = conn.createListener(options, function (stream) {})
 
 This method waits and listens for incoming connections by other peers.
 
-stream must be a stream that implements the [abstract-stream](https://github.com/diasdavid/abstract-stream) interface.
+`stream` must be a stream that implements the [abstract-stream](https://github.com/diasdavid/abstract-stream) interface.
 
 Options are the properties this listener must have access in order to properly listen on a given transport/socket
+
+### Start listening
+
+- `Node.js` listener.listen(options, [callback])
+
+This method opens the listener to start listening for incoming connections
+
+### Close an active listener
+
+- `Node.js` listener.close([callback])
+
+This method closes the listener so that no more connections can be open
+
+`callback` is function that gets called when the listener is closed. It is optional
+

@@ -6,4 +6,8 @@ module.exports.all = function (test, common) {
       t.end()
     })
   })
+
+  // test for:
+  // 1. dial and listen
+  // 2. close
 }
