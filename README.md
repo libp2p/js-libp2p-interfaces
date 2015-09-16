@@ -62,7 +62,7 @@ This method dials a connection to the Peer referenced by the peerInfo object.
 
 multiaddr must be of the type [`multiaddr`](http://npmjs.org/multiaddr).
 
-`stream` must implements the [abstract-stream](https://github.com/diasdavid/abstract-stream) interface.
+`stream` must implements the [abstract-transport](https://github.com/diasdavid/abstract-transport) interface.
 
 `[options]` are not mandatory fields for all the implementations that might be passed for certain implementations for them to work (e.g. a Signalling Server for a WebRTC transport/connection implementation)
 
@@ -72,7 +72,7 @@ multiaddr must be of the type [`multiaddr`](http://npmjs.org/multiaddr).
 
 This method waits and listens for incoming connections by other peers.
 
-`stream` must be a stream that implements the [abstract-stream](https://github.com/diasdavid/abstract-stream) interface.
+`stream` must be a stream that implements the [abstract-transport](https://github.com/diasdavid/abstract-transport) interface.
 
 Options are the properties this listener must have access in order to properly listen on a given transport/socket
 

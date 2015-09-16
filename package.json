@@ -21,5 +21,11 @@
   "bugs": {
     "url": "https://github.com/diasdavid/abstract-connection/issues"
   },
-  "homepage": "https://github.com/diasdavid/abstract-connection"
+  "homepage": "https://github.com/diasdavid/abstract-connection",
+  "devDependencies": {
+  },
+  "dependencies": {
+    "multiaddr": "^1.0.0",
+    "timed-tape": "^0.1.0"
+  }
 }
