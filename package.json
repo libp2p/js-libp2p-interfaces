@@ -1,6 +1,6 @@
 {
   "name": "abstract-connection",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A test suite and interface you can use to implement a connection.",
   "repository": {
     "type": "git",
@@ -15,8 +15,7 @@
     "url": "https://github.com/diasdavid/abstract-connection/issues"
   },
   "homepage": "https://github.com/diasdavid/abstract-connection",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "multiaddr": "^1.0.0",
     "timed-tape": "^0.1.0"
