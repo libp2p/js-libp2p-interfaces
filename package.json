@@ -1,10 +1,10 @@
 {
-  "name": "abstract-connection",
-  "version": "0.1.0",
-  "description": "A test suite and interface you can use to implement a connection.",
+  "name": "abstract-transport",
+  "version": "0.0.0",
+  "description": "A test suite and interface you can use to implement a transport.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diasdavid/abstract-connection.git"
+    "url": "https://github.com/diasdavid/abstract-transport.git"
   },
   "keywords": [
     "IPFS"
@@ -12,9 +12,9 @@
   "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/diasdavid/abstract-connection/issues"
+    "url": "https://github.com/diasdavid/abstract-transport/issues"
   },
-  "homepage": "https://github.com/diasdavid/abstract-connection",
+  "homepage": "https://github.com/diasdavid/abstract-transport",
   "devDependencies": {},
   "dependencies": {
     "multiaddr": "^1.0.0",
