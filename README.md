@@ -1,11 +1,11 @@
-abstract-transport
+abstract-connection
 ==================
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 
-> A test suite and interface you can use to implement a transport. A transport is understood as something that offers mechanism for writing and reading data, back pressure, half and full duplex streams. This module and test suite were heavily inspired by abstract-blob-store and abstract-stream-muxer.
+> A test suite and interface you can use to implement a connection. A connection is understood as something that offers mechanism for writing and reading data, back pressure, half and full duplex streams. This module and test suite were heavily inspired by abstract-blob-store and abstract-stream-muxer.
 
-The primary goal of module is to enable developers to pick, swap or upgrade their transport without loosing the same API expectations and mechanisms such as back pressure and the hability to half close a stream.
+The primary goal of module is to enable developers to pick, swap or upgrade their connection without loosing the same API expectations and mechanisms such as back pressure and the hability to half close a connection.
 
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
@@ -22,7 +22,7 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 Include this badge in your readme if you make a module that is compatible with the abstract-connection API. You can validate this by running the tests.
 
-![](https://raw.githubusercontent.com/diasdavid/abstract-transport/master/img/badge.png)
+![](https://raw.githubusercontent.com/diasdavid/abstract-connection/master/img/badge.png)
 
 # How to use the battery of tests
 
@@ -30,12 +30,12 @@ Include this badge in your readme if you make a module that is compatible with t
 
 ```
 var tape = require('tape')
-var tests = require('abstract-transport/tests')
-var YourTransportHandler = require('../src')
+var tests = require('abstract-connection/tests')
+var YourConnectionHandler = require('../src')
 
 var common = {
   setup: function (t, cb) {
-    cb(null, YourTransportHandler)
+    cb(null, YourConnectionHandler)
   },
   teardown: function (t, cb) {
     cb()
