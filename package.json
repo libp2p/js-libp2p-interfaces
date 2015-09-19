@@ -17,6 +17,7 @@
   "homepage": "https://github.com/diasdavid/abstract-peer-routing",
   "devDependencies": {},
   "dependencies": {
+    "peer-id": "^0.3.3",
     "timed-tape": "^0.1.0"
   }
 }

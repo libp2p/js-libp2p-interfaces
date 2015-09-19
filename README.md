@@ -27,7 +27,7 @@ Include this badge in your readme if you make a module that is compatible with t
 
 ```
 var tape = require('tape')
-var tests = require('abstract-record-store/tests')
+var tests = require('abstract-peer-routing/tests')
 var YourPeerRouter = require('../src')
 
 var common = {
