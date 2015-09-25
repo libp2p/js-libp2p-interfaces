@@ -8,7 +8,7 @@ module.exports.all = function (test, common) {
       pr.findPeers(Id.create().toBytes(), function (err, peerQueue) {
         t.ifError(err)
         t.equal(peerQueue.length >= 1, true)
-        // common.teardown()
+        common.teardown()
       })
     })
   })
