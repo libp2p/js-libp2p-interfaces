@@ -1,11 +1,11 @@
-abstract-peer-routing
+interface-peer-routing
 =====================
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 
 > A test suite and interface you can use to implement a Peer Routing module for libp2p.
 
-The primary goal of this module is to enable developers to pick and swap their Peer Routing module as they see fit for their libp2p installation, without having to go through shims or compatibility issues. This module and test suite were heavily inspired by abstract-blob-store and abstract-stream-muxer.
+The primary goal of this module is to enable developers to pick and swap their Peer Routing module as they see fit for their libp2p installation, without having to go through shims or compatibility issues. This module and test suite were heavily inspired by abstract-blob-store and interface-stream-muxer.
 
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
@@ -17,9 +17,9 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 # Badge
 
-Include this badge in your readme if you make a module that is compatible with the abstract-record-store API. You can validate this by running the tests.
+Include this badge in your readme if you make a module that is compatible with the interface-record-store API. You can validate this by running the tests.
 
-![](https://raw.githubusercontent.com/diasdavid/abstract-peer-routing/master/img/badge.png)
+![](https://raw.githubusercontent.com/diasdavid/interface-peer-routing/master/img/badge.png)
 
 # How to use the battery of tests
 
@@ -27,7 +27,7 @@ Include this badge in your readme if you make a module that is compatible with t
 
 ```
 var tape = require('tape')
-var tests = require('abstract-peer-routing/tests')
+var tests = require('interface-peer-routing/tests')
 var YourPeerRouter = require('../src')
 
 var common = {

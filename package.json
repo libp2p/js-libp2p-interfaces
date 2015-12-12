@@ -1,10 +1,10 @@
 {
-  "name": "abstract-peer-routing",
+  "name": "interface-peer-routing",
   "version": "0.1.1",
   "description": "A test suite and interface you can use to implement a Peer Routing for libp2p.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diasdavid/abstract-peer-routing.git"
+    "url": "https://github.com/diasdavid/interface-peer-routing.git"
   },
   "keywords": [
     "IPFS"
@@ -12,9 +12,9 @@
   "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/diasdavid/abstract-peer-routing/issues"
+    "url": "https://github.com/diasdavid/interface-peer-routing/issues"
   },
-  "homepage": "https://github.com/diasdavid/abstract-peer-routing",
+  "homepage": "https://github.com/diasdavid/interface-peer-routing",
   "devDependencies": {},
   "dependencies": {
     "peer-id": "^0.3.3",
