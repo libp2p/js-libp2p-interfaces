@@ -1,5 +1,5 @@
 {
-  "name": "abstract-stream-muxer",
+  "name": "interface-stream-muxer",
   "version": "0.2.4",
   "description": "A test suite and interface you can use to implement a stream muxer.",
   "main": "src/index.js",
@@ -11,20 +11,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/diasdavid/abstract-stream-muxer.git"
+    "url": "https://github.com/diasdavid/interface-stream-muxer.git"
   },
   "keywords": [
     "Streams",
     "Muxer",
-    "Abstract",
+    "interface",
     "Interface"
   ],
   "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/diasdavid/abstract-stream-muxer/issues"
+    "url": "https://github.com/diasdavid/interface-stream-muxer/issues"
   },
-  "homepage": "https://github.com/diasdavid/abstract-stream-muxer",
+  "homepage": "https://github.com/diasdavid/interface-stream-muxer",
   "dependencies": {
     "stream-pair": "^1.0.3",
     "timed-tape": "^0.1.0"

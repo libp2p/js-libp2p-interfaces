@@ -1,4 +1,4 @@
-abstract-stream-muxer
+interface-stream-muxer
 =====================
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
@@ -21,7 +21,7 @@ Send a PR to add a new one if you happen to find or write one.
 
 # Badge
 
-Include this badge in your readme if you make a new module that uses abstract-stream-muxer API.
+Include this badge in your readme if you make a new module that uses interface-stream-muxer API.
 
 ![](/img/badge.png)
 
@@ -29,11 +29,11 @@ Include this badge in your readme if you make a new module that uses abstract-st
 
 ## Node.js
 
-Install abstract-stream-muxer as one of the dependencies of your project and as a test file, using `tap`, `tape` or a test runner with compatible API, do:
+Install interface-stream-muxer as one of the dependencies of your project and as a test file, using `tap`, `tape` or a test runner with compatible API, do:
 
 ```
 var tape = require('tape')
-var tests = require('abstract-stream-muxer/tests')
+var tests = require('interface-stream-muxer/tests')
 var YourStreamMuxer = require('../src')
 
 var common = {
@@ -69,7 +69,7 @@ If `err` is passed, no operation should be made in `conn`.
 
 `isListener` is a bool that tells the side of the socket we are, `isListener = true` for listener/server and `isListener = false` for dialer/client side.
 
-`conn` abstracts our established Connection with the other endpoint, it must offer an interface to open a stream inside this connection and to receive incomming stream requests.
+`conn` interfaces our established Connection with the other endpoint, it must offer an interface to open a stream inside this connection and to receive incomming stream requests.
 
 ### Dial(open/create) a new stream
 
@@ -81,7 +81,7 @@ This method negotiates and opens a new stream with the other endpoint.
 
 If `err` is passed, no operation should be made in `stream`.
 
-`stream` abstract our established Stream with the other endpoint, it must implement the [Duplex Stream interface](https://nodejs.org/api/stream.html#stream_class_stream_duplex) in Node.js or the [ReadWriteCloser](http://golang.org/pkg/io/#ReadWriteCloser) in Go.
+`stream` interface our established Stream with the other endpoint, it must implement the [Duplex Stream interface](https://nodejs.org/api/stream.html#stream_class_stream_duplex) in Node.js or the [ReadWriteCloser](http://golang.org/pkg/io/#ReadWriteCloser) in Go.
 
 In the Node.js case, if no callback is passed, stream will emit an 'ready' event when it is prepared or a 'error' event if it fails to establish the connection, until then, it will buffer the 'write' calls.
 
