@@ -25,7 +25,7 @@ Include this badge in your readme if you make a module that is compatible with t
 
 ## Node.js
 
-```
+```javascript
 var tape = require('tape')
 var tests = require('interface-peer-routing/tests')
 var YourPeerRouter = require('../src')
