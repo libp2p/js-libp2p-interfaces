@@ -1,10 +1,10 @@
 {
-  "name": "abstract-connection",
+  "name": "interface-connection",
   "version": "0.0.2",
   "description": "A test suite and interface you can use to implement a connection interface.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diasdavid/abstract-connection.git"
+    "url": "https://github.com/diasdavid/interface-connection.git"
   },
   "keywords": [
     "IPFS"
@@ -12,9 +12,9 @@
   "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/diasdavid/abstract-connection/issues"
+    "url": "https://github.com/diasdavid/interface-connection/issues"
   },
-  "homepage": "https://github.com/diasdavid/abstract-connection",
+  "homepage": "https://github.com/diasdavid/interface-connection",
   "dependencies": {
     "timed-tape": "^0.1.0"
   }
