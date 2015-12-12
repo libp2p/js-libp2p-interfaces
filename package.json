@@ -1,10 +1,10 @@
 {
-  "name": "abstract-transport",
+  "name": "interface-transport",
   "version": "0.1.0",
   "description": "A test suite and interface you can use to implement a transport.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diasdavid/abstract-transport.git"
+    "url": "https://github.com/diasdavid/interface-transport.git"
   },
   "keywords": [
     "IPFS"
@@ -12,9 +12,9 @@
   "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/diasdavid/abstract-transport/issues"
+    "url": "https://github.com/diasdavid/interface-transport/issues"
   },
-  "homepage": "https://github.com/diasdavid/abstract-transport",
+  "homepage": "https://github.com/diasdavid/interface-transport",
   "devDependencies": {},
   "dependencies": {
     "multiaddr": "^1.0.0",
