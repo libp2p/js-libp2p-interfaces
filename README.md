@@ -1,7 +1,8 @@
 interface-stream-muxer
 =====================
 
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
+[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
+[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 
 > A test suite and interface you can use to implement a stream muxer. "A one stop shop for all your muxing needs"
 
@@ -13,8 +14,8 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 # Modules that implement the interface
 
-- [Node.js spdy-stream-muxer](https://github.com/diasdavid/node-spdy-stream-muxer) - stream-muxer abstraction on top of [spdy-transport](https://github.com/indutny/spdy-transport)
-- [Node.js multiplex-stream-muxer](https://github.com/diasdavid/node-multiplex-stream-muxer) - stream-muxer abstraction on top of [multiplex](https://github.com/maxogden/multiplex)
+- [JavaScript libp2p-spdy](https://github.com/diasdavid/js-libp2p-spdy)
+- [JavaScript libp2p-multiplex](https://github.com/diasdavid/js-libp2p-multiplex)
 - [Go spdy, muxado, yamux and multiplex](https://github.com/jbenet/go-stream-muxer)
 
 Send a PR to add a new one if you happen to find or write one.
@@ -34,20 +35,18 @@ Install interface-stream-muxer as one of the dependencies of your project and as
 ```
 var tape = require('tape')
 var tests = require('interface-stream-muxer/tests')
-var YourStreamMuxer = require('../src')
+var yourStreamMuxer = require('../src')
 
 var common = {
   setup: function (t, cb) {
-    cb(null, YourStreamMuxer)
+    cb(null, yourStreamMuxer)
   },
   teardown: function (t, cb) {
     cb()
   }
 }
 
-var megaTest = false // a really really intensive test case
-
-tests(tape, common, megaTest)
+tests(tape, common)
 ```
 
 ## Go
@@ -60,8 +59,8 @@ A valid (read: that follows this abstraction) stream muxer, must implement the f
 
 ### Attach muxer to a transport
 
-- `Node.js` conn = muxer.attach(transport, isListener)
-- `Go` conn, err := muxer.Attach(transport, isListener)
+- `Node.js` muxedConn = muxer(transport, isListener)
+- `Go` muxedConn, err := muxer.Attach(transport, isListener)
 
 This method attaches our stream muxer to the desired transport (UDP, TCP) and returns/callbacks with the `err, conn`(error, connection).
 
@@ -69,13 +68,13 @@ If `err` is passed, no operation should be made in `conn`.
 
 `isListener` is a bool that tells the side of the socket we are, `isListener = true` for listener/server and `isListener = false` for dialer/client side.
 
-`conn` interfaces our established Connection with the other endpoint, it must offer an interface to open a stream inside this connection and to receive incomming stream requests.
+`muxedConn` interfaces our established Connection with the other endpoint, it must offer an interface to open a stream inside this connection and to receive incomming stream requests.
 
 ### Dial(open/create) a new stream
 
 
-- `Node.js` stream = conn.dialStream([function (err, stream)])
-- `Go` stream, err := conn.DialStream()
+- `Node.js` stream = muxedConn.newStream([function (err, stream)])
+- `Go` stream, err := muxedConn.newStream()
 
 This method negotiates and opens a new stream with the other endpoint.
 
@@ -87,8 +86,8 @@ In the Node.js case, if no callback is passed, stream will emit an 'ready' event
 
 ### Listen(wait/accept) a new incoming stream
 
-- `Node.js` conn.on('stream', function (stream)) 
-- `Go` stream := conn.Accept()
+- `Node.js` muxedConn.on('stream', function (stream) {}) 
+- `Go` stream := muxedConn.Accept()
 
 Each time a dialing peer initiates the new stream handshake, a new stream is created on the listening side.
 
