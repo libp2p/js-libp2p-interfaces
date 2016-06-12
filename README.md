@@ -1,11 +1,12 @@
 interface-transport
 ===================
 
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
+[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
+[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 
-> A test suite and interface you can use to implement a transport. A transport is understood as something that offers a dial+listen interface
+> A test suite and interface you can use to implement a libp2p transport. A libp2p transport is understood as something that offers a dial and listen interface.
 
-The primary goal of this module is to enable developers to pick and swap their Record Store module as they see fit for their libp2p installation, without having to go through shims or compatibility issues. This module and test suite were heavily inspired by abstract-blob-store and interface-stream-muxer.
+The primary goal of this module is to enable developers to pick and swap their transport module as they see fit for their libp2p installation, without having to go through shims or compatibility issues. This module and test suite were heavily inspired by abstract-blob-store, interface-stream-muxer and others.
 
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
@@ -15,9 +16,11 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 # Modules that implement the interface
 
-- [node-libp2p-tcp](https://github.com/diasdavid/node-libp2p-tcp)
-
-note: for any new given implementation that adds one more option to the multiaddr space that was not expected yet, the respective multiaddr should be added to the PeerInfo objects available on the tests, so that implementation can be properly tested.
+- [js-libp2p-tcp](https://github.com/diasdavid/node-libp2p-tcp)
+- [js-libp2p-webrtc-star](https://github.com/diasdavid/js-libp2p-webrtc-star)
+- [js-libp2p-websockets](https://github.com/diasdavid/js-libp2p-websockets)
+- [js-libp2p-utp](https://github.com/diasdavid/js-libp2p-utp)
+- [webrtc-explorer](https://github.com/diasdavid/webrtc-explorer)
 
 # Badge
 
@@ -52,41 +55,95 @@ tests(tape, common)
 
 # API
 
-A valid (read: that follows this abstraction) transport, must implement the following API.
+A valid (read: that follows the interface defined) transport, must implement the following API.
 
-### Dialing to another Peer
+**Table of contents:**
 
-- `Node.js` var stream = transport.dial(multiaddr, [options])
+- type: `Transport`
+  - `new Transport([options])`
+  - `transport.dial(multiaddr, [options, callback])`
+    - event: 'connect'
+    - event: 'error'
+  - `transport.createListener([options], handlerFunction)`
+  - type: `transport.Listener`
+    - event: 'listening'
+    - event: 'close'
+    - event: 'connection'
+    - event: 'error'
+    - `listener.listen(multiaddr, [callback])`
+    - `listener.getAddrs(callback)`
+    - `listener.close([options])`
 
-This method dials a transport to the Peer referenced by the peerInfo object.
+### Creating a transport instance
 
-multiaddr must be of the type [`multiaddr`](http://npmjs.org/multiaddr).
+- `JavaScript` - `var transport = new Transport([options])`
+
+Creates a new Transport instance. `options` is a optional JavaScript object, might include the necessary parameters for the transport instance.
+
+**Note: Why is it important to instantiate a transport -** Some transports have state that can be shared between the dialing and listening parts. One example is a libp2p-webrtc-star (or pretty much any other WebRTC flavour transport), where that, in order to dial, a peer needs to be part of some signalling network that is shared also with the listener.
+
+### Dial to another peer
+
+- `JavaScript` - `var conn = transport.dial(multiaddr, [options, callback])`
+
+This method dials a transport to the Peer listening on `multiaddr`.
+
+`multiaddr` must be of the type [`multiaddr`](http://npmjs.org/multiaddr).
 
 `stream` must implements the [interface-connection](https://github.com/diasdavid/interface-connection) interface.
 
-`[options]` are not mandatory fields for all the implementations that might be passed for certain implementations for them to work (e.g. a Signalling Server for a WebRTC transport implementation)
+`[options]` is an optional argument, which can be used by some implementations
 
-### Listening for incoming transports from other Peers
+`callback` should follow the `function (err, conn)` signature.
 
-- `Node.js` var listener = transport.createListener(options, function (stream) {})
+`conn` is the same `conn` that gets returned by call, which should follow [`interface-connection`](https://github.com/diasdavid/interface-connection). This `conn` object can emit 3 extra events:
 
-This method waits and listens for incoming transports by other peers.
+- `connect` - 
+- `timeout` - 
+- `error` - 
 
-`stream` must be a stream that implements the [interface-connection](https://github.com/diasdavid/interface-connection) interface.
 
-Options are the properties this listener must have access in order to properly listen on a given transport/socket
+### Create a listener
 
-### Start listening
+- `JavaScript` - `var listener = transport.createListener([options], handlerFunction)`
 
-- `Node.js` listener.listen(options, [callback])
+This method creates a listener on the transport.
 
-This method opens the listener to start listening for incoming transports
+`options` is an optional object that contains the properties the listener must have, in order to properly listen on a given transport/socket.
 
-### Close an active listener
+`handlerFunction` is a function called each time a new connection is received. It must follow the following signature: `function (conn) {}`, where `conn` is a connection that follows the [`interface-connection`](https://github.com/diasdavid/interface-connection).
 
-- `Node.js` listener.close([callback])
+The listener object created, can emit the following events:
 
-This method closes the listener so that no more connections can be open on this transport instance
+- `listening` -
+- `close` -
+- `connection` -
+- `error` -
 
-`callback` is function that gets called when the listener is closed. It is optional
+### Start a listener
 
+- `JavaScript` - `listener.listen(multiaddr, [callback])`
+
+This method puts the listener in `listening` mode, waiting for incoming connections.
+
+`multiaddr` is the address where the listener should bind to.
+
+`callback` is a function called once the listener is ready.
+
+### Get listener addrs
+
+- `JavaScript` - `listener.getAddrs(callback)`
+
+This method retrieves the addresses in which this listener is listening. Useful for when listening on port 0 or any interface (0.0.0.0).
+
+### Stop a listener
+
+- `JavaScript` - `listener.close([options, callback])`
+
+This method closes the listener so that no more connections can be open on this transport instance.
+
+`options` is an optional object that might contain the following properties:
+
+  - `timeout` - A timeout value (in ms) that fires and destroys all the connections on this transport if the transport is not able to close graciously. (e.g { timeout: 1000 })
+
+`callback` is function that gets called when the listener is closed. It is optional.
