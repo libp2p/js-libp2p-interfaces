@@ -2,6 +2,20 @@
   "name": "interface-connection",
   "version": "0.0.3",
   "description": "A test suite and interface you can use to implement a connection interface.",
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
+  "scripts": {
+    "lint": "aegir-lint",
+    "build": "aegir-build",
+    "test": "exit 0",
+    "release": "aegir-release",
+    "release-minor": "aegir-release --type minor",
+    "release-major": "aegir-release --type major"
+  },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/diasdavid/interface-connection.git"
@@ -16,6 +30,10 @@
   },
   "homepage": "https://github.com/diasdavid/interface-connection",
   "dependencies": {
+    "duplexify": "^3.4.3",
     "timed-tape": "^0.1.0"
+  },
+  "devDependencies": {
+    "aegir": "^3.2.0"
   }
 }

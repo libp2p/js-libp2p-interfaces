@@ -1,7 +1,8 @@
 interface-connection
 ==================
 
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
+[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
+[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 
 > A test suite and interface you can use to implement a connection. A connection is understood as something that offers mechanism for writing and reading data, back pressure, half and full duplex streams. This module and test suite were heavily inspired by abstract-blob-store and interface-stream-muxer.
 
@@ -11,12 +12,16 @@ Publishing a test suite as a module lets multiple modules all ensure compatibili
 
 The API is presented with both Node.js and Go primitives, however, there is not actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
 
-> **IMPORTANT** - Tests are still not finished nor the interface
-
-
 # Modules that implement the interface
 
-- [node-libp2p-tcp](https://github.com/diasdavid/node-libp2p-tcp)
+- [js-libp2p-tcp](https://github.com/diasdavid/node-libp2p-tcp)
+- [js-libp2p-webrtc-star](https://github.com/diasdavid/js-libp2p-webrtc-star)
+- [js-libp2p-websockets](https://github.com/diasdavid/js-libp2p-websockets)
+- [js-libp2p-utp](https://github.com/diasdavid/js-libp2p-utp)
+- [webrtc-explorer](https://github.com/diasdavid/webrtc-explorer)
+- [js-libp2p-spdy](https://github.com/diasdavid/js-libp2p-spdy)
+- [js-libp2p-multiplex](https://github.com/diasdavid/js-libp2p-multiplex)
+- [js-libp2p-secio](https://github.com/ipfs/js-libp2p-secio)
 
 # Badge
 
@@ -53,9 +58,51 @@ tests(tape, common)
 
 A valid (read: that follows this abstraction) connection, must implement the following API.
 
-notes: 
+**Table of contents:**
+
+- type: `Connection`
+  - `conn.getObservedAddrs(callback)`
+  - `conn.getPeerInfo(callback)`
+  - `conn.setPeerInfo(peerInfo)`
+  - `conn.destroy`
+  - `conn.write`
+  - `conn.read`
+  - `conn.pipe`
+  - `conn.end`
+  - `conn.pause`
+  - `conn.resume`
+  - `conn.destroy`
+  - `...`
+
+### Get the Observed Addresses of the peer in the other end
+
+- `JavaScript` - `conn.getObservedAddrs(callback)`
+
+This method retrieves the observed addresses we get from the underlying transport, if any.
+
+`callback` should follow the follow `function (err, multiaddrs) {}`, where `multiaddrs` is an array of [multiaddr](https://github.com/jbenet/multiaddr).
+
+### Get the PeerInfo
+
+- `JavaScript` - `conn.getPeerInfo(callback)`
+
+This method retrieves the a Peer Info object that contains information about the peer that this conn connects to.
+
+`callback` should follow the `function (err, peerInfo) {}` signature, where peerInfo is a object of type [Peer Info](https://github.com/diasdavid/js-peer-info)
+
+### Set the PeerInfo
+
+- `JavaScript` - `conn.setPeerInfo(peerInfo)`
+j
+This method stores a reference to the peerInfo Object that contains information about the peer that this conn connects to.
+
+`peerInfo` is a object of type [Peer Info](https://github.com/diasdavid/js-peer-info)
+
+---
+
+notes:
+  - should follow the remaining Duplex stream operations
   - should have backpressure into account
   - should enable half duplex streams (close from one side, but still open for the other)
   - should support full duplex
   - tests should be performed by passing two streams
-
