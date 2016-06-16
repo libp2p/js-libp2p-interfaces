@@ -35,5 +35,9 @@
   },
   "devDependencies": {
     "aegir": "^3.2.0"
-  }
+  },
+  "contributors": [
+    "David Dias <daviddias.p@gmail.com>",
+    "Pau Ramon Revilla <masylum@gmail.com>"
+  ]
 }
