@@ -47,12 +47,7 @@ function Connection (conn) {
     this.setWritable(conn)
   }
 
-  this.destroy = () => {
-    if (conn.destroy) {
-      conn.destroy()
-    }
-    this.end()
-  }
+  // .destroy is implemented by Duplexify
 
   if (conn) {
     this.setInnerConn(conn)
