@@ -47,6 +47,13 @@ function Connection (conn) {
     this.setWritable(conn)
   }
 
+  this.destroy = () => {
+    if (conn.destroy) {
+      conn.destroy()
+    }
+    this.end()
+  }
+
   if (conn) {
     this.setInnerConn(conn)
   }
