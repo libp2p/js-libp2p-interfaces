@@ -17,7 +17,7 @@ function Connection (conn) {
   let peerInfo
 
   this.getPeerInfo = (callback) => {
-    if (conn.getPeerInfo) {
+    if (conn && conn.getPeerInfo) {
       return conn.getPeerInfo(callback)
     }
 
@@ -29,20 +29,21 @@ function Connection (conn) {
   }
 
   this.setPeerInfo = (_peerInfo) => {
-    if (conn.setPeerInfo) {
+    if (conn && conn.setPeerInfo) {
       return conn.setPeerInfo(_peerInfo)
     }
     peerInfo = _peerInfo
   }
 
   this.getObservedAddrs = (callback) => {
-    if (conn.getObservedAddrs) {
+    if (conn && conn.getObservedAddrs) {
       return conn.getObservedAddrs(callback)
     }
     callback(null, [])
   }
 
-  this.setInnerConn = (conn) => {
+  this.setInnerConn = (_conn) => {
+    conn = _conn
     this.setReadable(conn)
     this.setWritable(conn)
   }
