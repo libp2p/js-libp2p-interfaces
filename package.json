@@ -34,7 +34,7 @@
     "timed-tape": "^0.1.0"
   },
   "devDependencies": {
-    "aegir": "^3.2.0"
+    "aegir": "^4.0.0"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
