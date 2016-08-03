@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/diasdavid/interface-connection",
   "dependencies": {
-    "duplexify": "diasdavid/duplexify#048ec46",
+    "duplexify": "diasdavid/duplexify#a22bcdf",
     "timed-tape": "^0.1.0"
   },
   "devDependencies": {
