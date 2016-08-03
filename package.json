@@ -1,6 +1,6 @@
 {
   "name": "interface-connection",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A test suite and interface you can use to implement a connection interface.",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
