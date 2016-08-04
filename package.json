@@ -17,7 +17,7 @@
   "homepage": "https://github.com/diasdavid/interface-transport",
   "devDependencies": {},
   "dependencies": {
-    "multiaddr": "^1.0.0",
+    "multiaddr": "^2.0.2",
     "timed-tape": "^0.1.0"
   }
 }
