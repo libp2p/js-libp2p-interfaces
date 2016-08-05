@@ -10,7 +10,7 @@ The primary goal of this module is to enable developers to pick and swap their t
 
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
-The purpose of this interfaceion is not to reinvent any wheels when it comes to dialing and listening to transports, instead, it tries to uniform several transports through a shimmed interface.
+The purpose of this interface is not to reinvent any wheels when it comes to dialing and listening to transports. Instead, it tries to uniform several transports through a shimmed interface.
 
 The API is presented with both Node.js and Go primitives, however, there is not actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
 
