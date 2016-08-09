@@ -1,3 +1,5 @@
+'use strict'
+
 var timed = require('timed-tape')
 
 module.exports = function (test, common) {
