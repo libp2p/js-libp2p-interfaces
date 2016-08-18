@@ -2,7 +2,10 @@ interface-stream-muxer
 =====================
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
+[![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
+[![Travis CI](https://travis-ci.org/ipfs/interface-stream-muxer.svg?branch=master)](https://travis-ci.org/ipfs/interface-stream-muxer)
+[![Dependency Status](https://david-dm.org/ipfs/interface-stream-muxer.svg?style=flat-square)](https://david-dm.org/ipfs/interface-stream-muxer) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
 
 > A test suite and interface you can use to implement a stream muxer. "A one stop shop for all your muxing needs"
 
@@ -12,48 +15,46 @@ Publishing a test suite as a module lets multiple modules all ensure compatibili
 
 The API is presented with both Node.js and Go primitives, however, there is not actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
 
-# Modules that implement the interface
+## Modules that implement the interface
 
-- [JavaScript libp2p-spdy](https://github.com/diasdavid/js-libp2p-spdy)
-- [JavaScript libp2p-multiplex](https://github.com/diasdavid/js-libp2p-multiplex)
+- [JavaScript libp2p-spdy](https://github.com/libp2p/js-libp2p-spdy)
 - [Go spdy, muxado, yamux and multiplex](https://github.com/jbenet/go-stream-muxer)
 
 Send a PR to add a new one if you happen to find or write one.
 
-# Badge
+## Badge
 
 Include this badge in your readme if you make a new module that uses interface-stream-muxer API.
 
 ![](/img/badge.png)
 
-# How to use the battery tests
+## Usage
 
-## Node.js
+### Node.js
 
-Install interface-stream-muxer as one of the dependencies of your project and as a test file, using `tap`, `tape` or a test runner with compatible API, do:
+Install `interface-stream-muxer` as one of the dependencies of your project and as a test file. Then, using `mocha` (for Node.js) or a test runner with compatible API, do:
 
-```
-var tape = require('tape')
-var tests = require('interface-stream-muxer/tests')
-var yourStreamMuxer = require('../src')
+```js
+const test = require('interface-stream-muxer')
 
-var common = {
-  setup: function (t, cb) {
-    cb(null, yourStreamMuxer)
+const common = {
+  setup (cb) {
+    cb(null, yourMuxer)
   },
-  teardown: function (t, cb) {
+  teardown (cb) {
     cb()
   }
 }
 
-tests(tape, common)
+// use all of the test suits
+test(common)
 ```
 
-## Go
+### Go
 
-> WIP - being written
+> WIP
 
-# API
+## API
 
 A valid (read: that follows this abstraction) stream muxer, must implement the following API.
 
@@ -86,7 +87,7 @@ In the Node.js case, if no callback is passed, stream will emit an 'ready' event
 
 ### Listen(wait/accept) a new incoming stream
 
-- `Node.js` muxedConn.on('stream', function (stream) {}) 
+- `Node.js` muxedConn.on('stream', function (stream) {})
 - `Go` stream := muxedConn.Accept()
 
 Each time a dialing peer initiates the new stream handshake, a new stream is created on the listening side.
