@@ -62,8 +62,6 @@ A valid (read: that follows the interface defined) transport, must implement the
 - type: `Transport`
   - `new Transport([options])`
   - `transport.dial(multiaddr, [options, callback])`
-    - event: 'connect'
-    - event: 'error'
   - `transport.createListener([options], handlerFunction)`
   - type: `transport.Listener`
     - event: 'listening'
@@ -96,12 +94,7 @@ This method dials a transport to the Peer listening on `multiaddr`.
 
 `callback` should follow the `function (err, conn)` signature.
 
-`conn` is the same `conn` that gets returned by call, which should follow [`interface-connection`](https://github.com/diasdavid/interface-connection). This `conn` object can emit 3 extra events:
-
-- `connect` - 
-- `timeout` - 
-- `error` - 
-
+`conn` is the same `conn` that gets returned by call, which should follow [`interface-connection`](https://github.com/diasdavid/interface-connection). `err` is an `Error` instance to signal that the dial was unsuccessful, this error can be a 'timeout' or simply 'error'.
 
 ### Create a listener
 
