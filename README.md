@@ -92,9 +92,9 @@ This method dials a transport to the Peer listening on `multiaddr`.
 
 `[options]` is an optional argument, which can be used by some implementations
 
-`callback` should follow the `function (err, conn)` signature.
+`callback` should follow the `function (err)` signature.
 
-`conn` is the same `conn` that gets returned by call, which should follow [`interface-connection`](https://github.com/diasdavid/interface-connection). `err` is an `Error` instance to signal that the dial was unsuccessful, this error can be a 'timeout' or simply 'error'.
+`err` is an `Error` instance to signal that the dial was unsuccessful, this error can be a 'timeout' or simply 'error'.
 
 ### Create a listener
 
