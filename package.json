@@ -18,6 +18,6 @@
   "devDependencies": {},
   "dependencies": {
     "multiaddr": "^2.0.2",
-    "timed-tape": "^0.1.0"
+    "timed-tape": "^0.1.1"
   }
 }
