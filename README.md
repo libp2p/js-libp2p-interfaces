@@ -32,21 +32,29 @@ Include this badge in your readme if you make a module that is compatible with t
 
 ## Node.js
 
-```
-var tape = require('tape')
-var tests = require('interface-transport/tests')
-var YourTransportHandler = require('../src')
+```js
+/* eslint-env mocha */
+'use strict'
 
-var common = {
-  setup: function (t, cb) {
-    cb(null, YourTransportHandler)
-  },
-  teardown: function (t, cb) {
-    cb()
-  }
-}
+const tests = require('interface-transport')
+const multiaddr = require('multiaddr')
+const YourTransport = require('../src')
 
-tests(tape, common)
+describe('compliance', () => {
+  tests({
+    setup (cb) {
+      let t = new YourTransport()
+      const addrs = [
+        multiaddr('valid-multiaddr-for-your-transport'),
+        multiaddr('valid-multiaddr2-for-your-transport')
+      ]
+      cb(null, t, addrs)
+    },
+    teardown (cb) {
+      cb()
+    }
+  })
+})
 ```
 
 ## Go

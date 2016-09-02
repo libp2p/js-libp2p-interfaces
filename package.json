@@ -6,6 +6,21 @@
     "type": "git",
     "url": "https://github.com/diasdavid/interface-transport.git"
   },
+  "main": "src/index.js",
+  "jsnext:main": "src/index.js",
+  "scripts": {
+    "lint": "aegir-lint",
+    "build": "aegir-build",
+    "release": "aegir-release",
+    "release-minor": "aegir-release --type minor",
+    "release-major": "aegir-release --type major",
+    "coverage": "exit(0)",
+    "coverage-publish": "exit(0)"
+  },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "keywords": [
     "IPFS"
   ],
@@ -15,9 +30,13 @@
     "url": "https://github.com/diasdavid/interface-transport/issues"
   },
   "homepage": "https://github.com/diasdavid/interface-transport",
-  "devDependencies": {},
+  "devDependencies": {
+    "aegir": "^6.0.1"
+  },
   "dependencies": {
+    "chai": "^3.5.0",
     "multiaddr": "^2.0.2",
-    "timed-tape": "^0.1.1"
+    "pull-goodbye": "0.0.1",
+    "pull-stream": "^3.4.4"
   }
 }
