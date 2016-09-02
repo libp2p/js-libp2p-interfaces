@@ -27,6 +27,6 @@
   "homepage": "https://github.com/diasdavid/interface-stream-muxer",
   "dependencies": {
     "stream-pair": "^1.0.3",
-    "timed-tape": "^0.1.0"
+    "timed-tape": "^0.1.1"
   }
 }
