@@ -31,7 +31,7 @@
   "homepage": "https://github.com/diasdavid/interface-connection",
   "dependencies": {
     "duplexify": "diasdavid/duplexify#a22bcdf",
-    "timed-tape": "^0.1.0"
+    "timed-tape": "^0.1.1"
   },
   "devDependencies": {
     "aegir": "^6.0.1"
