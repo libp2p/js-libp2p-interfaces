@@ -2,7 +2,7 @@
   "name": "interface-connection",
   "version": "0.2.0",
   "description": "A test suite and interface you can use to implement a connection interface.",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "jsnext:main": "src/index.js",
   "scripts": {
     "lint": "aegir-lint",
