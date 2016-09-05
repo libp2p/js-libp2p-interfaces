@@ -64,14 +64,6 @@ A valid (read: that follows this abstraction) connection, must implement the fol
   - `conn.getObservedAddrs(callback)`
   - `conn.getPeerInfo(callback)`
   - `conn.setPeerInfo(peerInfo)`
-  - `conn.destroy`
-  - `conn.write`
-  - `conn.read`
-  - `conn.pipe`
-  - `conn.end`
-  - `conn.pause`
-  - `conn.resume`
-  - `conn.destroy`
   - `...`
 
 ### Get the Observed Addresses of the peer in the other end

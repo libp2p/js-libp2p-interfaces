@@ -1,56 +1,60 @@
 'use strict'
 
-const util = require('util')
-const Duplexify = require('duplexify')
+const defer = require('pull-defer/duplex')
 
-module.exports = Connection
+module.exports = class Connection {
+  constructor (conn, info) {
+    this.peerInfo = null
+    this.conn = defer()
 
-util.inherits(Connection, Duplexify)
-
-function Connection (conn) {
-  if (!(this instanceof Connection)) {
-    return new Connection(conn)
+    if (conn) {
+      this.setInnerConn(conn, info)
+    } else if (info) {
+      this.info = info
+    }
   }
 
-  Duplexify.call(this)
+  get source () {
+    return this.conn.source
+  }
 
-  let peerInfo
+  get sink () {
+    return this.conn.sink
+  }
 
-  this.getPeerInfo = (callback) => {
-    if (conn && conn.getPeerInfo) {
-      return conn.getPeerInfo(callback)
+  getPeerInfo (callback) {
+    if (this.info && this.info.getPeerInfo) {
+      return this.info.getPeerInfo(callback)
     }
 
-    if (!peerInfo) {
+    if (!this.peerInfo) {
       return callback(new Error('Peer Info not set yet'))
     }
 
-    callback(null, peerInfo)
+    callback(null, this.peerInfo)
   }
 
-  this.setPeerInfo = (_peerInfo) => {
-    if (conn && conn.setPeerInfo) {
-      return conn.setPeerInfo(_peerInfo)
+  setPeerInfo (peerInfo) {
+    if (this.info && this.info.setPeerInfo) {
+      return this.info.setPeerInfo(peerInfo)
     }
-    peerInfo = _peerInfo
+
+    this.peerInfo = peerInfo
   }
 
-  this.getObservedAddrs = (callback) => {
-    if (conn && conn.getObservedAddrs) {
-      return conn.getObservedAddrs(callback)
+  getObservedAddrs (callback) {
+    if (this.info && this.info.getObservedAddrs) {
+      return this.info.getObservedAddrs(callback)
     }
     callback(null, [])
   }
 
-  this.setInnerConn = (_conn) => {
-    conn = _conn
-    this.setReadable(conn)
-    this.setWritable(conn)
-  }
-
-  // .destroy is implemented by Duplexify
-
-  if (conn) {
-    this.setInnerConn(conn)
+  setInnerConn (conn, info) {
+    this.conn.resolve(conn)
+    if (info) {
+      this.info = info
+    } else {
+      this.info = conn
+    }
   }
 }
