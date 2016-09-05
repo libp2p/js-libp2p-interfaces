@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/diasdavid/interface-connection",
   "dependencies": {
-    "timed-tape": "^0.1.1"
-    "pull-defer": "^0.2.2",
+    "timed-tape": "^0.1.1",
+    "pull-defer": "^0.2.2"
   },
   "devDependencies": {
     "aegir": "^6.0.1"
