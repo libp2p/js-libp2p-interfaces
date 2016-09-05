@@ -39,5 +39,11 @@
     "multiaddr": "^2.0.2",
     "pull-goodbye": "0.0.1",
     "pull-stream": "^3.4.4"
-  }
+  },
+  "contributors": [
+    "David Dias <daviddias.p@gmail.com>",
+    "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
+    "Richard Littauer <richard.littauer@gmail.com>",
+    "greenkeeperio-bot <support@greenkeeper.io>"
+  ]
 }
