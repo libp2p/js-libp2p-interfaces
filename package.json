@@ -10,6 +10,7 @@
   "jsnext:main": "src/index.js",
   "scripts": {
     "lint": "aegir-lint",
+    "test": "aegir-test",
     "build": "aegir-build",
     "release": "aegir-release",
     "release-minor": "aegir-release --type minor",
