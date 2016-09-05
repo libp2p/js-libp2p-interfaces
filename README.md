@@ -32,21 +32,29 @@ Include this badge in your readme if you make a module that is compatible with t
 
 ## Node.js
 
-```
-var tape = require('tape')
-var tests = require('interface-transport/tests')
-var YourTransportHandler = require('../src')
+```js
+/* eslint-env mocha */
+'use strict'
 
-var common = {
-  setup: function (t, cb) {
-    cb(null, YourTransportHandler)
-  },
-  teardown: function (t, cb) {
-    cb()
-  }
-}
+const tests = require('interface-transport')
+const multiaddr = require('multiaddr')
+const YourTransport = require('../src')
 
-tests(tape, common)
+describe('compliance', () => {
+  tests({
+    setup (cb) {
+      let t = new YourTransport()
+      const addrs = [
+        multiaddr('valid-multiaddr-for-your-transport'),
+        multiaddr('valid-multiaddr2-for-your-transport')
+      ]
+      cb(null, t, addrs)
+    },
+    teardown (cb) {
+      cb()
+    }
+  })
+})
 ```
 
 ## Go
@@ -62,8 +70,6 @@ A valid (read: that follows the interface defined) transport, must implement the
 - type: `Transport`
   - `new Transport([options])`
   - `transport.dial(multiaddr, [options, callback])`
-    - event: 'connect'
-    - event: 'error'
   - `transport.createListener([options], handlerFunction)`
   - type: `transport.Listener`
     - event: 'listening'
@@ -94,14 +100,9 @@ This method dials a transport to the Peer listening on `multiaddr`.
 
 `[options]` is an optional argument, which can be used by some implementations
 
-`callback` should follow the `function (err, conn)` signature.
+`callback` should follow the `function (err)` signature.
 
-`conn` is the same `conn` that gets returned by call, which should follow [`interface-connection`](https://github.com/diasdavid/interface-connection). This `conn` object can emit 3 extra events:
-
-- `connect` - 
-- `timeout` - 
-- `error` - 
-
+`err` is an `Error` instance to signal that the dial was unsuccessful, this error can be a 'timeout' or simply 'error'.
 
 ### Create a listener
 
