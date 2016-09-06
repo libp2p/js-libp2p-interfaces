@@ -2,7 +2,7 @@
   "name": "interface-stream-muxer",
   "version": "0.3.1",
   "description": "A test suite and interface you can use to implement a stream muxer.",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "jsnext:main": "src/index.js",
   "scripts": {
     "test": "exit(0)",
