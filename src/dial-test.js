@@ -4,6 +4,7 @@
 const expect = require('chai').expect
 const pull = require('pull-stream')
 const goodbye = require('pull-goodbye')
+const serializer = require('pull-serializer')
 
 module.exports = (common) => {
   describe('dial', () => {
@@ -26,16 +27,7 @@ module.exports = (common) => {
 
     beforeEach((done) => {
       listener = transport.createListener((conn) => {
-        pull(
-          conn,
-          pull.map((x) => {
-            if (x.toString() !== 'GOODBYE') {
-              return new Buffer(x.toString() + '!')
-            }
-            return x
-          }),
-          conn
-        )
+        pull(conn, conn)
       })
       listener.listen(addrs[0], done)
     })
@@ -45,20 +37,24 @@ module.exports = (common) => {
     })
 
     it('simple', (done) => {
-      const s = goodbye({
-        source: pull.values([new Buffer('hey')]),
+      const s = serializer(goodbye({
+        source: pull.values(['hey']),
         sink: pull.collect((err, values) => {
           expect(err).to.not.exist
           expect(
             values
           ).to.be.eql(
-            [new Buffer('hey!')]
+            ['hey']
           )
           done()
         })
-      })
+      }))
 
-      pull(s, transport.dial(addrs[0]), s)
+      pull(
+        s,
+        transport.dial(addrs[0]),
+        s
+      )
     })
 
     it('to non existent listener', (done) => {
