@@ -17,8 +17,8 @@ module.exports = (muxer, nStreams, nMsg, done, limit) => {
 
   const msg = 'simple msg'
 
-  const listener = muxer.listen(listenerSocket)
-  const dialer = muxer.dial(dialerSocket)
+  const listener = muxer.listener(listenerSocket)
+  const dialer = muxer.dialer(dialerSocket)
 
   listener.on('stream', (stream) => {
     expect(stream).to.exist

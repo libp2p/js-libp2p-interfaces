@@ -31,8 +31,8 @@ module.exports = (common) => {
 
     it('Open a stream from the dialer', (done) => {
       const p = pair()
-      const dialer = muxer.dial(p[0])
-      const listener = muxer.listen(p[1])
+      const dialer = muxer.dialer(p[0])
+      const listener = muxer.listener(p[1])
 
       expect(4).checks(done)
 
@@ -50,8 +50,8 @@ module.exports = (common) => {
 
     it('Open a stream from the listener', (done) => {
       const p = pair()
-      const dialer = muxer.dial(p[0])
-      const listener = muxer.listen(p[1])
+      const dialer = muxer.dialer(p[0])
+      const listener = muxer.listener(p[1])
 
       expect(4).check(done)
 
@@ -69,8 +69,8 @@ module.exports = (common) => {
 
     it('Open a stream on both sides', (done) => {
       const p = pair()
-      const dialer = muxer.dial(p[0])
-      const listener = muxer.listen(p[1])
+      const dialer = muxer.dialer(p[0])
+      const listener = muxer.listener(p[1])
 
       expect(8).check(done)
 
@@ -98,8 +98,8 @@ module.exports = (common) => {
 
     it('Open a stream on one side, write, open a stream in the other side', (done) => {
       const p = pair()
-      const dialer = muxer.dial(p[0])
-      const listener = muxer.listen(p[1])
+      const dialer = muxer.dialer(p[0])
+      const listener = muxer.listener(p[1])
 
       expect(6).check(done)
 
