@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint max-nested-callbacks: ["error", 8] */
 'use strict'
 
 const chai = require('chai')
@@ -11,7 +12,7 @@ const series = require('run-series')
 const Tcp = require('libp2p-tcp')
 const multiaddr = require('multiaddr')
 
-const mh = multiaddr('/ip4/127.0.0.1/tcp/9090')
+const mh = multiaddr('/ip4/127.0.0.1/tcp/10000')
 
 function closeAndWait (stream) {
   pull(
@@ -24,7 +25,7 @@ function closeAndWait (stream) {
 }
 
 module.exports = (common) => {
-  describe.only('close', () => {
+  describe('close', () => {
     let muxer
 
     beforeEach((done) => {
@@ -40,14 +41,14 @@ module.exports = (common) => {
 
       const tcp = new Tcp()
       const tcpListener = tcp.createListener((socket) => {
-        const listener = muxer.listen(socket)
+        const listener = muxer.listener(socket)
         listener.on('stream', (stream) => {
           pull(stream, stream)
         })
       })
 
       tcpListener.listen(mh, () => {
-        const dialer = muxer.dial(tcp.dial(mh, () => {
+        const dialer = muxer.dialer(tcp.dial(mh, () => {
           tcpListener.close()
         }))
 
@@ -73,8 +74,8 @@ module.exports = (common) => {
 
     it('closing one of the muxed streams doesn\'t close others', (done) => {
       const p = pair()
-      const dialer = muxer.dial(p[0])
-      const listener = muxer.listen(p[1])
+      const dialer = muxer.dialer(p[0])
+      const listener = muxer.listener(p[1])
 
       expect(6).checks(done)
 

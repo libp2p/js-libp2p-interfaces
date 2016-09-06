@@ -83,8 +83,6 @@ If `err` is passed, no operation should be made in `stream`.
 
 `stream` interface our established Stream with the other endpoint, it must implement the [Duplex pull-stream interface](https://pull-stream.github.io) in JavaScript or the [ReadWriteCloser](http://golang.org/pkg/io/#ReadWriteCloser) in Go.
 
-In the JavaScript case, if no callback is passed, stream will emit an 'ready' event when it is prepared or a 'error' event if it fails to establish the connection, until then, it will buffer the 'write' calls.
-
 ### Listen(wait/accept) a new incoming stream
 
 - `JavaScript` muxedConn.on('stream', function (stream) {})
