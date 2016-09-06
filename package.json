@@ -2,7 +2,7 @@
   "name": "interface-stream-muxer",
   "version": "0.3.1",
   "description": "A test suite and interface you can use to implement a stream muxer.",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "jsnext:main": "src/index.js",
   "scripts": {
     "test": "exit(0)",
@@ -34,9 +34,13 @@
     "async": "^2.0.1",
     "chai": "^3.5.0",
     "chai-checkmark": "^1.0.1",
+    "libp2p-tcp": "^0.8.1",
+    "multiaddr": "^2.0.2",
     "pull-generate": "^2.2.0",
     "pull-pair": "^1.1.0",
-    "pull-stream": "^3.4.3"
+    "pull-stream": "^3.4.3",
+    "run-parallel": "^1.1.6",
+    "run-series": "^1.1.4"
   },
   "devDependencies": {
     "aegir": "^6.0.1"
