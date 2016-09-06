@@ -2,31 +2,47 @@
   "name": "interface-stream-muxer",
   "version": "0.3.1",
   "description": "A test suite and interface you can use to implement a stream muxer.",
-  "main": "tests/index.js",
-  "directories": {
-    "test": "tests"
-  },
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "exit(0)",
+    "build": "aegir-build --env node",
+    "lint": "aegir-lint",
+    "release": "aegir-release --env node",
+    "release-minor": "aegir-release --env node --type minor",
+    "release-major": "aegir-release --env node --type major",
+    "coverage": "exit(0)",
+    "coverage-publish": "exit(0)"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/diasdavid/interface-stream-muxer.git"
+    "url": "https://github.com/libp2p/interface-stream-muxer.git"
   },
   "keywords": [
     "Streams",
     "Muxer",
-    "interface",
     "Interface"
   ],
   "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/diasdavid/interface-stream-muxer/issues"
+    "url": "https://github.com/libp2p/interface-stream-muxer/issues"
   },
-  "homepage": "https://github.com/diasdavid/interface-stream-muxer",
+  "homepage": "https://github.com/libp2p/interface-stream-muxer",
   "dependencies": {
-    "stream-pair": "^1.0.3",
-    "timed-tape": "^0.1.1"
+    "async": "^2.0.1",
+    "chai": "^3.5.0",
+    "chai-checkmark": "^1.0.1",
+    "detect-node": "^2.0.3",
+    "libp2p-tcp": "^0.8.1",
+    "multiaddr": "^2.0.2",
+    "pull-generate": "^2.2.0",
+    "pull-pair": "^1.1.0",
+    "pull-stream": "^3.4.3",
+    "run-parallel": "^1.1.6",
+    "run-series": "^1.1.4"
+  },
+  "devDependencies": {
+    "aegir": "^8.0.0"
   }
 }
