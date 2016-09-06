@@ -44,5 +44,12 @@
   },
   "devDependencies": {
     "aegir": "^8.0.0"
-  }
+  },
+  "contributors": [
+    "David Dias <daviddias.p@gmail.com>",
+    "David Dias <mail@daviddias.me>",
+    "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
+    "Jeffrey Hulten <jhulten@gmail.com>",
+    "greenkeeperio-bot <support@greenkeeper.io>"
+  ]
 }
