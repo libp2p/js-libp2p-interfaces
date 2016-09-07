@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "chai": "^3.5.0",
-    "multiaddr": "^2.0.2",
+    "multiaddr": "^2.0.3",
     "pull-goodbye": "0.0.1",
     "pull-serializer": "^0.3.2",
     "pull-stream": "^3.4.4"
