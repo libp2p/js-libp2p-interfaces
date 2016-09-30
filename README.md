@@ -5,7 +5,7 @@ interface-record-store
 
 > A test suite and interface you can use to implement a a IPRS compliant(https://github.com/ipfs/specs/tree/master/records) Record Store. 
 
-The primary goal of this module is to enable developers to pick and swap their Record Store module as they see fit for their libp2p installation, without having to go through shims or compatibility issues. This module and test suite were heavily inspired by [`abstract-blob-store`](https://github.com/maxogden/abstract-blob-store) and [`interface-stream-muxer`](https://github.com/diasdavid/interface-stream-muxer).
+The primary goal of this module is to enable developers to pick and swap their Record Store module as they see fit for their libp2p installation, without having to go through shims or compatibility issues. This module and test suite were heavily inspired by [`abstract-blob-store`](https://github.com/maxogden/abstract-blob-store) and [`interface-stream-muxer`](https://github.com/libp2p/interface-stream-muxer).
 
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
@@ -13,8 +13,8 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 # Modules that implement the interface
 
-- [ipfs-distributed-record-store](https://github.com/diasdavid/node-ipfs-distributed-record-store)
-- [ipfs-kad-record-store](https://github.com/diasdavid/node-ipfs-kad-record-store)
+- [ipfs-distributed-record-store](https://github.com/libp2p/js-libp2p-distributed-record-store)
+- [ipfs-kad-record-store](https://github.com/libp2p/js-libp2p-kad-record-store)
 
 # Badge
 
