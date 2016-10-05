@@ -13,7 +13,7 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 # Modules that implement the interface
 
-- https://github.com/diasdavid/node-ipfs-kad-router
+- https://github.com/libp2p/js-libp2p-kad-routing
 
 # Badge
 
