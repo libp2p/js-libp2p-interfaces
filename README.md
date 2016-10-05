@@ -14,14 +14,14 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 # Modules that implement the interface
 
-- [js-libp2p-tcp](https://github.com/diasdavid/node-libp2p-tcp)
-- [js-libp2p-webrtc-star](https://github.com/diasdavid/js-libp2p-webrtc-star)
-- [js-libp2p-websockets](https://github.com/diasdavid/js-libp2p-websockets)
-- [js-libp2p-utp](https://github.com/diasdavid/js-libp2p-utp)
+- [js-libp2p-tcp](https://github.com/libp2p/js-libp2p-tcp)
+- [js-libp2p-webrtc-star](https://github.com/libp2p/js-libp2p-webrtc-star)
+- [js-libp2p-websockets](https://github.com/libp2p/js-libp2p-websockets)
+- [js-libp2p-utp](https://github.com/libp2p/js-libp2p-utp)
 - [webrtc-explorer](https://github.com/diasdavid/webrtc-explorer)
-- [js-libp2p-spdy](https://github.com/diasdavid/js-libp2p-spdy)
-- [js-libp2p-multiplex](https://github.com/diasdavid/js-libp2p-multiplex)
-- [js-libp2p-secio](https://github.com/ipfs/js-libp2p-secio)
+- [js-libp2p-spdy](https://github.com/libp2p/js-libp2p-spdy)
+- [js-libp2p-multiplex](https://github.com/libp2p/js-libp2p-multiplex)
+- [js-libp2p-secio](https://github.com/libp2p/js-libp2p-secio)
 
 # Badge
 
@@ -72,7 +72,7 @@ A valid (read: that follows this abstraction) connection, must implement the fol
 
 This method retrieves the observed addresses we get from the underlying transport, if any.
 
-`callback` should follow the follow `function (err, multiaddrs) {}`, where `multiaddrs` is an array of [multiaddr](https://github.com/jbenet/multiaddr).
+`callback` should follow the follow `function (err, multiaddrs) {}`, where `multiaddrs` is an array of [multiaddr](https://github.com/multiformats/multiaddr).
 
 ### Get the PeerInfo
 
@@ -80,7 +80,7 @@ This method retrieves the observed addresses we get from the underlying transpor
 
 This method retrieves the a Peer Info object that contains information about the peer that this conn connects to.
 
-`callback` should follow the `function (err, peerInfo) {}` signature, where peerInfo is a object of type [Peer Info](https://github.com/diasdavid/js-peer-info)
+`callback` should follow the `function (err, peerInfo) {}` signature, where peerInfo is a object of type [Peer Info](https://github.com/libp2p/js-peer-info)
 
 ### Set the PeerInfo
 
