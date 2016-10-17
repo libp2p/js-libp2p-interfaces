@@ -16,10 +16,10 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 # Modules that implement the interface
 
-- [js-libp2p-tcp](https://github.com/diasdavid/node-libp2p-tcp)
-- [js-libp2p-webrtc-star](https://github.com/diasdavid/js-libp2p-webrtc-star)
-- [js-libp2p-websockets](https://github.com/diasdavid/js-libp2p-websockets)
-- [js-libp2p-utp](https://github.com/diasdavid/js-libp2p-utp)
+- [js-libp2p-tcp](https://github.com/libp2p/js-libp2p-tcp)
+- [js-libp2p-webrtc-star](https://github.com/libp2p/js-libp2p-webrtc-star)
+- [js-libp2p-websockets](https://github.com/libp2p/js-libp2p-websockets)
+- [js-libp2p-utp](https://github.com/libp2p/js-libp2p-utp)
 - [webrtc-explorer](https://github.com/diasdavid/webrtc-explorer)
 
 # Badge
@@ -94,9 +94,9 @@ Creates a new Transport instance. `options` is a optional JavaScript object, mig
 
 This method dials a transport to the Peer listening on `multiaddr`.
 
-`multiaddr` must be of the type [`multiaddr`](http://npmjs.org/multiaddr).
+`multiaddr` must be of the type [`multiaddr`](https://www.npmjs.com/multiaddr).
 
-`stream` must implements the [interface-connection](https://github.com/diasdavid/interface-connection) interface.
+`stream` must implements the [interface-connection](https://github.com/libp2p/interface-connection) interface.
 
 `[options]` is an optional argument, which can be used by some implementations
 
