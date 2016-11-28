@@ -34,7 +34,7 @@
     "chai-checkmark": "^1.0.1",
     "detect-node": "^2.0.3",
     "libp2p-tcp": "^0.9.1",
-    "multiaddr": "^2.0.3",
+    "multiaddr": "^2.1.0",
     "pull-generate": "^2.2.0",
     "pull-pair": "^1.1.0",
     "pull-stream": "^3.5.0",
