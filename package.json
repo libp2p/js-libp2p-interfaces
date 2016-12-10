@@ -33,7 +33,7 @@
     "pull-defer": "^0.2.2"
   },
   "devDependencies": {
-    "aegir": "^9.0.0"
+    "aegir": "^9.2.1"
   },
   "engines": {
     "node": ">=4.0.0"
