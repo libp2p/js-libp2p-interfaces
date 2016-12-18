@@ -17,7 +17,7 @@
   "homepage": "https://github.com/diasdavid/interface-peer-routing",
   "devDependencies": {},
   "dependencies": {
-    "peer-id": "^0.8.0",
+    "peer-id": "^0.8.1",
     "timed-tape": "^0.1.1"
   }
 }
