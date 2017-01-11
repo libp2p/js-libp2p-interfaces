@@ -107,11 +107,6 @@ module.exports = (common) => {
         expect(err).to.not.exist.mark()
       })
 
-      pull(
-        pull.values(['hey']),
-        dialerConn
-      )
-
       listener.on('stream', (stream) => {
         pull(
           stream,
@@ -125,12 +120,13 @@ module.exports = (common) => {
           expect(err).to.not.exist.mark()
         })
 
+        dialer.on('stream', onDialerStream)
+
         pull(
           pull.values(['hello']),
           listenerConn
         )
 
-        dialer.on('stream', onDialerStream)
         function onDialerStream (stream) {
           pull(
             stream,
@@ -141,6 +137,11 @@ module.exports = (common) => {
           )
         }
       })
+
+      pull(
+        pull.values(['hey']),
+        dialerConn
+      )
     })
   })
 }

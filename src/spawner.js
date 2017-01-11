@@ -7,6 +7,7 @@ const pull = require('pull-stream')
 const generate = require('pull-generate')
 const each = require('async/each')
 const eachLimit = require('async/eachLimit')
+const setImmediate = require('async/setImmediate')
 
 module.exports = (muxer, nStreams, nMsg, done, limit) => {
   const p = pair()
@@ -50,7 +51,9 @@ module.exports = (muxer, nStreams, nMsg, done, limit) => {
       check()
       pull(
         generate(0, (s, cb) => {
-          cb(s === nMsg ? true : null, msg, s + 1)
+          setImmediate(() => {
+            cb(s === nMsg ? true : null, msg, s + 1)
+          })
         }),
         stream,
         pull.collect((err, res) => {
