@@ -7,8 +7,8 @@ chai.use(require('chai-checkmark'))
 const expect = chai.expect
 const pair = require('pull-pair/duplex')
 const pull = require('pull-stream')
-const parallel = require('run-parallel')
-const series = require('run-series')
+const parallel = require('async/parallel')
+const series = require('async/series')
 const Tcp = require('libp2p-tcp')
 const multiaddr = require('multiaddr')
 
