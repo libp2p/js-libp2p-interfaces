@@ -18,7 +18,7 @@ function closeAndWait (stream, callback) {
   pull(
     pull.empty(),
     stream,
-    pull.onEnd(() => callback())
+    pull.onEnd(callback)
   )
 }
 
