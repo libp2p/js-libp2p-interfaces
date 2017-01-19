@@ -14,13 +14,11 @@ const multiaddr = require('multiaddr')
 
 const mh = multiaddr('/ip4/127.0.0.1/tcp/10000')
 
-function closeAndWait (stream) {
+function closeAndWait (stream, callback) {
   pull(
     pull.empty(),
     stream,
-    pull.onEnd((err) => {
-      expect(err).to.not.exist.mark()
-    })
+    pull.onEnd(() => callback())
   )
 }
 
@@ -36,38 +34,37 @@ module.exports = (common) => {
       })
     })
 
-    it('closing underlying closes streams (tcp)', (done) => {
+    it('closing underlying socket closes streams (tcp)', (done) => {
       expect(2).checks(done)
 
       const tcp = new Tcp()
-      const tcpListener = tcp.createListener((socket) => {
-        const listener = muxer.listener(socket)
+      const tcpListener = tcp.createListener((conn) => {
+        const listener = muxer.listener(conn)
         listener.on('stream', (stream) => {
           pull(stream, stream)
         })
       })
 
       tcpListener.listen(mh, () => {
-        const dialer = muxer.dialer(tcp.dial(mh, () => {
-          tcpListener.close()
-        }))
+        const dialerConn = tcp.dial(mh, tcpListener.close)
 
-        const s1 = dialer.newStream(() => {
+        const dialerMuxer = muxer.dialer(dialerConn)
+        const s1 = dialerMuxer.newStream(() => {
           pull(
             s1,
             pull.onEnd((err) => {
               expect(err).to.exist.mark()
             })
           )
+        })
 
-          const s2 = dialer.newStream(() => {
-            pull(
-              s2,
-              pull.onEnd((err) => {
-                expect(err).to.exist.mark()
-              })
-            )
-          })
+        const s2 = dialerMuxer.newStream(() => {
+          pull(
+            s2,
+            pull.onEnd((err) => {
+              expect(err).to.exist.mark()
+            })
+          )
         })
       })
     })
@@ -91,8 +88,10 @@ module.exports = (common) => {
       }
 
       conns.forEach((conn, i) => {
-        if (i === 2) {
-          closeAndWait(conn)
+        if (i === 1) {
+          closeAndWait(conn, (err) => {
+            expect(err).to.not.exist.mark()
+          })
         } else {
           pull(
             conn,
