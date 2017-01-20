@@ -3,6 +3,9 @@
   "version": "0.5.3",
   "description": "A test suite and interface you can use to implement a stream muxer.",
   "main": "src/index.js",
+  "browser": {
+    "libp2p-tcp": false
+  },
   "scripts": {
     "test": "exit(0)",
     "build": "aegir-build --env node",
