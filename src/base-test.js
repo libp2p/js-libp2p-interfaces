@@ -116,11 +116,11 @@ module.exports = (common) => {
           })
         )
 
+        dialer.on('stream', onDialerStream)
+
         const listenerConn = listener.newStream((err) => {
           expect(err).to.not.exist.mark()
         })
-
-        dialer.on('stream', onDialerStream)
 
         pull(
           pull.values(['hello']),
