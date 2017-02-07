@@ -43,7 +43,7 @@
     "pull-stream": "^3.5.0"
   },
   "devDependencies": {
-    "aegir": "^9.3.1"
+    "aegir": "^10.0.0"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
