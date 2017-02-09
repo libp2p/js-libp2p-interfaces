@@ -29,11 +29,11 @@
   },
   "homepage": "https://github.com/libp2p/interface-connection",
   "dependencies": {
-    "timed-tape": "^0.1.1",
-    "pull-defer": "^0.2.2"
+    "timed-tape": "~0.1.1",
+    "pull-defer": "~0.2.2"
   },
   "devDependencies": {
-    "aegir": "^9.2.1"
+    "aegir": "^10.0.0"
   },
   "engines": {
     "node": ">=4.0.0"
