@@ -31,7 +31,7 @@
   "dependencies": {
   },
   "devDependencies": {
-    "aegir": "^9.4.0"
+    "aegir": "^10.0.0"
   },
   "engines": {
     "node": ">=4.0.0",
