@@ -28,8 +28,7 @@
     "url": "https://github.com/libp2p/interface-peer-discovery/issues"
   },
   "homepage": "https://github.com/libp2p/interface-peer-discovery",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "aegir": "^10.0.0"
   },
@@ -38,5 +37,6 @@
     "npm": ">=3.0.0"
   },
   "contributors": [
+    "David Dias <daviddias.p@gmail.com>"
   ]
 }
