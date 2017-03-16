@@ -7,7 +7,7 @@
     "lint": "aegir-lint",
     "build": "aegir-build",
     "test": "exit 0",
-    "release": "aegir-release",
+    "release": "aegir-release --node",
     "release-minor": "aegir-release --type minor",
     "release-major": "aegir-release --type major"
   },
@@ -33,7 +33,7 @@
     "pull-defer": "~0.2.2"
   },
   "devDependencies": {
-    "aegir": "^10.0.0"
+    "aegir": "^11.0.0"
   },
   "engines": {
     "node": ">=4.0.0"
