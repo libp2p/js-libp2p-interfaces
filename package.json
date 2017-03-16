@@ -24,7 +24,7 @@
   "dependencies": {
     "ecdsa": "~0.7.0",
     "ipld": "~0.6.0",
-    "multihashing": "~0.2.2",
+    "multihashing": "~0.3.2",
     "timed-tape": "~0.1.1"
   }
 }
