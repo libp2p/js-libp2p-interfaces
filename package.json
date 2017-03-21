@@ -1,6 +1,6 @@
 {
   "name": "interface-transport",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "A test suite and interface you can use to implement a transport.",
   "repository": {
     "type": "git",
