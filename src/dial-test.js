@@ -1,7 +1,10 @@
 /* eslint-env mocha */
 'use strict'
 
-const expect = require('chai').expect
+const chai = require('chai')
+const dirtyChai = require('dirty-chai')
+const expect = chai.expect
+chai.use(dirtyChai)
 const pull = require('pull-stream')
 const goodbye = require('pull-goodbye')
 const serializer = require('pull-serializer')
@@ -40,7 +43,7 @@ module.exports = (common) => {
       const s = serializer(goodbye({
         source: pull.values(['hey']),
         sink: pull.collect((err, values) => {
-          expect(err).to.not.exist
+          expect(err).to.not.exist()
           expect(
             values
           ).to.be.eql(
@@ -61,7 +64,7 @@ module.exports = (common) => {
       pull(
         transport.dial(addrs[1]),
         pull.onEnd((err) => {
-          expect(err).to.exist
+          expect(err).to.exist()
           done()
         })
       )

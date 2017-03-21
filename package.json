@@ -31,11 +31,12 @@
   },
   "homepage": "https://github.com/diasdavid/interface-transport",
   "devDependencies": {
-    "aegir": "^10.0.0"
+    "aegir": "^11.0.0",
+    "dirty-chai": "^1.2.2"
   },
   "dependencies": {
     "chai": "^3.5.0",
-    "multiaddr": "^2.2.1",
+    "multiaddr": "^2.2.2",
     "pull-goodbye": "0.0.1",
     "pull-serializer": "^0.3.2",
     "pull-stream": "^3.5.0"

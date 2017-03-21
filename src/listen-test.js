@@ -2,7 +2,11 @@
 /* eslint-env mocha */
 'use strict'
 
-const expect = require('chai').expect
+const chai = require('chai')
+const dirtyChai = require('dirty-chai')
+const expect = chai.expect
+chai.use(dirtyChai)
+
 const pull = require('pull-stream')
 
 module.exports = (common) => {
@@ -66,7 +70,7 @@ module.exports = (common) => {
         const listener = transport.createListener()
 
         listener.on('connection', (conn) => {
-          expect(conn).to.exist
+          expect(conn).to.exist()
           finish()
         })
 
@@ -89,7 +93,7 @@ module.exports = (common) => {
       it.skip('error', (done) => {
         const listener = transport.createListener()
         listener.on('error', (err) => {
-          expect(err).to.exist
+          expect(err).to.exist()
           listener.close(done)
         })
       })
