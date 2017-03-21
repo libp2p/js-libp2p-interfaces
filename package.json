@@ -1,6 +1,6 @@
 {
   "name": "interface-connection",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A test suite and interface you can use to implement a connection interface.",
   "main": "src/index.js",
   "scripts": {
@@ -36,7 +36,8 @@
     "aegir": "^11.0.0"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=4.0.0",
+    "npm": ">=3.0.0"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
