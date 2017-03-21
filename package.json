@@ -4,16 +4,16 @@
   "description": "A test suite and interface you can use to implement a transport.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diasdavid/interface-transport.git"
+    "url": "https://github.com/libp2p/interface-transport.git"
   },
   "main": "src/index.js",
   "scripts": {
     "lint": "aegir-lint",
     "test": "aegir-test",
     "build": "aegir-build",
-    "release": "aegir-release",
-    "release-minor": "aegir-release --type minor",
-    "release-major": "aegir-release --type major",
+    "release": "aegir-release --env node",
+    "release-minor": "aegir-release --type minor --env node",
+    "release-major": "aegir-release --type major --env node",
     "coverage": "exit(0)",
     "coverage-publish": "exit(0)"
   },
@@ -27,9 +27,9 @@
   "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/diasdavid/interface-transport/issues"
+    "url": "https://github.com/libp2p/interface-transport/issues"
   },
-  "homepage": "https://github.com/diasdavid/interface-transport",
+  "homepage": "https://github.com/libp2p/interface-transport",
   "devDependencies": {
     "aegir": "^11.0.0",
     "dirty-chai": "^1.2.2"
