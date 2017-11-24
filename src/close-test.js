@@ -119,7 +119,6 @@ module.exports = (common) => {
       series(count.map((i) => (cb) => {
         parallel([
           (cb) => listener.once('stream', (stream) => {
-            console.log('pipe')
             expect(stream).to.exist.mark()
             pull(stream, stream)
             cb()
@@ -137,23 +136,12 @@ module.exports = (common) => {
                 cb(null, val)
               }, i * 10)
             }),
-            pull.through((val) => console.log('send', val)),
             conn,
-            pull.through((val) => console.log('recv', val)),
             pull.collect((err, data) => {
-              console.log('end', i)
               expect(err).to.not.exist.mark()
               expect(data).to.be.eql([Buffer('hello')]).mark()
             })
           )
-        })
-
-        listener.on('close', () => {
-          console.log('closed listener')
-        })
-
-        dialer.end(() => {
-          console.log('CLOSED')
         })
       })
     })
