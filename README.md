@@ -18,6 +18,7 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 - [js-libp2p-tcp](https://github.com/libp2p/js-libp2p-tcp)
 - [js-libp2p-webrtc-star](https://github.com/libp2p/js-libp2p-webrtc-star)
+- [js-libp2p-webrtc-direct](https://github.com/libp2p/js-libp2p-webrtc-direct)
 - [js-libp2p-websocket-star](https://github.com/libp2p/js-libp2p-websocket-star)
 - [js-libp2p-websockets](https://github.com/libp2p/js-libp2p-websockets)
 - [js-libp2p-utp](https://github.com/libp2p/js-libp2p-utp)
