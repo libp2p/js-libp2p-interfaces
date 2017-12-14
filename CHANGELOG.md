@@ -1,3 +1,8 @@
+<a name="0.5.9"></a>
+## [0.5.9](https://github.com/libp2p/interface-stream-muxer/compare/v0.5.8...v0.5.9) (2017-12-14)
+
+
+
 <a name="0.5.8"></a>
 ## [0.5.8](https://github.com/libp2p/interface-stream-muxer/compare/v0.5.7...v0.5.8) (2017-12-14)
 
