@@ -60,7 +60,7 @@ module.exports = (common) => {
     })
 
     it('1000 streams with 100 msg', function (done) {
-      this.timeout(10 * 1000)
+      this.timeout(80 * 1000)
       spawn(muxer, 1000, 100, done)
     })
   })
