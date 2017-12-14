@@ -130,7 +130,7 @@ module.exports = (common) => {
 
         conns.forEach((conn, i) => {
           pull(
-            pull.values([Buffer('hello')]),
+            pull.values([Buffer.from('hello')]),
             pull.asyncMap((val, cb) => {
               setTimeout(() => {
                 cb(null, val)
@@ -139,7 +139,7 @@ module.exports = (common) => {
             conn,
             pull.collect((err, data) => {
               expect(err).to.not.exist.mark()
-              expect(data).to.be.eql([Buffer('hello')]).mark()
+              expect(data).to.be.eql([Buffer.from('hello')]).mark()
             })
           )
         })

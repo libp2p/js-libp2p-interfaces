@@ -112,7 +112,7 @@ module.exports = (common) => {
           stream,
           pull.collect((err, chunks) => {
             expect(err).to.not.exist.mark()
-            expect(chunks).to.be.eql([Buffer('hey')]).mark()
+            expect(chunks).to.be.eql([Buffer.from('hey')]).mark()
           })
         )
 
@@ -132,7 +132,7 @@ module.exports = (common) => {
             stream,
             pull.collect((err, chunks) => {
               expect(err).to.not.exist.mark()
-              expect(chunks).to.be.eql([Buffer('hello')]).mark()
+              expect(chunks).to.be.eql([Buffer.from('hello')]).mark()
             })
           )
         }
