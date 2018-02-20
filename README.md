@@ -13,13 +13,15 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 # Modules that implement the interface
 
-- https://github.com/libp2p/js-libp2p-kad-routing
+- [JavaScript libp2p-kad-dht](https://github.com/libp2p/js-libp2p-kad-dht)
+- [JavaScript libp2p-delegated-peer-routing](https://github.com/libp2p/js-libp2p-delegated-peer-routing)
+- [JavaScript libp2p-kad-routing](https://github.com/libp2p/js-libp2p-kad-routing)
 
 # Badge
 
 Include this badge in your readme if you make a module that is compatible with the interface-record-store API. You can validate this by running the tests.
 
-![](https://raw.githubusercontent.com/diasdavid/interface-peer-routing/master/img/badge.png)
+![](https://raw.githubusercontent.com/libp2p/interface-peer-routing/master/img/badge.png)
 
 # How to use the battery of tests
 
@@ -44,13 +46,13 @@ tests(tape, common)
 
 ## Go
 
-> WIP
+> WIP - The go-libp2p implementation does not have a test suite to be used, yet.
 
 # API
 
-A valid (read: that follows this abstraction) stream muxer, must implement the following API.
+A valid (read: that follows this abstraction) Peer Routing module must implement the following API.
 
-### Find peers 'responsible' or 'closest' to a given key
+### `.findPeers` - Find peers 'responsible' or 'closest' to a given key
 
 - `Node.js` peerRouting.findPeers(key, function (err, peersPriorityQueue) {})
 
