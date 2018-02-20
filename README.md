@@ -4,13 +4,11 @@ interface-peer-discovery
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
-[![Travis CI](https://travis-ci.org/ipfs/interface-peer-discovery.svg?branch=master)](https://travis-ci.org/ipfs/interface-peer-discovery)
-[![Dependency Status](https://david-dm.org/ipfs/interface-peer-discovery.svg?style=flat-square)](https://david-dm.org/ipfs/interface-peer-discovery)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
 
-> A test suite and interface you can use to implement a peer discovery mechanism.
+> A test suite and interface you can use to implement a Peer Discovery module for libp2p.
 
-The primary goal of this module is to enable developers to pick and swap their stream muxing module as they see fit for their application, without having to go through shims or compatibility issues. This module and test suite was heavily inspired by [abstract-blob-store](https://github.com/maxogden/abstract-blob-store).
+The primary goal of this module is to enable developers to pick and/or swap their Peer Discovery modules as they see fit for their application, without having to go through shims or compatibility issues. This module and test suite was heavily inspired by [abstract-blob-store](https://github.com/maxogden/abstract-blob-store).
 
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
@@ -20,6 +18,9 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 - [JavaScript libp2p-mdns](https://github.com/libp2p/js-libp2p-mdns)
 - [JavaScript libp2p-railing](https://github.com/libp2p/js-libp2p-railing)
+- [JavaScript libp2p-kad-dht](https://github.com/libp2p/js-libp2p-kad-dht)
+- [JavaScript libp2p-webrtc-star](https://github.com/libp2p/js-libp2p-webrtc-star)
+- [JavaScript libp2p-websocket-star](https://github.com/libp2p/js-libp2p-websocket-star)
 
 Send a PR to add a new one if you happen to find or write one.
 
@@ -53,11 +54,11 @@ test(common)
 
 ### Go
 
-> WIP
+> WIP - go-libp2p does not have a test suite available for Peer Discovery yet.
 
 ## API
 
-A valid (read: that follows this abstraction) stream muxer, must implement the following API.
+A valid (read: that follows this abstraction) Peer Discovery module must implement the following API:
 
 ### `start` the service
 
