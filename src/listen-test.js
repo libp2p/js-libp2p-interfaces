@@ -53,7 +53,7 @@ module.exports = (common) => {
         )
 
         pull(
-          pull.values([Buffer('Some data that is never handled')]),
+          pull.values([Buffer.from('Some data that is never handled')]),
           socket1,
           pull.onEnd(() => {
             finish()

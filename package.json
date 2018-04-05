@@ -8,12 +8,12 @@
   },
   "main": "src/index.js",
   "scripts": {
-    "lint": "aegir-lint",
-    "test": "aegir-test",
+    "lint": "aegir lint",
+    "test": "aegir test",
     "build": "aegir-build",
-    "release": "aegir-release --env node",
-    "release-minor": "aegir-release --type minor --env node",
-    "release-major": "aegir-release --type major --env node",
+    "release": "aegir release -t node",
+    "release-minor": "aegir release --type minor -t node",
+    "release-major": "aegir release --type major -t node",
     "coverage": "exit(0)",
     "coverage-publish": "exit(0)"
   },
@@ -31,15 +31,15 @@
   },
   "homepage": "https://github.com/libp2p/interface-transport",
   "devDependencies": {
-    "aegir": "^11.0.0",
-    "dirty-chai": "^1.2.2"
+    "aegir": "^13.0.6",
+    "dirty-chai": "^2.0.1"
   },
   "dependencies": {
-    "chai": "^3.5.0",
-    "multiaddr": "^2.2.2",
-    "pull-goodbye": "0.0.1",
+    "chai": "^4.1.2",
+    "multiaddr": "^4.0.0",
+    "pull-goodbye": "0.0.2",
     "pull-serializer": "^0.3.2",
-    "pull-stream": "^3.5.0"
+    "pull-stream": "^3.6.7"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
