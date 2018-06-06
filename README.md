@@ -3,7 +3,7 @@ interface-record-store
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io) [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 
-> A test suite and interface you can use to implement a a [IPRS compliant](https://github.com/ipfs/specs/tree/master/iprs) Record Store. 
+> A test suite and interface you can use to implement a a [IPRS compliant](/IPRS.md) Record Store. 
 
 The primary goal of this module is to enable developers to pick and swap their Record Store module as they see fit for their libp2p installation, without having to go through shims or compatibility issues. This module and test suite were heavily inspired by [`abstract-blob-store`](https://github.com/maxogden/abstract-blob-store) and [`interface-stream-muxer`](https://github.com/libp2p/interface-stream-muxer).
 
