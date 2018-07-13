@@ -18,6 +18,7 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 ## Modules that implement the interface
 
 - [JavaScript libp2p-spdy](https://github.com/libp2p/js-libp2p-spdy)
+- [JavaScript libp2p-mplex](https://github.com/libp2p/js-libp2p-mplex)
 - [Go spdy, muxado, yamux and multiplex](https://github.com/jbenet/go-stream-muxer)
 
 Send a PR to add a new one if you happen to find or write one.
@@ -72,7 +73,6 @@ If `err` is passed, no operation should be made in `conn`.
 `muxedConn` interfaces our established Connection with the other endpoint, it must offer an interface to open a stream inside this connection and to receive incomming stream requests.
 
 ### Dial(open/create) a new stream
-
 
 - `JavaScript` stream = muxedConn.newStream([function (err, stream)])
 - `Go` stream, err := muxedConn.newStream()
