@@ -2,6 +2,7 @@
   "name": "interface-peer-routing",
   "version": "0.1.3",
   "description": "A test suite and interface you can use to implement a Peer Routing for libp2p.",
+  "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
   "repository": {
     "type": "git",
     "url": "https://github.com/diasdavid/interface-peer-routing.git"
