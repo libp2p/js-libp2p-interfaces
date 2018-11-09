@@ -14,6 +14,10 @@ The purpose of this interface is not to reinvent any wheels when it comes to dia
 
 The API is presented with both Node.js and Go primitives, however, there are no actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
 
+## Lead Maintainer
+
+[Jacob Heun](https://github.com/jacobheun/)
+
 # Modules that implement the interface
 
 - [js-libp2p-tcp](https://github.com/libp2p/js-libp2p-tcp)

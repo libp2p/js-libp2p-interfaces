@@ -2,6 +2,7 @@
   "name": "interface-transport",
   "version": "0.3.6",
   "description": "A test suite and interface you can use to implement a transport.",
+  "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/libp2p/interface-transport.git"
@@ -24,7 +25,6 @@
   "keywords": [
     "IPFS"
   ],
-  "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/libp2p/interface-transport/issues"
