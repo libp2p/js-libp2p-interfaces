@@ -35,8 +35,6 @@ module.exports = (common) => {
     })
 
     it('closing underlying socket closes streams (tcp)', (done) => {
-      expect(2).checks(done)
-
       const tcp = new Tcp()
       const tcpListener = tcp.createListener((conn) => {
         const listener = muxer.listener(conn)
@@ -45,26 +43,38 @@ module.exports = (common) => {
         })
       })
 
-      tcpListener.listen(mh, () => {
-        const dialerConn = tcp.dial(mh, tcpListener.close)
-
-        const dialerMuxer = muxer.dialer(dialerConn)
-        const s1 = dialerMuxer.newStream(() => {
-          pull(
-            s1,
-            pull.onEnd((err) => {
-              expect(err).to.exist.mark()
-            })
-          )
+      // Wait for the streams to open
+      expect(2).checks(() => {
+        // Once everything is closed, we're done
+        expect(3).checks(done)
+        tcpListener.close((err) => {
+          expect(err).to.not.exist.mark()
         })
+      })
 
-        const s2 = dialerMuxer.newStream(() => {
-          pull(
-            s2,
-            pull.onEnd((err) => {
-              expect(err).to.exist.mark()
-            })
-          )
+      tcpListener.listen(mh, () => {
+        const dialerConn = tcp.dial(mh, () => {
+
+          const dialerMuxer = muxer.dialer(dialerConn)
+          const s1 = dialerMuxer.newStream((err) => {
+            expect(err).to.not.exist.mark()
+            pull(
+              s1,
+              pull.onEnd((err) => {
+                expect(err).to.exist.mark()
+              })
+            )
+          })
+
+          const s2 = dialerMuxer.newStream((err) => {
+            expect(err).to.not.exist.mark()
+            pull(
+              s2,
+              pull.onEnd((err) => {
+                expect(err).to.exist.mark()
+              })
+            )
+          })
         })
       })
     })
