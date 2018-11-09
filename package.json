@@ -2,6 +2,7 @@
   "name": "interface-stream-muxer",
   "version": "0.5.9",
   "description": "A test suite and interface you can use to implement a stream muxer.",
+  "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
   "browser": {
     "libp2p-tcp": false
@@ -26,7 +27,6 @@
     "Muxer",
     "Interface"
   ],
-  "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/libp2p/interface-stream-muxer/issues"

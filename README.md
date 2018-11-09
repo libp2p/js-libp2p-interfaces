@@ -15,6 +15,10 @@ Publishing a test suite as a module lets multiple modules all ensure compatibili
 
 The API is presented with both Node.js and Go primitives, however, there is not actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
 
+## Lead Maintainer
+
+[Jacob Heun](https://github.com/jacobheun/)
+
 ## Modules that implement the interface
 
 - [JavaScript libp2p-spdy](https://github.com/libp2p/js-libp2p-spdy)
