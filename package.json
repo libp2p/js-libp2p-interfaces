@@ -2,18 +2,18 @@
   "name": "interface-connection",
   "version": "0.3.2",
   "description": "A test suite and interface you can use to implement a connection interface.",
+  "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
   "scripts": {
-    "lint": "aegir-lint",
-    "build": "aegir-build",
-    "test": "exit 0",
+    "lint": "aegir lint",
+    "build": "aegir build",
+    "test": "node -e 'process.exit()'",
     "release": "aegir-release --node",
     "release-minor": "aegir-release --type minor",
     "release-major": "aegir-release --type major"
   },
   "pre-commit": [
-    "lint",
-    "test"
+    "lint"
   ],
   "repository": {
     "type": "git",
@@ -22,7 +22,6 @@
   "keywords": [
     "IPFS"
   ],
-  "author": "David Dias <daviddias@ipfs.io>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/libp2p/interface-connection/issues"
@@ -30,14 +29,14 @@
   "homepage": "https://github.com/libp2p/interface-connection",
   "dependencies": {
     "timed-tape": "~0.1.1",
-    "pull-defer": "~0.2.2"
+    "pull-defer": "~0.2.3"
   },
   "devDependencies": {
-    "aegir": "^11.0.0"
+    "aegir": "^17.0.1"
   },
   "engines": {
-    "node": ">=4.0.0",
-    "npm": ">=3.0.0"
+    "node": ">=8.0.0",
+    "npm": ">=6.0.0"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
