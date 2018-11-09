@@ -8,6 +8,9 @@
     "url": "https://github.com/libp2p/interface-transport.git"
   },
   "main": "src/index.js",
+  "files": [
+    "src"
+  ],
   "scripts": {
     "lint": "aegir lint",
     "test": "aegir test",
@@ -19,8 +22,7 @@
     "coverage-publish": "exit(0)"
   },
   "pre-commit": [
-    "lint",
-    "test"
+    "lint"
   ],
   "keywords": [
     "IPFS"
@@ -31,15 +33,15 @@
   },
   "homepage": "https://github.com/libp2p/interface-transport",
   "devDependencies": {
-    "aegir": "^13.0.6",
+    "aegir": "^17.0.1",
     "dirty-chai": "^2.0.1"
   },
   "dependencies": {
-    "chai": "^4.1.2",
-    "multiaddr": "^4.0.0",
-    "pull-goodbye": "0.0.2",
-    "pull-serializer": "^0.3.2",
-    "pull-stream": "^3.6.7"
+    "chai": "^4.2.0",
+    "multiaddr": "^5.0.2",
+    "pull-goodbye": "~0.0.2",
+    "pull-serializer": "~0.3.2",
+    "pull-stream": "^3.6.9"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",

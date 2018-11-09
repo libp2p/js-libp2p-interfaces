@@ -1,6 +1,7 @@
 **/node_modules/
 **/*.log
 test/repo-tests*
+package-lock.json
 
 # Logs
 logs

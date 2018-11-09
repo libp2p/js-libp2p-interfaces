@@ -63,6 +63,7 @@ module.exports = (common) => {
     })
 
     describe('events', () => {
+      // eslint-disable-next-line
       // TODO: figure out why it fails in the full test suite
       it.skip('connection', (done) => {
         const finish = plan(2, done)
@@ -89,6 +90,7 @@ module.exports = (common) => {
         listener.listen(addrs[0])
       })
 
+      // eslint-disable-next-line
       // TODO: how to get the listener to emit an error?
       it.skip('error', (done) => {
         const listener = transport.createListener()
