@@ -7,14 +7,15 @@
     "libp2p-tcp": false
   },
   "scripts": {
-    "test": "exit(0)",
+    "test": "node -e 'process.exit()'",
+    "test:node": "node -e 'process.exit()'",
     "build": "aegir build -t node",
     "lint": "aegir lint",
     "release": "aegir release -t node",
     "release-minor": "aegir release -t node --type minor",
     "release-major": "aegir release -t node --type major",
-    "coverage": "exit(0)",
-    "coverage-publish": "exit(0)"
+    "coverage": "node -e 'process.exit()'",
+    "coverage-publish": "node -e 'process.exit()'"
   },
   "repository": {
     "type": "git",
@@ -32,18 +33,18 @@
   },
   "homepage": "https://github.com/libp2p/interface-stream-muxer",
   "dependencies": {
-    "async": "^2.6.0",
-    "chai": "^4.1.2",
+    "async": "^2.6.1",
+    "chai": "^4.2.0",
     "chai-checkmark": "^1.0.1",
-    "detect-node": "^2.0.3",
-    "libp2p-tcp": "~0.11.1",
-    "multiaddr": "^3.0.1",
+    "detect-node": "^2.0.4",
+    "libp2p-tcp": "~0.13.0",
+    "multiaddr": "^5.0.2",
     "pull-generate": "^2.2.0",
     "pull-pair": "^1.1.0",
-    "pull-stream": "^3.6.1"
+    "pull-stream": "^3.6.9"
   },
   "devDependencies": {
-    "aegir": "^12.2.0"
+    "aegir": "^17.0.1"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",

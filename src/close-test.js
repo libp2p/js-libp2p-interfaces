@@ -54,7 +54,6 @@ module.exports = (common) => {
 
       tcpListener.listen(mh, () => {
         const dialerConn = tcp.dial(mh, () => {
-
           const dialerMuxer = muxer.dialer(dialerConn)
           const s1 = dialerMuxer.newStream((err) => {
             expect(err).to.not.exist.mark()

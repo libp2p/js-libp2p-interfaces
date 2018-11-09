@@ -80,6 +80,7 @@ function marker (n, done) {
     i++
 
     if (err) {
+      /* eslint-disable-next-line */
       console.error('Failed after %s iterations', i)
       return done(err)
     }
