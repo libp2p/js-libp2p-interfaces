@@ -1,3 +1,13 @@
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/libp2p/interface-stream-muxer/compare/v0.5.9...v0.6.0) (2018-11-13)
+
+
+### Bug Fixes
+
+* improve the close test ([d9c8681](https://github.com/libp2p/interface-stream-muxer/commit/d9c8681))
+
+
+
 <a name="0.5.9"></a>
 ## [0.5.9](https://github.com/libp2p/interface-stream-muxer/compare/v0.5.8...v0.5.9) (2017-12-14)
 
