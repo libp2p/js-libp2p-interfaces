@@ -5,15 +5,16 @@
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
   "files": [
+    "dist",
     "src"
   ],
   "scripts": {
     "lint": "aegir lint",
     "build": "aegir build",
     "test": "node -e 'process.exit()'",
-    "release": "aegir-release --node",
-    "release-minor": "aegir-release --type minor",
-    "release-major": "aegir-release --type major"
+    "release": "aegir release --no-test",
+    "release-minor": "aegir release --type minor --no-test",
+    "release-major": "aegir release --type major --no-test"
   },
   "pre-commit": [
     "lint"
@@ -31,11 +32,11 @@
   },
   "homepage": "https://github.com/libp2p/interface-connection",
   "dependencies": {
-    "timed-tape": "~0.1.1",
     "pull-defer": "~0.2.3"
   },
   "devDependencies": {
-    "aegir": "^17.0.1"
+    "aegir": "^17.1.1",
+    "timed-tape": "~0.1.1"
   },
   "engines": {
     "node": ">=8.0.0",
