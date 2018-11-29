@@ -1,3 +1,8 @@
+<a name="0.3.7"></a>
+## [0.3.7](https://github.com/libp2p/interface-transport/compare/v0.3.6...v0.3.7) (2018-11-29)
+
+
+
 <a name="0.3.6"></a>
 ## [0.3.6](https://github.com/libp2p/interface-transport/compare/v0.3.5...v0.3.6) (2018-04-05)
 
