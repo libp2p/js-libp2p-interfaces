@@ -1,6 +1,6 @@
 {
   "name": "interface-transport",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "A test suite and interface you can use to implement a transport.",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "repository": {
@@ -47,6 +47,9 @@
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
+    "Jacob Heun <jacobheun@gmail.com>",
+    "João Santos <joaosantos15@users.noreply.github.com>",
+    "Maciej Krüger <mkg20001@gmail.com>",
     "Richard Littauer <richard.littauer@gmail.com>",
     "dmitriy ryajov <dryajov@dmitriys-MBP.HomeNET>",
     "greenkeeperio-bot <support@greenkeeper.io>"
