@@ -1,6 +1,6 @@
 {
   "name": "interface-connection",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A test suite and interface you can use to implement a connection interface.",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
@@ -46,6 +46,8 @@
     "David Dias <daviddias.p@gmail.com>",
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
     "Greenkeeper <support@greenkeeper.io>",
+    "Jacob Heun <jacobheun@gmail.com>",
+    "James Ray <16969914+jamesray1@users.noreply.github.com>",
     "Pau Ramon Revilla <masylum@gmail.com>",
     "Richard Littauer <richard.littauer@gmail.com>"
   ]
