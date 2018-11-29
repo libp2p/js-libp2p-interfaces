@@ -9,15 +9,16 @@
   },
   "main": "src/index.js",
   "files": [
+    "dist",
     "src"
   ],
   "scripts": {
     "lint": "aegir lint",
     "test": "aegir test",
-    "build": "aegir-build",
-    "release": "aegir release -t node",
-    "release-minor": "aegir release --type minor -t node",
-    "release-major": "aegir release --type major -t node",
+    "build": "aegir build",
+    "release": "aegir release --no-test",
+    "release-minor": "aegir release --type minor --no-test",
+    "release-major": "aegir release --type major --no-test",
     "coverage": "exit(0)",
     "coverage-publish": "exit(0)"
   },
