@@ -55,7 +55,7 @@ tests(tape, common)
 
 # API
 
-A valid (read: that follows this abstraction) Peer Routing module must implement the following API.
+A valid (read: that follows this abstraction) Content Routing module must implement the following API.
 
 ### `.findProviders`
 
