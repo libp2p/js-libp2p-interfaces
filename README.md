@@ -10,9 +10,9 @@ The primary goal of this module is to enable developers to pick and swap their t
 
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
-The purpose of this interface is not to reinvent any wheels when it comes to dialing and listening to transports. Instead, it tries to uniform several transports through a shimmed interface.
+The purpose of this interface is not to reinvent any wheels when it comes to dialing and listening to transports. Instead, it tries to provide a uniform API for several transports through a shimmed interface.
 
-The API is presented with both Node.js and Go primitives, however, there are no actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
+The API is presented with both Node.js and Go primitives, however there are no actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
 
 ## Lead Maintainer
 
@@ -48,16 +48,32 @@ const YourTransport = require('../src')
 
 describe('compliance', () => {
   tests({
-    setup (cb) {
-      let t = new YourTransport()
+    setup () {
+      let transport = new YourTransport()
+
       const addrs = [
         multiaddr('valid-multiaddr-for-your-transport'),
         multiaddr('valid-multiaddr2-for-your-transport')
       ]
-      cb(null, t, addrs)
+
+      const network = require('my-network-lib')
+      const connect = network.connect
+      const connector = {
+        delay (delayMs) {
+          // Add a delay in the connection mechanism for the transport
+          // (this is used by the dial tests)
+          network.connect = (...args) => setTimeout(() => connect(...args), 100)
+        },
+        restore () {
+          // Restore the connection mechanism to normal
+          network.connect = connect
+        }
+      }
+
+      return { transport, addrs, connector }
     },
-    teardown (cb) {
-      cb()
+    teardown () {
+      // Clean up any resources created by setup()
     }
   })
 })
@@ -69,50 +85,73 @@ describe('compliance', () => {
 
 # API
 
-A valid (read: that follows the interface defined) transport, must implement the following API.
+A valid transport (one that follows the interface defined) must implement the following API:
 
 **Table of contents:**
 
 - type: `Transport`
   - `new Transport([options])`
-  - `transport.dial(multiaddr, [options, callback])`
+  - `<Promise> transport.dial(multiaddr, [options])`
   - `transport.createListener([options], handlerFunction)`
   - type: `transport.Listener`
     - event: 'listening'
     - event: 'close'
     - event: 'connection'
     - event: 'error'
-    - `listener.listen(multiaddr, [callback])`
-    - `listener.getAddrs(callback)`
-    - `listener.close([options])`
+    - `<Promise> listener.listen(multiaddr)`
+    - `listener.getAddrs()`
+    - `<Promise> listener.close([options])`
 
 ### Creating a transport instance
 
 - `JavaScript` - `var transport = new Transport([options])`
 
-Creates a new Transport instance. `options` is a optional JavaScript object, might include the necessary parameters for the transport instance.
+Creates a new Transport instance. `options` is an optional JavaScript object that should include the necessary parameters for the transport instance.
 
-**Note: Why is it important to instantiate a transport -** Some transports have state that can be shared between the dialing and listening parts. One example is a libp2p-webrtc-star (or pretty much any other WebRTC flavour transport), where that, in order to dial, a peer needs to be part of some signalling network that is shared also with the listener.
+**Note: Why is it important to instantiate a transport -** Some transports have state that can be shared between the dialing and listening parts. For example with libp2p-webrtc-star, in order to dial a peer, the peer must be part of some signaling network that is shared with the listener.
 
 ### Dial to another peer
 
-- `JavaScript` - `var conn = transport.dial(multiaddr, [options, callback])`
+- `JavaScript` - `const conn = await transport.dial(multiaddr, [options])`
 
-This method dials a transport to the Peer listening on `multiaddr`.
+This method uses a transport to dial a Peer listening on `multiaddr`.
 
 `multiaddr` must be of the type [`multiaddr`](https://www.npmjs.com/multiaddr).
 
-`stream` must implements the [interface-connection](https://github.com/libp2p/interface-connection) interface.
+`[options]` the options that may be passed to the dial. Must support the `signal` option (see below)
 
-`[options]` is an optional argument, which can be used by some implementations
+`conn` must implement the [interface-connection](https://github.com/libp2p/interface-connection) interface.
 
-`callback` should follow the `function (err)` signature.
+The dial may throw an `Error` instance if there was a problem connecting to the `multiaddr`.
 
-`err` is an `Error` instance to signal that the dial was unsuccessful, this error can be a 'timeout' or simply 'error'.
+### Canceling a dial
+
+Dials may be cancelled using an `AbortController`:
+
+```Javascript
+const AbortController = require('abort-controller')
+const { AbortError } = require('interface-transport')
+const controller = new AbortController()
+try {
+  const conn = await mytransport.dial(ma, { signal: controller.signal })
+  // Do stuff with conn here ...
+} catch (err) {
+  if(err.code === AbortError.code) {
+    // Dial was aborted, just bail out
+    return
+  }
+  throw err
+}
+
+// ----
+// In some other part of the code:
+  controller.abort()
+// ----
+```
 
 ### Create a listener
 
-- `JavaScript` - `var listener = transport.createListener([options], handlerFunction)`
+- `JavaScript` - `const listener = transport.createListener([options], handlerFunction)`
 
 This method creates a listener on the transport.
 
@@ -120,37 +159,33 @@ This method creates a listener on the transport.
 
 `handlerFunction` is a function called each time a new connection is received. It must follow the following signature: `function (conn) {}`, where `conn` is a connection that follows the [`interface-connection`](https://github.com/diasdavid/interface-connection).
 
-The listener object created, can emit the following events:
+The listener object created may emit the following events:
 
-- `listening` -
-- `close` -
-- `connection` -
-- `error` -
+- `listening` - when the listener is ready for incoming connections
+- `close` - when the listener is closed
+- `connection` - (`conn`) each time an incoming connection is received
+- `error` - (`err`) each time there is an error on the connection
 
 ### Start a listener
 
-- `JavaScript` - `listener.listen(multiaddr, [callback])`
+- `JavaScript` - `await listener.listen(multiaddr)`
 
 This method puts the listener in `listening` mode, waiting for incoming connections.
 
-`multiaddr` is the address where the listener should bind to.
-
-`callback` is a function called once the listener is ready.
+`multiaddr` is the address that the listener should bind to.
 
 ### Get listener addrs
 
-- `JavaScript` - `listener.getAddrs(callback)`
+- `JavaScript` - `listener.getAddrs()`
 
-This method retrieves the addresses in which this listener is listening. Useful for when listening on port 0 or any interface (0.0.0.0).
+This method returns the addresses on which this listener is listening. Useful when listening on port 0 or any interface (0.0.0.0).
 
 ### Stop a listener
 
-- `JavaScript` - `listener.close([options, callback])`
+- `JavaScript` - `await listener.close([options])`
 
-This method closes the listener so that no more connections can be open on this transport instance.
+This method closes the listener so that no more connections can be opened on this transport instance.
 
-`options` is an optional object that might contain the following properties:
+`options` is an optional object that may contain the following properties:
 
-  - `timeout` - A timeout value (in ms) that fires and destroys all the connections on this transport if the transport is not able to close graciously. (e.g { timeout: 1000 })
-
-`callback` is function that gets called when the listener is closed. It is optional.
+  - `timeout` - A timeout value (in ms) after which all connections on this transport will be destroyed if the transport is not able to close gracefully. (e.g { timeout: 1000 })

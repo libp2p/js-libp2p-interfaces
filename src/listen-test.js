@@ -7,118 +7,98 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
-const pull = require('pull-stream')
+const pipe = require('it-pipe')
 
 module.exports = (common) => {
   describe('listen', () => {
     let addrs
     let transport
 
-    before((done) => {
-      common.setup((err, _transport, _addrs) => {
-        if (err) return done(err)
-        transport = _transport
-        addrs = _addrs
-        done()
-      })
+    before(async () => {
+      ({ transport, addrs } = await common.setup())
     })
 
-    after((done) => {
-      common.teardown(done)
-    })
+    after(() => common.teardown && common.teardown())
 
-    it('simple', (done) => {
+    it('simple', async () => {
       const listener = transport.createListener((conn) => {})
-      listener.listen(addrs[0], () => {
-        listener.close(done)
-      })
+      await listener.listen(addrs[0])
+      await listener.close()
     })
 
-    it('close listener with connections, through timeout', (done) => {
-      const finish = plan(3, done)
-      const listener = transport.createListener((conn) => {
-        pull(conn, conn)
+    it('close listener with connections, through timeout', async () => {
+      let finish
+      let done = new Promise((resolve) => {
+        finish = resolve
       })
 
-      listener.listen(addrs[0], () => {
-        const socket1 = transport.dial(addrs[0], () => {
-          listener.close(finish)
-        })
+      const listener = transport.createListener((conn) => pipe(conn, conn))
 
-        pull(
-          transport.dial(addrs[0]),
-          pull.onEnd(() => {
-            finish()
-          })
-        )
+      // Listen
+      await listener.listen(addrs[0])
 
-        pull(
-          pull.values([Buffer.from('Some data that is never handled')]),
-          socket1,
-          pull.onEnd(() => {
-            finish()
-          })
-        )
+      // Create two connections to the listener
+      const socket1 = await transport.dial(addrs[0])
+      await transport.dial(addrs[0])
+
+      pipe(
+        [Buffer.from('Some data that is never handled')],
+        socket1
+      ).then(() => {
+        finish()
       })
+
+      // Closer the listener (will take a couple of seconds to time out)
+      await listener.close()
+
+      // Pipe should have completed
+      await done
     })
 
     describe('events', () => {
-      // eslint-disable-next-line
-      // TODO: figure out why it fails in the full test suite
-      it.skip('connection', (done) => {
-        const finish = plan(2, done)
-
+      it('connection', (done) => {
         const listener = transport.createListener()
 
-        listener.on('connection', (conn) => {
+        listener.on('connection', async (conn) => {
           expect(conn).to.exist()
-          finish()
+          await listener.close()
+          done()
         })
 
-        listener.listen(addrs[0], () => {
-          transport.dial(addrs[0], () => {
-            listener.close(finish)
-          })
-        })
+        ;(async () => {
+          await listener.listen(addrs[0])
+          await transport.dial(addrs[0])
+        })()
       })
 
       it('listening', (done) => {
         const listener = transport.createListener()
-        listener.on('listening', () => {
-          listener.close(done)
+        listener.on('listening', async () => {
+          await listener.close()
+          done()
         })
         listener.listen(addrs[0])
       })
 
-      // eslint-disable-next-line
-      // TODO: how to get the listener to emit an error?
-      it.skip('error', (done) => {
+      it('error', (done) => {
         const listener = transport.createListener()
-        listener.on('error', (err) => {
+        listener.on('error', async (err) => {
           expect(err).to.exist()
-          listener.close(done)
+          await listener.close()
+          done()
         })
+        listener.emit('error', new Error('my err'))
       })
 
       it('close', (done) => {
-        const finish = plan(2, done)
         const listener = transport.createListener()
-        listener.on('close', finish)
+        listener.on('close', done)
 
-        listener.listen(addrs[0], () => {
-          listener.close(finish)
-        })
+        ;(async () => {
+          await listener.listen(addrs[0])
+          await listener.close()
+        })()
       })
     })
   })
-}
-
-function plan (n, done) {
-  let i = 0
-  return (err) => {
-    if (err) return done(err)
-    i++
-
-    if (i === n) done()
-  }
 }

@@ -10,3 +10,6 @@ module.exports = (common) => {
     listen(common)
   })
 }
+
+module.exports.AbortError = require('./errors').AbortError
+module.exports.Adapter = require('./adapter')

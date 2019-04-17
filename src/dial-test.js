@@ -5,69 +5,86 @@ const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
-const pull = require('pull-stream')
-const goodbye = require('pull-goodbye')
-const serializer = require('pull-serializer')
+
+const goodbye = require('it-goodbye')
+const { collect } = require('streaming-iterables')
+const pipe = require('it-pipe')
+const AbortController = require('abort-controller')
+const AbortError = require('./errors').AbortError
 
 module.exports = (common) => {
   describe('dial', () => {
     let addrs
     let transport
+    let connector
     let listener
 
-    before((done) => {
-      common.setup((err, _transport, _addrs) => {
-        if (err) return done(err)
-        transport = _transport
-        addrs = _addrs
-        done()
-      })
+    before(async () => {
+      ({ addrs, transport, connector } = await common.setup())
     })
 
-    after((done) => {
-      common.teardown(done)
+    after(() => common.teardown && common.teardown())
+
+    beforeEach(() => {
+      listener = transport.createListener((conn) => pipe(conn, conn))
+      return listener.listen(addrs[0])
     })
 
-    beforeEach((done) => {
-      listener = transport.createListener((conn) => {
-        pull(conn, conn)
-      })
-      listener.listen(addrs[0], done)
+    afterEach(() => listener.close())
+
+    it('simple', async () => {
+      const conn = await transport.dial(addrs[0])
+
+      const s = goodbye({ source: ['hey'], sink: collect })
+
+      const result = await pipe(s, conn, s)
+
+      expect(result.length).to.equal(1)
+      expect(result[0].toString()).to.equal('hey')
     })
 
-    afterEach((done) => {
-      listener.close(done)
+    it('to non existent listener', async () => {
+      try {
+        await transport.dial(addrs[1])
+      } catch (_) {
+        // Success: expected an error to be throw
+        return
+      }
+      expect.fail('Did not throw error attempting to connect to non-existent listener')
     })
 
-    it('simple', (done) => {
-      const s = serializer(goodbye({
-        source: pull.values(['hey']),
-        sink: pull.collect((err, values) => {
-          expect(err).to.not.exist()
-          expect(
-            values
-          ).to.be.eql(
-            ['hey']
-          )
-          done()
-        })
-      }))
+    it('cancel before dialing', async () => {
+      const controller = new AbortController()
+      controller.abort()
+      const socket = transport.dial(addrs[0], { signal: controller.signal })
 
-      pull(
-        s,
-        transport.dial(addrs[0]),
-        s
-      )
+      try {
+        await socket
+      } catch (err) {
+        expect(err.code).to.eql(AbortError.code)
+        return
+      }
+      expect.fail('Did not throw error with code ' + AbortError.code)
     })
 
-    it('to non existent listener', (done) => {
-      pull(
-        transport.dial(addrs[1]),
-        pull.onEnd((err) => {
-          expect(err).to.exist()
-          done()
-        })
-      )
+    it('cancel while dialing', async () => {
+      // Add a delay to connect() so that we can cancel while the dial is in
+      // progress
+      connector.delay(100)
+
+      const controller = new AbortController()
+      const socket = transport.dial(addrs[0], { signal: controller.signal })
+      setTimeout(() => controller.abort(), 50)
+
+      try {
+        await socket
+      } catch (err) {
+        expect(err.code).to.eql(AbortError.code)
+        return
+      } finally {
+        connector.restore()
+      }
+      expect.fail('Did not throw error with code ' + AbortError.code)
     })
   })
 }
