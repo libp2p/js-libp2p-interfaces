@@ -62,6 +62,7 @@ module.exports = (common) => {
         await socket
       } catch (err) {
         expect(err.code).to.eql(AbortError.code)
+        expect(err.type).to.eql(AbortError.type)
         return
       }
       expect.fail('Did not throw error with code ' + AbortError.code)
@@ -80,6 +81,7 @@ module.exports = (common) => {
         await socket
       } catch (err) {
         expect(err.code).to.eql(AbortError.code)
+        expect(err.type).to.eql(AbortError.type)
         return
       } finally {
         connector.restore()

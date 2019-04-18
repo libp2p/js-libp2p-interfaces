@@ -4,10 +4,15 @@ class AbortError extends Error {
   constructor () {
     super('AbortError')
     this.code = AbortError.code
+    this.type = AbortError.type
   }
 
   static get code () {
     return 'ABORT_ERR'
+  }
+
+  static get type () {
+    return 'aborted'
   }
 }
 
