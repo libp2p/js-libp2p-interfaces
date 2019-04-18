@@ -2,7 +2,7 @@
 
 class AbortError extends Error {
   constructor () {
-    super('AbortError')
+    super('The operation was aborted')
     this.code = AbortError.code
     this.type = AbortError.type
   }
