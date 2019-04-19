@@ -1,3 +1,24 @@
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/libp2p/interface-transport/compare/v0.3.7...v0.4.0) (2019-04-19)
+
+
+### Features
+
+* add type to AbortError ([#45](https://github.com/libp2p/interface-transport/issues/45)) ([4fd37bb](https://github.com/libp2p/interface-transport/commit/4fd37bb))
+* callbacks -> async / await ([#44](https://github.com/libp2p/interface-transport/issues/44)) ([b30ee5f](https://github.com/libp2p/interface-transport/commit/b30ee5f))
+* make listen take an array of addrs ([#46](https://github.com/libp2p/interface-transport/issues/46)) ([1dc5baa](https://github.com/libp2p/interface-transport/commit/1dc5baa))
+
+
+### BREAKING CHANGES
+
+* All places in the API that used callbacks are now replaced with async/await
+
+* test: add tests for canceling dials
+
+* feat: Adapter class
+
+
+
 <a name="0.3.7"></a>
 ## [0.3.7](https://github.com/libp2p/interface-transport/compare/v0.3.6...v0.3.7) (2018-11-29)
 
