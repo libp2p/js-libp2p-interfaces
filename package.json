@@ -31,7 +31,7 @@
   "homepage": "https://github.com/libp2p/interface-peer-discovery",
   "dependencies": {},
   "devDependencies": {
-    "aegir": "^10.0.0"
+    "aegir": "^18.2.2"
   },
   "engines": {
     "node": ">=4.0.0",
