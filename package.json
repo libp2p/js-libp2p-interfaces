@@ -24,8 +24,8 @@
   "homepage": "https://github.com/libp2p/interface-record-store",
   "dependencies": {
     "ecdsa": "~0.7.0",
-    "ipld": "~0.6.0",
-    "multihashing": "~0.3.2",
+    "ipld": "~0.22.0",
+    "multihashing": "~0.3.3",
     "timed-tape": "~0.1.1"
   }
 }
