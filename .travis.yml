@@ -1,33 +1,18 @@
-sudo: false
 language: node_js
+cache: npm
+stages:
+  - check
 
-matrix:
+node_js:
+  - '10'
+
+jobs:
   include:
-  - node_js: 8
-    env: CXX=g++-4.8
-  - node_js: 10
-    env: CXX=g++-4.8
-  - node_js: stable
-    env: CXX=g++-4.8
+    - stage: check
+      script:
+        - npx aegir commitlint --travis
+        - npx aegir dep-check
+        - npm run lint
 
-# Make sure we have new NPM.
-before_install:
-  - npm install -g npm
-
-script:
-  - npm run lint
-
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
-after_success:
-  - npm run coverage-publish
-
-addons:
-  firefox: 'latest'
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
+notifications:
+  email: false

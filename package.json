@@ -33,18 +33,18 @@
   },
   "homepage": "https://github.com/libp2p/interface-stream-muxer",
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^2.6.2",
     "chai": "^4.2.0",
     "chai-checkmark": "^1.0.1",
     "detect-node": "^2.0.4",
     "libp2p-tcp": "~0.13.0",
-    "multiaddr": "^5.0.2",
+    "multiaddr": "^6.0.6",
     "pull-generate": "^2.2.0",
     "pull-pair": "^1.1.0",
     "pull-stream": "^3.6.9"
   },
   "devDependencies": {
-    "aegir": "^17.0.1"
+    "aegir": "^18.2.2"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
