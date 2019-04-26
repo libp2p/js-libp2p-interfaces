@@ -35,7 +35,7 @@
     "pull-defer": "~0.2.3"
   },
   "devDependencies": {
-    "aegir": "^17.1.1",
+    "aegir": "^18.2.2",
     "timed-tape": "~0.1.1"
   },
   "engines": {

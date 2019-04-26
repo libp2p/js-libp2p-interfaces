@@ -1,15 +1,18 @@
-sudo: false
 language: node_js
+cache: npm
+stages:
+  - check
 
-matrix:
+node_js:
+  - '10'
+
+jobs:
   include:
-  - node_js: 8
-  - node_js: 10
-  - node_js: stable
+    - stage: check
+      script:
+        - npx aegir commitlint --travis
+        - npx aegir dep-check
+        - npm run lint
 
-# Make sure we have new NPM.
-before_install:
-  - npm install -g npm
-
-script:
-  - npm run lint
+notifications:
+  email: false
