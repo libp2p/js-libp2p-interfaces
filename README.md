@@ -67,7 +67,7 @@ describe('compliance', () => {
         delay (delayMs) {
           // Add a delay in the connection mechanism for the transport
           // (this is used by the dial tests)
-          network.connect = (...args) => setTimeout(() => connect(...args), 100)
+          network.connect = (...args) => setTimeout(() => connect(...args), delayMs)
         },
         restore () {
           // Restore the connection mechanism to normal
@@ -109,7 +109,7 @@ A valid transport (one that follows the interface defined) must implement the fo
 
 ### Creating a transport instance
 
-- `JavaScript` - `var transport = new Transport([options])`
+- `JavaScript` - `const transport = new Transport([options])`
 
 Creates a new Transport instance. `options` is an optional JavaScript object that should include the necessary parameters for the transport instance.
 
