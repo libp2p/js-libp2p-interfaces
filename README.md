@@ -103,7 +103,7 @@ A valid transport (one that follows the interface defined) must implement the fo
     - event: 'close'
     - event: 'connection'
     - event: 'error'
-    - `<Promise> listener.listen(Array<multiaddr>)`
+    - `<Promise> listener.listen(multiaddr)`
     - `listener.getAddrs()`
     - `<Promise> listener.close([options])`
 
@@ -173,11 +173,11 @@ The listener object created may emit the following events:
 
 ### Start a listener
 
-- `JavaScript` - `await listener.listen(Array<multiaddr>)`
+- `JavaScript` - `await listener.listen(multiaddr)`
 
 This method puts the listener in `listening` mode, waiting for incoming connections.
 
-`Array<multiaddr>` is an array of the addresses that the listener should bind to.
+`multiaddr` is the address that the listener should bind to.
 
 ### Get listener addrs
 

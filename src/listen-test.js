@@ -8,7 +8,6 @@ const expect = chai.expect
 chai.use(dirtyChai)
 
 const pipe = require('it-pipe')
-const { collect } = require('streaming-iterables')
 
 module.exports = (common) => {
   describe('listen', () => {
@@ -23,31 +22,7 @@ module.exports = (common) => {
 
     it('simple', async () => {
       const listener = transport.createListener((conn) => {})
-      await listener.listen([addrs[0]])
-      await listener.close()
-    })
-
-    it('listen on multiple addresses', async () => {
-      // create an echo listener
-      const listener = transport.createListener((conn) => pipe(conn, conn))
-      await listener.listen(addrs.slice(0, 2))
-
-      // Connect on both addresses
-      const [socket1, socket2] = await Promise.all([
-        transport.dial(addrs[0]),
-        transport.dial(addrs[1])
-      ])
-
-      const data = Buffer.from('hi there')
-      const results = await pipe(
-        [data], // [data] -> socket1
-        socket1, // socket1 -> server (echo) -> socket1 -> socket2
-        socket2, // socket2 -> server (echo) -> socket2 -> collect
-        collect
-      )
-
-      expect(results).to.eql([data])
-
+      await listener.listen(addrs[0])
       await listener.close()
     })
 
@@ -60,7 +35,7 @@ module.exports = (common) => {
       const listener = transport.createListener((conn) => pipe(conn, conn))
 
       // Listen
-      await listener.listen([addrs[0]])
+      await listener.listen(addrs[0])
 
       // Create two connections to the listener
       const socket1 = await transport.dial(addrs[0])
@@ -91,7 +66,7 @@ module.exports = (common) => {
         })
 
         ;(async () => {
-          await listener.listen([addrs[0]])
+          await listener.listen(addrs[0])
           await transport.dial(addrs[0])
         })()
       })
@@ -120,7 +95,7 @@ module.exports = (common) => {
         listener.on('close', done)
 
         ;(async () => {
-          await listener.listen([addrs[0]])
+          await listener.listen(addrs[0])
           await listener.close()
         })()
       })
