@@ -1,3 +1,13 @@
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/libp2p/interface-transport/compare/v0.4.0...v0.5.0) (2019-04-29)
+
+
+### Reverts
+
+* "feat: make listen take an array of addrs ([#46](https://github.com/libp2p/interface-transport/issues/46))" ([#51](https://github.com/libp2p/interface-transport/issues/51)) ([030195e](https://github.com/libp2p/interface-transport/commit/030195e))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/libp2p/interface-transport/compare/v0.3.7...v0.4.0) (2019-04-19)
 
