@@ -1,3 +1,13 @@
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/libp2p/interface-transport/compare/v0.5.0...v0.5.1) (2019-05-01)
+
+
+### Bug Fixes
+
+* move dirty-chai to dependencies ([#52](https://github.com/libp2p/interface-transport/issues/52)) ([f9a7908](https://github.com/libp2p/interface-transport/commit/f9a7908))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/libp2p/interface-transport/compare/v0.4.0...v0.5.0) (2019-04-29)
 
