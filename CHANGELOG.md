@@ -1,3 +1,26 @@
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/libp2p/interface-transport/compare/v0.5.2...v0.6.0) (2019-09-06)
+
+
+### Features
+
+* add upgrader support to transports ([#53](https://github.com/libp2p/interface-transport/issues/53)) ([a5ad120](https://github.com/libp2p/interface-transport/commit/a5ad120))
+
+
+### BREAKING CHANGES
+
+* Transports must now be passed and use an `Upgrader` instance. See the Readme for usage. Compliance test suites will now need to pass `options` from `common.setup(options)` to their Transport constructor.
+
+* docs: update readme to include upgrader
+
+* docs: update readme to include MultiaddrConnection ref
+
+* feat: add upgrader spy to test suite
+
+* test: validate returned value of spy
+
+
+
 <a name="0.5.2"></a>
 ## [0.5.2](https://github.com/libp2p/interface-transport/compare/v0.5.1...v0.5.2) (2019-06-11)
 
