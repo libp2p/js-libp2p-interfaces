@@ -6,19 +6,41 @@ const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
+const sinon = require('sinon')
 
 const pipe = require('it-pipe')
 
 module.exports = (common) => {
+  const upgrader = {
+    upgradeOutbound (multiaddrConnection) {
+      ['sink', 'source', 'remoteAddr', 'conn'].forEach(prop => {
+        expect(multiaddrConnection).to.have.property(prop)
+      })
+
+      return { sink: multiaddrConnection.sink, source: multiaddrConnection.source }
+    },
+    upgradeInbound (multiaddrConnection) {
+      ['sink', 'source', 'remoteAddr', 'conn'].forEach(prop => {
+        expect(multiaddrConnection).to.have.property(prop)
+      })
+
+      return { sink: multiaddrConnection.sink, source: multiaddrConnection.source }
+    }
+  }
+
   describe('listen', () => {
     let addrs
     let transport
 
     before(async () => {
-      ({ transport, addrs } = await common.setup())
+      ({ transport, addrs } = await common.setup({ upgrader }))
     })
 
     after(() => common.teardown && common.teardown())
+
+    afterEach(() => {
+      sinon.restore()
+    })
 
     it('simple', async () => {
       const listener = transport.createListener((conn) => {})
@@ -27,12 +49,16 @@ module.exports = (common) => {
     })
 
     it('close listener with connections, through timeout', async () => {
+      const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
       let finish
-      let done = new Promise((resolve) => {
+      const done = new Promise((resolve) => {
         finish = resolve
       })
 
-      const listener = transport.createListener((conn) => pipe(conn, conn))
+      const listener = transport.createListener((conn) => {
+        expect(upgradeSpy.returned(conn)).to.equal(true)
+        pipe(conn, conn)
+      })
 
       // Listen
       await listener.listen(addrs[0])
@@ -53,13 +79,19 @@ module.exports = (common) => {
 
       // Pipe should have completed
       await done
+
+      // 2 dials = 2 connections upgraded
+      expect(upgradeSpy.callCount).to.equal(2)
     })
 
     describe('events', () => {
       it('connection', (done) => {
+        const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
         const listener = transport.createListener()
 
         listener.on('connection', async (conn) => {
+          expect(upgradeSpy.returned(conn)).to.equal(true)
+          expect(upgradeSpy.callCount).to.equal(1)
           expect(conn).to.exist()
           await listener.close()
           done()

@@ -11,8 +11,26 @@ const { collect } = require('streaming-iterables')
 const pipe = require('it-pipe')
 const AbortController = require('abort-controller')
 const AbortError = require('./errors').AbortError
+const sinon = require('sinon')
 
 module.exports = (common) => {
+  const upgrader = {
+    upgradeOutbound (multiaddrConnection) {
+      ['sink', 'source', 'remoteAddr', 'conn'].forEach(prop => {
+        expect(multiaddrConnection).to.have.property(prop)
+      })
+
+      return { sink: multiaddrConnection.sink, source: multiaddrConnection.source }
+    },
+    upgradeInbound (multiaddrConnection) {
+      ['sink', 'source', 'remoteAddr', 'conn'].forEach(prop => {
+        expect(multiaddrConnection).to.have.property(prop)
+      })
+
+      return { sink: multiaddrConnection.sink, source: multiaddrConnection.source }
+    }
+  }
+
   describe('dial', () => {
     let addrs
     let transport
@@ -20,7 +38,7 @@ module.exports = (common) => {
     let listener
 
     before(async () => {
-      ({ addrs, transport, connector } = await common.setup())
+      ({ addrs, transport, connector } = await common.setup({ upgrader }))
     })
 
     after(() => common.teardown && common.teardown())
@@ -30,23 +48,31 @@ module.exports = (common) => {
       return listener.listen(addrs[0])
     })
 
-    afterEach(() => listener.close())
+    afterEach(() => {
+      sinon.restore()
+      return listener.close()
+    })
 
     it('simple', async () => {
+      const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
       const conn = await transport.dial(addrs[0])
 
       const s = goodbye({ source: ['hey'], sink: collect })
 
       const result = await pipe(s, conn, s)
 
+      expect(upgradeSpy.callCount).to.equal(1)
+      expect(upgradeSpy.returned(conn)).to.equal(true)
       expect(result.length).to.equal(1)
       expect(result[0].toString()).to.equal('hey')
     })
 
     it('to non existent listener', async () => {
+      const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
       try {
         await transport.dial(addrs[1])
       } catch (_) {
+        expect(upgradeSpy.callCount).to.equal(0)
         // Success: expected an error to be throw
         return
       }
@@ -54,6 +80,7 @@ module.exports = (common) => {
     })
 
     it('abort before dialing throws AbortError', async () => {
+      const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
       const controller = new AbortController()
       controller.abort()
       const socket = transport.dial(addrs[0], { signal: controller.signal })
@@ -61,6 +88,7 @@ module.exports = (common) => {
       try {
         await socket
       } catch (err) {
+        expect(upgradeSpy.callCount).to.equal(0)
         expect(err.code).to.eql(AbortError.code)
         expect(err.type).to.eql(AbortError.type)
         return
@@ -69,6 +97,7 @@ module.exports = (common) => {
     })
 
     it('abort while dialing throws AbortError', async () => {
+      const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
       // Add a delay to connect() so that we can abort while the dial is in
       // progress
       connector.delay(100)
@@ -80,6 +109,7 @@ module.exports = (common) => {
       try {
         await socket
       } catch (err) {
+        expect(upgradeSpy.callCount).to.equal(0)
         expect(err.code).to.eql(AbortError.code)
         expect(err.type).to.eql(AbortError.type)
         return
