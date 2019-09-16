@@ -1,3 +1,13 @@
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/libp2p/interface-transport/compare/v0.6.0...v0.6.1) (2019-09-16)
+
+
+### Bug Fixes
+
+* **test:** close with timeout ([#54](https://github.com/libp2p/interface-transport/issues/54)) ([583f02d](https://github.com/libp2p/interface-transport/commit/583f02d))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/libp2p/interface-transport/compare/v0.5.2...v0.6.0) (2019-09-06)
 
