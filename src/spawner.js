@@ -1,92 +1,82 @@
 'use strict'
 
-const expect = require('chai').expect
+const { expect } = require('chai')
+const pair = require('it-pair/duplex')
+const pipe = require('it-pipe')
+const pLimit = require('p-limit')
+const { collect, tap, consume } = require('streaming-iterables')
 
-const pair = require('pull-pair/duplex')
-const pull = require('pull-stream')
-const generate = require('pull-generate')
-const each = require('async/each')
-const eachLimit = require('async/eachLimit')
-const setImmediate = require('async/setImmediate')
-
-module.exports = (muxer, nStreams, nMsg, done, limit) => {
-  const p = pair()
-  const dialerSocket = p[0]
-  const listenerSocket = p[1]
-
-  const check = marker((6 * nStreams) + (nStreams * nMsg), done)
+module.exports = async (Muxer, nStreams, nMsg, limit) => {
+  const [dialerSocket, listenerSocket] = pair()
+  const { check, done } = marker((4 * nStreams) + (nStreams * nMsg))
 
   const msg = 'simple msg'
 
-  const listener = muxer.listener(listenerSocket)
-  const dialer = muxer.dialer(dialerSocket)
-
-  listener.on('stream', (stream) => {
+  const listener = new Muxer(async stream => {
     expect(stream).to.exist // eslint-disable-line
     check()
-    pull(
+
+    await pipe(
       stream,
-      pull.through((chunk) => {
-        expect(chunk).to.exist // eslint-disable-line
-        check()
-      }),
-      pull.onEnd((err) => {
-        expect(err).to.not.exist // eslint-disable-line
-        check()
-        pull(pull.empty(), stream)
-      })
+      tap(chunk => check()),
+      consume
     )
+
+    check()
+    pipe([], stream)
   })
 
-  const numbers = []
-  for (let i = 0; i < nStreams; i++) {
-    numbers.push(i)
+  const dialer = new Muxer()
+
+  pipe(listenerSocket, listener, listenerSocket)
+  pipe(dialerSocket, dialer, dialerSocket)
+
+  const spawnStream = async n => {
+    const stream = dialer.newStream()
+    expect(stream).to.exist // eslint-disable-line
+    check()
+
+    const res = await pipe(
+      (function * () {
+        for (let i = 0; i < nMsg; i++) {
+          // console.log('n', n, 'msg', i)
+          yield new Promise(resolve => resolve(msg))
+        }
+      })(),
+      stream,
+      collect
+    )
+
+    expect(res).to.be.eql([])
+    check()
   }
 
-  const spawnStream = (n, cb) => {
-    const stream = dialer.newStream((err) => {
-      expect(err).to.not.exist // eslint-disable-line
-      check()
-      expect(stream).to.exist // eslint-disable-line
-      check()
-      pull(
-        generate(0, (s, cb) => {
-          setImmediate(() => {
-            cb(s === nMsg ? true : null, msg, s + 1)
-          })
-        }),
-        stream,
-        pull.collect((err, res) => {
-          expect(err).to.not.exist // eslint-disable-line
-          check()
-          expect(res).to.be.eql([])
-          check()
-          cb()
-        })
-      )
-    })
-  }
+  const limiter = pLimit(limit || Infinity)
 
-  if (limit) {
-    eachLimit(numbers, limit, spawnStream, () => {})
-  } else {
-    each(numbers, spawnStream, () => {})
-  }
+  await Promise.all(
+    Array.from(Array(nStreams), (_, i) => limiter(() => spawnStream(i)))
+  )
+
+  return done
 }
 
-function marker (n, done) {
+function marker (n) {
+  let check
   let i = 0
-  return (err) => {
-    i++
+  const done = new Promise((resolve, reject) => {
+    check = err => {
+      i++
 
-    if (err) {
-      /* eslint-disable-next-line */
-      console.error('Failed after %s iterations', i)
-      return done(err)
-    }
+      if (err) {
+        /* eslint-disable-next-line */
+        console.error('Failed after %s iterations', i)
+        return reject(err)
+      }
 
-    if (i === n) {
-      done()
+      if (i === n) {
+        resolve()
+      }
     }
-  }
+  })
+  return { check, done }
 }

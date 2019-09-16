@@ -2,157 +2,117 @@
 /* eslint max-nested-callbacks: ["error", 8] */
 'use strict'
 
-const chai = require('chai')
-chai.use(require('chai-checkmark'))
-const expect = chai.expect
-const pair = require('pull-pair/duplex')
-const pull = require('pull-stream')
-const parallel = require('async/parallel')
-const series = require('async/series')
+const pair = require('it-pair/duplex')
+const pipe = require('it-pipe')
+const { consume } = require('streaming-iterables')
 const Tcp = require('libp2p-tcp')
 const multiaddr = require('multiaddr')
+const abortable = require('abortable-iterator')
+const AbortController = require('abort-controller')
 
-const mh = multiaddr('/ip4/127.0.0.1/tcp/10000')
+const mh = multiaddr('/ip4/127.0.0.1/tcp/0')
 
-function closeAndWait (stream, callback) {
-  pull(
-    pull.empty(),
-    stream,
-    pull.onEnd(callback)
-  )
+function pause (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+function randomBuffer () {
+  return Buffer.from(Math.random().toString())
+}
+
+const infiniteRandom = {
+  [Symbol.asyncIterator]: async function * () {
+    while (true) {
+      yield randomBuffer()
+      await pause(10)
+    }
+  }
 }
 
 module.exports = (common) => {
   describe('close', () => {
-    let muxer
+    let Muxer
 
-    beforeEach((done) => {
-      common.setup((err, _muxer) => {
-        if (err) return done(err)
-        muxer = _muxer
-        done()
-      })
+    beforeEach(async () => {
+      Muxer = await common.setup()
     })
 
-    it('closing underlying socket closes streams (tcp)', (done) => {
-      const tcp = new Tcp()
-      const tcpListener = tcp.createListener((conn) => {
-        const listener = muxer.listener(conn)
-        listener.on('stream', (stream) => {
-          pull(stream, stream)
-        })
+    it('closing underlying socket closes streams (tcp)', async () => {
+      const mockConn = muxer => ({
+        newStream: (...args) => muxer.newStream(...args)
       })
 
-      // Wait for the streams to open
-      expect(2).checks(() => {
-        // Once everything is closed, we're done
-        expect(3).checks(done)
-        tcpListener.close((err) => {
-          expect(err).to.not.exist.mark()
-        })
-      })
-
-      tcpListener.listen(mh, () => {
-        const dialerConn = tcp.dial(mh, () => {
-          const dialerMuxer = muxer.dialer(dialerConn)
-          const s1 = dialerMuxer.newStream((err) => {
-            expect(err).to.not.exist.mark()
-            pull(
-              s1,
-              pull.onEnd((err) => {
-                expect(err).to.exist.mark()
-              })
-            )
-          })
-
-          const s2 = dialerMuxer.newStream((err) => {
-            expect(err).to.not.exist.mark()
-            pull(
-              s2,
-              pull.onEnd((err) => {
-                expect(err).to.exist.mark()
-              })
-            )
-          })
-        })
-      })
-    })
-
-    it('closing one of the muxed streams doesn\'t close others', (done) => {
-      const p = pair()
-      const dialer = muxer.dialer(p[0])
-      const listener = muxer.listener(p[1])
-
-      expect(6).checks(done)
-
-      const conns = []
-
-      listener.on('stream', (stream) => {
-        expect(stream).to.exist.mark()
-        pull(stream, stream)
-      })
-
-      for (let i = 0; i < 5; i++) {
-        conns.push(dialer.newStream())
+      const mockUpgrade = () => maConn => {
+        const muxer = new Muxer(stream => pipe(stream, stream))
+        pipe(maConn, muxer, maConn)
+        return mockConn(muxer)
       }
 
-      conns.forEach((conn, i) => {
-        if (i === 1) {
-          closeAndWait(conn, (err) => {
-            expect(err).to.not.exist.mark()
-          })
-        } else {
-          pull(
-            conn,
-            pull.onEnd(() => {
-              throw new Error('should not end')
-            })
-          )
+      const mockUpgrader = () => ({
+        upgradeInbound: mockUpgrade(),
+        upgradeOutbound: mockUpgrade()
+      })
+
+      const tcp = new Tcp({ upgrader: mockUpgrader() })
+      const tcpListener = tcp.createListener()
+
+      await tcpListener.listen(mh)
+      const dialerConn = await tcp.dial(tcpListener.getAddrs()[0])
+
+      const s1 = await dialerConn.newStream()
+      const s2 = await dialerConn.newStream()
+
+      // close the listener in a bit
+      setTimeout(() => tcpListener.close(), 50)
+
+      const s1Result = pipe(infiniteRandom, s1, consume)
+      const s2Result = pipe(infiniteRandom, s2, consume)
+
+      // test is complete when all muxed streams have closed
+      await s1Result
+      await s2Result
+    })
+
+    it('closing one of the muxed streams doesn\'t close others', async () => {
+      const p = pair()
+      const dialer = new Muxer()
+
+      // Listener is echo server :)
+      const listener = new Muxer(stream => pipe(stream, stream))
+
+      pipe(p[0], dialer, p[0])
+      pipe(p[1], listener, p[1])
+
+      const stream = dialer.newStream()
+      const streams = Array.from(Array(5), () => dialer.newStream())
+      let closed = false
+      const controllers = []
+
+      const streamResults = streams.map(async stream => {
+        const controller = new AbortController()
+        controllers.push(controller)
+
+        try {
+          const abortableRand = abortable(infiniteRandom, controller.signal, { abortCode: 'ERR_TEST_ABORT' })
+          await pipe(abortableRand, stream, consume)
+        } catch (err) {
+          if (err.code !== 'ERR_TEST_ABORT') throw err
         }
+
+        if (!closed) throw new Error('stream should not have ended yet!')
       })
-    })
 
-    it.skip('closing on spdy doesn\'t close until all the streams that are being muxed are closed', (done) => {
-      const p = pair()
-      const dialer = muxer.dial(p[0])
-      const listener = muxer.listen(p[1])
+      // Pause, and then send some data and close the first stream
+      await pause(50)
+      await pipe([randomBuffer()], stream, consume)
+      closed = true
 
-      expect(15).checks(done)
+      // Abort all the other streams later
+      await pause(50)
+      controllers.forEach(c => c.abort())
 
-      const conns = []
-      const count = []
-      for (let i = 0; i < 5; i++) {
-        count.push(i)
-      }
-
-      series(count.map((i) => (cb) => {
-        parallel([
-          (cb) => listener.once('stream', (stream) => {
-            expect(stream).to.exist.mark()
-            pull(stream, stream)
-            cb()
-          }),
-          (cb) => conns.push(dialer.newStream(cb))
-        ], cb)
-      }), (err) => {
-        if (err) return done(err)
-
-        conns.forEach((conn, i) => {
-          pull(
-            pull.values([Buffer.from('hello')]),
-            pull.asyncMap((val, cb) => {
-              setTimeout(() => {
-                cb(null, val)
-              }, i * 10)
-            }),
-            conn,
-            pull.collect((err, data) => {
-              expect(err).to.not.exist.mark()
-              expect(data).to.be.eql([Buffer.from('hello')]).mark()
-            })
-          )
-        })
-      })
+      // These should now all resolve without error
+      await Promise.all(streamResults)
     })
   })
 }

@@ -1,5 +1,4 @@
-interface-stream-muxer
-=====================
+# interface-stream-muxer
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://protocol.ai)
 [![](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
@@ -15,7 +14,7 @@ The primary goal of this module is to enable developers to pick and swap their s
 
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
-The API is presented with both Node.js and Go primitives, however, there is not actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
+The API is presented with both Node.js and Go primitives, however, there is no actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through different stacks.
 
 ## Lead Maintainer
 
@@ -37,7 +36,7 @@ Include this badge in your readme if you make a new module that uses interface-s
 
 ## Usage
 
-### Node.js
+### JS
 
 Install `interface-stream-muxer` as one of the dependencies of your project and as a test file. Then, using `mocha` (for JavaScript) or a test runner with compatible API, do:
 
@@ -45,11 +44,11 @@ Install `interface-stream-muxer` as one of the dependencies of your project and 
 const test = require('interface-stream-muxer')
 
 const common = {
-  setup (cb) {
-    cb(null, yourMuxer)
+  async setup () {
+    return yourMuxer
   },
-  teardown (cb) {
-    cb()
+  async teardown () {
+    // cleanup
   }
 }
 
@@ -63,12 +62,91 @@ test(common)
 
 ## API
 
-A valid (read: that follows this abstraction) stream muxer, must implement the following API.
+### JS
 
-### Attach muxer to a Connection
+A valid (one that follows this abstraction) stream muxer, must implement the following API:
 
-- `JavaScript` muxedConn = muxer(conn, isListener)
-- `Go` muxedConn, err := muxer.Attach(conn, isListener)
+#### `const muxer = new Muxer([options])`
+
+Create a new _duplex_ stream that can be piped together with a connection in order to allow multiplexed communications.
+
+e.g.
+
+```js
+const Muxer = require('your-muxer-module')
+const pipe = require('it-pipe')
+
+// Create a duplex muxer
+const muxer = new Muxer()
+
+// Use the muxer in a pipeline
+pipe(conn, muxer, conn) // conn is duplex connection to another peer
+```
+
+`options` is an optional `Object` that may have the following properties:
+
+* `onStream` - A function called when receiving a new stream from the remote. e.g.
+    ```js
+    // Receive a new stream on the muxed connection
+    const onStream = stream => {
+      // Read from this stream and write back to it (echo server)
+      pipe(
+        stream,
+        source => (async function * () {
+          for await (const data of source) yield data
+        })()
+        stream
+      )
+    }
+    const muxer = new Muxer({ onStream })
+    // ...
+    ```
+    **Note:** The `onStream` function can be passed in place of the `options` object. i.e.
+    ```js
+    new Mplex(stream => { /* ... */ })
+    ```
+* `signal` - An [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) which can be used to abort the muxer, _including_ all of it's multiplexed connections. e.g.
+    ```js
+    const controller = new AbortController()
+    const muxer = new Muxer({ signal: controller.signal })
+
+    pipe(conn, muxer, conn)
+
+    controller.abort()
+    ```
+* `maxMsgSize` - The maximum size in bytes the data field of multiplexed messages may contain (default 1MB)
+
+#### `muxer.onStream`
+
+Use this property as an alternative to passing `onStream` as an option to the `Muxer` constructor.
+
+```js
+const muxer = new Muxer()
+// ...later
+muxer.onStream = stream => { /* ... */ }
+```
+
+#### `const stream = muxer.newStream([options])`
+
+Initiate a new stream with the remote. Returns a [duplex stream](https://gist.github.com/alanshaw/591dc7dd54e4f99338a347ef568d6ee9#duplex-it).
+
+e.g.
+
+```js
+// Create a new stream on the muxed connection
+const stream = muxer.newStream()
+
+// Use this new stream like any other duplex stream:
+pipe([1, 2, 3], stream, consume)
+```
+
+### Go
+
+#### Attach muxer to a Connection
+
+```go
+muxedConn, err := muxer.Attach(conn, isListener)
+```
 
 This method attaches our stream muxer to an instance of [Connection](https://github.com/libp2p/interface-connection/blob/master/src/connection.js) defined by [interface-connection](https://github.com/libp2p/interface-connection).
 
@@ -78,22 +156,22 @@ If `err` is passed, no operation should be made in `conn`.
 
 `muxedConn` interfaces our established Connection with the other endpoint, it must offer an interface to open a stream inside this connection and to receive incomming stream requests.
 
-### Dial(open/create) a new stream
+#### Dial(open/create) a new stream
 
-- `JavaScript` stream = muxedConn.newStream([function (err, stream)])
-- `Go` stream, err := muxedConn.newStream()
+```go
+stream, err := muxedConn.newStream()
+```
 
 This method negotiates and opens a new stream with the other endpoint.
 
 If `err` is passed, no operation should be made in `stream`.
 
-`stream` interface our established Stream with the other endpoint, it must implement the [Duplex pull-stream interface](https://pull-stream.github.io) in JavaScript or the [ReadWriteCloser](http://golang.org/pkg/io/#ReadWriteCloser) in Go.
+`stream` interface our established Stream with the other endpoint, it must implement the [ReadWriteCloser](http://golang.org/pkg/io/#ReadWriteCloser).
 
-### Listen(wait/accept) a new incoming stream
+#### Listen(wait/accept) a new incoming stream
 
-- `JavaScript` muxedConn.on('stream', function (stream) {})
-- `Go` stream := muxedConn.Accept()
+```go
+stream := muxedConn.Accept()
+```
 
 Each time a dialing peer initiates the new stream handshake, a new stream is created on the listening side.
-
-In JavaScript, the Event Emitter pattern is expected to be used in order to receive new incoming streams, while in Go, it expects to wait when Accept is called.

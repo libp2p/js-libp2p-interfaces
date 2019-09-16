@@ -5,63 +5,26 @@ const spawn = require('./spawner')
 
 module.exports = (common) => {
   describe('stress test', () => {
-    let muxer
+    let Muxer
 
-    beforeEach((done) => {
-      common.setup((err, _muxer) => {
-        if (err) return done(err)
-        muxer = _muxer
-        done()
-      })
+    beforeEach(async () => {
+      Muxer = await common.setup()
     })
 
-    it('1 stream with 1 msg', (done) => {
-      spawn(muxer, 1, 1, done)
-    })
-
-    it('1 stream with 10 msg', (done) => {
-      spawn(muxer, 1, 10, done)
-    })
-
-    it('1 stream with 100 msg', (done) => {
-      spawn(muxer, 1, 100, done)
-    })
-
-    it('10 streams with 1 msg', (done) => {
-      spawn(muxer, 10, 1, done)
-    })
-
-    it('10 streams with 10 msg', (done) => {
-      spawn(muxer, 10, 10, done)
-    })
-
-    it('10 streams with 100 msg', (done) => {
-      spawn(muxer, 10, 100, done)
-    })
-
-    it('100 streams with 1 msg', (done) => {
-      spawn(muxer, 100, 1, done)
-    })
-
-    it('100 streams with 10 msg', (done) => {
-      spawn(muxer, 100, 10, done)
-    })
-
-    it('100 streams with 100 msg', (done) => {
-      spawn(muxer, 100, 100, done)
-    })
-
-    it('1000 streams with 1 msg', (done) => {
-      spawn(muxer, 1000, 1, done)
-    })
-
-    it('1000 streams with 10 msg', (done) => {
-      spawn(muxer, 1000, 10, done)
-    })
-
-    it('1000 streams with 100 msg', function (done) {
-      this.timeout(80 * 1000)
-      spawn(muxer, 1000, 100, done)
+    it('1 stream with 1 msg', () => spawn(Muxer, 1, 1))
+    it('1 stream with 10 msg', () => spawn(Muxer, 1, 10))
+    it('1 stream with 100 msg', () => spawn(Muxer, 1, 100))
+    it('10 streams with 1 msg', () => spawn(Muxer, 10, 1))
+    it('10 streams with 10 msg', () => spawn(Muxer, 10, 10))
+    it('10 streams with 100 msg', () => spawn(Muxer, 10, 100))
+    it('100 streams with 1 msg', () => spawn(Muxer, 100, 1))
+    it('100 streams with 10 msg', () => spawn(Muxer, 100, 10))
+    it('100 streams with 100 msg', () => spawn(Muxer, 100, 100))
+    it('1000 streams with 1 msg', () => spawn(Muxer, 1000, 1))
+    it('1000 streams with 10 msg', () => spawn(Muxer, 1000, 10))
+    it('1000 streams with 100 msg', function () {
+      this.timeout(30 * 1000)
+      return spawn(Muxer, 1000, 100)
     })
   })
 }

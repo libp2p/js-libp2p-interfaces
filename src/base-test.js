@@ -3,145 +3,113 @@
 
 const chai = require('chai')
 chai.use(require('chai-checkmark'))
-const expect = chai.expect
-const pair = require('pull-pair/duplex')
-const pull = require('pull-stream')
+const { expect } = chai
+const pair = require('it-pair/duplex')
+const pipe = require('it-pipe')
+const { collect, map, consume } = require('streaming-iterables')
 
-function closeAndWait (stream) {
-  pull(
-    pull.empty(),
-    stream,
-    pull.onEnd((err) => {
-      expect(err).to.not.exist.mark()
-    })
-  )
+async function closeAndWait (stream) {
+  await pipe([], stream, consume)
+  expect(true).to.be.true.mark()
 }
 
 module.exports = (common) => {
   describe('base', () => {
-    let muxer
+    let Muxer
 
-    beforeEach((done) => {
-      common.setup((err, _muxer) => {
-        if (err) return done(err)
-        muxer = _muxer
-        done()
-      })
+    beforeEach(async () => {
+      Muxer = await common.setup()
     })
 
     it('Open a stream from the dialer', (done) => {
       const p = pair()
-      const dialer = muxer.dialer(p[0])
-      const listener = muxer.listener(p[1])
+      const dialer = new Muxer()
 
-      expect(4).checks(done)
-
-      listener.on('stream', (stream) => {
+      const listener = new Muxer(stream => {
         expect(stream).to.exist.mark()
         closeAndWait(stream)
       })
 
-      const conn = dialer.newStream((err) => {
-        expect(err).to.not.exist.mark()
-      })
+      pipe(p[0], dialer, p[0])
+      pipe(p[1], listener, p[1])
+
+      expect(3).checks(done)
+
+      const conn = dialer.newStream()
 
       closeAndWait(conn)
     })
 
     it('Open a stream from the listener', (done) => {
       const p = pair()
-      const dialer = muxer.dialer(p[0])
-      const listener = muxer.listener(p[1])
-
-      expect(4).check(done)
-
-      dialer.on('stream', (stream) => {
+      const dialer = new Muxer(stream => {
         expect(stream).to.exist.mark()
         closeAndWait(stream)
       })
+      const listener = new Muxer()
 
-      const conn = listener.newStream((err) => {
-        expect(err).to.not.exist.mark()
-      })
+      pipe(p[0], dialer, p[0])
+      pipe(p[1], listener, p[1])
+
+      expect(3).check(done)
+
+      const conn = listener.newStream()
 
       closeAndWait(conn)
     })
 
     it('Open a stream on both sides', (done) => {
       const p = pair()
-      const dialer = muxer.dialer(p[0])
-      const listener = muxer.listener(p[1])
-
-      expect(8).check(done)
-
-      dialer.on('stream', (stream) => {
+      const dialer = new Muxer(stream => {
+        expect(stream).to.exist.mark()
+        closeAndWait(stream)
+      })
+      const listener = new Muxer(stream => {
         expect(stream).to.exist.mark()
         closeAndWait(stream)
       })
 
-      const listenerConn = listener.newStream((err) => {
-        expect(err).to.not.exist.mark()
-      })
+      pipe(p[0], dialer, p[0])
+      pipe(p[1], listener, p[1])
 
-      listener.on('stream', (stream) => {
-        expect(stream).to.exist.mark()
-        closeAndWait(stream)
-      })
+      expect(6).check(done)
 
-      const dialerConn = dialer.newStream((err) => {
-        expect(err).to.not.exist.mark()
-      })
+      const listenerConn = listener.newStream()
+      const dialerConn = dialer.newStream()
 
       closeAndWait(dialerConn)
       closeAndWait(listenerConn)
     })
 
-    it('Open a stream on one side, write, open a stream in the other side', (done) => {
+    it('Open a stream on one side, write, open a stream on the other side', (done) => {
+      const toString = map(c => c.slice().toString())
       const p = pair()
-      const dialer = muxer.dialer(p[0])
-      const listener = muxer.listener(p[1])
-
-      expect(6).check(done)
-
-      const dialerConn = dialer.newStream((err) => {
-        expect(err).to.not.exist.mark()
-      })
-
-      listener.on('stream', (stream) => {
-        pull(
-          stream,
-          pull.collect((err, chunks) => {
-            expect(err).to.not.exist.mark()
-            expect(chunks).to.be.eql([Buffer.from('hey')]).mark()
-          })
-        )
-
-        dialer.on('stream', onDialerStream)
-
-        const listenerConn = listener.newStream((err) => {
-          expect(err).to.not.exist.mark()
+      const dialer = new Muxer()
+      const listener = new Muxer(stream => {
+        pipe(stream, toString, collect).then(chunks => {
+          expect(chunks).to.be.eql(['hey']).mark()
         })
 
-        pull(
-          pull.values(['hello']),
-          listenerConn
-        )
+        dialer.onStream = onDialerStream
 
-        function onDialerStream (stream) {
-          pull(
-            stream,
-            pull.collect((err, chunks) => {
-              expect(err).to.not.exist.mark()
-              expect(chunks).to.be.eql([Buffer.from('hello')]).mark()
-            })
-          )
+        const listenerConn = listener.newStream()
+
+        pipe(['hello'], listenerConn)
+
+        async function onDialerStream (stream) {
+          const chunks = await pipe(stream, toString, collect)
+          expect(chunks).to.be.eql(['hello']).mark()
         }
       })
 
-      pull(
-        pull.values(['hey']),
-        dialerConn
-      )
+      pipe(p[0], dialer, p[0])
+      pipe(p[1], listener, p[1])
+
+      expect(2).check(done)
+
+      const dialerConn = dialer.newStream()
+
+      pipe(['hey'], dialerConn)
     })
   })
 }
