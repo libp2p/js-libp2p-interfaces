@@ -1,3 +1,18 @@
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/libp2p/interface-stream-muxer/compare/v0.6.0...v0.7.0) (2019-09-16)
+
+
+### Code Refactoring
+
+* API changes and switch to async await ([#55](https://github.com/libp2p/interface-stream-muxer/issues/55)) ([dd837ba](https://github.com/libp2p/interface-stream-muxer/commit/dd837ba))
+
+
+### BREAKING CHANGES
+
+* the API is now async / await. See https://github.com/libp2p/interface-stream-muxer/pull/55#issue-275014779 for a summary of the changes.
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/libp2p/interface-stream-muxer/compare/v0.5.9...v0.6.0) (2018-11-13)
 
