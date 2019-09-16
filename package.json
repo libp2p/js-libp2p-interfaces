@@ -1,6 +1,6 @@
 {
   "name": "interface-stream-muxer",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A test suite and interface you can use to implement a stream muxer.",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
@@ -49,12 +49,14 @@
     "aegir": "^20.0.0"
   },
   "contributors": [
+    "Alan Shaw <alan.shaw@protocol.ai>",
     "David Dias <daviddias.p@gmail.com>",
     "David Dias <mail@daviddias.me>",
     "Dmitriy Ryajov <dryajov@gmail.com>",
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
     "Jacob Heun <jacobheun@gmail.com>",
     "Jeffrey Hulten <jhulten@gmail.com>",
+    "Vasco Santos <vasco.santos@moxy.studio>",
     "greenkeeperio-bot <support@greenkeeper.io>",
     "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>"
   ]
