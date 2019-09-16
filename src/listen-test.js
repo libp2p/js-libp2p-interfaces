@@ -50,10 +50,6 @@ module.exports = (common) => {
 
     it('close listener with connections, through timeout', async () => {
       const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
-      let finish
-      const done = new Promise((resolve) => {
-        finish = resolve
-      })
 
       const listener = transport.createListener((conn) => {
         expect(upgradeSpy.returned(conn)).to.equal(true)
@@ -64,21 +60,23 @@ module.exports = (common) => {
       await listener.listen(addrs[0])
 
       // Create two connections to the listener
-      const socket1 = await transport.dial(addrs[0])
-      await transport.dial(addrs[0])
+      const [socket1] = await Promise.all([
+        transport.dial(addrs[0]),
+        transport.dial(addrs[0])
+      ])
 
-      pipe(
-        [Buffer.from('Some data that is never handled')],
-        socket1
-      ).then(() => {
-        finish()
-      })
+      // Give the listener a chance to finish its upgrade
+      await new Promise(resolve => setTimeout(resolve, 0))
 
-      // Closer the listener (will take a couple of seconds to time out)
-      await listener.close()
-
-      // Pipe should have completed
-      await done
+      // Wait for the data send and close to finish
+      await Promise.all([
+        pipe(
+          [Buffer.from('Some data that is never handled')],
+          socket1
+        ),
+        // Closer the listener (will take a couple of seconds to time out)
+        listener.close()
+      ])
 
       // 2 dials = 2 connections upgraded
       expect(upgradeSpy.callCount).to.equal(2)

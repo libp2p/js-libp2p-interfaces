@@ -22,7 +22,7 @@
     "coverage": "exit(0)",
     "coverage-publish": "exit(0)"
   },
-  "pre-commit": [
+  "pre-push": [
     "lint"
   ],
   "keywords": [
