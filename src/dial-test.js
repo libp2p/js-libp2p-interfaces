@@ -6,6 +6,7 @@ const dirtyChai = require('dirty-chai')
 const expect = chai.expect
 chai.use(dirtyChai)
 
+const { isValidTick } = require('./utils')
 const goodbye = require('it-goodbye')
 const { collect } = require('streaming-iterables')
 const pipe = require('it-pipe')
@@ -15,19 +16,18 @@ const sinon = require('sinon')
 
 module.exports = (common) => {
   const upgrader = {
-    upgradeOutbound (multiaddrConnection) {
-      ['sink', 'source', 'remoteAddr', 'conn'].forEach(prop => {
+    _upgrade (multiaddrConnection) {
+      ['sink', 'source', 'remoteAddr', 'conn', 'timeline', 'close'].forEach(prop => {
         expect(multiaddrConnection).to.have.property(prop)
       })
-
-      return { sink: multiaddrConnection.sink, source: multiaddrConnection.source }
+      expect(isValidTick(multiaddrConnection.timeline.open)).to.equal(true)
+      return multiaddrConnection
+    },
+    upgradeOutbound (multiaddrConnection) {
+      return upgrader._upgrade(multiaddrConnection)
     },
     upgradeInbound (multiaddrConnection) {
-      ['sink', 'source', 'remoteAddr', 'conn'].forEach(prop => {
-        expect(multiaddrConnection).to.have.property(prop)
-      })
-
-      return { sink: multiaddrConnection.sink, source: multiaddrConnection.source }
+      return upgrader._upgrade(multiaddrConnection)
     }
   }
 
@@ -65,6 +65,16 @@ module.exports = (common) => {
       expect(upgradeSpy.returned(conn)).to.equal(true)
       expect(result.length).to.equal(1)
       expect(result[0].toString()).to.equal('hey')
+    })
+
+    it('can close connections', async () => {
+      const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
+      const conn = await transport.dial(addrs[0])
+
+      expect(upgradeSpy.callCount).to.equal(1)
+      expect(upgradeSpy.returned(conn)).to.equal(true)
+      await conn.close()
+      expect(isValidTick(conn.timeline.close)).to.equal(true)
     })
 
     it('to non existent listener', async () => {
