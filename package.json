@@ -1,6 +1,6 @@
 {
   "name": "interface-transport",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "A test suite and interface you can use to implement a transport.",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "repository": {
