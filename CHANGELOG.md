@@ -1,3 +1,13 @@
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/libp2p/interface-transport/compare/v0.6.1...v0.7.0) (2019-09-19)
+
+
+### Features
+
+* timeline and close checking ([#55](https://github.com/libp2p/interface-transport/issues/55)) ([993ca1c](https://github.com/libp2p/interface-transport/commit/993ca1c))
+
+
+
 <a name="0.6.1"></a>
 ## [0.6.1](https://github.com/libp2p/interface-transport/compare/v0.6.0...v0.6.1) (2019-09-16)
 
