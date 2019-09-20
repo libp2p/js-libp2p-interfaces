@@ -1,3 +1,18 @@
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/libp2p/interface-stream-muxer/compare/v0.7.0...v0.8.0) (2019-09-20)
+
+
+### Features
+
+* add onStreamEnd, muxer.streams and timeline ([#56](https://github.com/libp2p/interface-stream-muxer/issues/56)) ([0f60832](https://github.com/libp2p/interface-stream-muxer/commit/0f60832))
+
+
+### BREAKING CHANGES
+
+* This adds new validations to the stream muxer, which will cause existing tests to fail.
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/libp2p/interface-stream-muxer/compare/v0.6.0...v0.7.0) (2019-09-16)
 
