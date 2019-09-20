@@ -1,6 +1,6 @@
 {
   "name": "interface-stream-muxer",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A test suite and interface you can use to implement a stream muxer.",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
