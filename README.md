@@ -105,6 +105,14 @@ pipe(conn, muxer, conn) // conn is duplex connection to another peer
     ```js
     new Mplex(stream => { /* ... */ })
     ```
+* `onStreamEnd` - A function called when a stream ends.
+  ```js
+     // Get notified when a stream has ended
+    const onStreamEnd = stream => {
+      // Manage any tracking changes, etc
+    }
+    const muxer = new Muxer({ onStreamEnd, ... })
+  ```
 * `signal` - An [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) which can be used to abort the muxer, _including_ all of it's multiplexed connections. e.g.
     ```js
     const controller = new AbortController()
@@ -126,6 +134,16 @@ const muxer = new Muxer()
 muxer.onStream = stream => { /* ... */ }
 ```
 
+#### `muxer.onStreamEnd`
+
+Use this property as an alternative to passing `onStreamEnd` as an option to the `Muxer` constructor.
+
+```js
+const muxer = new Muxer()
+// ...later
+muxer.onStreamEnd = stream => { /* ... */ }
+```
+
 #### `const stream = muxer.newStream([options])`
 
 Initiate a new stream with the remote. Returns a [duplex stream](https://gist.github.com/alanshaw/591dc7dd54e4f99338a347ef568d6ee9#duplex-it).
@@ -138,6 +156,17 @@ const stream = muxer.newStream()
 
 // Use this new stream like any other duplex stream:
 pipe([1, 2, 3], stream, consume)
+```
+
+#### `const streams = muxer.streams`
+
+The streams property returns an array of streams the muxer currently has open. Closed streams will not be returned.
+
+```js
+muxer.streams.map(stream => {
+  // Log out the stream's id
+  console.log(stream.id)
+})
 ```
 
 ### Go
