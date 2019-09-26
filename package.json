@@ -5,22 +5,29 @@
   "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
   "main": "src/index.js",
   "scripts": {
-    "lint": "aegir-lint",
-    "build": "aegir-build",
-    "test": "exit 0",
-    "release": "aegir-release",
-    "release-minor": "aegir-release --type minor",
-    "release-major": "aegir-release --type major"
+    "lint": "aegir lint",
+    "test": "aegir test",
+    "build": "aegir build",
+    "release": "aegir release --no-test",
+    "release-minor": "aegir release --type minor --no-test",
+    "release-major": "aegir release --type major --no-test",
+    "coverage": "exit(0)",
+    "coverage-publish": "exit(0)"
   },
-  "pre-commit": [
-    "lint",
-    "test"
+  "pre-push": [
+    "lint"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/libp2p/interface-peer-discovery.git"
   },
   "keywords": [
+    "libp2p",
+    "network",
+    "p2p",
+    "peer",
+    "discovery",
+    "peer-to-peer",
     "IPFS"
   ],
   "author": "David Dias <daviddias@ipfs.io>",
@@ -31,11 +38,13 @@
   "homepage": "https://github.com/libp2p/interface-peer-discovery",
   "dependencies": {},
   "devDependencies": {
-    "aegir": "^18.2.2"
+    "aegir": "^20.3.1",
+    "chai": "^4.2.0",
+    "dirty-chai": "^2.0.1"
   },
   "engines": {
-    "node": ">=4.0.0",
-    "npm": ">=3.0.0"
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>"
