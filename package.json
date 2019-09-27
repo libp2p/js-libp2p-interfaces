@@ -6,13 +6,13 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "aegir lint",
-    "test": "aegir test",
     "build": "aegir build",
-    "release": "aegir release --no-test",
-    "release-minor": "aegir release --type minor --no-test",
-    "release-major": "aegir release --type major --no-test",
-    "coverage": "exit(0)",
-    "coverage-publish": "exit(0)"
+    "test": "aegir test",
+    "test:node": "aegir test -t node",
+    "test:browser": "aegir test -t browser -t webworker",
+    "release": "aegir release",
+    "release-minor": "aegir release --type minor",
+    "release-major": "aegir release --type major"
   },
   "pre-push": [
     "lint"
@@ -40,7 +40,9 @@
   "devDependencies": {
     "aegir": "^20.3.1",
     "chai": "^4.2.0",
-    "dirty-chai": "^2.0.1"
+    "dirty-chai": "^2.0.1",
+    "peer-id": "^0.13.3",
+    "peer-info": "^0.17.0"
   },
   "engines": {
     "node": ">=10.0.0",
