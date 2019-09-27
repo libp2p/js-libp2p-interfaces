@@ -5,11 +5,13 @@ module.exports = (common) => {
   describe('interface-peer-discovery', () => {
     let discovery
 
-    before(() => {
-      discovery = common.setup()
+    before(async () => {
+      discovery = await common.setup()
     })
 
     after(() => common.teardown && common.teardown())
+
+    afterEach('ensure discovery was stopped', () => discovery.stop())
 
     it('can start the service', async () => {
       await discovery.start()
