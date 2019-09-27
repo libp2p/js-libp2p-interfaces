@@ -21,7 +21,7 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 ## Modules that implement the interface
 
 - [JavaScript libp2p-mdns](https://github.com/libp2p/js-libp2p-mdns)
-- [JavaScript libp2p-railing](https://github.com/libp2p/js-libp2p-railing)
+- [JavaScript libp2p-bootstrap](https://github.com/libp2p/js-libp2p-bootstrap)
 - [JavaScript libp2p-kad-dht](https://github.com/libp2p/js-libp2p-kad-dht)
 - [JavaScript libp2p-webrtc-star](https://github.com/libp2p/js-libp2p-webrtc-star)
 - [JavaScript libp2p-websocket-star](https://github.com/libp2p/js-libp2p-websocket-star)
@@ -44,11 +44,11 @@ Install `interface-peer-discovery` as one of the dependencies of your project an
 const test = require('interface-peer-discovery')
 
 const common = {
-  setup (cb) {
-    cb(null, yourMuxer)
+  setup () {
+    return YourDiscovery
   },
-  teardown (cb) {
-    cb()
+  teardown () {
+    // Clean up any resources created by setup()
   }
 }
 
@@ -56,25 +56,28 @@ const common = {
 test(common)
 ```
 
-### Go
-
-> WIP - go-libp2p does not have a test suite available for Peer Discovery yet.
-
 ## API
 
 A valid (read: that follows this abstraction) Peer Discovery module must implement the following API:
 
 ### `start` the service
 
-- `JavaScript` discovery.start(callback)
-- `Go` NA
+- `await discovery.start()`
+
+Start the discovery service.
+
+It returns a `Promise`
 
 ### `stop` the service
 
-- `JavaScript` discovery.stop(callback)
-- `Go` NA
+- `await discovery.stop()`
+
+Stop the discovery service.
+
+It returns a `Promise`
 
 ### discoverying peers
 
-- `JavaScript` discovery.on('peer', function (peerInfo) {})
-- `Go` NA
+- `discovery.on('peer', (peerInfo) => {})`
+
+Everytime a peer is discovered by a discovery service, it emmits a `peer` event with the discover peer's [PeerInfo](https://github.com/libp2p/js-peer-info).
