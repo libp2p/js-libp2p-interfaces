@@ -1,3 +1,18 @@
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/libp2p/interface-connection/compare/v0.3.3...v0.4.0) (2019-09-27)
+
+
+### Code Refactoring
+
+* API changes and switch to async iterators ([#29](https://github.com/libp2p/interface-connection/issues/29)) ([bf5c646](https://github.com/libp2p/interface-connection/commit/bf5c646))
+
+
+### BREAKING CHANGES
+
+* all the callbacks in the provided API were removed and each function uses async/await. Additionally, pull-streams are no longer being used. See the README for new usage.
+
+
+
 <a name="0.3.3"></a>
 ## [0.3.3](https://github.com/libp2p/interface-connection/compare/v0.3.1...v0.3.3) (2018-11-29)
 
