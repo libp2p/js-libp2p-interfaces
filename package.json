@@ -1,6 +1,6 @@
 {
   "name": "interface-discovery",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A test suite and interface you can use to implement a discovery interface.",
   "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
   "main": "src/index.js",
@@ -50,6 +50,7 @@
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",
+    "Jacob Heun <jacobheun@gmail.com>",
     "Mike Goelzer <mgoelzer@docker.com>",
     "Vasco Santos <vasco.santos@moxy.studio>",
     "Vasco Santos <vasco.santos@ua.pt>"
