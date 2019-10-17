@@ -40,7 +40,8 @@
     "dirty-chai": "^2.0.1",
     "err-code": "^2.0.0",
     "multiaddr": "^7.1.0",
-    "peer-id": "~0.13.2"
+    "peer-id": "~0.13.2",
+    "sinon": "^7.5.0"
   },
   "devDependencies": {
     "aegir": "^20.2.0",

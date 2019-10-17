@@ -75,10 +75,6 @@ class Connection {
      */
     this._stat = {
       ...stat,
-      timeline: {
-        ...stat.timeline,
-        close: undefined
-      },
       status: 'open'
     }
 

@@ -5,6 +5,7 @@
 const chai = require('chai')
 const expect = chai.expect
 chai.use(require('dirty-chai'))
+const sinon = require('sinon')
 
 module.exports = (test) => {
   describe('connection', () => {
@@ -69,9 +70,27 @@ module.exports = (test) => {
 
     describe('close connection', () => {
       let connection
+      let timelineProxy
+      const proxyHandler = {
+        set () {
+          return Reflect.set(...arguments)
+        }
+      }
 
       beforeEach(async () => {
-        connection = await test.setup()
+        timelineProxy = new Proxy({
+          open: Date.now() - 10,
+          upgraded: Date.now()
+        }, proxyHandler)
+
+        connection = await test.setup({
+          stat: {
+            timeline: timelineProxy,
+            direction: 'outbound',
+            encryption: '/crypto/1.0.0',
+            multiplexer: '/muxer/1.0.0'
+          }
+        })
         if (!connection) throw new Error('missing connection')
       })
 
@@ -98,6 +117,18 @@ module.exports = (test) => {
 
         expect(connection.stat.timeline.close).to.exist()
         expect(connection.stat.status).to.equal('closed')
+      })
+
+      it('should support a proxy on the timeline', async () => {
+        sinon.spy(proxyHandler, 'set')
+        expect(connection.stat.timeline.close).to.not.exist()
+
+        await connection.close()
+        expect(proxyHandler.set.callCount).to.equal(1)
+        const [obj, key, value] = proxyHandler.set.getCall(0).args
+        expect(obj).to.eql(connection.stat.timeline)
+        expect(key).to.equal('close')
+        expect(value).to.be.a('number').that.equals(connection.stat.timeline.close)
       })
 
       it('should fail to create a new stream if the connection is closing', async () => {

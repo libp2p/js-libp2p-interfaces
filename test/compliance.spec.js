@@ -10,7 +10,12 @@ const pair = require('it-pair')
 
 describe('compliance tests', () => {
   tests({
-    async setup () {
+    /**
+     * Test setup. `properties` allows the compliance test to override
+     * certain values for testing.
+     * @param {*} properties
+     */
+    async setup (properties) {
       const localAddr = multiaddr('/ip4/127.0.0.1/tcp/8080')
       const remoteAddr = multiaddr('/ip4/127.0.0.1/tcp/8081')
       const [localPeer, remotePeer] = await Promise.all([
@@ -49,7 +54,8 @@ describe('compliance tests', () => {
           }
         },
         close: () => {},
-        getStreams: () => openStreams
+        getStreams: () => openStreams,
+        ...properties
       })
     },
     async teardown () {
