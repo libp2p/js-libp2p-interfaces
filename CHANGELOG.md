@@ -1,3 +1,13 @@
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/libp2p/interface-connection/compare/v0.4.0...v0.4.1) (2019-10-17)
+
+
+### Features
+
+* add support for timeline proxying ([#31](https://github.com/libp2p/interface-connection/issues/31)) ([541bf83](https://github.com/libp2p/interface-connection/commit/541bf83))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/libp2p/interface-connection/compare/v0.3.3...v0.4.0) (2019-09-27)
 
