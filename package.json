@@ -1,6 +1,6 @@
 {
   "name": "interface-connection",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A test suite and interface you can use to implement a connection interface.",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
