@@ -1,0 +1,23 @@
+{
+  "name": "interface-content-routing",
+  "version": "0.0.0",
+  "description": "A test suite and interface you can use to implement a Content Routing for libp2p.",
+  "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/libp2p/interface-content-routing.git"
+  },
+  "keywords": [
+    "IPFS"
+  ],
+  "author": "David Dias <daviddias@ipfs.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/libp2p/interface-content-routing/issues"
+  },
+  "homepage": "https://github.com/libp2p/interface-content-routing",
+  "devDependencies": {},
+  "dependencies": {
+    "timed-tape": "^0.1.1"
+  }
+}
