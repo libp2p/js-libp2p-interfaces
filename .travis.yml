@@ -1,0 +1,17 @@
+language: node_js
+cache: npm
+stages:
+  - check
+
+node_js:
+  - '10'
+
+jobs:
+  include:
+    - stage: check
+      script:
+        - npx aegir dep-check
+        - npm run lint
+
+notifications:
+  email: false

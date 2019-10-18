@@ -1,0 +1,63 @@
+{
+  "name": "interface-stream-muxer",
+  "version": "0.8.0",
+  "description": "A test suite and interface you can use to implement a stream muxer.",
+  "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
+  "main": "src/index.js",
+  "browser": {
+    "libp2p-tcp": false
+  },
+  "scripts": {
+    "test": "node -e 'process.exit()'",
+    "test:node": "node -e 'process.exit()'",
+    "build": "aegir build -t node",
+    "lint": "aegir lint",
+    "release": "aegir release -t node",
+    "release-minor": "aegir release -t node --type minor",
+    "release-major": "aegir release -t node --type major",
+    "coverage": "node -e 'process.exit()'",
+    "coverage-publish": "node -e 'process.exit()'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/libp2p/interface-stream-muxer.git"
+  },
+  "keywords": [
+    "Streams",
+    "Muxer",
+    "Interface"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/libp2p/interface-stream-muxer/issues"
+  },
+  "homepage": "https://github.com/libp2p/interface-stream-muxer",
+  "dependencies": {
+    "abort-controller": "^3.0.0",
+    "abortable-iterator": "^2.1.0",
+    "chai": "^4.2.0",
+    "chai-checkmark": "^1.0.1",
+    "detect-node": "^2.0.4",
+    "it-pair": "^1.0.0",
+    "it-pipe": "^1.0.1",
+    "libp2p-tcp": "^0.14.0",
+    "multiaddr": "^7.1.0",
+    "p-limit": "^2.2.0",
+    "streaming-iterables": "^4.1.0"
+  },
+  "devDependencies": {
+    "aegir": "^20.0.0"
+  },
+  "contributors": [
+    "Alan Shaw <alan.shaw@protocol.ai>",
+    "David Dias <daviddias.p@gmail.com>",
+    "David Dias <mail@daviddias.me>",
+    "Dmitriy Ryajov <dryajov@gmail.com>",
+    "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
+    "Jacob Heun <jacobheun@gmail.com>",
+    "Jeffrey Hulten <jhulten@gmail.com>",
+    "Vasco Santos <vasco.santos@moxy.studio>",
+    "greenkeeperio-bot <support@greenkeeper.io>",
+    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>"
+  ]
+}
