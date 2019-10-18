@@ -1,0 +1,58 @@
+{
+  "name": "interface-discovery",
+  "version": "0.1.1",
+  "description": "A test suite and interface you can use to implement a discovery interface.",
+  "leadMaintainer": "Vasco Santos <vasco.santos@moxy.studio>",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "aegir lint",
+    "build": "aegir build",
+    "test": "aegir test",
+    "test:node": "aegir test -t node",
+    "test:browser": "aegir test -t browser -t webworker",
+    "release": "aegir release",
+    "release-minor": "aegir release --type minor",
+    "release-major": "aegir release --type major"
+  },
+  "pre-push": [
+    "lint"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/libp2p/interface-peer-discovery.git"
+  },
+  "keywords": [
+    "libp2p",
+    "network",
+    "p2p",
+    "peer",
+    "discovery",
+    "peer-to-peer",
+    "IPFS"
+  ],
+  "author": "David Dias <daviddias@ipfs.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/libp2p/interface-peer-discovery/issues"
+  },
+  "homepage": "https://github.com/libp2p/interface-peer-discovery",
+  "dependencies": {},
+  "devDependencies": {
+    "aegir": "^20.3.1",
+    "chai": "^4.2.0",
+    "dirty-chai": "^2.0.1",
+    "peer-id": "^0.13.3",
+    "peer-info": "^0.17.0"
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
+  "contributors": [
+    "David Dias <daviddias.p@gmail.com>",
+    "Jacob Heun <jacobheun@gmail.com>",
+    "Mike Goelzer <mgoelzer@docker.com>",
+    "Vasco Santos <vasco.santos@moxy.studio>",
+    "Vasco Santos <vasco.santos@ua.pt>"
+  ]
+}
