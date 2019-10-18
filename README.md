@@ -9,12 +9,13 @@
 
 ## Interfaces
 
-- [Connection](./connection)
-- [Content Routing](./content-routing)
-- [Peer Discovery](./peer-discovery)
-- [Peer Routing](./peer-routing)
-- [Stream Muxer](./stream-muxer)
-- [Transport](./transport)
+- [Connection](./src/connection)
+- [Content Routing](./src/content-routing)
+- [Peer Discovery](./src/peer-discovery)
+- [Peer Routing](./src/peer-routing)
+- [Record Store](./src/record-store)
+- [Stream Muxer](./src/stream-muxer)
+- [Transport](./src/transport)
 
 ### Origin Repositories
 
@@ -23,6 +24,7 @@ For posterity, here is a link to the original repositories for each of the inter
 - [Content Routing](https://github.com/libp2p/interface-content-routing)
 - [Peer Discovery](https://github.com/libp2p/interface-peer-discovery)
 - [Peer Routing](https://github.com/libp2p/interface-peer-routing)
+- [Record Store](https://github.com/libp2p/interface-record-store)
 - [Stream Muxer](https://github.com/libp2p/interface-stream-muxer)
 - [Transport](https://github.com/libp2p/interface-transport)
 
