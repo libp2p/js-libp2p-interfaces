@@ -12,6 +12,3 @@ module.exports = (common) => {
     filter(common)
   })
 }
-
-module.exports.AbortError = require('../errors').AbortError
-module.exports.Adapter = require('../adapter')

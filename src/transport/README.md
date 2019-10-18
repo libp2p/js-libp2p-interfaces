@@ -1,14 +1,6 @@
 interface-transport
 ===================
 
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://protocol.ai)
-[![](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
-[![](https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23libp2p)
-[![Discourse posts](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg)](https://discuss.libp2p.io)
-[![](https://img.shields.io/travis/libp2p/interface-transport.svg?style=flat-square)](https://travis-ci.com/libp2p/interface-transport)
-[![Dependency Status](https://david-dm.org/libp2p/interface-transport.svg?style=flat-square)](https://david-dm.org/libp2p/interface-transport)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
-
 > A test suite and interface you can use to implement a libp2p transport. A libp2p transport is understood as something that offers a dial and listen interface.
 
 The primary goal of this module is to enable developers to pick and swap their transport module as they see fit for their libp2p installation, without having to go through shims or compatibility issues. This module and test suite were heavily inspired by abstract-blob-store, interface-stream-muxer and others.
@@ -16,10 +8,6 @@ The primary goal of this module is to enable developers to pick and swap their t
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
 The purpose of this interface is not to reinvent any wheels when it comes to dialing and listening to transports. Instead, it tries to provide a uniform API for several transports through a shimmed interface.
-
-## Lead Maintainer
-
-[Jacob Heun](https://github.com/jacobheun/)
 
 # Modules that implement the interface
 
@@ -45,7 +33,7 @@ Include this badge in your readme if you make a module that is compatible with t
 /* eslint-env mocha */
 'use strict'
 
-const tests = require('interface-transport')
+const tests = require('libp2p-interfaces/src/transport/tests')
 const multiaddr = require('multiaddr')
 const YourTransport = require('../src')
 
@@ -147,7 +135,7 @@ This method uses a transport to dial a Peer listening on `multiaddr`.
 
 `[options]` the options that may be passed to the dial. Must support the `signal` option (see below)
 
-Dial **MUST** call and return `upgrader.upgradeOutbound(multiaddrConnection)`. The upgrader will return an [interface-connection](https://github.com/libp2p/interface-connection) instance.
+Dial **MUST** call and return `upgrader.upgradeOutbound(multiaddrConnection)`. The upgrader will return an [interface-connection](../connection) instance.
 
 The dial may throw an `Error` instance if there was a problem connecting to the `multiaddr`.
 
@@ -157,7 +145,7 @@ Dials may be cancelled using an `AbortController`:
 
 ```Javascript
 const AbortController = require('abort-controller')
-const { AbortError } = require('interface-transport')
+const { AbortError } = require('libp2p-interfaces/src/transport/errors')
 const controller = new AbortController()
 try {
   const conn = await mytransport.dial(ma, { signal: controller.signal })
@@ -193,7 +181,7 @@ This method creates a listener on the transport. Implementations **MUST** call `
 
 `options` is an optional object that contains the properties the listener must have, in order to properly listen on a given transport/socket.
 
-`handlerFunction` is a function called each time a new connection is received. It must follow the following signature: `function (conn) {}`, where `conn` is a connection that follows the [`interface-connection`](https://github.com/diasdavid/interface-connection).
+`handlerFunction` is a function called each time a new connection is received. It must follow the following signature: `function (conn) {}`, where `conn` is a connection that follows the [`interface-connection`](../connection).
 
 The listener object created may emit the following events:
 
