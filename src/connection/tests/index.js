@@ -2,7 +2,7 @@
 
 'use strict'
 
-const connectionSuite = require('../test/connection')
+const connectionSuite = require('./connection')
 
 module.exports = (test) => {
   connectionSuite(test)

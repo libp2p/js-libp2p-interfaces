@@ -1,24 +1,11 @@
 interface-connection
 ==================
 
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://protocol.ai)
-[![](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
-[![](https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23libp2p)
-[![Discourse posts](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg)](https://discuss.libp2p.io)
-[![](https://img.shields.io/codecov/c/github/libp2p/interface-connection.svg?style=flat-square)](https://codecov.io/gh/libp2p/interface-connection)
-[![](https://img.shields.io/travis/libp2p/interface-connection.svg?style=flat-square)](https://travis-ci.com/libp2p/interface-connection)
-[![Dependency Status](https://david-dm.org/libp2p/interface-connection.svg?style=flat-square)](https://david-dm.org/libp2p/interface-connection)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
-
 This is a test suite and interface you can use to implement a connection. The connection interface contains all the metadata associated with it, as well as an array of the streams opened through this connection. In the same way as the connection, a stream contains properties with its metadata, plus an iterable duplex object that offers a mechanism for writing and reading data, with back pressure. This module and test suite were heavily inspired by abstract-blob-store and interface-stream-muxer.
 
 The primary goal of this module is to enable developers to pick, swap or upgrade their connection without losing the same API expectations and mechanisms such as back pressure and the ability to half close a connection.
 
 Publishing a test suite as a module lets multiple modules ensure compatibility since they use the same test suite.
-
-## Lead Maintainer
-
-[Jacob Heun](https://github.com/jacobheun/)
 
 ## Usage
 
@@ -37,12 +24,12 @@ This helps ensuring that the transport is responsible for socket management, whi
 
 ### Test suite
 
-#### JS
-
 ```js
+const tests = require('libp2p-interfaces/src/connection/tests')
 describe('your connection', () => {
-  require('interface-connection/src/tests')({
-    async setup () {
+  tests({
+    // Options should be passed to your connection
+    async setup (options) {
       return YourConnection
     },
     async teardown () {
@@ -51,10 +38,6 @@ describe('your connection', () => {
   })
 })
 ```
-
-#### Go
-
-> WIP
 
 ## API
 
