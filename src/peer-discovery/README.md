@@ -1,11 +1,6 @@
 interface-peer-discovery
 ========================
 
-[![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://protocol.ai)
-[![](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
-[![](https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23libp2p)
-[![Discourse posts](https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg)](https://discuss.libp2p.io)
-
 > A test suite and interface you can use to implement a Peer Discovery module for libp2p.
 
 The primary goal of this module is to enable developers to pick and/or swap their Peer Discovery modules as they see fit for their application, without having to go through shims or compatibility issues. This module and test suite was heavily inspired by [abstract-blob-store](https://github.com/maxogden/abstract-blob-store).
@@ -13,10 +8,6 @@ The primary goal of this module is to enable developers to pick and/or swap thei
 Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.
 
 The API is presented with both Node.js and Go primitives, however, there is not actual limitations for it to be extended for any other language, pushing forward the cross compatibility and interop through diferent stacks.
-
-## Lead Maintainer
-
-[Vasco Santos](https://github.com/vasco-santos).
 
 ## Modules that implement the interface
 

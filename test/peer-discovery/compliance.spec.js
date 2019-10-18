@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 'use strict'
 
-const tests = require('../src')
+const tests = require('../../src/peer-discovery/tests')
 const MockDiscovery = require('./mock-discovery')
 
 describe('compliance tests', () => {
