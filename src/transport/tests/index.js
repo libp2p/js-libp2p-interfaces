@@ -13,5 +13,5 @@ module.exports = (common) => {
   })
 }
 
-module.exports.AbortError = require('./errors').AbortError
-module.exports.Adapter = require('./adapter')
+module.exports.AbortError = require('../errors').AbortError
+module.exports.Adapter = require('../adapter')
