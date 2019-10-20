@@ -1,6 +1,6 @@
 {
   "name": "libp2p-interfaces",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Interfaces for JS Libp2p",
   "main": "src/index.js",
   "files": [
@@ -54,5 +54,30 @@
     "it-pair": "^1.0.0",
     "it-pipe": "^1.0.1",
     "peer-info": "^0.17.0"
-  }
+  },
+  "contributors": [
+    "Alan Shaw <alan.shaw@protocol.ai>",
+    "David Dias <daviddias.p@gmail.com>",
+    "David Dias <mail@daviddias.me>",
+    "Dmitriy Ryajov <dryajov@gmail.com>",
+    "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
+    "Greg Zuro <gregzuro@users.noreply.github.com>",
+    "Jacob Heun <jacobheun@gmail.com>",
+    "James Ray <16969914+jamesray1@users.noreply.github.com>",
+    "Jeffrey Hulten <jhulten@gmail.com>",
+    "João Santos <joaosantos15@users.noreply.github.com>",
+    "Maciej Krüger <mkg20001@gmail.com>",
+    "Matt Joiner <anacrolix@gmail.com>",
+    "Mike Goelzer <mgoelzer@docker.com>",
+    "Patrik Wallstrom <pawal@blipp.com>",
+    "Pau Ramon Revilla <masylum@gmail.com>",
+    "Richard Littauer <richard.littauer@gmail.com>",
+    "Sathya Narrayanan <plasmashadowx@gmail.com>",
+    "Vasco Santos <vasco.santos@moxy.studio>",
+    "Vasco Santos <vasco.santos@ua.pt>",
+    "dirkmc <dirkmdev@gmail.com>",
+    "dmitriy ryajov <dryajov@dmitriys-MBP.HomeNET>",
+    "greenkeeperio-bot <support@greenkeeper.io>",
+    "ᴠɪᴄᴛᴏʀ ʙᴊᴇʟᴋʜᴏʟᴍ <victorbjelkholm@gmail.com>"
+  ]
 }
