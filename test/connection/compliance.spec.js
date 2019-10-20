@@ -3,7 +3,7 @@
 
 const tests = require('../../src/connection/tests')
 const { Connection } = require('../../src/connection')
-const peers = require('../utils/peers')
+const peers = require('../../src/utils/peers')
 const PeerId = require('peer-id')
 const multiaddr = require('multiaddr')
 const pair = require('it-pair')

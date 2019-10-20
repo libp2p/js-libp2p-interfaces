@@ -9,7 +9,22 @@ interface-crypto
 
 ## Using the Test Suite
 
-TODO:
+You can also check out the [internal test suite](../../test/crypto/compliance.spec.js) to see the setup in action.
+
+```js
+const tests = require('libp2p-interfaces/src/crypto/tests')
+const yourCrypto = require('./your-crypto')
+
+tests({
+  setup () {
+    // Set up your crypto if needed, then return it
+    return yourCrypto
+  },
+  teardown () {
+    // Clean up your crypto if needed
+  }
+})
+```
 
 ## API
 
