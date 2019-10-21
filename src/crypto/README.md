@@ -67,7 +67,7 @@ Secures an outbound [streaming iterable duplex][iterable-duplex] connection. It 
 
 **Parameters**
 - `localPeer` is the [PeerId][peer-id] of the receiving peer.
-- `duplex` is the [streaming iterable duplex][iterable-duplex] that will be encryption.
+- `duplex` is the [streaming iterable duplex][iterable-duplex] that will be encrypted.
 - `remotePeer` is the [PeerId][peer-id] of the remote peer. If provided, implementations **should** use this to validate the integrity of the remote peer.
 
 **Return Value**
