@@ -4,6 +4,7 @@
 const duplexPair = require('it-pair/duplex')
 const pipe = require('it-pipe')
 const peers = require('../../utils/peers')
+const { UnexpectedPeerError } = require('../errors')
 const PeerId = require('peer-id')
 const { collect } = require('streaming-iterables')
 const chai = require('chai')
@@ -15,16 +16,19 @@ module.exports = (common) => {
     let crypto
     let localPeer
     let remotePeer
+    let mitmPeer
 
     before(async () => {
       [
         crypto,
         localPeer,
-        remotePeer
+        remotePeer,
+        mitmPeer
       ] = await Promise.all([
         common.setup(),
         PeerId.createFromJSON(peers[0]),
-        PeerId.createFromJSON(peers[1])
+        PeerId.createFromJSON(peers[1]),
+        PeerId.createFromJSON(peers[2])
       ])
     })
 
@@ -81,6 +85,18 @@ module.exports = (common) => {
       expect(inboundResult.remotePeer.id).to.eql(localPeer.id)
       // Outbound should return the receiver (remote) peer
       expect(outboundResult.remotePeer.id).to.eql(remotePeer.id)
+    })
+
+    it('inbound connections should verify peer integrity if known', async () => {
+      const [localConn, remoteConn] = duplexPair()
+
+      await Promise.all([
+        crypto.secureInbound(remotePeer, localConn, mitmPeer),
+        crypto.secureOutbound(localPeer, remoteConn, remotePeer)
+      ]).then(expect.fail, (err) => {
+        expect(err).to.exist()
+        expect(err).to.have.property('code', UnexpectedPeerError.code)
+      })
     })
   })
 }

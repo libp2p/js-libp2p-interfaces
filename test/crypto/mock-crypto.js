@@ -4,6 +4,7 @@ const PeerId = require('peer-id')
 const handshake = require('it-handshake')
 const duplexPair = require('it-pair/duplex')
 const pipe = require('it-pipe')
+const { UnexpectedPeerError } = require('../../src/crypto/errors')
 
 // A basic transform that does nothing to the data
 const transform = () => {
@@ -16,12 +17,17 @@ const transform = () => {
 
 module.exports = {
   protocol: 'insecure',
-  secureInbound: async (localPeer, duplex) => {
+  secureInbound: async (localPeer, duplex, expectedPeer) => {
     // 1. Perform a basic handshake.
     const shake = handshake(duplex)
     shake.write(localPeer.id)
     const remoteId = await shake.read()
+    const remotePeer = new PeerId(remoteId.slice())
     shake.rest()
+
+    if (expectedPeer && expectedPeer.id !== remotePeer.id) {
+      throw new UnexpectedPeerError()
+    }
 
     // 2. Create your encryption box/unbox wrapper
     const wrapper = duplexPair()
@@ -38,7 +44,7 @@ module.exports = {
 
     return {
       conn: wrapper[1],
-      remotePeer: new PeerId(remoteId.slice())
+      remotePeer
     }
   },
   secureOutbound: async (localPeer, duplex, remotePeer) => {
