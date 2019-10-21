@@ -1,3 +1,13 @@
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/libp2p/js-interfaces/compare/v0.1.0...v0.1.1) (2019-10-21)
+
+
+### Features
+
+* crypto interface ([#2](https://github.com/libp2p/js-interfaces/issues/2)) ([5a5c44a](https://github.com/libp2p/js-interfaces/commit/5a5c44a))
+
+
+
 <a name="0.1.0"></a>
 # 0.1.0 (2019-10-20)
 
