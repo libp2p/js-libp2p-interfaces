@@ -84,6 +84,7 @@ Common crypto errors come with the interface, and can be imported directly. All 
 
 ```js
 const {
+  InvalidCryptoExchangeError,
   UnexpectedPeerError
 } = require('libp2p-interfaces/src/crypto/errors')
 
@@ -93,4 +94,5 @@ console.log(error.code === UnexpectedPeerError.code) // true
 
 ### Error Types
 
-- `UnexpectedPeerError` - Should be thrown when the expected peer id does not match the peer id determined via the crypto exchange
+- `InvalidCryptoExchangeError` - Should be thrown when a peer provides data that is insufficient to finish the crypto exchange.
+- `UnexpectedPeerError` - Should be thrown when the expected peer id does not match the peer id determined via the crypto exchange.
