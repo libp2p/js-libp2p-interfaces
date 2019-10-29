@@ -15,6 +15,7 @@
 
 - [Connection](./src/connection)
 - [Content Routing](./src/content-routing)
+- [Crypto](./src/crypto)
 - [Peer Discovery](./src/peer-discovery)
 - [Peer Routing](./src/peer-routing)
 - [Stream Muxer](./src/stream-muxer)
