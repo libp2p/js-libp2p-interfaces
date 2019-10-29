@@ -11,6 +11,18 @@ class UnexpectedPeerError extends Error {
   }
 }
 
+class InvalidCryptoExchangeError extends Error {
+  constructor (message = 'Invalid crypto exchange') {
+    super(message)
+    this.code = InvalidCryptoExchangeError.code
+  }
+
+  static get code () {
+    return 'ERR_INVALID_CRYPTO_EXCHANGE'
+  }
+}
+
 module.exports = {
-  UnexpectedPeerError
+  UnexpectedPeerError,
+  InvalidCryptoExchangeError
 }
