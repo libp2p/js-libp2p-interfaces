@@ -1,3 +1,13 @@
+<a name="0.1.3"></a>
+## [0.1.3](https://github.com/libp2p/js-interfaces/compare/v0.1.2...v0.1.3) (2019-10-30)
+
+
+### Bug Fixes
+
+* localAddr should be optional ([#6](https://github.com/libp2p/js-interfaces/issues/6)) ([749a8d0](https://github.com/libp2p/js-interfaces/commit/749a8d0))
+
+
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://github.com/libp2p/js-interfaces/compare/v0.1.1...v0.1.2) (2019-10-29)
 
