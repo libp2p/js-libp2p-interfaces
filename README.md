@@ -19,6 +19,7 @@
 - [Peer Discovery](./src/peer-discovery)
 - [Peer Routing](./src/peer-routing)
 - [Stream Muxer](./src/stream-muxer)
+- [Topology](./src/topology)
 - [Transport](./src/transport)
 
 ### Origin Repositories

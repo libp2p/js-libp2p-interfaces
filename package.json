@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "aegir": "^20.4.1",
+    "delay": "^4.3.0",
     "it-handshake": "^1.0.0",
     "it-pair": "^1.0.0",
     "it-pipe": "^1.0.1",
