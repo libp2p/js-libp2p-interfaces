@@ -3,7 +3,7 @@ interface-topology
 
 > Implementation of the topology interface used by the `js-libp2p` registrar.
 
-This interface has two main purposes. It uniforms the registration of libp2p protocols and enables a smarter connection management.
+Topologies can be used in conjunction with `js-libp2p` to help shape its network and the overlays of its subsystems, such as pubsub and the DHT.
 
 ## Table of Contents
 
@@ -60,9 +60,6 @@ const toplogy = new MulticodecTopology({
     onDisconnect: (peerInfo) => {}
   }
 })
-
-// Needs to set registrar in order to listen for peer changes
-topology.registrar = registrar
 ```
 
 ## API
@@ -72,8 +69,8 @@ The `MulticodecTopology` extends the `Topology`, which makes the `Topology` API 
 ###  Topology
 
 - `Topology`
-  - `peers.set<function(id, PeerInfo)>`: Sets a peer in the topology.
-  - `disconnect<function(PeerInfo)>`: Disconnects a peer from the topology.
+  - `peers<Map<string, PeerInfo>>`: A Map of peers belonging to the topology.
+  - `disconnect<function(PeerInfo)>`: Called when a peer has been disconnected
 
 #### Constructor
 
@@ -103,7 +100,7 @@ const toplogy = new Topology({
 Add a peer to the topology.
 
 **Parameters**
-- `id` is the `b58string` that identifies the peer to add.
+- `id` is the `string` that identifies the peer to add.
 - `peerInfo` is the [PeerInfo][peer-info] of the peer to add.
 
 #### Notify about a peer disconnected event
@@ -116,8 +113,8 @@ Add a peer to the topology.
 ###  Multicodec Topology
 
 - `MulticodecTopology`
-  - `registrar<Registrar>`: Sets the registrar in the topology.
-  - `peers.set<function(id, PeerInfo)>`: Sets a peer in the topology.
+  - `registrar<Registrar>`: The `Registrar` of the topology. This is set by the `Registrar` during registration.
+  - `peers<Map<string, PeerInfo>>`: The Map of peers that belong to the topology
   - `disconnect<function(PeerInfo)>`: Disconnects a peer from the topology.
 
 #### Constructor
@@ -142,9 +139,3 @@ const toplogy = new MulticodecTopology({
   - `handlers` is an optional `Object` containing the handler called when a peer is connected or disconnected.
     - `onConnect` is a `function` called everytime a peer is connected in the topology context.
     - `onDisconnect` is a `function` called everytime a peer is disconnected in the topology context.
-
-#### Set the registrar
-
-- `topology.registrar = registrar`
-
-Set the registrar the topology, which will be used to gather information on peers being connected and disconnected, as well as their modifications in terms of supported protocols.

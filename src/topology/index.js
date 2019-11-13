@@ -27,6 +27,10 @@ class Topology {
     this.peers = new Map()
   }
 
+  set registrar (registrar) {
+    this._registrar = registrar
+  }
+
   /**
    * Notify about peer disconnected event.
    * @param {PeerInfo} peerInfo
