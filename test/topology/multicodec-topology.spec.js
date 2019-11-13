@@ -1,11 +1,11 @@
 /* eslint-env mocha */
 'use strict'
 
-const tests = require('../../src/topology/tests')
-const Topology = require('../../src/topology')
+const tests = require('../../src/topology/tests/multicodec-topology')
+const MulticodecTopology = require('../../src/topology/multicodec-topology')
 const MockPeerStore = require('./mock-peer-store')
 
-describe('compliance tests', () => {
+describe('multicodec topology compliance tests', () => {
   tests({
     setup (properties, registrar) {
       const multicodecs = ['/echo/1.0.0']
@@ -14,7 +14,7 @@ describe('compliance tests', () => {
         onDisconnect: () => { }
       }
 
-      const topology = new Topology({
+      const topology = new MulticodecTopology({
         multicodecs,
         handlers,
         ...properties
@@ -25,7 +25,7 @@ describe('compliance tests', () => {
 
         registrar = {
           peerStore,
-          getConnection: () => {}
+          getConnection: () => { }
         }
       }
 
