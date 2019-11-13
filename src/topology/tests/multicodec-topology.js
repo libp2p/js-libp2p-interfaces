@@ -6,7 +6,6 @@ const chai = require('chai')
 const expect = chai.expect
 chai.use(require('dirty-chai'))
 const sinon = require('sinon')
-const delay = require('delay')
 
 const PeerId = require('peer-id')
 const PeerInfo = require('peer-info')
@@ -57,8 +56,6 @@ module.exports = (test) => {
         protocols: Array.from(topology.multicodecs)
       })
 
-      await delay(500)
-
       expect(topology._updatePeers.callCount).to.equal(1)
       expect(topology.peers.size).to.eql(1)
     })
@@ -77,8 +74,6 @@ module.exports = (test) => {
         protocols: Array.from(topology.multicodecs)
       })
 
-      await delay(500)
-
       expect(topology.peers.size).to.eql(1)
 
       // Peer does not support the protocol anymore
@@ -86,8 +81,6 @@ module.exports = (test) => {
         peerInfo: peer2,
         protocols: []
       })
-
-      await delay(500)
 
       expect(topology.peers.size).to.eql(1)
       expect(topology._onDisconnect.callCount).to.equal(1)
