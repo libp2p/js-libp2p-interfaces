@@ -30,11 +30,10 @@ class Topology {
   /**
    * Notify about peer disconnected event.
    * @param {PeerInfo} peerInfo
-   * @param {Error} [error]
    * @returns {void}
    */
-  disconnect (peerInfo, error) {
-    this._onDisconnect(peerInfo, error)
+  disconnect (peerInfo) {
+    this._onDisconnect(peerInfo)
   }
 }
 
