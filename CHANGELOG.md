@@ -1,3 +1,13 @@
+<a name="0.1.4"></a>
+## [0.1.4](https://github.com/libp2p/js-interfaces/compare/v0.1.3...v0.1.4) (2019-11-14)
+
+
+### Features
+
+* add topology interfaces ([#7](https://github.com/libp2p/js-interfaces/issues/7)) ([8bee747](https://github.com/libp2p/js-interfaces/commit/8bee747))
+
+
+
 <a name="0.1.3"></a>
 ## [0.1.3](https://github.com/libp2p/js-interfaces/compare/v0.1.2...v0.1.3) (2019-10-30)
 
