@@ -1,6 +1,8 @@
 'use strict'
 
 const assert = require('assert')
+const withIs = require('class-is')
+
 const Topology = require('./index')
 
 class MulticodecTopology extends Topology {
@@ -90,4 +92,4 @@ class MulticodecTopology extends Topology {
   }
 }
 
-module.exports = MulticodecTopology
+module.exports = withIs(MulticodecTopology, { className: 'MulticodecTopology', symbolName: '@libp2p/js-interfaces/topology/multicodec-topology' })
