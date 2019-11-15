@@ -50,7 +50,7 @@ class MulticodecTopology extends Topology {
    */
   _updatePeers (peerInfoIterable) {
     for (const peerInfo of peerInfoIterable) {
-      if (this.multicodecs.filter(multicodec => peerInfo.protocols.has(multicodec))) {
+      if (this.multicodecs.filter(multicodec => peerInfo.protocols.has(multicodec)).length) {
         // Add the peer regardless of whether or not there is currently a connection
         this.peers.set(peerInfo.id.toB58String(), peerInfo)
         // If there is a connection, call _onConnect
