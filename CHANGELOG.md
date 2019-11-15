@@ -1,3 +1,18 @@
+<a name="0.1.5"></a>
+## [0.1.5](https://github.com/libp2p/js-interfaces/compare/v0.1.4...v0.1.5) (2019-11-15)
+
+
+### Bug Fixes
+
+* multicodec topology update peers with multicodec ([#10](https://github.com/libp2p/js-interfaces/issues/10)) ([21d8ae6](https://github.com/libp2p/js-interfaces/commit/21d8ae6))
+
+
+### Features
+
+* add class-is to topology ([#11](https://github.com/libp2p/js-interfaces/issues/11)) ([a67abcc](https://github.com/libp2p/js-interfaces/commit/a67abcc))
+
+
+
 <a name="0.1.4"></a>
 ## [0.1.4](https://github.com/libp2p/js-interfaces/compare/v0.1.3...v0.1.4) (2019-11-14)
 
