@@ -49,6 +49,7 @@ module.exports = (test) => {
 
       const id2 = await PeerId.createFromJSON(peers[1])
       const peer2 = await PeerInfo.create(id2)
+      topology.multicodecs.forEach((m) => peer2.protocols.add(m))
 
       const peerStore = topology._registrar.peerStore
       peerStore.emit('change:protocols', {
@@ -66,9 +67,9 @@ module.exports = (test) => {
 
       const id2 = await PeerId.createFromJSON(peers[1])
       const peer2 = await PeerInfo.create(id2)
-      const peerStore = topology._registrar.peerStore
+      topology.multicodecs.forEach((m) => peer2.protocols.add(m))
 
-      // Peer with the protocol
+      const peerStore = topology._registrar.peerStore
       peerStore.emit('change:protocols', {
         peerInfo: peer2,
         protocols: Array.from(topology.multicodecs)
@@ -76,6 +77,7 @@ module.exports = (test) => {
 
       expect(topology.peers.size).to.eql(1)
 
+      topology.multicodecs.forEach((m) => peer2.protocols.delete(m))
       // Peer does not support the protocol anymore
       peerStore.emit('change:protocols', {
         peerInfo: peer2,
