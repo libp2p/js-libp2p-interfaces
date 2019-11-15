@@ -1,5 +1,7 @@
 'use strict'
 
+const withIs = require('class-is')
+
 const noop = () => {}
 
 class Topology {
@@ -41,4 +43,4 @@ class Topology {
   }
 }
 
-module.exports = Topology
+module.exports = withIs(Topology, { className: 'Topology', symbolName: '@libp2p/js-interfaces/topology' })
