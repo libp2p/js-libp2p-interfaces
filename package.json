@@ -1,6 +1,6 @@
 {
   "name": "libp2p-interfaces",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Interfaces for JS Libp2p",
   "main": "src/index.js",
   "files": [
