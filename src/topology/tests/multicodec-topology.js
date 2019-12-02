@@ -86,6 +86,7 @@ module.exports = (test) => {
 
       expect(topology.peers.size).to.eql(1)
       expect(topology._onDisconnect.callCount).to.equal(1)
+      expect(topology._onDisconnect.calledWith(peer2)).to.equal(true)
     })
   })
 }
