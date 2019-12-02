@@ -77,9 +77,7 @@ class MulticodecTopology extends Topology {
 
     // Not supporting the protocol anymore?
     if (existingPeer && hasProtocol.length === 0) {
-      this._onDisconnect({
-        peerInfo
-      })
+      this._onDisconnect(peerInfo)
     }
 
     // New to protocol support
