@@ -1,3 +1,13 @@
+<a name="0.1.6"></a>
+## [0.1.6](https://github.com/libp2p/js-interfaces/compare/v0.1.5...v0.1.6) (2019-12-02)
+
+
+### Bug Fixes
+
+* multicodec topology disconnect with peer param ([#12](https://github.com/libp2p/js-interfaces/issues/12)) ([d5dd256](https://github.com/libp2p/js-interfaces/commit/d5dd256))
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/libp2p/js-interfaces/compare/v0.1.4...v0.1.5) (2019-11-15)
 
