@@ -12,7 +12,7 @@ Publishing a test suite as a module lets multiple modules all ensure compatibili
 # Modules that implement the interface
 
 - [JavaScript libp2p-kad-dht](https://github.com/libp2p/js-libp2p-kad-dht)
-- [JavaScript libp2p-delegated-peer-routing](https://github.com/libp2p/js-libp2p-delegated-peer-routing)
+- [JavaScript libp2p-delegated-content-routing](https://github.com/libp2p/js-libp2p-delegated-content-routing)
 
 # Badge
 
