@@ -121,6 +121,7 @@ Creates a new Connection instance.
 - `timeline` is an `object` with the relevant events timestamps of the connection (`open`, `upgraded` and `closed`; the `closed` will be added when the connection is closed).
 - `multiplexer` is a `string` with the connection multiplexing codec (optional).
 - `encryption` is a `string` with the connection encryption method identifier (optional).
+- `status` is a `string` indicating the overall status of the connection. It is one of [`'closed'`, `'closing'`, `'closed'`]
 
 #### Create a new stream
 
@@ -220,7 +221,17 @@ This getter returns an `Object` with the metadata of the connection, as follows:
 
 - `status`:
 
-This property contains the status of the connection. It can be either `open`, `closing` or `closed`. Once the connection is created it is in an `open` status. When a `conn.close()` happens, the status will change to `closing` and finally, after all the connection streams are properly closed, the status will be `closed`.
+This property contains the status of the connection. It can be either `open`, `closing` or `closed`. Once the connection is created it is in an `open` status. When a `conn.close()` happens, the status will change to `closing` and finally, after all the connection streams are properly closed, the status will be `closed`. These values can also be directly referenced by importing the `status` file:
+
+```js
+const {
+  OPEN, CLOSING, CLOSED
+} = require('libp2p-interfaces/src/connection/status')
+
+if (connection.stat.status === OPEN) {
+  // ...
+}
+```
 
 - `timeline`:
 

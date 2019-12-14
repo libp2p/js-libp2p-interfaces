@@ -7,6 +7,7 @@ const withIs = require('class-is')
 
 const assert = require('assert')
 const errCode = require('err-code')
+const Status = require('./status')
 
 /**
  * An implementation of the js-libp2p connection.
@@ -75,7 +76,7 @@ class Connection {
      */
     this._stat = {
       ...stat,
-      status: 'open'
+      status: Status.OPEN
     }
 
     /**
@@ -126,11 +127,11 @@ class Connection {
    * @return {Promise<object>} with muxed+multistream-selected stream and selected protocol
    */
   async newStream (protocols) {
-    if (this.stat.status === 'closing') {
+    if (this.stat.status === Status.CLOSING) {
       throw errCode(new Error('the connection is being closed'), 'ERR_CONNECTION_BEING_CLOSED')
     }
 
-    if (this.stat.status === 'closed') {
+    if (this.stat.status === Status.CLOSED) {
       throw errCode(new Error('the connection is closed'), 'ERR_CONNECTION_CLOSED')
     }
 
@@ -175,7 +176,7 @@ class Connection {
    * @return {Promise}
    */
   async close () {
-    if (this.stat.status === 'closed') {
+    if (this.stat.status === Status.CLOSED) {
       return
     }
 
@@ -183,13 +184,13 @@ class Connection {
       return this._closing
     }
 
-    this.stat.status = 'closing'
+    this.stat.status = Status.CLOSING
 
     // Close raw connection
     this._closing = await this._close()
 
     this._stat.timeline.close = Date.now()
-    this.stat.status = 'closed'
+    this.stat.status = Status.CLOSED
   }
 }
 
