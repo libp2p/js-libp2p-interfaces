@@ -121,7 +121,7 @@ Creates a new Connection instance.
 - `timeline` is an `object` with the relevant events timestamps of the connection (`open`, `upgraded` and `closed`; the `closed` will be added when the connection is closed).
 - `multiplexer` is a `string` with the connection multiplexing codec (optional).
 - `encryption` is a `string` with the connection encryption method identifier (optional).
-- `status` is a `string` indicating the overall status of the connection. It is one of [`'closed'`, `'closing'`, `'closed'`]
+- `status` is a `string` indicating the overall status of the connection. It is one of [`'open'`, `'closing'`, `'closed'`]
 
 #### Create a new stream
 
