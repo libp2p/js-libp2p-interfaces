@@ -6,6 +6,7 @@ const chai = require('chai')
 const expect = chai.expect
 chai.use(require('dirty-chai'))
 const sinon = require('sinon')
+const Status = require('../status')
 
 module.exports = (test) => {
   describe('connection', () => {
@@ -28,7 +29,7 @@ module.exports = (test) => {
         expect(connection.remotePeer).to.exist()
         expect(connection.localAddr).to.exist()
         expect(connection.remoteAddr).to.exist()
-        expect(connection.stat.status).to.equal('open')
+        expect(connection.stat.status).to.equal(Status.OPEN)
         expect(connection.stat.timeline.open).to.exist()
         expect(connection.stat.timeline.upgraded).to.exist()
         expect(connection.stat.timeline.close).to.not.exist()
@@ -40,7 +41,7 @@ module.exports = (test) => {
       it('should get the metadata of an open connection', () => {
         const stat = connection.stat
 
-        expect(stat.status).to.equal('open')
+        expect(stat.status).to.equal(Status.OPEN)
         expect(stat.direction).to.exist()
         expect(stat.timeline.open).to.exist()
         expect(stat.timeline.upgraded).to.exist()
@@ -103,7 +104,7 @@ module.exports = (test) => {
         await connection.close()
 
         expect(connection.stat.timeline.close).to.exist()
-        expect(connection.stat.status).to.equal('closed')
+        expect(connection.stat.status).to.equal(Status.CLOSED)
       })
 
       it('should be able to close the connection after opening a stream', async () => {
@@ -116,7 +117,7 @@ module.exports = (test) => {
         await connection.close()
 
         expect(connection.stat.timeline.close).to.exist()
-        expect(connection.stat.status).to.equal('closed')
+        expect(connection.stat.status).to.equal(Status.CLOSED)
       })
 
       it('should support a proxy on the timeline', async () => {
