@@ -1,3 +1,13 @@
+<a name="0.1.7"></a>
+## [0.1.7](https://github.com/libp2p/js-interfaces/compare/v0.1.6...v0.1.7) (2019-12-15)
+
+
+### Features
+
+* export connection status' ([#15](https://github.com/libp2p/js-interfaces/issues/15)) ([bdbd58e](https://github.com/libp2p/js-interfaces/commit/bdbd58e))
+
+
+
 <a name="0.1.6"></a>
 ## [0.1.6](https://github.com/libp2p/js-interfaces/compare/v0.1.5...v0.1.6) (2019-12-02)
 
