@@ -1,3 +1,13 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/libp2p/js-interfaces/compare/v0.1.7...v0.2.0) (2019-12-20)
+
+
+### Bug Fixes
+
+* transport should not handle connection if upgradeInbound throws ([#16](https://github.com/libp2p/js-interfaces/issues/16)) ([ff03137](https://github.com/libp2p/js-interfaces/commit/ff03137))
+
+
+
 <a name="0.1.7"></a>
 ## [0.1.7](https://github.com/libp2p/js-interfaces/compare/v0.1.6...v0.1.7) (2019-12-15)
 
