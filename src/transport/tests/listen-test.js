@@ -92,6 +92,23 @@ module.exports = (common) => {
       expect(upgradeSpy.callCount).to.equal(2)
     })
 
+    it('should not handle connection if upgradeInbound throws', async () => {
+      sinon.stub(upgrader, 'upgradeInbound').throws()
+
+      const listener = transport.createListener(() => {
+        throw new Error('should not handle the connection if upgradeInbound throws')
+      })
+
+      // Listen
+      await listener.listen(addrs[0])
+
+      // Create a connection to the listener
+      const socket = await transport.dial(addrs[0])
+
+      await socket.close()
+      await listener.close()
+    })
+
     describe('events', () => {
       it('connection', (done) => {
         const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
