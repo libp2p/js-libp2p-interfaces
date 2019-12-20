@@ -8,6 +8,7 @@ const expect = chai.expect
 chai.use(dirtyChai)
 const sinon = require('sinon')
 
+const pWaitFor = require('p-wait-for')
 const pipe = require('it-pipe')
 const { isValidTick } = require('./utils')
 
@@ -105,7 +106,7 @@ module.exports = (common) => {
       // Create a connection to the listener
       const socket = await transport.dial(addrs[0])
 
-      await socket.close()
+      await pWaitFor(() => typeof socket.timeline.close === 'number')
       await listener.close()
     })
 
