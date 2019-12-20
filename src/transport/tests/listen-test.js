@@ -8,6 +8,7 @@ const expect = chai.expect
 chai.use(dirtyChai)
 const sinon = require('sinon')
 
+const pWaitFor = require('p-wait-for')
 const pipe = require('it-pipe')
 const { isValidTick } = require('./utils')
 
@@ -90,6 +91,23 @@ module.exports = (common) => {
 
       // 2 dials = 2 connections upgraded
       expect(upgradeSpy.callCount).to.equal(2)
+    })
+
+    it('should not handle connection if upgradeInbound throws', async () => {
+      sinon.stub(upgrader, 'upgradeInbound').throws()
+
+      const listener = transport.createListener(() => {
+        throw new Error('should not handle the connection if upgradeInbound throws')
+      })
+
+      // Listen
+      await listener.listen(addrs[0])
+
+      // Create a connection to the listener
+      const socket = await transport.dial(addrs[0])
+
+      await pWaitFor(() => typeof socket.timeline.close === 'number')
+      await listener.close()
     })
 
     describe('events', () => {
