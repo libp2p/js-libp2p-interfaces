@@ -1,3 +1,13 @@
+<a name="0.2.1"></a>
+## [0.2.1](https://github.com/libp2p/js-interfaces/compare/v0.2.0...v0.2.1) (2019-12-28)
+
+
+### Features
+
+* add crypto transmission error ([#17](https://github.com/libp2p/js-interfaces/issues/17)) ([d98bb23](https://github.com/libp2p/js-interfaces/commit/d98bb23))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/libp2p/js-interfaces/compare/v0.1.7...v0.2.0) (2019-12-20)
 
