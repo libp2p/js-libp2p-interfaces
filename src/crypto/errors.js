@@ -22,7 +22,19 @@ class InvalidCryptoExchangeError extends Error {
   }
 }
 
+class InvalidCryptoTransmissionError extends Error {
+  constructor (message = 'Invalid crypto transmission') {
+    super(message)
+    this.code = InvalidCryptoTransmissionError.code
+  }
+
+  static get code () {
+    return 'ERR_INVALID_CRYPTO_TRANSMISSION'
+  }
+}
+
 module.exports = {
   UnexpectedPeerError,
-  InvalidCryptoExchangeError
+  InvalidCryptoExchangeError,
+  InvalidCryptoTransmissionError
 }
