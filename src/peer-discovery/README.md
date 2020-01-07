@@ -69,6 +69,14 @@ It returns a `Promise`
 
 ### discoverying peers
 
-- `discovery.on('peer', (peerInfo) => {})`
+A discovery service must have a `_onPeer` function which just emits `peer` events with the `PeerId` of the discovered peer.
 
-Everytime a peer is discovered by a discovery service, it emmits a `peer` event with the discover peer's [PeerInfo](https://github.com/libp2p/js-peer-info).
+```js
+_onPeer (peerId) {
+  this.emit('peer', peerId)
+}
+```
+
+- `discovery.on('peer', (peerId) => {})`
+
+Everytime a peer is discovered by a discovery service, it emmits a `peer` event with the discover peer's [PeerId](https://github.com/libp2p/js-peer-id).

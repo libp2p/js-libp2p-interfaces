@@ -3,7 +3,6 @@
 const { EventEmitter } = require('events')
 
 const PeerId = require('peer-id')
-const PeerInfo = require('peer-info')
 
 /**
  * Emits 'peer' events on discovery.
@@ -33,14 +32,17 @@ class MockDiscovery extends EventEmitter {
     this._isRunning = false
   }
 
+  _onPeer (peerId) {
+    this.emit('peer', peerId)
+  }
+
   async _discoverPeer () {
     if (!this._isRunning) return
 
     const peerId = await PeerId.create({ bits: 512 })
-    const peerInfo = new PeerInfo(peerId)
 
     this._timer = setTimeout(() => {
-      this.emit('peer', peerInfo)
+      this._onPeer(peerId)
     }, this.options.discoveryDelay || 1000)
   }
 }

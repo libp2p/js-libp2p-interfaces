@@ -45,6 +45,7 @@
     "it-goodbye": "^2.0.1",
     "libp2p-tcp": "^0.14.1",
     "multiaddr": "^7.1.0",
+    "p-defer": "^3.0.0",
     "p-limit": "^2.2.1",
     "p-wait-for": "^3.1.0",
     "peer-id": "^0.13.3",
