@@ -43,6 +43,8 @@
     "dirty-chai": "^2.0.1",
     "err-code": "^2.0.0",
     "it-goodbye": "^2.0.1",
+    "it-pair": "^1.0.0",
+    "it-pipe": "^1.0.1",
     "libp2p-tcp": "^0.14.1",
     "multiaddr": "^7.1.0",
     "p-limit": "^2.2.1",
@@ -54,8 +56,6 @@
   "devDependencies": {
     "aegir": "^20.4.1",
     "it-handshake": "^1.0.0",
-    "it-pair": "^1.0.0",
-    "it-pipe": "^1.0.1",
     "peer-info": "^0.17.0"
   },
   "contributors": [
