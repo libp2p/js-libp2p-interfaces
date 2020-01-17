@@ -18,7 +18,7 @@ class Connection {
    * Creates an instance of Connection.
    * @param {object} properties properties of the connection.
    * @param {multiaddr} [properties.localAddr] local multiaddr of the connection if known.
-   * @param {multiaddr} properties.remoteAddr remote multiaddr of the connection.
+   * @param {multiaddr} [properties.remoteAddr] remote multiaddr of the connection.
    * @param {PeerId} properties.localPeer local peer-id.
    * @param {PeerId} properties.remotePeer remote peer-id.
    * @param {function} properties.newStream new stream muxer function.
@@ -34,7 +34,6 @@ class Connection {
    */
   constructor ({ localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat }) {
     localAddr && assert(multiaddr.isMultiaddr(localAddr), 'localAddr must be an instance of multiaddr')
-    assert(multiaddr.isMultiaddr(remoteAddr), 'remoteAddr must be an instance of multiaddr')
     assert(PeerId.isPeerId(localPeer), 'localPeer must be an instance of peer-id')
     assert(PeerId.isPeerId(remotePeer), 'remotePeer must be an instance of peer-id')
     assert(typeof newStream === 'function', 'new stream must be a function')
