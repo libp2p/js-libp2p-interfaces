@@ -1,3 +1,13 @@
+<a name="0.2.2"></a>
+## [0.2.2](https://github.com/libp2p/js-interfaces/compare/v0.2.1...v0.2.2) (2020-01-17)
+
+
+### Bug Fixes
+
+* **connection:** dont require remoteAddr on creation ([#20](https://github.com/libp2p/js-interfaces/issues/20)) ([5967834](https://github.com/libp2p/js-interfaces/commit/5967834))
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/libp2p/js-interfaces/compare/v0.2.0...v0.2.1) (2019-12-28)
 
