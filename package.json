@@ -1,6 +1,6 @@
 {
   "name": "libp2p-interfaces",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Interfaces for JS Libp2p",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
@@ -66,6 +66,7 @@
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
     "Greg Zuro <gregzuro@users.noreply.github.com>",
     "Jacob Heun <jacobheun@gmail.com>",
+    "Jacob Heun <jacobheun@Jacobs-MacBook-Pro.local>",
     "James Ray <16969914+jamesray1@users.noreply.github.com>",
     "Jeffrey Hulten <jhulten@gmail.com>",
     "João Santos <joaosantos15@users.noreply.github.com>",
