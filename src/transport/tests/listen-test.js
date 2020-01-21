@@ -70,7 +70,7 @@ module.exports = (common) => {
       ])
 
       // Give the listener a chance to finish its upgrade
-      await new Promise(resolve => setTimeout(resolve, 0))
+      await pWaitFor(() => listenerConns.length === 2)
 
       // Wait for the data send and close to finish
       await Promise.all([
