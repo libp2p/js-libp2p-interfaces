@@ -1,3 +1,13 @@
+<a name="0.2.3"></a>
+## [0.2.3](https://github.com/libp2p/js-interfaces/compare/v0.2.2...v0.2.3) (2020-01-21)
+
+
+### Bug Fixes
+
+* **transport:** make close listener test more resilient ([#21](https://github.com/libp2p/js-interfaces/issues/21)) ([2de533e](https://github.com/libp2p/js-interfaces/commit/2de533e))
+
+
+
 <a name="0.2.2"></a>
 ## [0.2.2](https://github.com/libp2p/js-interfaces/compare/v0.2.1...v0.2.2) (2020-01-17)
 
