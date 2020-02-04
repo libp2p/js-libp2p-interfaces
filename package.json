@@ -1,6 +1,6 @@
 {
   "name": "libp2p-interfaces",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Interfaces for JS Libp2p",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
@@ -78,6 +78,7 @@
     "Sathya Narrayanan <plasmashadowx@gmail.com>",
     "Vasco Santos <vasco.santos@moxy.studio>",
     "Vasco Santos <vasco.santos@ua.pt>",
+    "dependabot-preview[bot] <27856297+dependabot-preview[bot]@users.noreply.github.com>",
     "dirkmc <dirkmdev@gmail.com>",
     "dmitriy ryajov <dryajov@dmitriys-MBP.HomeNET>",
     "greenkeeperio-bot <support@greenkeeper.io>",
