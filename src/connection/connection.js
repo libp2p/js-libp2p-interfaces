@@ -138,7 +138,7 @@ class Connection {
 
     const { stream, protocol } = await this._newStream(protocols)
 
-    this.addStream(stream, protocol)
+    this.addStream(stream, { protocol })
 
     return {
       stream,
