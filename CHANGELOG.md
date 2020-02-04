@@ -1,3 +1,13 @@
+<a name="0.2.4"></a>
+## [0.2.4](https://github.com/libp2p/js-interfaces/compare/v0.2.3...v0.2.4) (2020-02-04)
+
+
+### Bug Fixes
+
+* dependencies for tests should not be needed by who requires the tests ([#18](https://github.com/libp2p/js-interfaces/issues/18)) ([c5b724a](https://github.com/libp2p/js-interfaces/commit/c5b724a))
+
+
+
 <a name="0.2.3"></a>
 ## [0.2.3](https://github.com/libp2p/js-interfaces/compare/v0.2.2...v0.2.3) (2020-01-21)
 
