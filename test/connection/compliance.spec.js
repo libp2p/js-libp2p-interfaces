@@ -25,7 +25,7 @@ describe('compliance tests', () => {
       const openStreams = []
       let streamId = 0
 
-      return new Connection({
+      const connection = new Connection({
         localPeer,
         remotePeer,
         localAddr,
@@ -43,7 +43,10 @@ describe('compliance tests', () => {
           const id = streamId++
           const stream = pair()
 
-          stream.close = () => stream.sink([])
+          stream.close = async () => {
+            await stream.sink([])
+            connection.removeStream(stream.id)
+          }
           stream.id = id
 
           openStreams.push(stream)
@@ -57,6 +60,7 @@ describe('compliance tests', () => {
         getStreams: () => openStreams,
         ...properties
       })
+      return connection
     },
     async teardown () {
       // cleanup resources created by setup()

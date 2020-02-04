@@ -120,6 +120,19 @@ module.exports = (test) => {
         expect(connection.stat.status).to.equal(Status.CLOSED)
       })
 
+      it('should properly track streams', async () => {
+        // Open stream
+        const protocol = '/echo/0.0.1'
+        const { stream } = await connection.newStream(protocol)
+        const trackedStream = connection.registry.get(stream.id)
+        expect(trackedStream).to.have.property('protocol', protocol)
+
+        // Close stream
+        await stream.close()
+
+        expect(connection.registry.get(stream.id)).to.not.exist()
+      })
+
       it('should support a proxy on the timeline', async () => {
         sinon.spy(proxyHandler, 'set')
         expect(connection.stat.timeline.close).to.not.exist()
