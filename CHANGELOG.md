@@ -1,3 +1,13 @@
+<a name="0.2.5"></a>
+## [0.2.5](https://github.com/libp2p/js-interfaces/compare/v0.2.4...v0.2.5) (2020-02-04)
+
+
+### Bug Fixes
+
+* **connection:** tracks streams properly ([#25](https://github.com/libp2p/js-interfaces/issues/25)) ([5c88d77](https://github.com/libp2p/js-interfaces/commit/5c88d77))
+
+
+
 <a name="0.2.4"></a>
 ## [0.2.4](https://github.com/libp2p/js-interfaces/compare/v0.2.3...v0.2.4) (2020-02-04)
 
