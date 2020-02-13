@@ -2,10 +2,7 @@
 
 const PeerId = require('peer-id')
 const multiaddr = require('multiaddr')
-
 const withIs = require('class-is')
-
-const assert = require('assert')
 const errCode = require('err-code')
 const Status = require('./status')
 
@@ -33,17 +30,49 @@ class Connection {
    * @param {string} [properties.stat.encryption] connection encryption method identifier.
    */
   constructor ({ localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat }) {
-    localAddr && assert(multiaddr.isMultiaddr(localAddr), 'localAddr must be an instance of multiaddr')
-    assert(PeerId.isPeerId(localPeer), 'localPeer must be an instance of peer-id')
-    assert(PeerId.isPeerId(remotePeer), 'remotePeer must be an instance of peer-id')
-    assert(typeof newStream === 'function', 'new stream must be a function')
-    assert(typeof close === 'function', 'close must be a function')
-    assert(typeof getStreams === 'function', 'getStreams must be a function')
-    assert(stat, 'connection metadata object must be provided')
-    assert(stat.direction === 'inbound' || stat.direction === 'outbound', 'direction must be "inbound" or "outbound"')
-    assert(stat.timeline, 'connection timeline object must be provided in the stat object')
-    assert(stat.timeline.open, 'connection open timestamp must be provided')
-    assert(stat.timeline.upgraded, 'connection upgraded timestamp must be provided')
+    if (localAddr && !multiaddr.isMultiaddr(localAddr)) {
+      throw errCode(new Error('localAddr must be an instance of multiaddr'), 'ERR_INVALID_PARAMETERS')
+    }
+
+    if (!PeerId.isPeerId(localPeer)) {
+      throw errCode(new Error('localPeer must be an instance of peer-id'), 'ERR_INVALID_PARAMETERS')
+    }
+
+    if (!PeerId.isPeerId(remotePeer)) {
+      throw errCode(new Error('remotePeer must be an instance of peer-id'), 'ERR_INVALID_PARAMETERS')
+    }
+
+    if (typeof newStream !== 'function') {
+      throw errCode(new Error('new stream must be a function'), 'ERR_INVALID_PARAMETERS')
+    }
+
+    if (typeof close !== 'function') {
+      throw errCode(new Error('close must be a function'), 'ERR_INVALID_PARAMETERS')
+    }
+
+    if (typeof getStreams !== 'function') {
+      throw errCode(new Error('getStreams must be a function'), 'ERR_INVALID_PARAMETERS')
+    }
+
+    if (!stat) {
+      throw errCode(new Error('connection metadata object must be provided'), 'ERR_INVALID_PARAMETERS')
+    }
+
+    if (stat.direction !== 'inbound' && stat.direction !== 'outbound') {
+      throw errCode(new Error('direction must be "inbound" or "outbound"'), 'ERR_INVALID_PARAMETERS')
+    }
+
+    if (!stat.timeline) {
+      throw errCode(new Error('connection timeline object must be provided in the stat object'), 'ERR_INVALID_PARAMETERS')
+    }
+
+    if (!stat.timeline.open) {
+      throw errCode(new Error('connection open timestamp must be provided'), 'ERR_INVALID_PARAMETERS')
+    }
+
+    if (!stat.timeline.upgraded) {
+      throw errCode(new Error('connection upgraded timestamp must be provided'), 'ERR_INVALID_PARAMETERS')
+    }
 
     /**
      * Connection identifier.
