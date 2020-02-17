@@ -1,6 +1,5 @@
 'use strict'
 
-const assert = require('assert')
 const withIs = require('class-is')
 
 const Topology = require('./index')
@@ -24,12 +23,21 @@ class MulticodecTopology extends Topology {
   }) {
     super({ min, max, handlers })
 
-    assert(multicodecs, 'one or more multicodec should be provided')
-    assert(handlers, 'the handlers should be provided')
-    assert(handlers.onConnect && typeof handlers.onConnect === 'function',
-      'the \'onConnect\' handler must be provided')
-    assert(handlers.onDisconnect && typeof handlers.onDisconnect === 'function',
-      'the \'onDisconnect\' handler must be provided')
+    if (!multicodecs) {
+      throw new Error('one or more multicodec should be provided')
+    }
+
+    if (!handlers) {
+      throw new Error('the handlers should be provided')
+    }
+
+    if (typeof handlers.onConnect !== 'function') {
+      throw new Error('the \'onConnect\' handler must be provided')
+    }
+
+    if (typeof handlers.onDisconnect !== 'function') {
+      throw new Error('the \'onDisconnect\' handler must be provided')
+    }
 
     this.multicodecs = Array.isArray(multicodecs) ? multicodecs : [multicodecs]
     this._registrar = undefined
