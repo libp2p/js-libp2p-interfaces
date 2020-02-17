@@ -1,3 +1,13 @@
+<a name="0.2.6"></a>
+## [0.2.6](https://github.com/libp2p/js-interfaces/compare/v0.2.5...v0.2.6) (2020-02-17)
+
+
+### Bug Fixes
+
+* remove use of assert module ([#34](https://github.com/libp2p/js-interfaces/issues/34)) ([c77d8de](https://github.com/libp2p/js-interfaces/commit/c77d8de))
+
+
+
 <a name="0.2.5"></a>
 ## [0.2.5](https://github.com/libp2p/js-interfaces/compare/v0.2.4...v0.2.5) (2020-02-04)
 
