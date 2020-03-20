@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 'use strict'
 
+const { Buffer } = require('buffer')
 const duplexPair = require('it-pair/duplex')
 const pipe = require('it-pipe')
 const peers = require('../../utils/peers')

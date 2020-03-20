@@ -35,6 +35,7 @@
   "dependencies": {
     "abort-controller": "^3.0.0",
     "abortable-iterator": "^3.0.0",
+    "buffer": "^5.5.0",
     "chai": "^4.2.0",
     "chai-checkmark": "^1.0.1",
     "class-is": "^1.1.0",

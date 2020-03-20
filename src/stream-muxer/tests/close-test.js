@@ -2,6 +2,7 @@
 /* eslint max-nested-callbacks: ["error", 8] */
 'use strict'
 
+const { Buffer } = require('buffer')
 const pair = require('it-pair/duplex')
 const pipe = require('it-pipe')
 const { consume } = require('streaming-iterables')
