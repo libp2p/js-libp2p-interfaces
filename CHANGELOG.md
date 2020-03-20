@@ -1,3 +1,13 @@
+<a name="0.2.7"></a>
+## [0.2.7](https://github.com/libp2p/js-interfaces/compare/v0.2.6...v0.2.7) (2020-03-20)
+
+
+### Bug Fixes
+
+* add buffer ([#39](https://github.com/libp2p/js-interfaces/issues/39)) ([78e015c](https://github.com/libp2p/js-interfaces/commit/78e015c))
+
+
+
 <a name="0.2.6"></a>
 ## [0.2.6](https://github.com/libp2p/js-interfaces/compare/v0.2.5...v0.2.6) (2020-02-17)
 
