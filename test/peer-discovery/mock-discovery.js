@@ -2,8 +2,8 @@
 
 const { EventEmitter } = require('events')
 
+const multiaddr = require('multiaddr')
 const PeerId = require('peer-id')
-const PeerInfo = require('peer-info')
 
 /**
  * Emits 'peer' events on discovery.
@@ -37,10 +37,12 @@ class MockDiscovery extends EventEmitter {
     if (!this._isRunning) return
 
     const peerId = await PeerId.create({ bits: 512 })
-    const peerInfo = new PeerInfo(peerId)
 
     this._timer = setTimeout(() => {
-      this.emit('peer', peerInfo)
+      this.emit('peer', {
+        id: peerId,
+        multiaddrs: [multiaddr('/ip4/127.0.0.1/tcp/8000')]
+      })
     }, this.options.discoveryDelay || 1000)
   }
 }
