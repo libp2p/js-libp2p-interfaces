@@ -71,4 +71,7 @@ It returns a `Promise`
 
 - `discovery.on('peer', (peerInfo) => {})`
 
-Everytime a peer is discovered by a discovery service, it emmits a `peer` event with the discover peer's [PeerInfo](https://github.com/libp2p/js-peer-info).
+Everytime a peer is discovered by a discovery service, it emmits a `peer` event with the discovered peer's information, which must contain the following properties:
+
+- `<`[`PeerId`](https://github.com/libp2p/js-peer-id)`>` `peerInfo.id`
+- `<Array<`[`Multiaddr`](https://github.com/multiformats/js-multiaddr)`>>` `peerInfo.multiaddrs`
