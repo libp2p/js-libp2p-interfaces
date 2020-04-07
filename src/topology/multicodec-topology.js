@@ -55,20 +55,20 @@ class MulticodecTopology extends Topology {
 
   /**
    * Update topology.
-   * @param {Array<PeerInfo>} peerInfoIterable
+   * @param {Array<PeerData>} peerDataIterable
    * @returns {void}
    */
-  _updatePeers (peerInfoIterable) {
-    for (const peerInfo of peerInfoIterable) {
-      if (this.multicodecs.filter(multicodec => peerInfo.protocols.has(multicodec)).length) {
+  _updatePeers (peerDataIterable) {
+    for (const peerData of peerDataIterable) {
+      if (this.multicodecs.filter(multicodec => peerData.protocols.includes(multicodec)).length) {
         // Add the peer regardless of whether or not there is currently a connection
-        this.peers.set(peerInfo.id.toB58String(), peerInfo)
+        this.peers.set(peerData.id.toB58String(), peerData.id)
         // If there is a connection, call _onConnect
-        const connection = this._registrar.getConnection(peerInfo)
-        connection && this._onConnect(peerInfo, connection)
+        const connection = this._registrar.getConnection(peerData.id)
+        connection && this._onConnect(peerData.id, connection)
       } else {
         // Remove any peers we might be tracking that are no longer of value to us
-        this.peers.delete(peerInfo.id.toB58String())
+        this.peers.delete(peerData.id.toB58String())
       }
     }
   }
@@ -76,22 +76,23 @@ class MulticodecTopology extends Topology {
   /**
    * Check if a new peer support the multicodecs for this topology.
    * @param {Object} props
-   * @param {PeerInfo} props.peerInfo
+   * @param {PeerId} props.peerId
    * @param {Array<string>} props.protocols
    */
-  _onProtocolChange ({ peerInfo, protocols }) {
-    const existingPeer = this.peers.get(peerInfo.id.toB58String())
+  _onProtocolChange ({ peerId, protocols }) {
+    const existingPeer = this.peers.get(peerId.toB58String())
     const hasProtocol = protocols.filter(protocol => this.multicodecs.includes(protocol))
 
     // Not supporting the protocol anymore?
     if (existingPeer && hasProtocol.length === 0) {
-      this._onDisconnect(peerInfo)
+      this._onDisconnect(peerId)
     }
 
     // New to protocol support
     for (const protocol of protocols) {
       if (this.multicodecs.includes(protocol)) {
-        this._updatePeers([peerInfo])
+        const peerData = this._registrar.peerStore.get(peerId)
+        this._updatePeers([peerData])
         return
       }
     }

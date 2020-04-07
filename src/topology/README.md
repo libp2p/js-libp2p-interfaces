@@ -56,8 +56,8 @@ const toplogy = new MulticodecTopology({
   max: 50,
   multicodecs: ['/echo/1.0.0'],
   handlers: {
-    onConnect: (peerInfo, conn) => {},
-    onDisconnect: (peerInfo) => {}
+    onConnect: (peerId, conn) => {},
+    onDisconnect: (peerId) => {}
   }
 })
 ```
@@ -69,8 +69,8 @@ The `MulticodecTopology` extends the `Topology`, which makes the `Topology` API 
 ###  Topology
 
 - `Topology`
-  - `peers<Map<string, PeerInfo>>`: A Map of peers belonging to the topology.
-  - `disconnect<function(PeerInfo)>`: Called when a peer has been disconnected
+  - `peers<Map<string, PeerId>>`: A Map of peers belonging to the topology.
+  - `disconnect<function(PeerId)>`: Called when a peer has been disconnected
 
 #### Constructor
 
@@ -79,8 +79,8 @@ const toplogy = new Topology({
   min: 0,
   max: 50,
   handlers: {
-    onConnect: (peerInfo, conn) => {},
-    onDisconnect: (peerInfo) => {}
+    onConnect: (peerId, conn) => {},
+    onDisconnect: (peerId) => {}
   }
 })
 ```
@@ -95,27 +95,27 @@ const toplogy = new Topology({
 
 #### Set a peer
 
-- `topology.peers.set(id, peerInfo)`
+- `topology.peers.set(id, peerId)`
 
 Add a peer to the topology.
 
 **Parameters**
 - `id` is the `string` that identifies the peer to add.
-- `peerInfo` is the [PeerInfo][peer-info] of the peer to add.
+- `peerId` is the [PeerId][peer-id] of the peer to add.
 
 #### Notify about a peer disconnected event
 
-- `topology.disconnect(peerInfo)`
+- `topology.disconnect(peerId)`
 
 **Parameters**
-- `peerInfo` is the [PeerInfo][peer-info] of the peer disconnected.
+- `peerId` is the [PeerIid][peer-id] of the peer disconnected.
 
 ###  Multicodec Topology
 
 - `MulticodecTopology`
   - `registrar<Registrar>`: The `Registrar` of the topology. This is set by the `Registrar` during registration.
-  - `peers<Map<string, PeerInfo>>`: The Map of peers that belong to the topology
-  - `disconnect<function(PeerInfo)>`: Disconnects a peer from the topology.
+  - `peers<Map<string, PeerId>>`: The Map of peers that belong to the topology
+  - `disconnect<function(PeerId)>`: Disconnects a peer from the topology.
 
 #### Constructor
 
@@ -125,8 +125,8 @@ const toplogy = new MulticodecTopology({
   max: 50,
   multicodecs: ['/echo/1.0.0'],
   handlers: {
-    onConnect: (peerInfo, conn) => {},
-    onDisconnect: (peerInfo) => {}
+    onConnect: (peerId, conn) => {},
+    onDisconnect: (peerId) => {}
   }
 })
 ```

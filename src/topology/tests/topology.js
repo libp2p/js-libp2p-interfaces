@@ -8,19 +8,17 @@ chai.use(require('dirty-chai'))
 const sinon = require('sinon')
 
 const PeerId = require('peer-id')
-const PeerInfo = require('peer-info')
 const peers = require('../../utils/peers')
 
 module.exports = (test) => {
   describe('topology', () => {
-    let topology, peer
+    let topology, id
 
     beforeEach(async () => {
       topology = await test.setup()
       if (!topology) throw new Error('missing multicodec topology')
 
-      const id = await PeerId.createFromJSON(peers[0])
-      peer = await PeerInfo.create(id)
+      id = await PeerId.createFromJSON(peers[0])
     })
 
     afterEach(async () => {
@@ -38,7 +36,7 @@ module.exports = (test) => {
 
     it('should trigger "onDisconnect" on peer disconnected', () => {
       sinon.spy(topology, '_onDisconnect')
-      topology.disconnect(peer)
+      topology.disconnect(id)
 
       expect(topology._onDisconnect.callCount).to.equal(1)
     })

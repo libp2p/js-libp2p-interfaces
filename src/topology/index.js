@@ -26,6 +26,7 @@ class Topology {
     this._onConnect = handlers.onConnect || noop
     this._onDisconnect = handlers.onDisconnect || noop
 
+    // TODO: can this be a set?
     this.peers = new Map()
   }
 
@@ -35,11 +36,11 @@ class Topology {
 
   /**
    * Notify about peer disconnected event.
-   * @param {PeerInfo} peerInfo
+   * @param {PeerId} peerId
    * @returns {void}
    */
-  disconnect (peerInfo) {
-    this._onDisconnect(peerInfo)
+  disconnect (peerId) {
+    this._onDisconnect(peerId)
   }
 }
 
