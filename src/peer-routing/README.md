@@ -30,12 +30,17 @@ TBD
 
 A valid (read: that follows this abstraction) Peer Routing module must implement the following API.
 
-### `.findPeers` - Find peers 'responsible' or 'closest' to a given key
+### findPeer
 
-- `Node.js` peerRouting.findPeers(key, function (err, peersPriorityQueue) {})
+- `findPeer(peerId)`
 
-In a peer to peer context, the concept of 'responsability' or 'closeness' for a given key translates to having a way to find deterministically or that at least there is a significant overlap between searches, the same group of peers when searching for the same given key.
+Query the network for all multiaddresses associated with a `PeerId`.
 
-This method will query the network (route it) and return a Priority Queue datastructe with a list of PeerInfo objects, ordered by 'closeness'.
+**Parameters**
+- [peerId](https://github.com/libp2p/js-peer-id).
 
-key is a multihash
+**Returns**
+
+It returns a the `peer-id` [cid](https://github.com/multiformats/js-cid) together with the known peers [multiaddrs](https://github.com/multiformats/js-multiaddr), as follows:
+
+`Promise<{ id: CID, addrs: Multiaddr[] }>`

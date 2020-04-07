@@ -30,6 +30,32 @@ TBD
 
 A valid (read: that follows this abstraction) Content Routing module must implement the following API.
 
-### `.findProviders`
+### findProviders
 
-### `.provide`
+- `findProviders(peerId)`
+
+Find peers in the network that can provide a specific value, given a key.
+
+**Parameters**
+- [CID](https://github.com/multiformats/js-cid)
+
+**Returns**
+
+It returns an `AsyncIterable` containing the identification and addresses of the peers providing the given key, as follows:
+
+`AsyncIterable<{ id: CID, addrs: Multiaddr[] }>`
+
+### provide
+
+- `provide(cid)`
+
+Announce to the network that we are providing the given value.
+
+**Parameters**
+- [CID](https://github.com/multiformats/js-cid)
+
+**Returns**
+
+It returns a promise that is resolved on the success of the operation.
+
+`Promise<void>`
