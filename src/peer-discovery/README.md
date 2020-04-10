@@ -16,6 +16,7 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 - [JavaScript libp2p-kad-dht](https://github.com/libp2p/js-libp2p-kad-dht)
 - [JavaScript libp2p-webrtc-star](https://github.com/libp2p/js-libp2p-webrtc-star)
 - [JavaScript libp2p-websocket-star](https://github.com/libp2p/js-libp2p-websocket-star)
+- [TypeScript discv5](https://github.com/chainsafe/discv5)
 
 Send a PR to add a new one if you happen to find or write one.
 
