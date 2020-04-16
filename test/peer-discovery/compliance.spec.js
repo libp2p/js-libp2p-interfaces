@@ -8,9 +8,7 @@ describe('compliance tests', () => {
   let intervalId
 
   tests({
-    async setup () {
-      await new Promise(resolve => setTimeout(resolve, 10))
-
+    setup () {
       const mockDiscovery = new MockDiscovery({
         discoveryDelay: 1
       })
@@ -19,9 +17,8 @@ describe('compliance tests', () => {
 
       return mockDiscovery
     },
-    async teardown () {
+    teardown () {
       clearInterval(intervalId)
-      await new Promise(resolve => setTimeout(resolve, 10))
     }
   })
 })

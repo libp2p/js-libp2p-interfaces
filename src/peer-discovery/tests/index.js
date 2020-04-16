@@ -19,12 +19,12 @@ module.exports = (common) => {
       discovery = await common.setup()
     })
 
-    after(() => common.teardown && common.teardown())
-
     afterEach('ensure discovery was stopped', async () => {
       await discovery.stop()
 
       discovery.removeAllListeners()
+
+      common.teardown && common.teardown()
     })
 
     it('can start the service', async () => {
@@ -45,7 +45,7 @@ module.exports = (common) => {
       await discovery.start()
     })
 
-    it('should listen a peer event after start', async () => {
+    it('should emit a peer event after start', async () => {
       const defer = pDefer()
       await discovery.start()
 
@@ -59,7 +59,7 @@ module.exports = (common) => {
         defer.resolve()
       })
 
-      return defer.promise
+      await defer.promise
     })
 
     it('should not receive a peer event before start', async () => {

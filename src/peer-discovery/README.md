@@ -69,9 +69,9 @@ It returns a `Promise`
 
 ### discoverying peers
 
-- `discovery.on('peer', (peerInfo) => {})`
+- `discovery.on('peer', (peerData) => {})`
 
-Everytime a peer is discovered by a discovery service, it emmits a `peer` event with the discovered peer's information, which must contain the following properties:
+Every time a peer is discovered by a discovery service, it emits a `peer` event with the discovered peer's information, which must contain the following properties:
 
-- `<`[`PeerId`](https://github.com/libp2p/js-peer-id)`>` `peerInfo.id`
-- `<Array<`[`Multiaddr`](https://github.com/multiformats/js-multiaddr)`>>` `peerInfo.multiaddrs`
+- `<`[`PeerId`](https://github.com/libp2p/js-peer-id)`>` `peerData.id`
+- `<Array<`[`Multiaddr`](https://github.com/multiformats/js-multiaddr)`>>` `peerData.multiaddrs`
