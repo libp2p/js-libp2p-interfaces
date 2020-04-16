@@ -55,20 +55,20 @@ class MulticodecTopology extends Topology {
 
   /**
    * Update topology.
-   * @param {Array<{id: PeerId, multiaddrs: Array<Multiaddr>}>} peerDataIterable
+   * @param {Array<{id: PeerId, multiaddrs: Array<Multiaddr>, protocols: Array<string>}>} peerDataIterable
    * @returns {void}
    */
   _updatePeers (peerDataIterable) {
-    for (const peerData of peerDataIterable) {
-      if (this.multicodecs.filter(multicodec => peerData.protocols.includes(multicodec)).length) {
+    for (const { id, protocols } of peerDataIterable) {
+      if (this.multicodecs.filter(multicodec => protocols.includes(multicodec)).length) {
         // Add the peer regardless of whether or not there is currently a connection
-        this.peers.add(peerData.id.toB58String())
+        this.peers.add(id.toB58String())
         // If there is a connection, call _onConnect
-        const connection = this._registrar.getConnection(peerData.id)
-        connection && this._onConnect(peerData.id, connection)
+        const connection = this._registrar.getConnection(id)
+        connection && this._onConnect(id, connection)
       } else {
         // Remove any peers we might be tracking that are no longer of value to us
-        this.peers.delete(peerData.id.toB58String())
+        this.peers.delete(id.toB58String())
       }
     }
   }
