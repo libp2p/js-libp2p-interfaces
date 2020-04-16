@@ -32,7 +32,7 @@ A valid (read: that follows this abstraction) Content Routing module must implem
 
 ### findProviders
 
-- `findProviders(peerId)`
+- `findProviders(cid)`
 
 Find peers in the network that can provide a specific value, given a key.
 
@@ -43,7 +43,7 @@ Find peers in the network that can provide a specific value, given a key.
 
 It returns an `AsyncIterable` containing the identification and addresses of the peers providing the given key, as follows:
 
-`AsyncIterable<{ id: CID, addrs: Multiaddr[] }>`
+`AsyncIterable<{ id: PeerId, addrs: Multiaddr[] }>`
 
 ### provide
 
