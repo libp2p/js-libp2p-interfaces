@@ -43,4 +43,4 @@ Query the network for all multiaddresses associated with a `PeerId`.
 
 It returns the [peerId](https://github.com/libp2p/js-peer-id) together with the known peers [multiaddrs](https://github.com/multiformats/js-multiaddr), as follows:
 
-`Promise<{ id: CID, addrs: Multiaddr[] }>`
+`Promise<{ id: PeerId, addrs: Multiaddr[] }>`
