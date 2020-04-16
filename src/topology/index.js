@@ -26,8 +26,11 @@ class Topology {
     this._onConnect = handlers.onConnect || noop
     this._onDisconnect = handlers.onDisconnect || noop
 
-    // TODO: can this be a set?
-    this.peers = new Map()
+    /**
+     * Set of peers that support the protocol.
+     * @type {Set<string>}
+     */
+    this.peers = new Set()
   }
 
   set registrar (registrar) {

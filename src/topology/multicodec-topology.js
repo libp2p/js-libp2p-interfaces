@@ -55,14 +55,14 @@ class MulticodecTopology extends Topology {
 
   /**
    * Update topology.
-   * @param {Array<PeerData>} peerDataIterable
+   * @param {Array<{id: PeerId, multiaddrs: Array<Multiaddr>}>} peerDataIterable
    * @returns {void}
    */
   _updatePeers (peerDataIterable) {
     for (const peerData of peerDataIterable) {
       if (this.multicodecs.filter(multicodec => peerData.protocols.includes(multicodec)).length) {
         // Add the peer regardless of whether or not there is currently a connection
-        this.peers.set(peerData.id.toB58String(), peerData.id)
+        this.peers.add(peerData.id.toB58String())
         // If there is a connection, call _onConnect
         const connection = this._registrar.getConnection(peerData.id)
         connection && this._onConnect(peerData.id, connection)
@@ -80,11 +80,11 @@ class MulticodecTopology extends Topology {
    * @param {Array<string>} props.protocols
    */
   _onProtocolChange ({ peerId, protocols }) {
-    const existingPeer = this.peers.get(peerId.toB58String())
+    const hadPeer = this.peers.has(peerId.toB58String())
     const hasProtocol = protocols.filter(protocol => this.multicodecs.includes(protocol))
 
     // Not supporting the protocol anymore?
-    if (existingPeer && hasProtocol.length === 0) {
+    if (hadPeer && hasProtocol.length === 0) {
       this._onDisconnect(peerId)
     }
 

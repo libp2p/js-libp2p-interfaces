@@ -108,7 +108,7 @@ Add a peer to the topology.
 - `topology.disconnect(peerId)`
 
 **Parameters**
-- `peerId` is the [PeerIid][peer-id] of the peer disconnected.
+- `peerId` is the [PeerId][peer-id] of the peer disconnected.
 
 ###  Multicodec Topology
 
@@ -139,3 +139,5 @@ const toplogy = new MulticodecTopology({
   - `handlers` is an optional `Object` containing the handler called when a peer is connected or disconnected.
     - `onConnect` is a `function` called everytime a peer is connected in the topology context.
     - `onDisconnect` is a `function` called everytime a peer is disconnected in the topology context.
+
+[peer-id]: https://github.com/libp2p/js-peer-id
