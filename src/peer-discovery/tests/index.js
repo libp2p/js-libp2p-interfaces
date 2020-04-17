@@ -49,7 +49,7 @@ module.exports = (common) => {
       const defer = pDefer()
       await discovery.start()
 
-      discovery.once('peer', ({ id, multiaddrs }) => {
+      discovery.on('peer', ({ id, multiaddrs }) => {
         expect(id).to.exist()
         expect(PeerId.isPeerId(id)).to.eql(true)
         expect(multiaddrs).to.exist()
@@ -63,7 +63,7 @@ module.exports = (common) => {
     })
 
     it('should not receive a peer event before start', async () => {
-      discovery.once('peer', () => {
+      discovery.on('peer', () => {
         throw new Error('should not receive a peer event before start')
       })
 
@@ -75,14 +75,14 @@ module.exports = (common) => {
 
       await discovery.start()
 
-      discovery.once('peer', () => {
+      discovery.on('peer', () => {
         deferStart.resolve()
       })
 
       await deferStart.promise
       await discovery.stop()
 
-      discovery.once('peer', () => {
+      discovery.on('peer', () => {
         throw new Error('should not receive a peer event after stop')
       })
 
