@@ -26,7 +26,11 @@ class Topology {
     this._onConnect = handlers.onConnect || noop
     this._onDisconnect = handlers.onDisconnect || noop
 
-    this.peers = new Map()
+    /**
+     * Set of peers that support the protocol.
+     * @type {Set<string>}
+     */
+    this.peers = new Set()
   }
 
   set registrar (registrar) {
@@ -35,11 +39,11 @@ class Topology {
 
   /**
    * Notify about peer disconnected event.
-   * @param {PeerInfo} peerInfo
+   * @param {PeerId} peerId
    * @returns {void}
    */
-  disconnect (peerInfo) {
-    this._onDisconnect(peerInfo)
+  disconnect (peerId) {
+    this._onDisconnect(peerId)
   }
 }
 

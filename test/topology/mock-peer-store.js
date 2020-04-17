@@ -7,6 +7,10 @@ class MockPeerStore extends EventEmitter {
     super()
     this.peers = peers
   }
+
+  get (peerId) {
+    return this.peers.get(peerId.toB58String())
+  }
 }
 
 module.exports = MockPeerStore
