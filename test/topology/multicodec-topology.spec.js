@@ -21,7 +21,8 @@ describe('multicodec topology compliance tests', () => {
       })
 
       if (!registrar) {
-        const peerStore = new MockPeerStore([])
+        const peers = new Map()
+        const peerStore = new MockPeerStore(peers)
 
         registrar = {
           peerStore,
