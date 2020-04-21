@@ -1,3 +1,26 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/libp2p/js-interfaces/compare/v0.2.8...v0.3.0) (2020-04-21)
+
+
+### Chores
+
+* remove peer-info usage on topology ([#42](https://github.com/libp2p/js-interfaces/issues/42)) ([79a7843](https://github.com/libp2p/js-interfaces/commit/79a7843))
+* update content and peer routing interfaces removing peer-info ([#43](https://github.com/libp2p/js-interfaces/issues/43)) ([d2032e6](https://github.com/libp2p/js-interfaces/commit/d2032e6))
+
+
+### Features
+
+* peer-discovery not using peer-info ([5792b13](https://github.com/libp2p/js-interfaces/commit/5792b13))
+
+
+### BREAKING CHANGES
+
+* topology api now uses peer-id instead of peer-info
+* content-routing and peer-routing APIs return an object with relevant properties instead of peer-info
+* peer-discovery emits object with id and multiaddrs properties
+
+
+
 <a name="0.2.8"></a>
 ## [0.2.8](https://github.com/libp2p/js-interfaces/compare/v0.2.7...v0.2.8) (2020-04-21)
 
