@@ -36,6 +36,6 @@ A valid (read: that follows this abstraction) Peer Routing module must implement
 
 In a peer to peer context, the concept of 'responsability' or 'closeness' for a given key translates to having a way to find deterministically or that at least there is a significant overlap between searches, the same group of peers when searching for the same given key.
 
-This method will query the network (route it) and return a Priority Queue datastructe with a list of PeerInfo objects, ordered by 'closeness'.
+This method will query the network (route it) and return a Priority Queue data structure with a list of PeerInfo objects, ordered by 'closeness'.
 
 key is a multihash
