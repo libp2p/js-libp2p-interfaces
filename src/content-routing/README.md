@@ -43,7 +43,7 @@ Find peers in the network that can provide a specific value, given a key.
 
 It returns an `AsyncIterable` containing the identification and addresses of the peers providing the given key, as follows:
 
-`AsyncIterable<{ id: PeerId, addrs: Multiaddr[] }>`
+`AsyncIterable<{ id: PeerId, multiaddrs: Multiaddr[] }>`
 
 ### provide
 
