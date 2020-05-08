@@ -55,7 +55,7 @@
     "streaming-iterables": "^4.1.0"
   },
   "devDependencies": {
-    "aegir": "^21.9.0",
+    "aegir": "^22.0.0",
     "it-handshake": "^1.0.1"
   },
   "contributors": [
