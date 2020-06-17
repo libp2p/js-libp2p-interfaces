@@ -18,6 +18,7 @@
 - [Crypto](./src/crypto)
 - [Peer Discovery](./src/peer-discovery)
 - [Peer Routing](./src/peer-routing)
+- [Record](./src/record)
 - [Stream Muxer](./src/stream-muxer)
 - [Topology](./src/topology)
 - [Transport](./src/transport)
