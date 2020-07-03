@@ -1,3 +1,33 @@
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/libp2p/js-interfaces/compare/v0.2.8...v0.3.1) (2020-07-03)
+
+
+### Bug Fixes
+
+* content and peer routing multiaddrs property ([#49](https://github.com/libp2p/js-interfaces/issues/49)) ([9fbf9d0](https://github.com/libp2p/js-interfaces/commit/9fbf9d0))
+* peer-routing typo ([#47](https://github.com/libp2p/js-interfaces/issues/47)) ([9a8f375](https://github.com/libp2p/js-interfaces/commit/9a8f375))
+* reconnect should trigger topology on connect if protocol stored ([#54](https://github.com/libp2p/js-interfaces/issues/54)) ([e10a154](https://github.com/libp2p/js-interfaces/commit/e10a154))
+
+
+### Chores
+
+* remove peer-info usage on topology ([#42](https://github.com/libp2p/js-interfaces/issues/42)) ([a55c7c4](https://github.com/libp2p/js-interfaces/commit/a55c7c4))
+* update content and peer routing interfaces removing peer-info ([#43](https://github.com/libp2p/js-interfaces/issues/43)) ([87e2e89](https://github.com/libp2p/js-interfaces/commit/87e2e89))
+
+
+### Features
+
+* peer-discovery not using peer-info ([bdd2502](https://github.com/libp2p/js-interfaces/commit/bdd2502))
+
+
+### BREAKING CHANGES
+
+* topology api now uses peer-id instead of peer-info
+* content-routing and peer-routing APIs return an object with relevant properties instead of peer-info
+* peer-discovery emits object with id and multiaddrs properties
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/libp2p/js-interfaces/compare/v0.2.8...v0.3.0) (2020-04-21)
 
