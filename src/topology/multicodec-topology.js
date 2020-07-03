@@ -113,7 +113,7 @@ class MulticodecTopology extends Topology {
       return
     }
 
-    if (this.multicodecs.filter(multicodec => protocols.includes(multicodec)).length) {
+    if (this.multicodecs.find(multicodec => protocols.includes(multicodec))) {
       this.peers.add(peerId.toB58String())
       this._onConnect(peerId, connection)
     }
