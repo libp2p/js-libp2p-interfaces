@@ -43,11 +43,13 @@ class MulticodecTopology extends Topology {
     this._registrar = undefined
 
     this._onProtocolChange = this._onProtocolChange.bind(this)
+    this._onPeerConnect = this._onPeerConnect.bind(this)
   }
 
   set registrar (registrar) {
     this._registrar = registrar
     this._registrar.peerStore.on('change:protocols', this._onProtocolChange)
+    this._registrar.connectionManager.on('peer:connect', this._onPeerConnect)
 
     // Update topology peers
     this._updatePeers(this._registrar.peerStore.peers.values())
@@ -95,6 +97,25 @@ class MulticodecTopology extends Topology {
         this._updatePeers([peerData])
         return
       }
+    }
+  }
+
+  /**
+   * Verify if a new connected peer has a topology multicodec and call _onConnect.
+   * @param {Connection} connection
+   * @returns {void}
+   */
+  _onPeerConnect (connection) {
+    const peerId = connection.remotePeer
+    const protocols = this._registrar.peerStore.protoBook.get(peerId)
+
+    if (!protocols) {
+      return
+    }
+
+    if (this.multicodecs.find(multicodec => protocols.includes(multicodec))) {
+      this.peers.add(peerId.toB58String())
+      this._onConnect(peerId, connection)
     }
   }
 }

@@ -1,6 +1,8 @@
 /* eslint-env mocha */
 'use strict'
 
+const { EventEmitter } = require('events')
+
 const tests = require('../../src/topology/tests/multicodec-topology')
 const MulticodecTopology = require('../../src/topology/multicodec-topology')
 const MockPeerStore = require('./mock-peer-store')
@@ -23,9 +25,11 @@ describe('multicodec topology compliance tests', () => {
       if (!registrar) {
         const peers = new Map()
         const peerStore = new MockPeerStore(peers)
+        const connectionManager = new EventEmitter()
 
         registrar = {
           peerStore,
+          connectionManager,
           getConnection: () => { }
         }
       }

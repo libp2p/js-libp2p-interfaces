@@ -96,5 +96,38 @@ module.exports = (test) => {
       expect(topology._onDisconnect.callCount).to.equal(1)
       expect(topology._onDisconnect.calledWith(id2)).to.equal(true)
     })
+
+    it('should trigger "onConnect" when a peer connects and has one of the topology multicodecs in its known protocols', () => {
+      sinon.spy(topology, '_onConnect')
+      sinon.stub(topology._registrar.peerStore.protoBook, 'get').returns(topology.multicodecs)
+
+      topology._registrar.connectionManager.emit('peer:connect', {
+        remotePeer: id
+      })
+
+      expect(topology._onConnect.callCount).to.equal(1)
+    })
+
+    it('should not trigger "onConnect" when a peer connects and has none of the topology multicodecs in its known protocols', () => {
+      sinon.spy(topology, '_onConnect')
+      sinon.stub(topology._registrar.peerStore.protoBook, 'get').returns([])
+
+      topology._registrar.connectionManager.emit('peer:connect', {
+        remotePeer: id
+      })
+
+      expect(topology._onConnect.callCount).to.equal(0)
+    })
+
+    it('should not trigger "onConnect" when a peer connects and its protocols are not known', () => {
+      sinon.spy(topology, '_onConnect')
+      sinon.stub(topology._registrar.peerStore.protoBook, 'get').returns(undefined)
+
+      topology._registrar.connectionManager.emit('peer:connect', {
+        remotePeer: id
+      })
+
+      expect(topology._onConnect.callCount).to.equal(0)
+    })
   })
 }

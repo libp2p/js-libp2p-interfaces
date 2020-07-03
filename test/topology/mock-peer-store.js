@@ -6,6 +6,9 @@ class MockPeerStore extends EventEmitter {
   constructor (peers) {
     super()
     this.peers = peers
+    this.protoBook = {
+      get: () => {}
+    }
   }
 
   get (peerId) {
