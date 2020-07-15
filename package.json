@@ -52,7 +52,6 @@
     "p-limit": "^2.3.0",
     "p-wait-for": "^3.1.0",
     "peer-id": "^0.13.13",
-    "peer-info": "^0.17.5",
     "sinon": "^9.0.2",
     "streaming-iterables": "^5.0.2"
   },
