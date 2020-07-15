@@ -1,3 +1,13 @@
+<a name="0.3.2"></a>
+## [0.3.2](https://github.com/libp2p/js-interfaces/compare/v0.3.1...v0.3.2) (2020-07-15)
+
+
+### Features
+
+* record interface ([#52](https://github.com/libp2p/js-interfaces/issues/52)) ([1cc943e](https://github.com/libp2p/js-interfaces/commit/1cc943e))
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/libp2p/js-interfaces/compare/v0.2.8...v0.3.1) (2020-07-03)
 
