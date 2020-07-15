@@ -45,19 +45,19 @@
     "err-code": "^2.0.0",
     "it-goodbye": "^2.0.1",
     "it-pair": "^1.0.0",
-    "it-pipe": "^1.0.1",
-    "libp2p-tcp": "^0.14.1",
-    "multiaddr": "^7.4.3",
+    "it-pipe": "^1.1.0",
+    "libp2p-tcp": "^0.14.5",
+    "multiaddr": "^7.5.0",
     "p-defer": "^3.0.0",
     "p-limit": "^2.3.0",
     "p-wait-for": "^3.1.0",
-    "peer-id": "^0.13.11",
-    "peer-info": "^0.17.0",
+    "peer-id": "^0.13.13",
+    "peer-info": "^0.17.5",
     "sinon": "^9.0.2",
-    "streaming-iterables": "^4.1.0"
+    "streaming-iterables": "^5.0.2"
   },
   "devDependencies": {
-    "aegir": "^22.0.0",
+    "aegir": "^25.0.0",
     "it-handshake": "^1.0.1"
   },
   "contributors": [
