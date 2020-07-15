@@ -28,8 +28,8 @@ module.exports = (test) => {
     })
 
     it('is able to compare two records', () => {
-      const isEqual = record.isEqual(record)
-      expect(isEqual).to.eql(true)
+      const equals = record.equals(record)
+      expect(equals).to.eql(true)
     })
   })
 }

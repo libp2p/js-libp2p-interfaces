@@ -27,8 +27,8 @@ class Record {
    * Verifies if the other provided Record is identical to this one.
    * @param {Record} other
    */
-  isEqual (other) {
-    throw errcode(new Error('isEqual must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
+  equals (other) {
+    throw errcode(new Error('equals must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
   }
 }
 

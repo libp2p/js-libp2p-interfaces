@@ -44,7 +44,7 @@ class PeerRecord extends Record {
     // Implement and return using Protobuf
   }
 
-  isEqual (other) {
+  equals (other) {
     // Verify
   }
 }
@@ -62,9 +62,9 @@ Marshal a record to be used in a libp2p envelope.
 
 It returns a `Protobuf` containing the record data.
 
-### isEqual
+### equals
 
-- `record.isEqual(other)`
+- `record.equals(other)`
 
 Verifies if the other Record is identical to this one.
 
