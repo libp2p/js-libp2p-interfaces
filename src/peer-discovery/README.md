@@ -72,7 +72,10 @@ It returns a `Promise`
 
 - `discovery.on('peer', (peerData) => {})`
 
-Every time a peer is discovered by a discovery service, it emits a `peer` event with the discovered peer's information, which must contain the following properties:
+Every time a peer is discovered by a discovery service, it emits a `peer` event with the discovered peer's information, which may contain the following properties:
 
-- `<`[`PeerId`](https://github.com/libp2p/js-peer-id)`>` `peerData.id`
-- `<Array<`[`Multiaddr`](https://github.com/multiformats/js-multiaddr)`>>` `peerData.multiaddrs`
+- [`<PeerId>`](https://github.com/libp2p/js-peer-id)`>` `peerData.id`
+- `<Array`[`<Multiaddr>`](https://github.com/multiformats/js-multiaddr)`>` `peerData.multiaddrs`
+- [`<Envelope>`](https://github.com/libp2p/js-libp2p/tree/0.29.x/src/record) `peerData.envelope`
+
+The `id` property is required, ad well as one of `multiaddrs` and `envelope`.
