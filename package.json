@@ -51,7 +51,7 @@
     "p-defer": "^3.0.0",
     "p-limit": "^2.3.0",
     "p-wait-for": "^3.1.0",
-    "peer-id": "^0.13.13",
+    "peer-id": "libp2p/js-peer-id#fix/replace-node-buffers-with-unint8arrays",
     "sinon": "^9.0.2",
     "streaming-iterables": "^5.0.2"
   },
