@@ -1,3 +1,20 @@
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/libp2p/js-interfaces/compare/v0.3.2...v0.4.0) (2020-08-10)
+
+
+### Chores
+
+* update deps ([#57](https://github.com/libp2p/js-interfaces/issues/57)) ([75f6777](https://github.com/libp2p/js-interfaces/commit/75f6777))
+
+
+### BREAKING CHANGES
+
+* - The peer id dep of this module has replaced node Buffers with Uint8Arrays
+
+* chore: update gh deps
+
+
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/libp2p/js-interfaces/compare/v0.3.1...v0.3.2) (2020-07-15)
 
