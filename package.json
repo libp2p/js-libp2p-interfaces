@@ -47,11 +47,11 @@
     "it-pair": "^1.0.0",
     "it-pipe": "^1.1.0",
     "libp2p-tcp": "^0.14.5",
-    "multiaddr": "^7.5.0",
+    "multiaddr": "^8.0.0",
     "p-defer": "^3.0.0",
     "p-limit": "^2.3.0",
     "p-wait-for": "^3.1.0",
-    "peer-id": "^0.13.13",
+    "peer-id": "^0.14.0",
     "sinon": "^9.0.2",
     "streaming-iterables": "^5.0.2"
   },
