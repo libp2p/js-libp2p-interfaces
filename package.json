@@ -46,7 +46,7 @@
     "it-goodbye": "^2.0.1",
     "it-pair": "^1.0.0",
     "it-pipe": "^1.1.0",
-    "libp2p-tcp": "^0.14.5",
+    "libp2p-tcp": "^0.15.0",
     "multiaddr": "^8.0.0",
     "p-defer": "^3.0.0",
     "p-limit": "^2.3.0",
