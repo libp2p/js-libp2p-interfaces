@@ -33,19 +33,19 @@ Include this badge in your readme if you make a new module that uses interface-p
 Install `interface-discovery` as one of the dependencies of your project and as a test file. Then, using `mocha` (for JavaScript) or a test runner with compatible API, do:
 
 ```js
-const test = require('interface-discovery')
+const tests = require('libp2p-interfaces/src/peer-discovery/tests')
 
-const common = {
-  setup () {
-    return YourDiscovery
-  },
-  teardown () {
-    // Clean up any resources created by setup()
-  }
-}
-
-// use all of the test suits
-test(common)
+describe('your discovery', () => {
+  // use all of the test suits
+  tests({
+    setup () {
+      return YourDiscovery
+    },
+    teardown () {
+      // Clean up any resources created by setup()
+    }
+  })
+})
 ```
 
 ## API
