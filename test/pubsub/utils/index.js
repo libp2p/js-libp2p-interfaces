@@ -1,7 +1,5 @@
 'use strict'
 
-const lp = require('it-length-prefixed')
-const pipe = require('it-pipe')
 const DuplexPair = require('it-pair/duplex')
 
 const PeerId = require('peer-id')
@@ -24,30 +22,16 @@ class PubsubImplementation extends PubsubBaseProtocol {
     })
   }
 
-  publish (topics, messages) {
+  _publish (message) {
     // ...
   }
 
-  subscribe (topics) {
-    // ...
+  _decodeRpc (bytes) {
+    return message.rpc.RPC.decode(bytes)
   }
 
-  unsubscribe (topics) {
-    // ...
-  }
-
-  _processMessages (idB58Str, conn, peer) {
-    pipe(
-      conn,
-      lp.decode(),
-      async function (source) {
-        for await (const val of source) {
-          const rpc = message.rpc.RPC.decode(val)
-
-          return rpc
-        }
-      }
-    )
+  _encodeRpc (rpc) {
+    return message.rpc.RPC.encode(rpc)
   }
 }
 

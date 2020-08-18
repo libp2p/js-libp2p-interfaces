@@ -4,6 +4,9 @@ const debug = require('debug')
 const EventEmitter = require('events')
 const errcode = require('err-code')
 
+const pipe = require('it-pipe')
+const PeerId = require('peer-id')
+
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
 const message = require('./message')
@@ -34,8 +37,10 @@ class PubsubBaseProtocol extends EventEmitter {
    * @param {String} props.debugName log namespace
    * @param {Array<string>|string} props.multicodecs protocol identificers to connect
    * @param {Libp2p} props.libp2p
-   * @param {boolean} [props.signMessages] if messages should be signed, defaults to true
-   * @param {boolean} [props.strictSigning] if message signing should be required, defaults to true
+   * @param {boolean} [props.signMessages = true] if messages should be signed
+   * @param {boolean} [props.strictSigning = true] if message signing should be required
+   * @param {boolean} [props.canRelayMessage = false] if can relay messages not subscribed
+   * @param {boolean} [props.emitSelf = false] if publish should emit to self, if subscribed
    * @abstract
    */
   constructor ({
@@ -43,7 +48,9 @@ class PubsubBaseProtocol extends EventEmitter {
     multicodecs,
     libp2p,
     signMessages = true,
-    strictSigning = true
+    strictSigning = true,
+    canRelayMessage = false,
+    emitSelf = false
   }) {
     if (typeof debugName !== 'string') {
       throw new Error('a debugname `string` is required')
@@ -77,6 +84,12 @@ class PubsubBaseProtocol extends EventEmitter {
     this.topics = new Map()
 
     /**
+     * List of our subscriptions
+     * @type {Set<string>}
+     */
+    this.subscriptions = new Set()
+
+    /**
      * Map of peer streams
      *
      * @type {Map<string, PeerStreams>}
@@ -92,11 +105,38 @@ class PubsubBaseProtocol extends EventEmitter {
      */
     this.strictSigning = strictSigning
 
+    /**
+     * If router can relay received messages, even if not subscribed
+     * @type {boolean}
+     */
+    this.canRelayMessage = canRelayMessage
+
+    /**
+     * if publish should emit to self, if subscribed
+     * @type {boolean}
+     */
+    this.emitSelf = emitSelf
+
+    /**
+     * Topic validator function
+     * @typedef {function(string, Peer, RPC): boolean} validator
+     */
+    /**
+     * Topic validator map
+     *
+     * Keyed by topic
+     * Topic validators are functions with the following input:
+     * @type {Map<string, validator>}
+     */
+    this.topicValidators = new Map()
+
     this._registrarId = undefined
     this._onIncomingStream = this._onIncomingStream.bind(this)
     this._onPeerConnected = this._onPeerConnected.bind(this)
     this._onPeerDisconnected = this._onPeerDisconnected.bind(this)
   }
+
+  // LIFECYCLE METHODS
 
   /**
    * Register the pubsub protocol onto the libp2p node.
@@ -143,6 +183,7 @@ class PubsubBaseProtocol extends EventEmitter {
     this.peers.forEach((peerStreams) => peerStreams.close())
 
     this.peers = new Map()
+    this.subscriptions = new Set()
     this.started = false
     this.log('stopped')
   }
@@ -181,6 +222,9 @@ class PubsubBaseProtocol extends EventEmitter {
     } catch (err) {
       this.log.err(err)
     }
+
+    // Immediately send my own subscriptions to the newly established conn
+    this._sendSubscriptions(idB58Str, Array.from(this.subscriptions), true)
   }
 
   /**
@@ -206,6 +250,7 @@ class PubsubBaseProtocol extends EventEmitter {
   _addPeer (peerId, protocol) {
     const id = peerId.toB58String()
     const existing = this.peers.get(id)
+
     // If peer streams already exists, do nothing
     if (existing) {
       return existing
@@ -253,6 +298,208 @@ class PubsubBaseProtocol extends EventEmitter {
     return peerStreams
   }
 
+  // MESSAGE METHODS
+
+  /**
+   * Responsible for processing each RPC message received by other peers.
+   * @param {string} idB58Str peer id string in base58
+   * @param {DuplexIterableStream} stream inbound stream
+   * @param {PeerStreams} peerStreams PubSub peer
+   * @returns {Promise<void>}
+   */
+  async _processMessages (idB58Str, stream, peerStreams) {
+    try {
+      await pipe(
+        stream,
+        async (source) => {
+          for await (const data of source) {
+            const rpcBytes = data instanceof Uint8Array ? data : data.slice()
+            const rpcMsg = this._decodeRpc(rpcBytes)
+
+            this._processRpc(idB58Str, peerStreams, rpcMsg)
+          }
+        }
+      )
+    } catch (err) {
+      this._onPeerDisconnected(peerStreams.id, err)
+    }
+  }
+
+  /**
+   * Handles an rpc request from a peer
+   * @param {String} idB58Str
+   * @param {PeerStreams} peerStreams
+   * @param {RPC} rpc
+   * @returns {boolean}
+   */
+  _processRpc (idB58Str, peerStreams, rpc) {
+    this.log('rpc from', idB58Str)
+    const subs = rpc.subscriptions
+    const msgs = rpc.msgs
+
+    if (subs.length) {
+      // update peer subscriptions
+      subs.forEach((subOpt) => this._processRpcSubOpt(idB58Str, subOpt))
+      this.emit('pubsub:subscription-change', peerStreams.id, subs)
+    }
+
+    if (!this._acceptFrom(idB58Str)) {
+      this.log('received message from unacceptable peer %s', idB58Str)
+      return false
+    }
+
+    if (msgs.length) {
+      msgs.forEach(message => {
+        if (!(this.canRelayMessage || message.topicIDs.some((topic) => this.subscriptions.has(topic)))) {
+          this.log('received message we didn\'t subscribe to. Dropping.')
+          return
+        }
+        const msg = utils.normalizeInRpcMessage(message, PeerId.createFromB58String(idB58Str))
+        this._processRpcMessage(msg)
+      })
+    }
+    return true
+  }
+
+  /**
+   * Handles an subscription change from a peer
+   * @param {string} id
+   * @param {RPC.SubOpt} subOpt
+   */
+  _processRpcSubOpt (id, subOpt) {
+    const t = subOpt.topicID
+
+    let topicSet = this.topics.get(t)
+    if (!topicSet) {
+      topicSet = new Set()
+      this.topics.set(t, topicSet)
+    }
+
+    if (subOpt.subscribe) {
+      // subscribe peer to new topic
+      topicSet.add(id)
+    } else {
+      // unsubscribe from existing topic
+      topicSet.delete(id)
+    }
+  }
+
+  /**
+   * Handles an message from a peer
+   * @param {InMessage} msg
+   * @returns {Promise<void>}
+   */
+  async _processRpcMessage (msg) {
+    if (this.peerId.toB58String() === msg.from && !this.emitSelf) {
+      return
+    }
+
+    // Ensure the message is valid before processing it
+    try {
+      await this.validate(msg)
+    } catch (err) {
+      this.log('Message is invalid, dropping it. %O', err)
+      return
+    }
+
+    // Emit to self
+    this._emitMessage(msg)
+
+    this._publishFrom(msg)
+  }
+
+  /**
+   * Emit a message from a peer
+   * @param {InMessage} message
+   */
+  _emitMessage (message) {
+    message.topicIDs.forEach((topic) => {
+      if (this.subscriptions.has(topic)) {
+        this.emit(topic, message)
+      }
+    })
+  }
+
+  /**
+   * The default msgID implementation
+   * Child class can override this.
+   * @param {RPC.Message} msg the message object
+   * @returns {string} message id as string
+   */
+  getMsgId (msg) {
+    return utils.msgId(msg.from, msg.seqno)
+  }
+
+  /**
+   * Process publish message received from a peer
+   * @abstract
+   * @param {InMessage} msg
+   * @returns {void}
+   */
+  _publishFrom (msg) {
+    throw errcode(new Error('_publishFrom must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
+  }
+
+  /**
+   * Whether to accept a message from a peer
+   * Override to create a graylist
+   * @override
+   * @param {string} id
+   * @returns {boolean}
+   */
+  _acceptFrom (id) {
+    return true
+  }
+
+  /**
+   * Overriding the implementation of _decodeRpc should use the appropriate router protobuf.
+   * Decode Uint8Array into an RPC object.
+   * @abstract
+   * @param {Uint8Array} bytes
+   * @returns {RPC}
+   */
+  _decodeRpc (bytes) {
+    throw errcode(new Error('_decodeRpc must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
+  }
+
+  /**
+   * Overriding the implementation of _encodeRpc should use the appropriate router protobuf.
+   * Encode RPC object into a Uint8Array.
+   * @abstract
+   * @param {RPC} rpc
+   * @returns {Uint8Array}
+   */
+  _encodeRpc (rpc) {
+    throw errcode(new Error('_encodeRpc must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
+  }
+
+  /**
+   * Send an rpc object to a peer
+   * @param {string} id peer id
+   * @param {RPC} rpc
+   * @returns {void}
+   */
+  _sendRpc (id, rpc) {
+    const peerStreams = this.peers.get(id)
+    if (!peerStreams || !peerStreams.isWritable) {
+      return
+    }
+    peerStreams.write(this._encodeRpc(rpc))
+  }
+
+  /**
+   * Send subscroptions to a peer
+   * @param {string} id peer id
+   * @param {string[]} topics
+   * @param {boolean} subscribe set to false for unsubscriptions
+   * @returns {void}
+   */
+  _sendSubscriptions (id, topics, subscribe) {
+    return this._sendRpc(id, {
+      subscriptions: topics.map(t => ({ topicID: t, subscribe: subscribe }))
+    })
+  }
+
   /**
    * Validates the given message. The signature will be checked for authenticity.
    * Throws an error on invalid messages
@@ -269,10 +516,19 @@ class PubsubBaseProtocol extends EventEmitter {
     if (message.signature && !(await verifySignature(message))) {
       throw errcode(new Error('Invalid message signature'), codes.ERR_INVALID_SIGNATURE)
     }
+
+    for (const topic of message.topicIDs) {
+      const validatorFn = this.topicValidators.get(topic)
+      if (!validatorFn) {
+        continue
+      }
+      await validatorFn(topic, message)
+    }
   }
 
   /**
-   * Normalizes the message and signs it, if signing is enabled
+   * Normalizes the message and signs it, if signing is enabled.
+   * Should be used by the routers to create the message to send.
    * @private
    * @param {Message} message
    * @returns {Promise<Message>}
@@ -285,6 +541,8 @@ class PubsubBaseProtocol extends EventEmitter {
       return message
     }
   }
+
+  // API METHODS
 
   /**
    * Get a list of the peer-ids that are subscribed to one topic.
@@ -308,62 +566,121 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 
   /**
+   * Publishes messages to all subscribed peers
+   * @override
+   * @param {Array<string>|string} topics
+   * @param {Buffer} message
+   * @returns {Promise<void>}
+   */
+  async publish (topics, message) {
+    if (!this.started) {
+      throw new Error('Pubsub has not started')
+    }
+
+    topics = utils.ensureArray(topics)
+    this.log('publish', topics, message)
+
+    const from = this.peerId.toB58String()
+    const msgObject = {
+      receivedFrom: from,
+      from: from,
+      data: message,
+      seqno: utils.randomSeqno(),
+      topicIDs: topics
+    }
+
+    // Emit to self if I'm interested and emitSelf enabled
+    this.emitSelf && this._emitMessage(msgObject)
+
+    // send to all the other peers
+    await this._publish(msgObject)
+  }
+
+  /**
    * Overriding the implementation of publish should handle the appropriate algorithms for the publish/subscriber implementation.
    * For example, a Floodsub implementation might simply publish each message to each topic for every peer
    * @abstract
-   * @param {Array<string>|string} topics
-   * @param {Uint8Array} message
+   * @param {InMessage} message
    * @returns {Promise<void>}
    *
    */
-  publish (topics, message) {
+  _publish (message) {
     throw errcode(new Error('publish must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
   }
 
   /**
-   * Overriding the implementation of subscribe should handle the appropriate algorithms for the publish/subscriber implementation.
-   * For example, a Floodsub implementation might simply send a message for every peer showing interest in the topics
+   * Subscribes to topics.
    * @abstract
    * @param {Array<string>|string} topics
+   * @param {function} [handler]
    * @returns {void}
    */
-  subscribe (topics) {
-    throw errcode(new Error('subscribe must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
+  subscribe (topics, handler) {
+    if (!this.started) {
+      throw new Error('Pubsub has not started')
+    }
+
+    // normalize input and remove existing subscriptions
+    const newTopics = []
+    topics = utils.ensureArray(topics)
+
+    topics.forEach((topic) => {
+      if (!this.subscriptions.has(topic)) {
+        newTopics.push(topic)
+        this.subscriptions.add(topic)
+      }
+
+      // Bind provider handler
+      handler && this.on(topic, handler)
+    })
+
+    this.peers.forEach((_, id) => this._sendSubscriptions(id, newTopics, true))
   }
 
   /**
-   * Overriding the implementation of unsubscribe should handle the appropriate algorithms for the publish/subscriber implementation.
-   * For example, a Floodsub implementation might simply send a message for every peer revoking interest in the topics
-   * @abstract
+   * Unsubscribe from the given topic(s).
+   * @override
    * @param {Array<string>|string} topics
+   * @param {function} [handler]
    * @returns {void}
    */
-  unsubscribe (topics) {
-    throw errcode(new Error('unsubscribe must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
+  unsubscribe (topics, handler) {
+    if (!this.started) {
+      throw new Error('FloodSub is not started')
+    }
+
+    // normalize input and remove topics not subscribed
+    const unsTopics = []
+    topics = utils.ensureArray(topics)
+
+    topics.forEach((topic) => {
+      // Remove bind handlers
+      if (!handler) {
+        this.removeAllListeners(topic)
+      } else {
+        this.removeListener(topic, handler)
+      }
+
+      if (this.listenerCount(topic) === 0) {
+        unsTopics.push(topic)
+        this.subscriptions.delete(topic)
+      }
+    })
+
+    this.peers.forEach((_, id) => this._sendSubscriptions(id, unsTopics, false))
   }
 
   /**
-   * Overriding the implementation of getTopics should handle the appropriate algorithms for the publish/subscriber implementation.
-   * Get the list of subscriptions the peer is subscribed to.
-   * @abstract
-   * @returns {Array<string>}
+   * Get the list of topics which the peer is subscribed to.
+   * @override
+   * @returns {Array<String>}
    */
   getTopics () {
-    throw errcode(new Error('getTopics must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
-  }
+    if (!this.started) {
+      throw new Error('Pubsub is not started')
+    }
 
-  /**
-   * Overriding the implementation of _processMessages should keep the connection and is
-   * responsible for processing each RPC message received by other peers.
-   * @abstract
-   * @param {string} idB58Str peer id string in base58
-   * @param {Connection} conn connection
-   * @param {PeerStreams} peer A Pubsub Peer
-   * @returns {void}
-   *
-   */
-  _processMessages (idB58Str, conn, peer) {
-    throw errcode(new Error('_processMessages must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
+    return Array.from(this.subscriptions)
   }
 }
 
