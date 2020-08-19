@@ -30,7 +30,7 @@ module.exports = (common) => {
       await common.teardown()
     })
 
-    it('should emit non normalized messages on publish', async () => {
+    it('should emit normalized signed messages on publish', async () => {
       sinon.spy(pubsub, '_emitMessage')
       sinon.spy(utils, 'randomSeqno')
 
@@ -38,13 +38,17 @@ module.exports = (common) => {
       expect(pubsub._emitMessage.callCount).to.eql(1)
 
       const [messageToEmit] = pubsub._emitMessage.getCall(0).args
-      expect(messageToEmit).to.eql({
-        receivedFrom: pubsub.peerId.toB58String(),
-        from: pubsub.peerId.toB58String(),
-        data,
-        seqno: utils.randomSeqno.getCall(0).returnValue,
-        topicIDs: [topic]
-      })
+
+      const expected = utils.normalizeInRpcMessage(
+        await pubsub._buildMessage({
+          receivedFrom: pubsub.peerId.toB58String(),
+          from: pubsub.peerId.toB58String(),
+          data,
+          seqno: utils.randomSeqno.getCall(0).returnValue,
+          topicIDs: [topic]
+        }))
+
+      expect(messageToEmit).to.eql(expected)
     })
 
     it('should drop unsigned messages', async () => {

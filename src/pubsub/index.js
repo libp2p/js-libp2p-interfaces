@@ -576,11 +576,12 @@ class PubsubBaseProtocol extends EventEmitter {
       topicIDs: [topic]
     }
 
+    // ensure that any operations performed on the message will include the signature
+    const outMsg = await this._buildMessage(msgObject)
+    msgObject = utils.normalizeInRpcMessage(outMsg)
+
     // Emit to self if I'm interested and emitSelf enabled
     this.emitSelf && this._emitMessage(msgObject)
-
-    // ensure that any operations performed on the message will include the signature
-    msgObject = await this._buildMessage(msgObject)
 
     // send to all the other peers
     await this._publish(msgObject)
