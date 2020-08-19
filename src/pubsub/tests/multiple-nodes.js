@@ -29,7 +29,7 @@ module.exports = (common) => {
           [psA, psB, psC] = await common.setup(3)
 
           // Start pubsub mpdes
-          await Promise.all([psA, psB, psC].map((p) => p.start()))
+          ;[psA, psB, psC].map((p) => p.start())
         })
 
         // Connect nodes
@@ -48,7 +48,7 @@ module.exports = (common) => {
         afterEach(async () => {
           sinon.restore()
 
-          await Promise.all([psA, psB, psC].map((p) => p.stop()))
+          ;[psA, psB, psC].map((p) => p.stop())
           await common.teardown()
         })
 
@@ -220,7 +220,7 @@ module.exports = (common) => {
           [psA, psB, psC, psD, psE] = await common.setup(5)
 
           // Start pubsub nodes
-          await Promise.all([psA, psB, psC, psD, psE].map((p) => p.start()))
+          ;[psA, psB, psC, psD, psE].map((p) => p.start())
         })
 
         // connect nodes
@@ -241,7 +241,7 @@ module.exports = (common) => {
         })
 
         afterEach(async () => {
-          await Promise.all([psA, psB, psC, psD, psE].map((p) => p.stop()))
+          [psA, psB, psC, psD, psE].map((p) => p.stop())
           await common.teardown()
         })
 

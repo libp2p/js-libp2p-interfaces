@@ -23,26 +23,26 @@ module.exports = (common) => {
 
     afterEach(async () => {
       sinon.restore()
-      await pubsub && pubsub.stop()
+      pubsub && pubsub.stop()
       await common.teardown()
     })
 
-    it('can start correctly', async () => {
+    it('can start correctly', () => {
       sinon.spy(pubsub.registrar, '_handle')
       sinon.spy(pubsub.registrar, 'register')
 
-      await pubsub.start()
+      pubsub.start()
 
       expect(pubsub.started).to.eql(true)
       expect(pubsub.registrar._handle.callCount).to.eql(1)
       expect(pubsub.registrar.register.callCount).to.eql(1)
     })
 
-    it('can stop correctly', async () => {
+    it('can stop correctly', () => {
       sinon.spy(pubsub.registrar, 'unregister')
 
-      await pubsub.start()
-      await pubsub.stop()
+      pubsub.start()
+      pubsub.stop()
 
       expect(pubsub.started).to.eql(false)
       expect(pubsub.registrar.unregister.callCount).to.eql(1)
@@ -53,7 +53,7 @@ module.exports = (common) => {
         throw new Error('a message should not be received')
       }
 
-      await pubsub.start()
+      pubsub.start()
       pubsub.subscribe(topic, handler)
 
       await pWaitFor(() => {
@@ -68,8 +68,7 @@ module.exports = (common) => {
       // Publish to guarantee the handler is not called
       await pubsub.publish(topic, data)
 
-      // TODO: publish with error
-      await pubsub.stop()
+      pubsub.stop()
     })
 
     it('can subscribe and publish correctly', async () => {
@@ -80,13 +79,13 @@ module.exports = (common) => {
         defer.resolve()
       }
 
-      await pubsub.start()
+      pubsub.start()
 
       pubsub.subscribe(topic, handler)
       await pubsub.publish(topic, data)
       await defer.promise
 
-      await pubsub.stop()
+      pubsub.stop()
     })
   })
 }

@@ -140,9 +140,9 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Register the pubsub protocol onto the libp2p node.
-   * @returns {Promise<void>}
+   * @returns {void}
    */
-  async start () {
+  start () {
     if (this.started) {
       return
     }
@@ -161,7 +161,7 @@ class PubsubBaseProtocol extends EventEmitter {
         onDisconnect: this._onPeerDisconnected
       }
     })
-    this._registrarId = await this.registrar.register(topology)
+    this._registrarId = this.registrar.register(topology)
 
     this.log('started')
     this.started = true
@@ -169,15 +169,15 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Unregister the pubsub protocol and the streams with other peers will be closed.
-   * @returns {Promise<void>}
+   * @returns {void}
    */
-  async stop () {
+  stop () {
     if (!this.started) {
       return
     }
 
     // unregister protocol and handlers
-    await this.registrar.unregister(this._registrarId)
+    this.registrar.unregister(this._registrarId)
 
     this.log('stopping')
     this.peers.forEach((peerStreams) => peerStreams.close())

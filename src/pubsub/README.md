@@ -104,23 +104,11 @@ Starts the pubsub subsystem. The protocol will be registered to `libp2p`, which 
 
 #### `pubsub.start()`
 
-##### Returns
-
-| Type | Description |
-|------|-------------|
-| `Promise<void>` | resolves once pubsub starts |
-
 ### Stop
 
 Stops the pubsub subsystem. The protocol will be unregistered from `libp2p`, which will remove all listeners for the protocol and the established connections will be closed.
 
 #### `pubsub.stop()`
-
-##### Returns
-
-| Type | Description |
-|------|-------------|
-| `Promise<void>` | resolves once pubsub stops |
 
 ### Publish
 

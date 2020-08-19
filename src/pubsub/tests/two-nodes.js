@@ -35,10 +35,8 @@ module.exports = (common) => {
         expect(psB.peers.size).to.be.eql(0)
 
         // Start pubsub and connect nodes
-        await Promise.all([
-          psA.start(),
-          psB.start()
-        ])
+        psA.start()
+        psB.start()
 
         await psA._libp2p.dial(psB.peerId)
 
@@ -49,8 +47,8 @@ module.exports = (common) => {
       after(async () => {
         sinon.restore()
 
-        psA && await psA.stop()
-        psB && await psB.stop()
+        psA && psA.stop()
+        psB && psB.stop()
 
         await common.teardown()
       })
@@ -183,10 +181,8 @@ module.exports = (common) => {
         expect(psB.peers.size).to.be.eql(0)
 
         // Start pubsub and connect nodes
-        await Promise.all([
-          psA.start(),
-          psB.start()
-        ])
+        psA.start()
+        psB.start()
       })
 
       // Make subscriptions prior to nodes connected
@@ -203,8 +199,8 @@ module.exports = (common) => {
       after(async () => {
         sinon.restore()
 
-        psA && await psA.stop()
-        psB && await psB.stop()
+        psA && psA.stop()
+        psB && psB.stop()
 
         await common.teardown()
       })
