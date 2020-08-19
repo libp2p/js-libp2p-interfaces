@@ -556,17 +556,16 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Publishes messages to all subscribed peers
    * @override
-   * @param {Array<string>|string} topics
+   * @param {string} topic
    * @param {Buffer} message
    * @returns {Promise<void>}
    */
-  async publish (topics, message) {
+  async publish (topic, message) {
     if (!this.started) {
       throw new Error('Pubsub has not started')
     }
 
-    topics = utils.ensureArray(topics)
-    this.log('publish', topics, message)
+    this.log('publish', topic, message)
 
     const from = this.peerId.toB58String()
     let msgObject = {
@@ -574,7 +573,7 @@ class PubsubBaseProtocol extends EventEmitter {
       from: from,
       data: message,
       seqno: utils.randomSeqno(),
-      topicIDs: topics
+      topicIDs: [topic]
     }
 
     // Emit to self if I'm interested and emitSelf enabled
@@ -603,7 +602,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * Subscribes to a given topic.
    * @abstract
    * @param {string} topic
-   * @param {function} [handler]
+   * @param {function(msg: InMessage)} [handler]
    * @returns {void}
    */
   subscribe (topic, handler) {

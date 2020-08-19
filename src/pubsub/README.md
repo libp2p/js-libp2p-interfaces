@@ -114,13 +114,13 @@ Stops the pubsub subsystem. The protocol will be unregistered from `libp2p`, whi
 
 Publish data message to pubsub topics.
 
-#### `pubsub.publish(topics, message)`
+#### `pubsub.publish(topic, message)`
 
 ##### Parameters
 
 | Name | Type | Description |
 |------|------|-------------|
-| topics | `Array<string>|string` | set of pubsub topics |
+| topics | `string` | pubsub topic |
 | message | `Uint8Array` | message to publish |
 
 ##### Returns
