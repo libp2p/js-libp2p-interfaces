@@ -3,7 +3,7 @@ interface-pubsub
 
 The `interface-pubsub` contains the base implementation for a libp2p pubsub router implementation. This interface should be used to implement a pubsub router compatible with libp2p. It includes a test suite that pubsub routers should run, in order to ensure compatibility with libp2p.
 
-## Implementations using this base protocol
+## Implementations using this interface
 
 You can use the following implementations as examples for building your own pubsub router.
 
@@ -26,35 +26,17 @@ The following example aims to show how to create your pubsub implementation exte
 const Pubsub = require('libp2p-pubsub')
 
 class PubsubImplementation extends Pubsub {
-  constructor({ peerId, registrar, ...options })
+  constructor({ libp2p, options })
     super({
       debugName: 'libp2p:pubsub',
       multicodecs: '/pubsub-implementation/1.0.0',
-      peerId: peerId,
-      registrar: registrar,
+      libp2p,
       signMessages: options.signMessages,
       strictSigning: options.strictSigning
     })
   }
 
-  _processMessages(idB58Str, conn, peer) {
-    // Required to be implemented by the subclass
-    // Process each message accordingly
-  }
-
-  publish() {
-    // Required to be implemented by the subclass
-  }
-
-  subscribe() {
-    // Required to be implemented by the subclass
-  }
-
-  unsubscribe() {
-    // Required to be implemented by the subclass
-  }
-
-  getTopics() {
+  _publish() {
     // Required to be implemented by the subclass
   }
 }
@@ -109,31 +91,31 @@ Publish data message to pubsub topics.
 
 ### Subscribe
 
-Subscribe to the given topic(s).
+Subscribe to the given topic.
 
-#### `pubsub.subscribe(topics, [handler])`
+#### `pubsub.subscribe(topic, [handler])`
 
 ##### Parameters
 
 | Name | Type | Description |
 |------|------|-------------|
-| topics | `Array<string>|string` | set of pubsub topics |
-| [handler] | `function (msg)` | handler for messages received in the given topics |
+| topic | `string` | pubsub topic |
+| [handler] | `function (msg)` | handler for messages received in the given topic |
 
 ### Unsubscribe
 
-Unsubscribe from the given topic(s).
+Unsubscribe from the given topic.
 
-#### `pubsub.unsubscribe(topics, [handler])`
+#### `pubsub.unsubscribe(topic, [handler])`
 
 ##### Parameters
 
 | Name | Type | Description |
 |------|------|-------------|
-| topics | `Array<string>|string` | set of pubsub topics |
-| [handler] | `function (msg)` | handler for messages received in the given topics |
+| topic | `string` | pubsub topic |
+| [handler] | `function (msg)` | handler for messages received in the given topic |
 
-If **NO** `handler` is provided, all registered handlers to the given topics will be removed.
+If **NO** `handler` is provided, all registered handlers to the given topic will be removed.
 
 ### Get Topics
 

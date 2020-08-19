@@ -405,7 +405,7 @@ class PubsubBaseProtocol extends EventEmitter {
     // Emit to self
     this._emitMessage(msg)
 
-    this._publishFrom(msg)
+    this._publish(utils.normalizeOutRpcMessage(msg))
   }
 
   /**
@@ -431,16 +431,6 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 
   /**
-   * Process publish message received from a peer
-   * @abstract
-   * @param {InMessage} msg
-   * @returns {void}
-   */
-  _publishFrom (msg) {
-    throw errcode(new Error('_publishFrom must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
-  }
-
-  /**
    * Whether to accept a message from a peer
    * Override to create a graylist
    * @override
@@ -452,25 +442,23 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 
   /**
-   * Overriding the implementation of _decodeRpc should use the appropriate router protobuf.
    * Decode Uint8Array into an RPC object.
-   * @abstract
+   * This can be override to use a custom router protobuf.
    * @param {Uint8Array} bytes
    * @returns {RPC}
    */
   _decodeRpc (bytes) {
-    throw errcode(new Error('_decodeRpc must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
+    return message.rpc.RPC.decode(bytes)
   }
 
   /**
-   * Overriding the implementation of _encodeRpc should use the appropriate router protobuf.
    * Encode RPC object into a Uint8Array.
-   * @abstract
+   * This can be override to use a custom router protobuf.
    * @param {RPC} rpc
    * @returns {Uint8Array}
    */
   _encodeRpc (rpc) {
-    throw errcode(new Error('_encodeRpc must be implemented by the subclass'), 'ERR_NOT_IMPLEMENTED')
+    return message.rpc.RPC.encode(rpc)
   }
 
   /**
@@ -581,7 +569,7 @@ class PubsubBaseProtocol extends EventEmitter {
     this.log('publish', topics, message)
 
     const from = this.peerId.toB58String()
-    const msgObject = {
+    let msgObject = {
       receivedFrom: from,
       from: from,
       data: message,
@@ -591,6 +579,9 @@ class PubsubBaseProtocol extends EventEmitter {
 
     // Emit to self if I'm interested and emitSelf enabled
     this.emitSelf && this._emitMessage(msgObject)
+
+    // ensure that any operations performed on the message will include the signature
+    msgObject = await this._buildMessage(msgObject)
 
     // send to all the other peers
     await this._publish(msgObject)
@@ -609,65 +600,48 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 
   /**
-   * Subscribes to topics.
+   * Subscribes to a given topic.
    * @abstract
-   * @param {Array<string>|string} topics
+   * @param {string} topic
    * @param {function} [handler]
    * @returns {void}
    */
-  subscribe (topics, handler) {
+  subscribe (topic, handler) {
     if (!this.started) {
       throw new Error('Pubsub has not started')
     }
 
-    // normalize input and remove existing subscriptions
-    const newTopics = []
-    topics = utils.ensureArray(topics)
+    if (!this.subscriptions.has(topic)) {
+      this.subscriptions.add(topic)
+      this.peers.forEach((_, id) => this._sendSubscriptions(id, [topic], true))
+    }
 
-    topics.forEach((topic) => {
-      if (!this.subscriptions.has(topic)) {
-        newTopics.push(topic)
-        this.subscriptions.add(topic)
-      }
-
-      // Bind provider handler
-      handler && this.on(topic, handler)
-    })
-
-    this.peers.forEach((_, id) => this._sendSubscriptions(id, newTopics, true))
+    // Bind provided handler
+    handler && this.on(topic, handler)
   }
 
   /**
-   * Unsubscribe from the given topic(s).
+   * Unsubscribe from the given topic.
    * @override
-   * @param {Array<string>|string} topics
+   * @param {string} topic
    * @param {function} [handler]
    * @returns {void}
    */
-  unsubscribe (topics, handler) {
+  unsubscribe (topic, handler) {
     if (!this.started) {
       throw new Error('FloodSub is not started')
     }
 
-    // normalize input and remove topics not subscribed
-    const unsTopics = []
-    topics = utils.ensureArray(topics)
+    if (!handler) {
+      this.removeAllListeners(topic)
+    } else {
+      this.removeListener(topic, handler)
+    }
 
-    topics.forEach((topic) => {
-      // Remove bind handlers
-      if (!handler) {
-        this.removeAllListeners(topic)
-      } else {
-        this.removeListener(topic, handler)
-      }
-
-      if (this.listenerCount(topic) === 0) {
-        unsTopics.push(topic)
-        this.subscriptions.delete(topic)
-      }
-    })
-
-    this.peers.forEach((_, id) => this._sendSubscriptions(id, unsTopics, false))
+    if (this.listenerCount(topic) === 0) {
+      this.subscriptions.delete(topic)
+      this.peers.forEach((_, id) => this._sendSubscriptions(id, [topic], false))
+    }
   }
 
   /**

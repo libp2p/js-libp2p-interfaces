@@ -15,7 +15,8 @@ const uint8ArrayToString = require('uint8arrays/to-string')
 const { expectSet } = require('./utils')
 
 module.exports = (common) => {
-  describe('pubsub with multiple nodes', () => {
+  describe('pubsub with multiple nodes', function () {
+    this.timeout(10e3)
     describe('every peer subscribes to the topic', () => {
       describe('line', () => {
         // line
@@ -179,6 +180,9 @@ module.exports = (common) => {
             psA.on(topic, incMsg)
             psB.on(topic, incMsg)
             psC.on(topic, incMsg)
+
+            // await a cycle
+            await delay(1000)
 
             psB.publish(topic, uint8ArrayFromString('hey'))
 
