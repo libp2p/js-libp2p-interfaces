@@ -638,7 +638,7 @@ class PubsubBaseProtocol extends EventEmitter {
       this.removeListener(topic, handler)
     }
 
-    if (this.listenerCount(topic) === 0) {
+    if (this.subscriptions.has(topic) && this.listenerCount(topic) === 0) {
       this.subscriptions.delete(topic)
       this.peers.forEach((_, id) => this._sendSubscriptions(id, [topic], false))
     }

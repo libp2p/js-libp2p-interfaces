@@ -3,335 +3,318 @@
 
 const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
+const pWaitFor = require('p-wait-for')
 
-const PubsubBaseImpl = require('../../src/pubsub')
+const uint8ArrayFromString = require('uint8arrays/from-string')
+
 const PeerStreams = require('../../src/pubsub/peer-streams')
-const { randomSeqno } = require('../../src/pubsub/utils')
 const {
   createPeerId,
   createMockRegistrar,
+  ConnectionPair,
   mockRegistrar,
-  PubsubImplementation,
-  ConnectionPair
+  PubsubImplementation
 } = require('./utils')
 
+const protocol = '/pubsub/1.0.0'
+const topic = 'test-topic'
+const message = uint8ArrayFromString('hello')
+
 describe('pubsub base implementation', () => {
-  describe('should validate instance parameters', () => {
-    let peerId
-
-    before(async () => {
-      peerId = await createPeerId()
-    })
-
-    it('should throw if no debugName is provided', () => {
-      expect(() => {
-        new PubsubBaseImpl() // eslint-disable-line no-new
-      }).to.throw()
-    })
-
-    it('should throw if no multicodec is provided', () => {
-      expect(() => {
-        new PubsubBaseImpl({ // eslint-disable-line no-new
-          debugName: 'pubsub'
-        })
-      }).to.throw()
-    })
-
-    it('should throw if no libp2p is provided', () => {
-      expect(() => {
-        new PubsubBaseImpl({ // eslint-disable-line no-new
-          debugName: 'pubsub',
-          multicodecs: '/pubsub/1.0.0'
-        })
-      }).to.throw()
-    })
-
-    it('should accept valid parameters', () => {
-      expect(() => {
-        new PubsubBaseImpl({ // eslint-disable-line no-new
-          debugName: 'pubsub',
-          multicodecs: '/pubsub/1.0.0',
-          libp2p: {
-            peerId: peerId,
-            registrar: mockRegistrar
-          }
-        })
-      }).not.to.throw()
-    })
-  })
-
-  describe('should start and stop properly', () => {
+  describe('publish', () => {
     let pubsub
-    let sinonMockRegistrar
 
     beforeEach(async () => {
       const peerId = await createPeerId()
-      sinonMockRegistrar = {
-        handle: sinon.stub(),
-        register: sinon.stub(),
-        unregister: sinon.stub()
-      }
-
-      pubsub = new PubsubBaseImpl({
-        debugName: 'pubsub',
-        multicodecs: '/pubsub/1.0.0',
-        libp2p: {
-          peerId: peerId,
-          registrar: sinonMockRegistrar
-        }
+      pubsub = new PubsubImplementation(protocol, {
+        peerId: peerId,
+        registrar: mockRegistrar
       })
-
-      expect(pubsub.peers.size).to.be.eql(0)
     })
 
-    afterEach(() => {
-      sinon.restore()
+    afterEach(() => pubsub.stop())
+
+    it('calls _publish for router to forward messages', async () => {
+      sinon.spy(pubsub, '_publish')
+
+      pubsub.start()
+      await pubsub.publish(topic, message)
+
+      expect(pubsub._publish.callCount).to.eql(1)
     })
 
-    it('should be able to start and stop', async () => {
-      await pubsub.start()
-      expect(sinonMockRegistrar.handle.calledOnce).to.be.true()
-      expect(sinonMockRegistrar.register.calledOnce).to.be.true()
+    it('should sign messages on publish', async () => {
+      sinon.spy(pubsub, '_publish')
 
-      await pubsub.stop()
-      expect(sinonMockRegistrar.unregister.calledOnce).to.be.true()
-    })
+      pubsub.start()
+      await pubsub.publish(topic, message)
 
-    it('starting should not throw if already started', async () => {
-      await pubsub.start()
-      await pubsub.start()
-      expect(sinonMockRegistrar.handle.calledOnce).to.be.true()
-      expect(sinonMockRegistrar.register.calledOnce).to.be.true()
-
-      await pubsub.stop()
-      expect(sinonMockRegistrar.unregister.calledOnce).to.be.true()
-    })
-
-    it('stopping should not throw if not started', async () => {
-      await pubsub.stop()
-      expect(sinonMockRegistrar.register.calledOnce).to.be.false()
-      expect(sinonMockRegistrar.unregister.calledOnce).to.be.false()
+      // Get the first message sent to _publish, and validate it
+      const signedMessage = pubsub._publish.getCall(0).lastArg
+      try {
+        await pubsub.validate(signedMessage)
+      } catch (e) {
+        expect.fail('validation should not throw')
+      }
     })
   })
 
-  describe('should handle message creation and signing', () => {
+  describe('subscribe', () => {
+    describe('basics', () => {
+      let pubsub
+
+      beforeEach(async () => {
+        const peerId = await createPeerId()
+        pubsub = new PubsubImplementation(protocol, {
+          peerId: peerId,
+          registrar: mockRegistrar
+        })
+        pubsub.start()
+      })
+
+      afterEach(() => pubsub.stop())
+
+      it('should add subscription without handler', () => {
+        pubsub.subscribe(topic)
+
+        expect(pubsub.subscriptions.size).to.eql(1)
+        expect(pubsub.subscriptions.has(topic)).to.be.true()
+        expect(pubsub.listenerCount(topic)).to.eql(0)
+      })
+
+      it('should add subscription with handler', () => {
+        const handler = (msg) => {}
+        pubsub.subscribe(topic, handler)
+
+        expect(pubsub.subscriptions.size).to.eql(1)
+        expect(pubsub.subscriptions.has(topic)).to.be.true()
+        expect(pubsub.listenerCount(topic)).to.eql(1)
+      })
+    })
+
+    describe('two nodes', () => {
+      let pubsubA, pubsubB
+      let peerIdA, peerIdB
+      const registrarRecordA = {}
+      const registrarRecordB = {}
+
+      beforeEach(async () => {
+        peerIdA = await createPeerId()
+        peerIdB = await createPeerId()
+
+        pubsubA = new PubsubImplementation(protocol, {
+          peerId: peerIdA,
+          registrar: createMockRegistrar(registrarRecordA)
+        })
+        pubsubB = new PubsubImplementation(protocol, {
+          peerId: peerIdB,
+          registrar: createMockRegistrar(registrarRecordB)
+        })
+      })
+
+      // start pubsub and connect nodes
+      beforeEach(async () => {
+        pubsubA.start()
+        pubsubB.start()
+
+        const onConnectA = registrarRecordA[protocol].onConnect
+        const handlerB = registrarRecordB[protocol].handler
+
+        // Notice peers of connection
+        const [c0, c1] = ConnectionPair()
+
+        await onConnectA(peerIdB, c0)
+        await handlerB({
+          protocol,
+          stream: c1.stream,
+          connection: {
+            remotePeer: peerIdA
+          }
+        })
+      })
+
+      afterEach(() => {
+        pubsubA.stop()
+        pubsubB.stop()
+      })
+
+      it('should send subscribe message to connected peers', async () => {
+        sinon.spy(pubsubA, '_sendSubscriptions')
+        sinon.spy(pubsubB, '_processRpcSubOpt')
+
+        pubsubA.subscribe(topic)
+
+        // Should send subscriptions to a peer
+        expect(pubsubA._sendSubscriptions.callCount).to.eql(1)
+
+        // Other peer should receive subscription message
+        await pWaitFor(() => {
+          const subscribers = pubsubB.getSubscribers(topic)
+
+          return subscribers.length === 1
+        })
+        expect(pubsubB._processRpcSubOpt.callCount).to.eql(1)
+      })
+    })
+  })
+
+  describe('unsubscribe', () => {
+    describe('basics', () => {
+      let pubsub
+
+      beforeEach(async () => {
+        const peerId = await createPeerId()
+        pubsub = new PubsubImplementation(protocol, {
+          peerId: peerId,
+          registrar: mockRegistrar
+        })
+        pubsub.start()
+      })
+
+      afterEach(() => pubsub.stop())
+
+      it('should remove all listeners for a topic if no handler provided', () => {
+        pubsub.subscribe(topic, (msg) => {})
+        pubsub.subscribe(topic, (msg) => {})
+
+        expect(pubsub.listenerCount(topic)).to.eql(2)
+        expect(pubsub.subscriptions.size).to.eql(1)
+
+        pubsub.unsubscribe(topic)
+
+        expect(pubsub.subscriptions.size).to.eql(0)
+        expect(pubsub.listenerCount(topic)).to.eql(0)
+      })
+
+      it('should remove the listeners for a topic if provided', () => {
+        const handler = (msg) => {}
+        pubsub.subscribe(topic, handler)
+        pubsub.subscribe(topic, (msg) => {})
+
+        expect(pubsub.listenerCount(topic)).to.eql(2)
+        expect(pubsub.subscriptions.size).to.eql(1)
+
+        pubsub.unsubscribe(topic, handler)
+
+        expect(pubsub.listenerCount(topic)).to.eql(1)
+        // should only remove subscription if no listeners
+        expect(pubsub.subscriptions.size).to.eql(1)
+      })
+    })
+
+    describe('two nodes', () => {
+      let pubsubA, pubsubB
+      let peerIdA, peerIdB
+      const registrarRecordA = {}
+      const registrarRecordB = {}
+
+      beforeEach(async () => {
+        peerIdA = await createPeerId()
+        peerIdB = await createPeerId()
+
+        pubsubA = new PubsubImplementation(protocol, {
+          peerId: peerIdA,
+          registrar: createMockRegistrar(registrarRecordA)
+        })
+        pubsubB = new PubsubImplementation(protocol, {
+          peerId: peerIdB,
+          registrar: createMockRegistrar(registrarRecordB)
+        })
+      })
+
+      // start pubsub and connect nodes
+      beforeEach(async () => {
+        pubsubA.start()
+        pubsubB.start()
+
+        const onConnectA = registrarRecordA[protocol].onConnect
+        const handlerB = registrarRecordB[protocol].handler
+
+        // Notice peers of connection
+        const [c0, c1] = ConnectionPair()
+
+        await onConnectA(peerIdB, c0)
+        await handlerB({
+          protocol,
+          stream: c1.stream,
+          connection: {
+            remotePeer: peerIdA
+          }
+        })
+      })
+
+      afterEach(() => {
+        pubsubA.stop()
+        pubsubB.stop()
+      })
+
+      it('should send unsubscribe message to connected peers', async () => {
+        sinon.spy(pubsubA, '_sendSubscriptions')
+        sinon.spy(pubsubB, '_processRpcSubOpt')
+
+        pubsubA.subscribe(topic)
+        // Should send subscriptions to a peer
+        expect(pubsubA._sendSubscriptions.callCount).to.eql(1)
+
+        // Other peer should receive subscription message
+        await pWaitFor(() => {
+          const subscribers = pubsubB.getSubscribers(topic)
+
+          return subscribers.length === 1
+        })
+        expect(pubsubB._processRpcSubOpt.callCount).to.eql(1)
+
+        // Unsubscribe
+        pubsubA.unsubscribe(topic)
+        // Should send subscriptions to a peer
+        expect(pubsubA._sendSubscriptions.callCount).to.eql(2)
+
+        // Other peer should receive subscription message
+        await pWaitFor(() => {
+          const subscribers = pubsubB.getSubscribers(topic)
+
+          return subscribers.length === 0
+        })
+        expect(pubsubB._processRpcSubOpt.callCount).to.eql(2)
+      })
+
+      it('should not send unsubscribe message to connected peers if not subscribed', () => {
+        sinon.spy(pubsubA, '_sendSubscriptions')
+        sinon.spy(pubsubB, '_processRpcSubOpt')
+
+        // Unsubscribe
+        pubsubA.unsubscribe(topic)
+
+        // Should send subscriptions to a peer
+        expect(pubsubA._sendSubscriptions.callCount).to.eql(0)
+      })
+    })
+  })
+
+  describe('getTopics', () => {
     let peerId
     let pubsub
 
-    before(async () => {
+    beforeEach(async () => {
       peerId = await createPeerId()
-      pubsub = new PubsubBaseImpl({
-        debugName: 'pubsub',
-        multicodecs: '/pubsub/1.0.0',
-        libp2p: {
-          peerId: peerId,
-          registrar: mockRegistrar
-        }
+      pubsub = new PubsubImplementation(protocol, {
+        peerId: peerId,
+        registrar: mockRegistrar
       })
+      pubsub.start()
     })
 
-    afterEach(() => {
-      sinon.restore()
-    })
+    afterEach(() => pubsub.stop())
 
-    it('_buildMessage normalizes and signs messages', async () => {
-      const message = {
-        receivedFrom: peerId.id,
-        from: peerId.id,
-        data: 'hello',
-        seqno: randomSeqno(),
-        topicIDs: ['test-topic']
-      }
+    it('returns the subscribed topics', () => {
+      let subsTopics = pubsub.getTopics()
+      expect(subsTopics).to.have.lengthOf(0)
 
-      const signedMessage = await pubsub._buildMessage(message)
-      expect(pubsub.validate(signedMessage)).to.not.be.rejected()
-    })
+      pubsub.subscribe(topic)
 
-    it('validate with strict signing off will validate a present signature', async () => {
-      const message = {
-        receivedFrom: peerId.id,
-        from: peerId.id,
-        data: 'hello',
-        seqno: randomSeqno(),
-        topicIDs: ['test-topic']
-      }
-
-      sinon.stub(pubsub, 'strictSigning').value(false)
-
-      const signedMessage = await pubsub._buildMessage(message)
-      expect(pubsub.validate(signedMessage)).to.not.be.rejected()
-    })
-
-    it('validate with strict signing requires a signature', async () => {
-      const message = {
-        receivedFrom: peerId.id,
-        from: peerId.id,
-        data: 'hello',
-        seqno: randomSeqno(),
-        topicIDs: ['test-topic']
-      }
-
-      await expect(pubsub.validate(message)).to.be.rejectedWith(Error, 'Signing required and no signature was present')
-    })
-  })
-
-  describe('should be able to register two nodes', () => {
-    const protocol = '/pubsub/1.0.0'
-    let pubsubA, pubsubB
-    let peerIdA, peerIdB
-    const registrarRecordA = {}
-    const registrarRecordB = {}
-
-    // mount pubsub
-    beforeEach(async () => {
-      peerIdA = await createPeerId()
-      peerIdB = await createPeerId()
-
-      pubsubA = new PubsubImplementation(protocol, {
-        peerId: peerIdA,
-        registrar: createMockRegistrar(registrarRecordA)
-      })
-      pubsubB = new PubsubImplementation(protocol, {
-        peerId: peerIdB,
-        registrar: createMockRegistrar(registrarRecordB)
-      })
-    })
-
-    // start pubsub
-    beforeEach(async () => {
-      await Promise.all([
-        pubsubA.start(),
-        pubsubB.start()
-      ])
-
-      expect(Object.keys(registrarRecordA)).to.have.lengthOf(1)
-      expect(Object.keys(registrarRecordB)).to.have.lengthOf(1)
-    })
-
-    afterEach(() => {
-      sinon.restore()
-
-      return Promise.all([
-        pubsubA.stop(),
-        pubsubB.stop()
-      ])
-    })
-
-    it('should handle onConnect as expected', async () => {
-      const onConnectA = registrarRecordA[protocol].onConnect
-      const handlerB = registrarRecordB[protocol].handler
-
-      // Notice peers of connection
-      const [c0, c1] = ConnectionPair()
-
-      await onConnectA(peerIdB, c0)
-      await handlerB({
-        protocol,
-        stream: c1.stream,
-        connection: {
-          remotePeer: peerIdA
-        }
-      })
-
-      expect(pubsubA.peers.size).to.be.eql(1)
-      expect(pubsubB.peers.size).to.be.eql(1)
-    })
-
-    it('should use the latest connection if onConnect is called more than once', async () => {
-      const onConnectA = registrarRecordA[protocol].onConnect
-      const handlerB = registrarRecordB[protocol].handler
-
-      // Notice peers of connection
-      const [c0, c1] = ConnectionPair()
-      const [c2] = ConnectionPair()
-
-      sinon.spy(c0, 'newStream')
-
-      await onConnectA(peerIdB, c0)
-      await handlerB({
-        protocol,
-        stream: c1.stream,
-        connection: {
-          remotePeer: peerIdA
-        }
-      })
-      expect(c0.newStream).to.have.property('callCount', 1)
-
-      sinon.spy(pubsubA, '_removePeer')
-
-      sinon.spy(c2, 'newStream')
-
-      await onConnectA(peerIdB, c2)
-      expect(c2.newStream).to.have.property('callCount', 1)
-      expect(pubsubA._removePeer).to.have.property('callCount', 0)
-
-      // Verify the first stream was closed
-      const { stream: firstStream } = await c0.newStream.returnValues[0]
-      try {
-        await firstStream.sink(['test'])
-      } catch (err) {
-        expect(err).to.exist()
-        return
-      }
-      expect.fail('original stream should have ended')
-    })
-
-    it('should handle newStream errors in onConnect', async () => {
-      const onConnectA = registrarRecordA[protocol].onConnect
-      const handlerB = registrarRecordB[protocol].handler
-
-      // Notice peers of connection
-      const [c0, c1] = ConnectionPair()
-      const error = new Error('new stream error')
-      sinon.stub(c0, 'newStream').throws(error)
-
-      await onConnectA(peerIdB, c0)
-      await handlerB({
-        protocol,
-        stream: c1.stream,
-        connection: {
-          remotePeer: peerIdA
-        }
-      })
-
-      expect(c0.newStream).to.have.property('callCount', 1)
-    })
-
-    it('should handle onDisconnect as expected', async () => {
-      const onConnectA = registrarRecordA[protocol].onConnect
-      const onDisconnectA = registrarRecordA[protocol].onDisconnect
-      const handlerB = registrarRecordB[protocol].handler
-      const onDisconnectB = registrarRecordB[protocol].onDisconnect
-
-      // Notice peers of connection
-      const [c0, c1] = ConnectionPair()
-
-      await onConnectA(peerIdB, c0)
-      await handlerB({
-        protocol,
-        stream: c1.stream,
-        connection: {
-          remotePeer: peerIdA
-        }
-      })
-
-      // Notice peers of disconnect
-      onDisconnectA(peerIdB)
-      onDisconnectB(peerIdA)
-
-      expect(pubsubA.peers.size).to.be.eql(0)
-      expect(pubsubB.peers.size).to.be.eql(0)
-    })
-
-    it('should handle onDisconnect for unknown peers', () => {
-      const onDisconnectA = registrarRecordA[protocol].onDisconnect
-
-      expect(pubsubA.peers.size).to.be.eql(0)
-
-      // Notice peers of disconnect
-      onDisconnectA(peerIdB)
-
-      expect(pubsubA.peers.size).to.be.eql(0)
+      subsTopics = pubsub.getTopics()
+      expect(subsTopics).to.have.lengthOf(1)
+      expect(subsTopics[0]).to.eql(topic)
     })
   })
 
@@ -341,13 +324,9 @@ describe('pubsub base implementation', () => {
 
     beforeEach(async () => {
       peerId = await createPeerId()
-      pubsub = new PubsubBaseImpl({
-        debugName: 'pubsub',
-        multicodecs: '/pubsub/1.0.0',
-        libp2p: {
-          peerId: peerId,
-          registrar: mockRegistrar
-        }
+      pubsub = new PubsubImplementation(protocol, {
+        peerId: peerId,
+        registrar: mockRegistrar
       })
     })
 
@@ -366,9 +345,9 @@ describe('pubsub base implementation', () => {
       throw new Error('should fail if pubsub is not started')
     })
 
-    it('should fail if no topic is provided', async () => {
+    it('should fail if no topic is provided', () => {
       // start pubsub
-      await pubsub.start()
+      pubsub.start()
 
       try {
         pubsub.getSubscribers()
@@ -380,11 +359,11 @@ describe('pubsub base implementation', () => {
       throw new Error('should fail if no topic is provided')
     })
 
-    it('should get peer subscribed to one topic', async () => {
+    it('should get peer subscribed to one topic', () => {
       const topic = 'topic-test'
 
       // start pubsub
-      await pubsub.start()
+      pubsub.start()
 
       let peersSubscribed = pubsub.getSubscribers(topic)
       expect(peersSubscribed).to.be.empty()
