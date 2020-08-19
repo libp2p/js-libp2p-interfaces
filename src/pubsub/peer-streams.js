@@ -103,13 +103,6 @@ class PeerStreams extends EventEmitter {
    * @returns {void}
    */
   attachInboundStream (stream) {
-    // If an inbound stream already exists,
-    // use the abort controller to gently close it
-    const _prevStream = this.inboundStream
-    if (_prevStream) {
-      this._inboundAbortController.abort()
-    }
-
     // Create and attach a new inbound stream
     // The inbound stream is:
     // - abortable, set to only return on abort, rather than throw
@@ -125,10 +118,7 @@ class PeerStreams extends EventEmitter {
       { returnOnAbort: true }
     )
 
-    // Only emit if the connection is new
-    if (!_prevStream) {
-      this.emit('stream:inbound')
-    }
+    this.emit('stream:inbound')
   }
 
   /**
