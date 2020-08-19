@@ -3,22 +3,73 @@ interface-pubsub
 
 The `interface-pubsub` contains the base implementation for a libp2p pubsub router implementation. This interface should be used to implement a pubsub router compatible with libp2p. It includes a test suite that pubsub routers should run, in order to ensure compatibility with libp2p.
 
+Table of Contents
+=================
+
+* [Implementations using this interface](#implementations-using-this-interface)
+* [Interface usage](#interface-usage)
+    * [Extend interface](#extend-interface)
+    * [Example](#example)
+* [API](#api)
+    * [Start](#start)
+      * [pubsub.start()](#pubsubstart)
+          * [Returns](#returns)
+    * [Stop](#stop)
+      * [pubsub.stop()](#pubsubstop)
+          * [Returns](#returns-1)
+    * [Publish](#publish)
+      * [pubsub.publish(topics, message)](#pubsubpublishtopics-message)
+          * [Parameters](#parameters)
+          * [Returns](#returns-2)
+    * [Subscribe](#subscribe)
+      * [pubsub.subscribe(topic, [handler])](#pubsubsubscribetopic-handler)
+          * [Parameters](#parameters-1)
+    * [Unsubscribe](#unsubscribe)
+      * [pubsub.unsubscribe(topic, [handler])](#pubsubunsubscribetopic-handler)
+          * [Parameters](#parameters-2)
+    * [Get Topics](#get-topics)
+      * [pubsub.getTopics()](#pubsubgettopics)
+          * [Returns](#returns-3)
+    * [Get Peers Subscribed to a topic](#get-peers-subscribed-to-a-topic)
+      * [pubsub.getSubscribers(topic)](#pubsubgetsubscriberstopic)
+          * [Parameters](#parameters-3)
+          * [Returns](#returns-4)
+    * [Validate](#validate)
+      * [pubsub.validate(message)](#pubsubvalidatemessage)
+          * [Parameters](#parameters-4)
+      * [Returns](#returns-5)
+* [Test suite usage](#test-suite-usage)
+
 ## Implementations using this interface
 
-You can use the following implementations as examples for building your own pubsub router.
+You can check the following implementations as examples for building your own pubsub router.
 
 - [libp2p/js-libp2p-floodsub](https://github.com/libp2p/js-libp2p-floodsub)
 - [ChainSafe/js-libp2p-gossipsub](https://github.com/ChainSafe/js-libp2p-gossipsub)
 
 ## Interface usage
 
-`interface-pubsub` abstracts the implementation protocol registration within `libp2p` and takes care of all the protocol connections. This way, a pubsub implementation can focus on its routing algorithm, instead of also needing to create the setup for it.
+`interface-pubsub` abstracts the implementation protocol registration within `libp2p` and takes care of all the protocol connections and streams, as well as the subscription management. This way, a pubsub implementation can focus on its message routing algorithm, instead of also needing to create the setup for it.
 
-A pubsub router implementation should start by extending the `interface-pubsub` class and **MUST** override the `_processMessages`, `publish`, `subscribe`, `unsubscribe` and `getTopics` functions, according to the router algorithms.
+### Extend interface
 
-Other functions, such as `_onPeerConnected`, `_onPeerDisconnected`, `_addPeer`, `_removePeer`, `start` and `stop` may be overwritten if the pubsub implementation needs to customize their logic. Implementations overriding  `start` and `stop` **MUST** call `super`. The `start` function is responsible for registering the pubsub protocol with libp2p, while the `stop` function is responsible for unregistering the pubsub protocol and closing pubsub connections.
+A pubsub router implementation should start by extending the `interface-pubsub` class and **MUST** override the `_publish` function, according to the router algorithms. This function is responsible for forwarding publish messages to other peers, as well as forwarding received messages if the router provides the `canRelayMessage` option to the base implementation.
+
+Other functions, such as `start`, `stop`, `subscribe`, `unsubscribe`, `_encodeRpc`, `_decodeRpc`, `_processRpcMessage`, `_addPeer` and `_removePeer` may be overwritten if the pubsub implementation needs to customize their logic. Implementations overriding these functions **MUST** call `super`.
+
+The `start` and `stop` functions are responsible for the registration of the pubsub protocol with libp2p. The `stop` function also guarantees that the open streams in the protocol are properly closed.
+
+The `subscribe` and `unsubscribe` functions take care of the subscription management and its inherent message propagation.
+
+When using a custom protobuf definition for message marshalling, you should override `_encodeRpc` and `_decodeRpc` to use the new protobuf instead of the default one.
+
+`_processRpcMessage` is responsible for handling messages received from other peers. This should be extended if further operations/validations are needed by the router.
+
+The `_addPeer` and `_removePeer` functions are called when new peers running the pubsub router protocol establish a connection with the peer. They are used for tracking the open streams between the peers.
 
 All the remaining functions **MUST NOT** be overwritten.
+
+### Example
 
 The following example aims to show how to create your pubsub implementation extending this base protocol. The pubsub implementation will handle the subscriptions logic.
 
@@ -36,8 +87,9 @@ class PubsubImplementation extends Pubsub {
     })
   }
 
-  _publish() {
+  _publish (message) {
     // Required to be implemented by the subclass
+    // Routing logic for the message
   }
 }
 ```
