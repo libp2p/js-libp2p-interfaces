@@ -120,7 +120,7 @@ Publish data message to pubsub topics.
 
 | Name | Type | Description |
 |------|------|-------------|
-| topics | `string` | pubsub topic |
+| topic | `string` | pubsub topic |
 | message | `Uint8Array` | message to publish |
 
 ##### Returns

@@ -1,7 +1,6 @@
 'use strict'
 
 const crypto = require('libp2p-crypto')
-const multibase = require('multibase')
 const uint8ArrayToString = require('uint8arrays/to-string')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 
@@ -74,7 +73,7 @@ exports.ensureArray = (maybeArray) => {
  * Ensures `message.from` is base58 encoded
  * @param {Object} message
  * @param {Uint8Array|String} message.from
- * @param {PeerId} peerId
+ * @param {String} peerId
  * @return {Object}
  */
 exports.normalizeInRpcMessage = (message, peerId) => {
@@ -83,7 +82,7 @@ exports.normalizeInRpcMessage = (message, peerId) => {
     m.from = uint8ArrayToString(message.from, 'base58btc')
   }
   if (peerId) {
-    m.receivedFrom = peerId.toB58String()
+    m.receivedFrom = peerId
   }
   return m
 }
@@ -91,7 +90,7 @@ exports.normalizeInRpcMessage = (message, peerId) => {
 exports.normalizeOutRpcMessage = (message) => {
   const m = Object.assign({}, message)
   if (typeof message.from === 'string' || message.from instanceof String) {
-    m.from = multibase.decode('z' + message.from)
+    m.from = uint8ArrayFromString(message.from, 'base58btc')
   }
   if (typeof message.data === 'string' || message.data instanceof String) {
     m.data = uint8ArrayFromString(message.data)

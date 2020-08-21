@@ -5,7 +5,6 @@ const EventEmitter = require('events')
 const errcode = require('err-code')
 
 const pipe = require('it-pipe')
-const PeerId = require('peer-id')
 
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
@@ -354,7 +353,7 @@ class PubsubBaseProtocol extends EventEmitter {
           this.log('received message we didn\'t subscribe to. Dropping.')
           return
         }
-        const msg = utils.normalizeInRpcMessage(message, PeerId.createFromB58String(idB58Str))
+        const msg = utils.normalizeInRpcMessage(message, idB58Str)
         this._processRpcMessage(msg)
       })
     }
@@ -362,7 +361,7 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 
   /**
-   * Handles an subscription change from a peer
+   * Handles a subscription change from a peer
    * @param {string} id
    * @param {RPC.SubOpt} subOpt
    */
@@ -470,6 +469,9 @@ class PubsubBaseProtocol extends EventEmitter {
   _sendRpc (id, rpc) {
     const peerStreams = this.peers.get(id)
     if (!peerStreams || !peerStreams.isWritable) {
+      const msg = `Cannot send RPC to ${id} as there is no open stream to it available`
+
+      this.log.err(msg)
       return
     }
     peerStreams.write(this._encodeRpc(rpc))

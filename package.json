@@ -49,7 +49,7 @@
     "it-pair": "^1.0.0",
     "it-pipe": "^1.1.0",
     "it-pushable": "^1.4.0",
-    "libp2p-crypto": "^0.17.9",
+    "libp2p-crypto": "^0.18.0",
     "libp2p-tcp": "^0.15.0",
     "multiaddr": "^8.0.0",
     "multibase": "^3.0.0",

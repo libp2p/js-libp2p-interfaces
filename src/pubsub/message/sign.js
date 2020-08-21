@@ -39,9 +39,7 @@ async function verifySignature (message) {
   const baseMessage = { ...message }
   delete baseMessage.signature
   delete baseMessage.key
-  if (typeof baseMessage.from === 'string') {
-    baseMessage.from = PeerId.createFromB58String(baseMessage.from).toBytes()
-  }
+  baseMessage.from = PeerId.createFromB58String(baseMessage.from).toBytes()
   const bytes = uint8ArrayConcat([
     SignPrefix,
     Message.encode(baseMessage)
@@ -63,12 +61,7 @@ async function verifySignature (message) {
  */
 async function messagePublicKey (message) {
   // should be available in the from property of the message (peer id)
-  let from
-  if (typeof message.from === 'string') {
-    from = PeerId.createFromB58String(message.from)
-  } else {
-    from = PeerId.createFromBytes(message.from)
-  }
+  const from = PeerId.createFromCID(message.from)
 
   if (message.key) {
     const keyPeerId = await PeerId.createFromPubKey(message.key)

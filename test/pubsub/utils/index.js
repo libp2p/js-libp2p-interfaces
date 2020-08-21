@@ -14,11 +14,12 @@ exports.createPeerId = async () => {
 }
 
 class PubsubImplementation extends PubsubBaseProtocol {
-  constructor (protocol, libp2p) {
+  constructor (protocol, libp2p, options = {}) {
     super({
       debugName: 'libp2p:pubsub',
       multicodecs: protocol,
-      libp2p
+      libp2p,
+      ...options
     })
   }
 
