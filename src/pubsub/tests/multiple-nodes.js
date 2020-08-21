@@ -263,11 +263,16 @@ module.exports = (common) => {
           const defer = pDefer()
           let counter = 0
 
-          psA.subscribe('Z', incMsg)
-          psB.subscribe('Z', incMsg)
-          psC.subscribe('Z', incMsg)
-          psD.subscribe('Z', incMsg)
-          psE.subscribe('Z', incMsg)
+          psA.subscribe('Z')
+          psA.on('Z', incMsg)
+          psB.subscribe('Z')
+          psB.on('Z', incMsg)
+          psC.subscribe('Z')
+          psC.on('Z', incMsg)
+          psD.subscribe('Z')
+          psD.on('Z', incMsg)
+          psE.subscribe('Z')
+          psE.on('Z', incMsg)
 
           await Promise.all([
             new Promise((resolve) => psA.once('pubsub:subscription-change', resolve)),

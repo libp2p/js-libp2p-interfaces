@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint max-nested-callbacks: ["error", 6] */
 'use strict'
 
 const { expect } = require('aegir/utils/chai')
@@ -74,21 +75,11 @@ describe('pubsub base implementation', () => {
 
       afterEach(() => pubsub.stop())
 
-      it('should add subscription without handler', () => {
+      it('should add subscription', () => {
         pubsub.subscribe(topic)
 
         expect(pubsub.subscriptions.size).to.eql(1)
         expect(pubsub.subscriptions.has(topic)).to.be.true()
-        expect(pubsub.listenerCount(topic)).to.eql(0)
-      })
-
-      it('should add subscription with handler', () => {
-        const handler = (msg) => {}
-        pubsub.subscribe(topic, handler)
-
-        expect(pubsub.subscriptions.size).to.eql(1)
-        expect(pubsub.subscriptions.has(topic)).to.be.true()
-        expect(pubsub.listenerCount(topic)).to.eql(1)
       })
     })
 
@@ -173,32 +164,15 @@ describe('pubsub base implementation', () => {
 
       afterEach(() => pubsub.stop())
 
-      it('should remove all listeners for a topic if no handler provided', () => {
+      it('should remove all subscriptions for a topic', () => {
         pubsub.subscribe(topic, (msg) => {})
         pubsub.subscribe(topic, (msg) => {})
 
-        expect(pubsub.listenerCount(topic)).to.eql(2)
         expect(pubsub.subscriptions.size).to.eql(1)
 
         pubsub.unsubscribe(topic)
 
         expect(pubsub.subscriptions.size).to.eql(0)
-        expect(pubsub.listenerCount(topic)).to.eql(0)
-      })
-
-      it('should remove the listeners for a topic if provided', () => {
-        const handler = (msg) => {}
-        pubsub.subscribe(topic, handler)
-        pubsub.subscribe(topic, (msg) => {})
-
-        expect(pubsub.listenerCount(topic)).to.eql(2)
-        expect(pubsub.subscriptions.size).to.eql(1)
-
-        pubsub.unsubscribe(topic, handler)
-
-        expect(pubsub.listenerCount(topic)).to.eql(1)
-        // should only remove subscription if no listeners
-        expect(pubsub.subscriptions.size).to.eql(1)
       })
     })
 

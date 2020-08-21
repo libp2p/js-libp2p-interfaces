@@ -22,10 +22,10 @@ Table of Contents
           * [Parameters](#parameters)
           * [Returns](#returns-2)
     * [Subscribe](#subscribe)
-      * [pubsub.subscribe(topic, [handler])](#pubsubsubscribetopic-handler)
+      * [pubsub.subscribe(topic)](#pubsubsubscribetopic)
           * [Parameters](#parameters-1)
     * [Unsubscribe](#unsubscribe)
-      * [pubsub.unsubscribe(topic, [handler])](#pubsubunsubscribetopic-handler)
+      * [pubsub.unsubscribe(topic)](#pubsubunsubscribetopic)
           * [Parameters](#parameters-2)
     * [Get Topics](#get-topics)
       * [pubsub.getTopics()](#pubsubgettopics)
@@ -133,29 +133,25 @@ Publish data message to pubsub topics.
 
 Subscribe to the given topic.
 
-#### `pubsub.subscribe(topic, [handler])`
+#### `pubsub.subscribe(topic)`
 
 ##### Parameters
 
 | Name | Type | Description |
 |------|------|-------------|
 | topic | `string` | pubsub topic |
-| [handler] | `function (msg)` | handler for messages received in the given topic |
 
 ### Unsubscribe
 
 Unsubscribe from the given topic.
 
-#### `pubsub.unsubscribe(topic, [handler])`
+#### `pubsub.unsubscribe(topic)`
 
 ##### Parameters
 
 | Name | Type | Description |
 |------|------|-------------|
 | topic | `string` | pubsub topic |
-| [handler] | `function (msg)` | handler for messages received in the given topic |
-
-If **NO** `handler` is provided, all registered handlers to the given topic will be removed.
 
 ### Get Topics
 

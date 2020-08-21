@@ -49,19 +49,20 @@ module.exports = (common) => {
     })
 
     it('can subscribe and unsubscribe correctly', async () => {
-      const handler = (msg) => {
+      const handler = () => {
         throw new Error('a message should not be received')
       }
 
       pubsub.start()
-      pubsub.subscribe(topic, handler)
+      pubsub.subscribe(topic)
+      pubsub.on('topic', handler)
 
       await pWaitFor(() => {
         const topics = pubsub.getTopics()
         return topics.length === 1 && topics[0] === topic
       })
 
-      pubsub.unsubscribe(topic, handler)
+      pubsub.unsubscribe(topic)
 
       await pWaitFor(() => !pubsub.getTopics().length)
 
@@ -81,7 +82,8 @@ module.exports = (common) => {
 
       pubsub.start()
 
-      pubsub.subscribe(topic, handler)
+      pubsub.subscribe(topic)
+      pubsub.on(topic, handler)
       await pubsub.publish(topic, data)
       await defer.promise
 

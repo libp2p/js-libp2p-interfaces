@@ -605,10 +605,9 @@ class PubsubBaseProtocol extends EventEmitter {
    * Subscribes to a given topic.
    * @abstract
    * @param {string} topic
-   * @param {function(msg: InMessage)} [handler]
    * @returns {void}
    */
-  subscribe (topic, handler) {
+  subscribe (topic) {
     if (!this.started) {
       throw new Error('Pubsub has not started')
     }
@@ -617,27 +616,17 @@ class PubsubBaseProtocol extends EventEmitter {
       this.subscriptions.add(topic)
       this.peers.forEach((_, id) => this._sendSubscriptions(id, [topic], true))
     }
-
-    // Bind provided handler
-    handler && this.on(topic, handler)
   }
 
   /**
    * Unsubscribe from the given topic.
    * @override
    * @param {string} topic
-   * @param {function} [handler]
    * @returns {void}
    */
-  unsubscribe (topic, handler) {
+  unsubscribe (topic) {
     if (!this.started) {
-      throw new Error('FloodSub is not started')
-    }
-
-    if (!handler) {
-      this.removeAllListeners(topic)
-    } else {
-      this.removeListener(topic, handler)
+      throw new Error('Pubsub is not started')
     }
 
     if (this.subscriptions.has(topic) && this.listenerCount(topic) === 0) {
