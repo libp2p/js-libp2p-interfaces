@@ -39,7 +39,7 @@ async function verifySignature (message) {
   const baseMessage = { ...message }
   delete baseMessage.signature
   delete baseMessage.key
-  baseMessage.from = PeerId.createFromB58String(baseMessage.from).toBytes()
+  baseMessage.from = PeerId.createFromCID(baseMessage.from).toBytes()
   const bytes = uint8ArrayConcat([
     SignPrefix,
     Message.encode(baseMessage)

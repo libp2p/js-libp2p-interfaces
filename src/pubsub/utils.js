@@ -1,6 +1,6 @@
 'use strict'
 
-const crypto = require('libp2p-crypto')
+const randomBytes = require('libp2p-crypto/src/random-bytes')
 const uint8ArrayToString = require('uint8arrays/to-string')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 
@@ -13,7 +13,7 @@ exports = module.exports
  * @private
  */
 exports.randomSeqno = () => {
-  return crypto.randomBytes(8)
+  return randomBytes(8)
 }
 
 /**
