@@ -2,7 +2,6 @@
 /* eslint max-nested-callbacks: ["error", 8] */
 'use strict'
 
-const { Buffer } = require('buffer')
 const pair = require('it-pair/duplex')
 const pipe = require('it-pipe')
 const { consume } = require('streaming-iterables')
@@ -10,6 +9,7 @@ const Tcp = require('libp2p-tcp')
 const multiaddr = require('multiaddr')
 const abortable = require('abortable-iterator')
 const AbortController = require('abort-controller')
+const uint8arrayFromString = require('uint8arrays/from-string')
 
 const mh = multiaddr('/ip4/127.0.0.1/tcp/0')
 
@@ -18,7 +18,7 @@ function pause (ms) {
 }
 
 function randomBuffer () {
-  return Buffer.from(Math.random().toString())
+  return uint8arrayFromString(Math.random().toString())
 }
 
 const infiniteRandom = {

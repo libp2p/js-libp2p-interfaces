@@ -2,7 +2,6 @@
 /* eslint-env mocha */
 'use strict'
 
-const { Buffer } = require('buffer')
 const chai = require('chai')
 const dirtyChai = require('dirty-chai')
 const expect = chai.expect
@@ -11,6 +10,7 @@ const sinon = require('sinon')
 
 const pWaitFor = require('p-wait-for')
 const pipe = require('it-pipe')
+const uint8arrayFromString = require('uint8arrays/from-string')
 const { isValidTick } = require('./utils')
 
 module.exports = (common) => {
@@ -76,7 +76,7 @@ module.exports = (common) => {
       // Wait for the data send and close to finish
       await Promise.all([
         pipe(
-          [Buffer.from('Some data that is never handled')],
+          [uint8arrayFromString('Some data that is never handled')],
           socket1
         ),
         // Closer the listener (will take a couple of seconds to time out)
