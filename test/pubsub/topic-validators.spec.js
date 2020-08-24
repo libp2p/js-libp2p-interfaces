@@ -4,6 +4,7 @@
 const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
 const delay = require('delay')
+const pWaitFor = require('p-wait-for')
 const errCode = require('err-code')
 
 const PeerId = require('peer-id')
@@ -69,8 +70,8 @@ describe('topic validators', () => {
     // process valid message
     pubsub.subscribe(filteredTopic)
     pubsub._processRpc(peer.id.toB58String(), peer, validRpc)
-    await delay(500)
-    expect(pubsub._publish.callCount).to.eql(1)
+
+    await pWaitFor(() => pubsub._publish.callCount === 1)
 
     // invalid case
     const invalidRpc = {
@@ -85,7 +86,6 @@ describe('topic validators', () => {
 
     // process invalid message
     pubsub._processRpc(peer.id.toB58String(), peer, invalidRpc)
-    await delay(500)
     expect(pubsub._publish.callCount).to.eql(1)
 
     // remove topic validator
@@ -105,7 +105,7 @@ describe('topic validators', () => {
     // process previously invalid message, now is valid
     pubsub._processRpc(peer.id.toB58String(), peer, invalidRpc2)
     pubsub.unsubscribe(filteredTopic)
-    await delay(500)
-    expect(pubsub._publish.callCount).to.eql(2)
+
+    await pWaitFor(() => pubsub._publish.callCount === 2)
   })
 })
