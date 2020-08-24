@@ -3,7 +3,6 @@
 
 const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
-const delay = require('delay')
 const pWaitFor = require('p-wait-for')
 const errCode = require('err-code')
 

@@ -46,7 +46,7 @@ describe('message signing', () => {
   })
 
   it('should be able to extract the public key from an inlined key', async () => {
-    const secPeerId = await PeerId.create({ keyType: 'secp256k1', bits: 256 })
+    const secPeerId = await PeerId.create({ keyType: 'secp256k1' })
 
     const message = {
       from: secPeerId.id,
