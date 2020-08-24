@@ -9,7 +9,7 @@ class Record {
   /**
    * @constructor
    * @param {String} domain signature domain
-   * @param {Buffer} codec identifier of the type of record
+   * @param {Uint8Array} codec identifier of the type of record
    */
   constructor (domain, codec) {
     this.domain = domain

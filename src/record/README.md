@@ -7,7 +7,7 @@ The record represents the data that will be stored inside the **envelope** when 
 
 Taking into account that a record might be used in different contexts, an **envelope** signature made for a specific purpose **must not** be considered valid for a different purpose. Accordingly, each record has a short and descriptive string representing the record use case, known as **domain**. The data to be signed will be prepended with the domain string, in order to create a domain signature.
 
-A record can also contain a Buffer codec (ideally registered as a [multicodec](https://github.com/multiformats/multicodec)). This codec will prefix the record data in the **envelope** , so that it can be deserialized deterministically.
+A record can also contain a Uint8Array codec (ideally registered as a [multicodec](https://github.com/multiformats/multicodec)). This codec will prefix the record data in the **envelope** , so that it can be deserialized deterministically.
 
 ## Usage
 
@@ -30,10 +30,11 @@ describe('your record', () => {
 ```js
 const multicodec = require('multicodec')
 const Record = require('libp2p-interfaces/src/record')
+const fromString = require('uint8arrays/from-string')
 // const Protobuf = require('./record.proto')
 
 const ENVELOPE_DOMAIN_PEER_RECORD = 'libp2p-peer-record'
-const ENVELOPE_PAYLOAD_TYPE_PEER_RECORD = Buffer.from('0301', 'hex')
+const ENVELOPE_PAYLOAD_TYPE_PEER_RECORD = fromString('0301', 'hex')
 
 class PeerRecord extends Record {
   constructor (peerId, multiaddrs, seqNumber) {

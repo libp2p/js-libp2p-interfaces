@@ -24,7 +24,7 @@ module.exports = (test) => {
 
     it('is able to marshal', () => {
       const rawData = record.marshal()
-      expect(Buffer.isBuffer(rawData)).to.eql(true)
+      expect(rawData).to.be.an.instanceof(Uint8Array)
     })
 
     it('is able to compare two records', () => {

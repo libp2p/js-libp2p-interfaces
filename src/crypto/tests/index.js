@@ -1,16 +1,18 @@
 /* eslint-env mocha */
 'use strict'
 
-const { Buffer } = require('buffer')
-const duplexPair = require('it-pair/duplex')
-const pipe = require('it-pipe')
-const peers = require('../../utils/peers')
-const { UnexpectedPeerError } = require('../errors')
-const PeerId = require('peer-id')
-const { collect } = require('streaming-iterables')
 const chai = require('chai')
 const expect = chai.expect
 chai.use(require('dirty-chai'))
+
+const duplexPair = require('it-pair/duplex')
+const pipe = require('it-pipe')
+const PeerId = require('peer-id')
+const { collect } = require('streaming-iterables')
+const uint8arrayFromString = require('uint8arrays/from-string')
+
+const peers = require('../../utils/peers')
+const { UnexpectedPeerError } = require('../errors')
 
 module.exports = (common) => {
   describe('interface-crypto', () => {
@@ -55,7 +57,7 @@ module.exports = (common) => {
       pipe(inboundResult.conn, inboundResult.conn)
 
       // Send some data and collect the result
-      const input = Buffer.from('data to encrypt')
+      const input = uint8arrayFromString('data to encrypt')
       const result = await pipe(
         [input],
         outboundResult.conn,

@@ -35,7 +35,6 @@
   "dependencies": {
     "abort-controller": "^3.0.0",
     "abortable-iterator": "^3.0.0",
-    "buffer": "^5.6.0",
     "chai": "^4.2.0",
     "chai-checkmark": "^1.0.1",
     "class-is": "^1.1.0",
@@ -53,7 +52,8 @@
     "p-wait-for": "^3.1.0",
     "peer-id": "^0.14.0",
     "sinon": "^9.0.2",
-    "streaming-iterables": "^5.0.2"
+    "streaming-iterables": "^5.0.2",
+    "uint8arrays": "^1.1.0"
   },
   "devDependencies": {
     "aegir": "^25.0.0",
