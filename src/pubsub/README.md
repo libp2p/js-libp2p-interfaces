@@ -96,7 +96,7 @@ class PubsubImplementation extends Pubsub {
 
 ## API
 
-The interface aims to specify a common interface that all pubsub router implementation should follow.
+The interface aims to specify a common interface that all pubsub router implementation should follow. A pubsub router implementation should extend the [EventEmitter](https://nodejs.org/api/events.html#events_class_eventemitter). When peers receive pubsub messages, these messages will be emitted by the event emitter where the `eventName` will be the `topic` associated with the message.
 
 ### Start
 
