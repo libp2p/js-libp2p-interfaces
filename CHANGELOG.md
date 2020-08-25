@@ -1,3 +1,13 @@
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/libp2p/js-interfaces/compare/v0.5.0...v0.5.1) (2020-08-25)
+
+
+### Features
+
+* interface pubsub ([#60](https://github.com/libp2p/js-interfaces/issues/60)) ([ba15a48](https://github.com/libp2p/js-interfaces/commit/ba15a48))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/libp2p/js-interfaces/compare/v0.4.1...v0.5.0) (2020-08-24)
 
