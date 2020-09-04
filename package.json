@@ -4,9 +4,11 @@
   "description": "Interfaces for JS Libp2p",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
+  "types": "index.d.ts",
   "files": [
     "src",
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "scripts": {
     "lint": "aegir lint",
@@ -15,6 +17,7 @@
     "test": "aegir test",
     "test:node": "aegir test --target node",
     "test:browser": "aegir test --target browser",
+    "prepublishOnly": "npm run generate:types",
     "release": "aegir release -t node -t browser",
     "release-minor": "aegir release --type minor -t node -t browser",
     "release-major": "aegir release --type major -t node -t browser"
@@ -65,7 +68,6 @@
   "devDependencies": {
     "aegir": "^25.0.0",
     "it-handshake": "^1.0.1",
-    "rimraf": "^3.0.2",
     "typescript": "3.7.5"
   },
   "contributors": [
