@@ -4,7 +4,7 @@ const withIs = require('class-is')
 
 const Topology = require('./index')
 
-class MulticodecTopology extends Topology {
+export class MulticodecTopology extends Topology {
   /**
    * @param {Object} props
    * @param {number} props.min minimum needed connections (default: 0)

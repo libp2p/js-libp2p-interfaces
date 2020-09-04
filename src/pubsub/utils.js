@@ -3,7 +3,6 @@
 const randomBytes = require('libp2p-crypto/src/random-bytes')
 const uint8ArrayToString = require('uint8arrays/to-string')
 const uint8ArrayFromString = require('uint8arrays/from-string')
-
 exports = module.exports
 
 /**
@@ -71,10 +70,9 @@ exports.ensureArray = (maybeArray) => {
 
 /**
  * Ensures `message.from` is base58 encoded
- * @param {Object} message
- * @param {Uint8Array|String} message.from
+ * @param {object} message
  * @param {String} peerId
- * @return {Object}
+ * @return {object}
  */
 exports.normalizeInRpcMessage = (message, peerId) => {
   const m = Object.assign({}, message)
@@ -87,6 +85,10 @@ exports.normalizeInRpcMessage = (message, peerId) => {
   return m
 }
 
+/**
+ *
+ * @param {object} message
+ */
 exports.normalizeOutRpcMessage = (message) => {
   const m = Object.assign({}, message)
   if (typeof message.from === 'string' || message.from instanceof String) {

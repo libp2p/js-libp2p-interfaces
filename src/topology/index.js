@@ -1,10 +1,10 @@
 'use strict'
 
 const withIs = require('class-is')
-
+const PeerId = require('peer-id')
 const noop = () => {}
 
-class Topology {
+export class Topology {
   /**
    * @param {Object} props
    * @param {number} props.min minimum needed connections (default: 0)

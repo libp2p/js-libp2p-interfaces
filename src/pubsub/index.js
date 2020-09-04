@@ -9,8 +9,10 @@ const pipe = require('it-pipe')
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
 const message = require('./message')
+const PeerId = require('peer-id')
 const PeerStreams = require('./peer-streams')
 const utils = require('./utils')
+const {Connection} = require('../connection')
 const {
   signMessage,
   verifySignature
@@ -68,9 +70,15 @@ class PubsubBaseProtocol extends EventEmitter {
     this.log = debug(debugName)
     this.log.err = debug(`${debugName}:error`)
 
+    /**
+     * @type {Array<string>}
+     */
     this.multicodecs = utils.ensureArray(multicodecs)
     this._libp2p = libp2p
     this.registrar = libp2p.registrar
+    /**
+     * @type {typeof PeerId}
+     */
     this.peerId = libp2p.peerId
 
     this.started = false
@@ -91,7 +99,7 @@ class PubsubBaseProtocol extends EventEmitter {
     /**
      * Map of peer streams
      *
-     * @type {Map<string, PeerStreams>}
+     * @type {Map<string, typeof PeerStreams>}
      */
     this.peers = new Map()
 
