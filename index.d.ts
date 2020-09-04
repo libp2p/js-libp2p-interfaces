@@ -4,7 +4,7 @@ declare module "connection/status" {
     export const CLOSED: string;
 }
 declare module "connection/connection" {
-    const _exports: Connection;
+    const _exports: typeof Connection;
     export = _exports;
     /**
      * An implementation of the js-libp2p connection.
@@ -534,7 +534,7 @@ declare module "pubsub/index" {
         _onIncomingStream({ protocol, stream, connection }: {
             protocol: string;
             stream: any;
-            connection: typeof import("connection");
+            connection: any;
         }): void;
         /**
          * Registrar notifies an established connection with pubsub protocol.
@@ -542,7 +542,7 @@ declare module "pubsub/index" {
          * @param {PeerId} peerId remote peer-id
          * @param {Connection} conn connection to the peer
          */
-        _onPeerConnected(peerId: any, conn: typeof import("connection")): Promise<void>;
+        _onPeerConnected(peerId: any, conn: any): Promise<void>;
         /**
          * Registrar notifies a closing connection with pubsub protocol.
          * @private

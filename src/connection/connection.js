@@ -229,6 +229,6 @@ class Connection {
 
 /**
  * @module
- * @type {Connection}
+ * @type {typeof Connection}
  */
 module.exports = withIs(Connection, { className: 'Connection', symbolName: '@libp2p/interface-connection/connection' })

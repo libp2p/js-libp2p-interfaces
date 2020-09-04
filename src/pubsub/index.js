@@ -14,12 +14,10 @@ const { codes } = require('./errors')
 const message = require('./message')
 // needed for type definition
 // eslint-disable-next-line no-unused-vars
-const PeerId = require('')
+const PeerId = require('peer-id')
 const PeerStreams = require('./peer-streams')
 const utils = require('./utils')
-// needed for type definition
-// eslint-disable-next-line no-unused-vars
-const Connection = require('../connection')
+
 const {
   signMessage,
   verifySignature
