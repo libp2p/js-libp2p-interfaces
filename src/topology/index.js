@@ -48,5 +48,9 @@ class Topology {
     this._onDisconnect(peerId)
   }
 }
-module.exports.Topology = Topology
+
+/**
+ * @module
+ * @type {Topology}
+ */
 module.exports = withIs(Topology, { className: 'Topology', symbolName: '@libp2p/js-interfaces/topology' })

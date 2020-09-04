@@ -4,11 +4,13 @@ declare module "connection/status" {
     export const CLOSED: string;
 }
 declare module "connection/connection" {
+    const _exports: Connection;
+    export = _exports;
     /**
      * An implementation of the js-libp2p connection.
      * Any libp2p transport should use an upgrader to return this connection.
      */
-    export class Connection {
+    class Connection {
         /**
          * Creates an instance of Connection.
          * @param {object} properties properties of the connection.
@@ -179,7 +181,9 @@ declare module "pubsub/errors" {
     }
 }
 declare module "topology/index" {
-    export class Topology {
+    const _exports: Topology;
+    export = _exports;
+    class Topology {
         /**
          * @param {Object} props
          * @param {number} props.min minimum needed connections (default: 0)
@@ -217,7 +221,9 @@ declare module "topology/index" {
     }
 }
 declare module "topology/multicodec-topology" {
-    export class MulticodecTopology {
+    const _exports: MulticodecTopology;
+    export = _exports;
+    class MulticodecTopology {
         /**
          * @param {Object} props
          * @param {number} props.min minimum needed connections (default: 0)
@@ -268,8 +274,20 @@ declare module "topology/multicodec-topology" {
         }[]): void;
     }
 }
-declare module "pubsub/message" {
-    export {};
+declare module "pubsub/message/rpc.proto" {
+    const _exports: string;
+    export = _exports;
+}
+declare module "pubsub/message/topic-descriptor.proto" {
+    const _exports: string;
+    export = _exports;
+}
+declare module "pubsub/message/index" {
+    export var rpc: any;
+    export var td: any;
+    export var RPC: any;
+    export var Message: any;
+    export var SubOpts: any;
 }
 declare module "pubsub/peer-streams" {
     export = PeerStreams;
@@ -385,21 +403,6 @@ declare module "pubsub/utils" {
     export function ensureArray(maybeArray: any): any[];
     export function normalizeInRpcMessage(message: any, peerId: string): any;
     export function normalizeOutRpcMessage(message: any): any;
-}
-declare module "pubsub/message/rpc.proto" {
-    const _exports: string;
-    export = _exports;
-}
-declare module "pubsub/message/topic-descriptor.proto" {
-    const _exports: string;
-    export = _exports;
-}
-declare module "pubsub/message/index" {
-    export var rpc: any;
-    export var td: any;
-    export var RPC: any;
-    export var Message: any;
-    export var SubOpts: any;
 }
 declare module "pubsub/message/sign" {
     /**
@@ -531,7 +534,7 @@ declare module "pubsub/index" {
         _onIncomingStream({ protocol, stream, connection }: {
             protocol: string;
             stream: any;
-            connection: typeof import("connection/connection");
+            connection: typeof import("connection");
         }): void;
         /**
          * Registrar notifies an established connection with pubsub protocol.
@@ -539,14 +542,14 @@ declare module "pubsub/index" {
          * @param {PeerId} peerId remote peer-id
          * @param {Connection} conn connection to the peer
          */
-        _onPeerConnected(peerId: import("peer-id"), conn: typeof import("connection/connection")): Promise<void>;
+        _onPeerConnected(peerId: any, conn: typeof import("connection")): Promise<void>;
         /**
          * Registrar notifies a closing connection with pubsub protocol.
          * @private
          * @param {PeerId} peerId peerId
          * @param {Error} err error for connection end
          */
-        _onPeerDisconnected(peerId: import("peer-id"), err: Error): void;
+        _onPeerDisconnected(peerId: any, err: Error): void;
         /**
          * Register the pubsub protocol onto the libp2p node.
          * @returns {void}
@@ -564,14 +567,14 @@ declare module "pubsub/index" {
          * @param {string} protocol
          * @returns {PeerStreams}
          */
-        _addPeer(peerId: import("peer-id"), protocol: string): import("pubsub/peer-streams");
+        _addPeer(peerId: any, protocol: string): import("pubsub/peer-streams");
         /**
          * Notifies the router that a peer has been disconnected.
          * @private
          * @param {PeerId} peerId
          * @returns {PeerStreams | undefined}
          */
-        _removePeer(peerId: import("peer-id")): import("pubsub/peer-streams");
+        _removePeer(peerId: any): import("pubsub/peer-streams");
         /**
          * Responsible for processing each RPC message received by other peers.
          * @param {string} idB58Str peer id string in base58
@@ -711,7 +714,7 @@ declare module "pubsub/index" {
     namespace PubsubBaseProtocol {
         export { message, utils, InMessage };
     }
-    const PeerId: typeof import("peer-id");
+    const PeerId: any;
     const PeerStreams: typeof import("pubsub/peer-streams");
     /**
      * Topic validator function
@@ -725,7 +728,10 @@ declare module "pubsub/index" {
         signature?: Uint8Array;
         key?: Uint8Array;
     };
-    const message: typeof import("pubsub/message");
+    /**
+     * @type {typeof import('./message')}
+     */
+    const message: typeof import("pubsub/message/index");
     const utils: typeof import("pubsub/utils");
 }
 declare module "record/index" {

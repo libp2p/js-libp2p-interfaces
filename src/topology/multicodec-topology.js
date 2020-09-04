@@ -120,5 +120,8 @@ class MulticodecTopology extends Topology {
   }
 }
 
-module.exports.MulticodecTopology = MulticodecTopology
+/**
+ * @module
+ * @type {MulticodecTopology}
+ */
 module.exports = withIs(MulticodecTopology, { className: 'MulticodecTopology', symbolName: '@libp2p/js-interfaces/topology/multicodec-topology' })
