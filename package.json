@@ -11,6 +11,7 @@
   "scripts": {
     "lint": "aegir lint",
     "build": "aegir build",
+    "generate:types": "tsc",
     "test": "aegir test",
     "test:node": "aegir test --target node",
     "test:browser": "aegir test --target browser",
@@ -63,7 +64,9 @@
   },
   "devDependencies": {
     "aegir": "^25.0.0",
-    "it-handshake": "^1.0.1"
+    "it-handshake": "^1.0.1",
+    "rimraf": "^3.0.2",
+    "typescript": "3.7.5"
   },
   "contributors": [
     "Alan Shaw <alan.shaw@protocol.ai>",
