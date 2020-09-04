@@ -9,10 +9,14 @@ const pipe = require('it-pipe')
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
 const message = require('./message')
+// needed for type definition
+// eslint-disable-next-line no-unused-vars
 const PeerId = require('peer-id')
 const PeerStreams = require('./peer-streams')
 const utils = require('./utils')
-const {Connection} = require('../connection')
+// needed for type definition
+// eslint-disable-next-line no-unused-vars
+const { Connection } = require('../connection')
 const {
   signMessage,
   verifySignature

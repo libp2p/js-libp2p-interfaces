@@ -56,7 +56,7 @@ function validateArgs (localAddr, localPeer, remotePeer, newStream, close, getSt
  * An implementation of the js-libp2p connection.
  * Any libp2p transport should use an upgrader to return this connection.
  */
-export class Connection {
+class Connection {
   /**
    * Creates an instance of Connection.
    * @param {object} properties properties of the connection.
@@ -227,4 +227,5 @@ export class Connection {
   }
 }
 
+module.exports.Connection = Connection
 module.exports = withIs(Connection, { className: 'Connection', symbolName: '@libp2p/interface-connection/connection' })

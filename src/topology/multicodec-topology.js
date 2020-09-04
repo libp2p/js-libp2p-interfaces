@@ -4,7 +4,7 @@ const withIs = require('class-is')
 
 const Topology = require('./index')
 
-export class MulticodecTopology extends Topology {
+class MulticodecTopology extends Topology {
   /**
    * @param {Object} props
    * @param {number} props.min minimum needed connections (default: 0)
@@ -120,4 +120,5 @@ export class MulticodecTopology extends Topology {
   }
 }
 
+module.exports.MulticodecTopology = MulticodecTopology
 module.exports = withIs(MulticodecTopology, { className: 'MulticodecTopology', symbolName: '@libp2p/js-interfaces/topology/multicodec-topology' })

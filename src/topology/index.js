@@ -1,10 +1,12 @@
 'use strict'
 
 const withIs = require('class-is')
+// needed for type definition
+// eslint-disable-next-line no-unused-vars
 const PeerId = require('peer-id')
 const noop = () => {}
 
-export class Topology {
+class Topology {
   /**
    * @param {Object} props
    * @param {number} props.min minimum needed connections (default: 0)
@@ -46,5 +48,5 @@ export class Topology {
     this._onDisconnect(peerId)
   }
 }
-
+module.exports.Topology = Topology
 module.exports = withIs(Topology, { className: 'Topology', symbolName: '@libp2p/js-interfaces/topology' })

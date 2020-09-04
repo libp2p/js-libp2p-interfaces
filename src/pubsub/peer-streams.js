@@ -8,6 +8,8 @@ const pipe = require('it-pipe')
 const abortable = require('abortable-iterator')
 const AbortController = require('abort-controller')
 const debug = require('debug')
+// needed for type definition
+// eslint-disable-next-line no-unused-vars
 const PeerId = require('peer-id')
 
 const log = debug('libp2p-pubsub:peer-streams')

@@ -86,8 +86,8 @@ exports.normalizeInRpcMessage = (message, peerId) => {
 }
 
 /**
- *
  * @param {object} message
+ * @return {object}
  */
 exports.normalizeOutRpcMessage = (message) => {
   const m = Object.assign({}, message)
