@@ -56,7 +56,7 @@ class PeerStreams extends EventEmitter {
     /**
      * An AbortController for controlled shutdown of the inbound stream
      * @private
-     * @type {AbortController}
+     * @type {typeof AbortController}
      */
     this._inboundAbortController = null
     /**

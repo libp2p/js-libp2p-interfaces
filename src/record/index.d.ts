@@ -1,0 +1,23 @@
+export = Record;
+/**
+ * Record is the base implementation of a record that can be used as the payload of a libp2p envelope.
+ */
+declare class Record {
+    /**
+     * @constructor
+     * @param {String} domain signature domain
+     * @param {Uint8Array} codec identifier of the type of record
+     */
+    constructor(domain: string, codec: Uint8Array);
+    domain: string;
+    codec: Uint8Array;
+    /**
+     * Marshal a record to be used in an envelope.
+     */
+    marshal(): void;
+    /**
+     * Verifies if the other provided Record is identical to this one.
+     * @param {Record} other
+     */
+    equals(other: Record): void;
+}

@@ -12,7 +12,7 @@
     // only output d.ts files
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
-    "rootDir": "./",
-    "outFile": "index.d.ts"
+    "rootDir": "./src",
+    "outDir": "./src"
   }
 }
