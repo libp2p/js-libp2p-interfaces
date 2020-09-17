@@ -1,9 +1,10 @@
 export = PubsubBaseProtocol;
 /**
  * @typedef {Object} InMessage
- * @property {string} from
+ * @property {string} [from]
  * @property {string} receivedFrom
  * @property {string[]} topicIDs
+ * @property {Uint8Array} [seqno]
  * @property {Uint8Array} data
  * @property {Uint8Array} [signature]
  * @property {Uint8Array} [key]
@@ -41,9 +42,9 @@ declare class PubsubBaseProtocol {
     _libp2p: any;
     registrar: any;
     /**
-     * @type {typeof PeerId}
+     * @type {import('peer-id')}
      */
-    peerId: typeof PeerId;
+    peerId: import('peer-id');
     started: boolean;
     /**
      * Map of topics to which peers are subscribed to
@@ -59,9 +60,9 @@ declare class PubsubBaseProtocol {
     /**
      * Map of peer streams
      *
-     * @type {Map<string, typeof PeerStreams>}
+     * @type {Map<string, import('./peer-streams')>}
      */
-    peers: Map<string, typeof PeerStreams>;
+    peers: Map<string, import('./peer-streams')>;
     signMessages: boolean;
     /**
      * If message signing should be required for incoming messages
@@ -282,16 +283,15 @@ declare class PubsubBaseProtocol {
 declare namespace PubsubBaseProtocol {
     export { message, utils, InMessage };
 }
-declare const PeerId: typeof import("peer-id");
-declare const PeerStreams: typeof import("./peer-streams");
 /**
  * Topic validator function
  */
 type validator = (arg0: string, arg1: any) => boolean;
 type InMessage = {
-    from: string;
+    from?: string;
     receivedFrom: string;
     topicIDs: string[];
+    seqno?: Uint8Array;
     data: Uint8Array;
     signature?: Uint8Array;
     key?: Uint8Array;

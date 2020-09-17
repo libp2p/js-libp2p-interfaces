@@ -1,7 +1,13 @@
 export = PeerStreams;
 /**
- * TODO: replace with import of that type from somewhere
- * @typedef {any} DuplexIterableStream
+ * @callback Sink
+ * @param {Uint8Array} source
+ * @returns {Promise<Uint8Array>}
+ *
+ * @typedef {object} DuplexIterableStream
+ * @property {Sink} sink
+ * @property {() AsyncIterator<Uint8Array>} source
+ *
  */
 /**
  * Thin wrapper around a peer's inbound / outbound pubsub streams
@@ -45,9 +51,9 @@ declare class PeerStreams {
     _inboundAbortController: typeof AbortController;
     /**
      * Write stream -- its preferable to use the write method
-     * @type {typeof pushable}
+     * @type {import('it-pushable').Pushable<Uint8Array>>}
      */
-    outboundStream: typeof pushable;
+    outboundStream: import('it-pushable').Pushable<Uint8Array>;
     /**
      * Read stream
      * @type {DuplexIterableStream}
@@ -79,7 +85,7 @@ declare class PeerStreams {
      * @param {DuplexIterableStream} stream
      * @returns {void}
      */
-    attachInboundStream(stream: any): void;
+    attachInboundStream(stream: DuplexIterableStream): void;
     /**
      * Attach a raw outbound stream and setup a write stream
      *
@@ -94,12 +100,12 @@ declare class PeerStreams {
     close(): void;
 }
 declare namespace PeerStreams {
-    export { DuplexIterableStream };
+    export { Sink, DuplexIterableStream };
 }
 declare const PeerId: typeof import("peer-id");
-/**
- * TODO: replace with import of that type from somewhere
- */
-type DuplexIterableStream = any;
+type DuplexIterableStream = {
+    sink: Sink;
+    source: () => AsyncIterator<Uint8Array, any, undefined>;
+};
 declare const AbortController: typeof import("abort-controller");
-declare const pushable: typeof import("it-pushable");
+type Sink = (source: Uint8Array) => Promise<Uint8Array>;

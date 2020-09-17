@@ -3,7 +3,7 @@
 const EventEmitter = require('events')
 
 const lp = require('it-length-prefixed')
-const pushable = require('it-pushable')
+const { pushable } = require('it-pushable')
 const pipe = require('it-pipe')
 const abortable = require('abortable-iterator')
 const AbortController = require('abort-controller')
@@ -16,8 +16,14 @@ const log = debug('libp2p-pubsub:peer-streams')
 log.error = debug('libp2p-pubsub:peer-streams:error')
 
 /**
- * TODO: replace with import of that type from somewhere
- * @typedef {any} DuplexIterableStream
+ * @callback Sink
+ * @param {Uint8Array} source
+ * @returns {Promise<Uint8Array>}
+ *
+ * @typedef {object} DuplexIterableStream
+ * @property {Sink} sink
+ * @property {() AsyncIterator<Uint8Array>} source
+ *
  */
 
 /**
@@ -61,7 +67,7 @@ class PeerStreams extends EventEmitter {
     this._inboundAbortController = null
     /**
      * Write stream -- its preferable to use the write method
-     * @type {typeof pushable}
+     * @type {import('it-pushable').Pushable<Uint8Array>>}
      */
     this.outboundStream = null
     /**

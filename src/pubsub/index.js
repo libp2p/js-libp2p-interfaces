@@ -25,9 +25,10 @@ const {
 
 /**
  * @typedef {Object} InMessage
- * @property {string} from
+ * @property {string} [from]
  * @property {string} receivedFrom
  * @property {string[]} topicIDs
+ * @property {Uint8Array} [seqno]
  * @property {Uint8Array} data
  * @property {Uint8Array} [signature]
  * @property {Uint8Array} [key]
@@ -82,7 +83,7 @@ class PubsubBaseProtocol extends EventEmitter {
     this._libp2p = libp2p
     this.registrar = libp2p.registrar
     /**
-     * @type {typeof PeerId}
+     * @type {import('peer-id')}
      */
     this.peerId = libp2p.peerId
 
@@ -104,7 +105,7 @@ class PubsubBaseProtocol extends EventEmitter {
     /**
      * Map of peer streams
      *
-     * @type {Map<string, typeof PeerStreams>}
+     * @type {Map<string, import('./peer-streams')>}
      */
     this.peers = new Map()
 
