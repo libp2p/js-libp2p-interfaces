@@ -8,9 +8,6 @@ const pipe = require('it-pipe')
 const abortable = require('abortable-iterator')
 const AbortController = require('abort-controller')
 const debug = require('debug')
-// needed for type definition
-// eslint-disable-next-line no-unused-vars
-const PeerId = require('peer-id')
 
 const log = debug('libp2p-pubsub:peer-streams')
 log.error = debug('libp2p-pubsub:peer-streams:error')
@@ -24,6 +21,8 @@ log.error = debug('libp2p-pubsub:peer-streams:error')
  * @property {Sink} sink
  * @property {() AsyncIterator<Uint8Array>} source
  *
+ * @typedef PeerId
+ * @type import('peer-id')
  */
 
 /**
@@ -39,7 +38,7 @@ class PeerStreams extends EventEmitter {
     super()
 
     /**
-     * @type {typeof PeerId}
+     * @type {import('peer-id')}
      */
     this.id = id
     /**

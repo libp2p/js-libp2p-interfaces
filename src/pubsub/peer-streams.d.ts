@@ -8,6 +8,8 @@ export = PeerStreams;
  * @property {Sink} sink
  * @property {() AsyncIterator<Uint8Array>} source
  *
+ * @typedef PeerId
+ * @type import('peer-id')
  */
 /**
  * Thin wrapper around a peer's inbound / outbound pubsub streams
@@ -23,9 +25,9 @@ declare class PeerStreams {
         protocol: string;
     });
     /**
-     * @type {typeof PeerId}
+     * @type {import('peer-id')}
      */
-    id: typeof PeerId;
+    id: import('peer-id');
     /**
      * Established protocol
      * @type {string}
@@ -100,12 +102,12 @@ declare class PeerStreams {
     close(): void;
 }
 declare namespace PeerStreams {
-    export { Sink, DuplexIterableStream };
+    export { Sink, DuplexIterableStream, PeerId };
 }
-declare const PeerId: typeof import("peer-id");
 type DuplexIterableStream = {
     sink: Sink;
     source: () => AsyncIterator<Uint8Array, any, undefined>;
 };
 declare const AbortController: typeof import("abort-controller");
 type Sink = (source: Uint8Array) => Promise<Uint8Array>;
+type PeerId = import("peer-id");
