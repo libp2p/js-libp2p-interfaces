@@ -3,7 +3,7 @@
 const EventEmitter = require('events')
 
 const lp = require('it-length-prefixed')
-const { pushable } = require('it-pushable')
+const pushable = require('it-pushable')
 const pipe = require('it-pipe')
 const abortable = require('abortable-iterator')
 const AbortController = require('abort-controller')

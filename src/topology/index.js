@@ -1,9 +1,6 @@
 'use strict'
 
 const withIs = require('class-is')
-// needed for type definition
-// eslint-disable-next-line no-unused-vars
-const PeerId = require('peer-id')
 const noop = () => {}
 
 class Topology {
@@ -38,6 +35,11 @@ class Topology {
   set registrar (registrar) {
     this._registrar = registrar
   }
+
+  /**
+   * @typedef PeerId
+   * @type {import('peer-id')}
+   */
 
   /**
    * Notify about peer disconnected event.

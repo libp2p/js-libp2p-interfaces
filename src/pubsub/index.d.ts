@@ -8,6 +8,9 @@ export = PubsubBaseProtocol;
  * @property {Uint8Array} data
  * @property {Uint8Array} [signature]
  * @property {Uint8Array} [key]
+ *
+ * @typedef PeerId
+ * @type import('peer-id')
  */
 /**
 * PubsubBaseProtocol handles the peers and connections logic for pubsub routers
@@ -42,9 +45,9 @@ declare class PubsubBaseProtocol {
     _libp2p: any;
     registrar: any;
     /**
-     * @type {import('peer-id')}
+     * @type {PeerId}
      */
-    peerId: import('peer-id');
+    peerId: PeerId;
     started: boolean;
     /**
      * Map of topics to which peers are subscribed to
@@ -281,8 +284,9 @@ declare class PubsubBaseProtocol {
     getTopics(): string[];
 }
 declare namespace PubsubBaseProtocol {
-    export { message, utils, InMessage };
+    export { message, utils, InMessage, PeerId };
 }
+type PeerId = import("peer-id");
 /**
  * Topic validator function
  */

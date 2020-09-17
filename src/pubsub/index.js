@@ -12,9 +12,6 @@ const { codes } = require('./errors')
  * @type {typeof import('./message')}
  */
 const message = require('./message')
-// needed for type definition
-// eslint-disable-next-line no-unused-vars
-const PeerId = require('peer-id')
 const PeerStreams = require('./peer-streams')
 const utils = require('./utils')
 
@@ -32,6 +29,9 @@ const {
  * @property {Uint8Array} data
  * @property {Uint8Array} [signature]
  * @property {Uint8Array} [key]
+ *
+ * @typedef PeerId
+ * @type import('peer-id')
  */
 
 /**
@@ -83,7 +83,7 @@ class PubsubBaseProtocol extends EventEmitter {
     this._libp2p = libp2p
     this.registrar = libp2p.registrar
     /**
-     * @type {import('peer-id')}
+     * @type {PeerId}
      */
     this.peerId = libp2p.peerId
 

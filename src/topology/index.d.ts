@@ -30,6 +30,10 @@ declare class Topology {
     set registrar(arg: any);
     _registrar: any;
     /**
+     * @typedef PeerId
+     * @type {import('peer-id')}
+     */
+    /**
      * Notify about peer disconnected event.
      * @param {PeerId} peerId
      * @returns {void}
