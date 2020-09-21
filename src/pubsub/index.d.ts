@@ -84,7 +84,7 @@ declare class PubsubBaseProtocol {
     emitSelf: boolean;
     /**
      * Topic validator function
-     * @typedef {function(string, RPC): boolean} validator
+     * @typedef {function(string, InMessage): boolean} validator
      */
     /**
      * Topic validator map
@@ -290,7 +290,7 @@ type PeerId = import("peer-id");
 /**
  * Topic validator function
  */
-type validator = (arg0: string, arg1: any) => boolean;
+type validator = (arg0: string, arg1: InMessage) => boolean;
 type InMessage = {
     from?: string;
     receivedFrom: string;
