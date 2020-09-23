@@ -132,7 +132,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
     /**
      * Topic validator function
-     * @typedef {function(string, InMessage): boolean} validator
+     * @typedef {function(string, InMessage): void} validator
      */
     /**
      * Topic validator map
