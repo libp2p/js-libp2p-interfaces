@@ -1,7 +1,6 @@
 'use strict'
 
 const withIs = require('class-is')
-
 const noop = () => {}
 
 class Topology {
@@ -38,6 +37,11 @@ class Topology {
   }
 
   /**
+   * @typedef PeerId
+   * @type {import('peer-id')}
+   */
+
+  /**
    * Notify about peer disconnected event.
    * @param {PeerId} peerId
    * @returns {void}
@@ -47,4 +51,8 @@ class Topology {
   }
 }
 
+/**
+ * @module
+ * @type {Topology}
+ */
 module.exports = withIs(Topology, { className: 'Topology', symbolName: '@libp2p/js-interfaces/topology' })

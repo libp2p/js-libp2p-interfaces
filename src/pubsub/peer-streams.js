@@ -13,18 +13,32 @@ const log = debug('libp2p-pubsub:peer-streams')
 log.error = debug('libp2p-pubsub:peer-streams:error')
 
 /**
+ * @callback Sink
+ * @param {Uint8Array} source
+ * @returns {Promise<Uint8Array>}
+ *
+ * @typedef {object} DuplexIterableStream
+ * @property {Sink} sink
+ * @property {() AsyncIterator<Uint8Array>} source
+ *
+ * @typedef PeerId
+ * @type import('peer-id')
+ */
+
+/**
  * Thin wrapper around a peer's inbound / outbound pubsub streams
  */
 class PeerStreams extends EventEmitter {
   /**
-   * @param {PeerId} id
-   * @param {string} protocol
+   * @param {object} properties properties of the PeerStreams.
+   * @param {PeerId} properties.id
+   * @param {string} properties.protocol
    */
   constructor ({ id, protocol }) {
     super()
 
     /**
-     * @type {PeerId}
+     * @type {import('peer-id')}
      */
     this.id = id
     /**
@@ -47,12 +61,12 @@ class PeerStreams extends EventEmitter {
     /**
      * An AbortController for controlled shutdown of the inbound stream
      * @private
-     * @type {AbortController}
+     * @type {typeof AbortController}
      */
     this._inboundAbortController = null
     /**
      * Write stream -- its preferable to use the write method
-     * @type {Pushable}
+     * @type {import('it-pushable').Pushable<Uint8Array>>}
      */
     this.outboundStream = null
     /**
@@ -85,7 +99,7 @@ class PeerStreams extends EventEmitter {
    * Throws if there is no `stream` to write to available.
    *
    * @param {Uint8Array} data
-   * @returns {undefined}
+   * @returns {void}
    */
   write (data) {
     if (!this.isWritable) {

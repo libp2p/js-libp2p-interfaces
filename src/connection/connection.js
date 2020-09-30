@@ -66,7 +66,7 @@ class Connection {
    * @param {PeerId} properties.remotePeer remote peer-id.
    * @param {function} properties.newStream new stream muxer function.
    * @param {function} properties.close close raw connection function.
-   * @param {function} properties.getStreams get streams from muxer function.
+   * @param {function(): Stream[]} properties.getStreams get streams from muxer function.
    * @param {object} properties.stat metadata of the connection.
    * @param {string} properties.stat.direction connection establishment direction ("inbound" or "outbound").
    * @param {object} properties.stat.timeline connection relevant events timestamp.
@@ -133,13 +133,14 @@ class Connection {
 
     /**
      * User provided tags
+     * @type {string[]}
      */
     this.tags = []
   }
 
   /**
    * Get connection metadata
-   * @return {Object}
+   * @this {Connection}
    */
   get stat () {
     return this._stat
@@ -147,7 +148,7 @@ class Connection {
 
   /**
    * Get all the streams of the muxer.
-   * @return {Array<*>}
+   * @this {Connection}
    */
   get streams () {
     return this._getStreams()
@@ -156,7 +157,7 @@ class Connection {
   /**
    * Create a new stream from this connection
    * @param {string[]} protocols intended protocol for the stream
-   * @return {Promise<object>} with muxed+multistream-selected stream and selected protocol
+   * @return {Promise<{stream: Stream, protocol: string}>} with muxed+multistream-selected stream and selected protocol
    */
   async newStream (protocols) {
     if (this.stat.status === Status.CLOSING) {
@@ -205,7 +206,7 @@ class Connection {
 
   /**
    * Close the connection.
-   * @return {Promise}
+   * @return {Promise<void>}
    */
   async close () {
     if (this.stat.status === Status.CLOSED) {
@@ -226,4 +227,8 @@ class Connection {
   }
 }
 
+/**
+ * @module
+ * @type {typeof Connection}
+ */
 module.exports = withIs(Connection, { className: 'Connection', symbolName: '@libp2p/interface-connection/connection' })

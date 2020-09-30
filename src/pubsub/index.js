@@ -8,9 +8,13 @@ const pipe = require('it-pipe')
 
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
+/**
+ * @type {typeof import('./message')}
+ */
 const message = require('./message')
 const PeerStreams = require('./peer-streams')
 const utils = require('./utils')
+
 const {
   signMessage,
   verifySignature
@@ -18,12 +22,16 @@ const {
 
 /**
  * @typedef {Object} InMessage
- * @property {string} from
+ * @property {string} [from]
  * @property {string} receivedFrom
  * @property {string[]} topicIDs
+ * @property {Uint8Array} [seqno]
  * @property {Uint8Array} data
  * @property {Uint8Array} [signature]
  * @property {Uint8Array} [key]
+ *
+ * @typedef PeerId
+ * @type import('peer-id')
  */
 
 /**
@@ -68,9 +76,15 @@ class PubsubBaseProtocol extends EventEmitter {
     this.log = debug(debugName)
     this.log.err = debug(`${debugName}:error`)
 
+    /**
+     * @type {Array<string>}
+     */
     this.multicodecs = utils.ensureArray(multicodecs)
     this._libp2p = libp2p
     this.registrar = libp2p.registrar
+    /**
+     * @type {PeerId}
+     */
     this.peerId = libp2p.peerId
 
     this.started = false
@@ -91,7 +105,7 @@ class PubsubBaseProtocol extends EventEmitter {
     /**
      * Map of peer streams
      *
-     * @type {Map<string, PeerStreams>}
+     * @type {Map<string, import('./peer-streams')>}
      */
     this.peers = new Map()
 
@@ -118,7 +132,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
     /**
      * Topic validator function
-     * @typedef {function(string, RPC): boolean} validator
+     * @typedef {function(string, InMessage): Promise<void>} validator
      */
     /**
      * Topic validator map
