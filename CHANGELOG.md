@@ -1,3 +1,34 @@
+<a name="0.5.2"></a>
+## [0.5.2](https://github.com/libp2p/js-interfaces/compare/v0.3.1...v0.5.2) (2020-09-30)
+
+
+### Bug Fixes
+
+* replace remaining Buffer usage with Uint8Array ([#62](https://github.com/libp2p/js-interfaces/issues/62)) ([4130e7f](https://github.com/libp2p/js-interfaces/commit/4130e7f))
+
+
+### Chores
+
+* update deps ([#57](https://github.com/libp2p/js-interfaces/issues/57)) ([75f6777](https://github.com/libp2p/js-interfaces/commit/75f6777))
+
+
+### Features
+
+* interface pubsub ([#60](https://github.com/libp2p/js-interfaces/issues/60)) ([ba15a48](https://github.com/libp2p/js-interfaces/commit/ba15a48))
+* record interface ([#52](https://github.com/libp2p/js-interfaces/issues/52)) ([1cc943e](https://github.com/libp2p/js-interfaces/commit/1cc943e))
+
+
+### BREAKING CHANGES
+
+* records now marshal as Uint8Array instead of Buffer
+
+* fix: refactor remaining Buffer usage to Uint8Array
+* - The peer id dep of this module has replaced node Buffers with Uint8Arrays
+
+* chore: update gh deps
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/libp2p/js-interfaces/compare/v0.5.0...v0.5.1) (2020-08-25)
 
