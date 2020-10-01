@@ -437,7 +437,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * The default msgID implementation
    * Child class can override this.
    * @param {RPC.Message} msg the message object
-   * @returns {string} message id as string
+   * @returns {Uint8Array} message id as bytes
    */
   getMsgId (msg) {
     return utils.msgId(msg.from, msg.seqno)

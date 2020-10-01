@@ -184,9 +184,9 @@ declare class PubsubBaseProtocol {
      * The default msgID implementation
      * Child class can override this.
      * @param {RPC.Message} msg the message object
-     * @returns {string} message id as string
+     * @returns {Uint8Array} message id as bytes
      */
-    getMsgId(msg: any): string;
+    getMsgId(msg: any): Uint8Array;
     /**
      * Whether to accept a message from a peer
      * Override to create a graylist

@@ -15,15 +15,11 @@ describe('utils', () => {
     expect(first).to.not.eql(second)
   })
 
-  it('msgId', () => {
-    expect(utils.msgId('hello', uint8ArrayFromString('world'))).to.be.eql('hello776f726c64')
-  })
-
   it('msgId should not generate same ID for two different Uint8Arrays', () => {
     const peerId = 'QmPNdSYk5Rfpo5euNqwtyizzmKXMNHdXeLjTQhcN4yfX22'
     const msgId0 = utils.msgId(peerId, uint8ArrayFromString('15603533e990dfde', 'base16'))
     const msgId1 = utils.msgId(peerId, uint8ArrayFromString('15603533e990dfe0', 'base16'))
-    expect(msgId0).to.not.eql(msgId1)
+    expect(msgId0).to.not.deep.equal(msgId1)
   })
 
   it('anyMatch', () => {
