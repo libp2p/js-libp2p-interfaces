@@ -3,6 +3,7 @@
 const randomBytes = require('libp2p-crypto/src/random-bytes')
 const uint8ArrayToString = require('uint8arrays/to-string')
 const uint8ArrayFromString = require('uint8arrays/from-string')
+const PeerId = require('peer-id')
 exports = module.exports
 
 /**
@@ -20,11 +21,15 @@ exports.randomSeqno = () => {
  *
  * @param {string} from
  * @param {Uint8Array} seqno
- * @returns {string}
+ * @returns {Uint8Array}
  * @private
  */
 exports.msgId = (from, seqno) => {
-  return from + uint8ArrayToString(seqno, 'base16')
+  const fromBytes = PeerId.createFromB58String(from).id
+  const msgId = new Uint8Array(fromBytes.length + seqno.length)
+  msgId.set(fromBytes, 0)
+  msgId.set(seqno, fromBytes.length)
+  return msgId
 }
 
 /**
