@@ -1,3 +1,19 @@
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/libp2p/js-interfaces/compare/v0.5.2...v0.6.0) (2020-10-05)
+
+
+### Features
+
+* update pubsub getMsgId return type to Uint8Array ([#65](https://github.com/libp2p/js-interfaces/issues/65)) ([e148443](https://github.com/libp2p/js-interfaces/commit/e148443))
+
+
+### BREAKING CHANGES
+
+* new getMsgId return type is not backwards compatible with prior `string`
+return type.
+
+
+
 <a name="0.5.2"></a>
 ## [0.5.2](https://github.com/libp2p/js-interfaces/compare/v0.3.1...v0.5.2) (2020-09-30)
 
