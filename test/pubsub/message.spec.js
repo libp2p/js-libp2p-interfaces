@@ -5,6 +5,7 @@ const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
 
 const PubsubBaseImpl = require('../../src/pubsub')
+const { SignaturePolicy } = require('../../src/pubsub/signature-policy')
 const { randomSeqno } = require('../../src/pubsub/utils')
 const {
   createPeerId,
@@ -34,9 +35,7 @@ describe('pubsub base messages', () => {
   it('_buildMessage normalizes and signs messages', async () => {
     const message = {
       receivedFrom: peerId.id,
-      from: peerId.id,
       data: 'hello',
-      seqno: randomSeqno(),
       topicIDs: ['test-topic']
     }
 
@@ -44,27 +43,46 @@ describe('pubsub base messages', () => {
     expect(pubsub.validate(signedMessage)).to.not.be.rejected()
   })
 
-  it('validate with strict signing off will validate a present signature', async () => {
+  it('validate with StrictNoSign will reject a message with from, signature, key, seqno present', async () => {
     const message = {
       receivedFrom: peerId.id,
-      from: peerId.id,
       data: 'hello',
-      seqno: randomSeqno(),
       topicIDs: ['test-topic']
     }
 
-    sinon.stub(pubsub, 'strictSigning').value(false)
+    sinon.stub(pubsub, 'globalSignaturePolicy').value(SignaturePolicy.StrictSign)
+
+    const signedMessage = await pubsub._buildMessage(message)
+
+    sinon.stub(pubsub, 'globalSignaturePolicy').value(SignaturePolicy.StrictNoSign)
+    await expect(pubsub.validate(signedMessage)).to.be.rejected()
+    delete signedMessage.from
+    await expect(pubsub.validate(signedMessage)).to.be.rejected()
+    delete signedMessage.signature
+    await expect(pubsub.validate(signedMessage)).to.be.rejected()
+    delete signedMessage.key
+    await expect(pubsub.validate(signedMessage)).to.be.rejected()
+    delete signedMessage.seqno
+    await expect(pubsub.validate(signedMessage)).to.not.be.rejected()
+  })
+
+  it('validate with StrictNoSign will validate a message without a signature, key, and seqno', async () => {
+    const message = {
+      receivedFrom: peerId.id,
+      data: 'hello',
+      topicIDs: ['test-topic']
+    }
+
+    sinon.stub(pubsub, 'globalSignaturePolicy').value(SignaturePolicy.StrictNoSign)
 
     const signedMessage = await pubsub._buildMessage(message)
     expect(pubsub.validate(signedMessage)).to.not.be.rejected()
   })
 
-  it('validate with strict signing requires a signature', async () => {
+  it('validate with StrictSign requires a signature', async () => {
     const message = {
       receivedFrom: peerId.id,
-      from: peerId.id,
       data: 'hello',
-      seqno: randomSeqno(),
       topicIDs: ['test-topic']
     }
 

@@ -12,6 +12,7 @@ const uint8ArrayFromString = require('uint8arrays/from-string')
 
 const { utils } = require('../../src/pubsub')
 const PeerStreams = require('../../src/pubsub/peer-streams')
+const { SignaturePolicy } = require('../../src/pubsub/signature-policy')
 
 const {
   createPeerId,
@@ -30,6 +31,8 @@ describe('topic validators', () => {
     pubsub = new PubsubImplementation(protocol, {
       peerId: peerId,
       registrar: mockRegistrar
+    }, {
+      globalSignaturePolicy: SignaturePolicy.StrictNoSign
     })
 
     pubsub.start()
@@ -42,8 +45,6 @@ describe('topic validators', () => {
   it('should filter messages by topic validator', async () => {
     // use _publish.callCount() to see if a message is valid or not
     sinon.spy(pubsub, '_publish')
-    // Disable strict signing
-    sinon.stub(pubsub, 'strictSigning').value(false)
     sinon.stub(pubsub.peers, 'get').returns({})
     const filteredTopic = 't'
     const peer = new PeerStreams({ id: await PeerId.create() })
@@ -59,9 +60,7 @@ describe('topic validators', () => {
     const validRpc = {
       subscriptions: [],
       msgs: [{
-        from: peer.id.toBytes(),
         data: uint8ArrayFromString('a message'),
-        seqno: utils.randomSeqno(),
         topicIDs: [filteredTopic]
       }]
     }
@@ -76,9 +75,7 @@ describe('topic validators', () => {
     const invalidRpc = {
       subscriptions: [],
       msgs: [{
-        from: peer.id.toBytes(),
         data: uint8ArrayFromString('a different message'),
-        seqno: utils.randomSeqno(),
         topicIDs: [filteredTopic]
       }]
     }
@@ -94,9 +91,7 @@ describe('topic validators', () => {
     const invalidRpc2 = {
       subscriptions: [],
       msgs: [{
-        from: peer.id.toB58String(),
         data: uint8ArrayFromString('a different message'),
-        seqno: utils.randomSeqno(),
         topicIDs: [filteredTopic]
       }]
     }
