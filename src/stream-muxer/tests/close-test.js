@@ -6,13 +6,10 @@
 const pair = require('it-pair/duplex')
 const { pipe } = require('it-pipe')
 const { consume } = require('streaming-iterables')
-const Tcp = require('libp2p-tcp')
 const { Multiaddr } = require('multiaddr')
 const { source: abortable } = require('abortable-iterator')
 const AbortController = require('abort-controller').default
 const uint8arrayFromString = require('uint8arrays/from-string')
-
-const mh = new Multiaddr('/ip4/127.0.0.1/tcp/0')
 
 function pause (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -39,33 +36,31 @@ module.exports = (common) => {
       Muxer = await common.setup()
     })
 
-    it('closing underlying socket closes streams (tcp)', async () => {
+    it('closing underlying socket closes streams', async () => {
       const mockConn = muxer => ({
         newStream: (...args) => muxer.newStream(...args)
       })
 
-      const mockUpgrade = () => maConn => {
+      const mockUpgrade = maConn => {
         const muxer = new Muxer(stream => pipe(stream, stream))
         pipe(maConn, muxer, maConn)
         return mockConn(muxer)
       }
 
-      const mockUpgrader = () => ({
-        upgradeInbound: mockUpgrade(),
-        upgradeOutbound: mockUpgrade()
+      const [local, remote] = pair()
+      const controller = new AbortController()
+      const abortableRemote = abortable.duplex(remote, controller.signal, {
+        returnOnAbort: true
       })
 
-      const tcp = new Tcp({ upgrader: mockUpgrader() })
-      const tcpListener = tcp.createListener()
-
-      await tcpListener.listen(mh)
-      const dialerConn = await tcp.dial(tcpListener.getAddrs()[0])
+      mockUpgrade(abortableRemote)
+      const dialerConn = mockUpgrade(local)
 
       const s1 = await dialerConn.newStream()
       const s2 = await dialerConn.newStream()
 
-      // close the listener in a bit
-      setTimeout(() => tcpListener.close(), 50)
+      // close the remote in a bit
+      setTimeout(() => controller.abort(), 50)
 
       const s1Result = pipe(infiniteRandom, s1, consume)
       const s2Result = pipe(infiniteRandom, s2, consume)
