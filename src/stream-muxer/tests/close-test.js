@@ -124,14 +124,14 @@ module.exports = (common) => {
       const listener = new Muxer(async stream => {
         // Immediate close for write
         await stream.closeWrite()
-        
+
         const results = await pipe(stream, async (source) => {
           const data = []
           for await (const chunk of source) {
             data.push(chunk.slice())
           }
           return data
-        })        
+        })
         expect(results).to.eql(data)
 
         try {
@@ -162,7 +162,7 @@ module.exports = (common) => {
             data.push(chunk.slice())
           }
           return data
-        })        
+        })
         expect(results).to.eql(data)
         done()
       })
@@ -170,14 +170,14 @@ module.exports = (common) => {
       pipe(p[0], dialer, p[0])
       pipe(p[1], listener, p[1])
 
-      const stream = dialer.newStream()  
-      stream.closeRead() 
+      const stream = dialer.newStream()
+      stream.closeRead()
 
       // Source should be done
       ;(async () => {
-        expect(await stream.source.next()).to.eql({ done: true })  
+        expect(await stream.source.next()).to.eql({ done: true })
         stream.sink(data)
-      })()        
+      })()
     })
   })
 }
