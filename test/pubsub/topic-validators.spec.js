@@ -10,7 +10,6 @@ const PeerId = require('peer-id')
 const uint8ArrayEquals = require('uint8arrays/equals')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 
-const { utils } = require('../../src/pubsub')
 const PeerStreams = require('../../src/pubsub/peer-streams')
 const { SignaturePolicy } = require('../../src/pubsub/signature-policy')
 

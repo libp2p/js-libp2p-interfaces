@@ -6,7 +6,6 @@ const sinon = require('sinon')
 
 const PubsubBaseImpl = require('../../src/pubsub')
 const { SignaturePolicy } = require('../../src/pubsub/signature-policy')
-const { randomSeqno } = require('../../src/pubsub/utils')
 const {
   createPeerId,
   mockRegistrar

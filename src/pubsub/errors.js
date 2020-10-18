@@ -30,6 +30,5 @@ exports.codes = {
   /**
    * Message expected to not have a `seqno`, but does
    */
-  ERR_UNEXPECTED_SEQNO: 'ERR_UNEXPECTED_SEQNO',
-
+  ERR_UNEXPECTED_SEQNO: 'ERR_UNEXPECTED_SEQNO'
 }

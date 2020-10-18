@@ -540,6 +540,7 @@ class PubsubBaseProtocol extends EventEmitter {
           throw errcode(new Error('Invalid message signature'), codes.ERR_INVALID_SIGNATURE)
         }
         break
+      default:
     }
     for (const topic of message.topicIDs) {
       const validatorFn = this.topicValidators.get(topic)
@@ -566,6 +567,7 @@ class PubsubBaseProtocol extends EventEmitter {
         return signMessage(this.peerId, utils.normalizeOutRpcMessage(message))
       case SignaturePolicy.StrictNoSign:
         return utils.normalizeOutRpcMessage(message)
+      default:
     }
   }
 
