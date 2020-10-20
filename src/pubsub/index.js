@@ -334,7 +334,7 @@ class PubsubBaseProtocol extends EventEmitter {
         }
       )
     } catch (err) {
-      this._onPeerDisconnected(peerStreams.id, err)
+      this.log.err(err)
     }
   }
 
