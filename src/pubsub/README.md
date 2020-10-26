@@ -11,6 +11,9 @@ Table of Contents
     * [Extend interface](#extend-interface)
     * [Example](#example)
 * [API](#api)
+    * [Constructor](#constructor)
+      * [new Pubsub(options)](#new-pubsuboptions)
+          * [Parameters](#parameters)
     * [Start](#start)
       * [pubsub.start()](#pubsubstart)
           * [Returns](#returns)
@@ -19,24 +22,24 @@ Table of Contents
           * [Returns](#returns-1)
     * [Publish](#publish)
       * [pubsub.publish(topics, message)](#pubsubpublishtopics-message)
-          * [Parameters](#parameters)
+          * [Parameters](#parameters-1)
           * [Returns](#returns-2)
     * [Subscribe](#subscribe)
       * [pubsub.subscribe(topic)](#pubsubsubscribetopic)
-          * [Parameters](#parameters-1)
+          * [Parameters](#parameters-2)
     * [Unsubscribe](#unsubscribe)
       * [pubsub.unsubscribe(topic)](#pubsubunsubscribetopic)
-          * [Parameters](#parameters-2)
+          * [Parameters](#parameters-3)
     * [Get Topics](#get-topics)
       * [pubsub.getTopics()](#pubsubgettopics)
           * [Returns](#returns-3)
     * [Get Peers Subscribed to a topic](#get-peers-subscribed-to-a-topic)
       * [pubsub.getSubscribers(topic)](#pubsubgetsubscriberstopic)
-          * [Parameters](#parameters-3)
+          * [Parameters](#parameters-4)
           * [Returns](#returns-4)
     * [Validate](#validate)
       * [pubsub.validate(message)](#pubsubvalidatemessage)
-          * [Parameters](#parameters-4)
+          * [Parameters](#parameters-5)
       * [Returns](#returns-5)
 * [Test suite usage](#test-suite-usage)
 
@@ -109,8 +112,8 @@ The base class constructor configures the pubsub instance for use with a libp2p 
 |------|------|-------------|---------|
 | options.libp2p | `Libp2p` | libp2p instance | required, no default |
 | options.debugName | `string` | log namespace | required, no default |
-| options.multicodecs | `string \| Array<string>` | protocol identifiers | required, no default |
-| options.globalSignaturePolicy | `'StrictSign' \| 'StrictNoSign'` | signature policy to be globally applied | 'StrictSign' |
+| options.multicodecs | `string \| Array<string>` | protocol identifier(s) | required, no default |
+| options.globalSignaturePolicy | `'StrictSign' \| 'StrictNoSign'` | signature policy to be globally applied | `'StrictSign'` |
 | options.canRelayMessage | `boolean` | if can relay messages if not subscribed | `false` |
 | options.emitSelf | `boolean` | if `publish` should emit to self, if subscribed | `false` |
 
