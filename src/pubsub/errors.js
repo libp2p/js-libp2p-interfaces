@@ -1,7 +1,17 @@
 'use strict'
 
 exports.codes = {
+  /**
+   * Signature policy is invalid
+   */
+  ERR_INVALID_SIGNATURE_POLICY: 'ERR_INVALID_SIGNATURE_POLICY',
+  /**
+   * Signature policy is unhandled
+   */
+  ERR_UNHANDLED_SIGNATURE_POLICY: 'ERR_UNHANDLED_SIGNATURE_POLICY',
+
   // Strict signing codes
+
   /**
    * Message expected to have a `signature`, but doesn't
    */
@@ -14,7 +24,9 @@ exports.codes = {
    * Message `signature` is invalid
    */
   ERR_INVALID_SIGNATURE: 'ERR_INVALID_SIGNATURE',
+
   // Strict no-signing codes
+
   /**
    * Message expected to not have a `from`, but does
    */

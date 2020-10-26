@@ -110,7 +110,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
     // validate signature policy
     if (!SignaturePolicy[globalSignaturePolicy]) {
-      throw new Error('Invalid global signature policy')
+      throw errcode(new Error('Invalid global signature policy'), codes.ERR_INVALID_SIGUATURE_POLICY)
     }
 
     /**
@@ -531,16 +531,17 @@ class PubsubBaseProtocol extends EventEmitter {
         break
       case SignaturePolicy.StrictSign:
         if (!message.signature) {
-          throw errcode(new Error('Signing required and no signature was present'), codes.ERR_MISSING_SIGNATURE)
+          throw errcode(new Error('StrictSigning: Signing required and no signature was present'), codes.ERR_MISSING_SIGNATURE)
         }
         if (!message.seqno) {
-          throw errcode(new Error('Signing required and no seqno was present'), codes.ERR_MISSING_SEQNO)
+          throw errcode(new Error('StrictSigning: Signing required and no seqno was present'), codes.ERR_MISSING_SEQNO)
         }
         if (!(await verifySignature(message))) {
-          throw errcode(new Error('Invalid message signature'), codes.ERR_INVALID_SIGNATURE)
+          throw errcode(new Error('StrictSigning: Invalid message signature'), codes.ERR_INVALID_SIGNATURE)
         }
         break
       default:
+        throw errcode(new Error('Cannot validate message: unhandled signature policy: ' + signaturePolicy), codes.ERR_UNHANDLED_SIGNATURE_POLICY)
     }
     for (const topic of message.topicIDs) {
       const validatorFn = this.topicValidators.get(topic)
@@ -566,8 +567,9 @@ class PubsubBaseProtocol extends EventEmitter {
         message.seqno = utils.randomSeqno()
         return signMessage(this.peerId, utils.normalizeOutRpcMessage(message))
       case SignaturePolicy.StrictNoSign:
-        return utils.normalizeOutRpcMessage(message)
+        return message
       default:
+        throw errcode(new Error('Cannot build message: unhandled signature policy: ' + signaturePolicy), codes.ERR_UNHANDLED_SIGNATURE_POLICY)
     }
   }
 
@@ -615,7 +617,7 @@ class PubsubBaseProtocol extends EventEmitter {
       topicIDs: [topic]
     }
 
-    // ensure that any operations performed on the message will include the signature, if it should exist
+    // ensure that the message follows the signature policy
     const outMsg = await this._buildMessage(msgObject)
     msgObject = utils.normalizeInRpcMessage(outMsg)
 
