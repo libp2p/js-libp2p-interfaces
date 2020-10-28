@@ -4,6 +4,7 @@ const randomBytes = require('libp2p-crypto/src/random-bytes')
 const uint8ArrayToString = require('uint8arrays/to-string')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const PeerId = require('peer-id')
+const multihash = require('multihashes')
 exports = module.exports
 
 /**
@@ -31,6 +32,15 @@ exports.msgId = (from, seqno) => {
   msgId.set(seqno, fromBytes.length)
   return msgId
 }
+
+/**
+ * Generate a message id, based on message `data`.
+ *
+ * @param {Uint8Array} data
+ * @returns {Uint8Array}
+ * @private
+ */
+exports.noSignMsgId = (data) => multihash.encode(data, 'sha2')
 
 /**
  * Check if any member of the first set is also a member

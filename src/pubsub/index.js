@@ -442,7 +442,15 @@ class PubsubBaseProtocol extends EventEmitter {
    * @returns {Uint8Array} message id as bytes
    */
   getMsgId (msg) {
-    return utils.msgId(msg.from, msg.seqno)
+    const signaturePolicy = this.globalSignaturePolicy
+    switch (globalSignaturePolicy) {
+      case SignaturePolicy.StrictSign:
+        return utils.msgId(msg.from, msg.seqno)
+      case SignaturePolicy.StrictNoSign:
+        return utils.noSignMsgId(msg.data)
+      default:
+        throw errcode(new Error('Cannot get message id: unhandled signature policy: ' + signaturePolicy), codes.ERR_UNHANDLED_SIGNATURE_POLICY)
+    }
   }
 
   /**
