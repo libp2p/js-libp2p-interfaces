@@ -443,7 +443,7 @@ class PubsubBaseProtocol extends EventEmitter {
    */
   getMsgId (msg) {
     const signaturePolicy = this.globalSignaturePolicy
-    switch (globalSignaturePolicy) {
+    switch (signaturePolicy) {
       case SignaturePolicy.StrictSign:
         return utils.msgId(msg.from, msg.seqno)
       case SignaturePolicy.StrictNoSign:
