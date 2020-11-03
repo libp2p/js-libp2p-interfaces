@@ -1,3 +1,22 @@
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/libp2p/js-interfaces/compare/v0.5.2...v0.7.0) (2020-11-03)
+
+
+### Features
+
+* pubsub: add global signature policy ([#66](https://github.com/libp2p/js-interfaces/issues/66)) ([946b046](https://github.com/libp2p/js-interfaces/commit/946b046))
+* update pubsub getMsgId return type to Uint8Array ([#65](https://github.com/libp2p/js-interfaces/issues/65)) ([e148443](https://github.com/libp2p/js-interfaces/commit/e148443))
+
+
+### BREAKING CHANGES
+
+* `signMessages` and `strictSigning` pubsub configuration options replaced
+with a `globalSignaturePolicy` option
+* new getMsgId return type is not backwards compatible with prior `string`
+return type.
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/libp2p/js-interfaces/compare/v0.5.2...v0.6.0) (2020-10-05)
 
