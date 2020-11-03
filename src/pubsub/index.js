@@ -13,6 +13,7 @@ const { codes } = require('./errors')
  */
 const message = require('./message')
 const PeerStreams = require('./peer-streams')
+const { SignaturePolicy } = require('./signature-policy')
 const utils = require('./utils')
 
 const {
@@ -44,8 +45,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * @param {String} props.debugName log namespace
    * @param {Array<string>|string} props.multicodecs protocol identificers to connect
    * @param {Libp2p} props.libp2p
-   * @param {boolean} [props.signMessages = true] if messages should be signed
-   * @param {boolean} [props.strictSigning = true] if message signing should be required
+   * @param {SignaturePolicy} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] defines how signatures should be handled
    * @param {boolean} [props.canRelayMessage = false] if can relay messages not subscribed
    * @param {boolean} [props.emitSelf = false] if publish should emit to self, if subscribed
    * @abstract
@@ -54,8 +54,7 @@ class PubsubBaseProtocol extends EventEmitter {
     debugName,
     multicodecs,
     libp2p,
-    signMessages = true,
-    strictSigning = true,
+    globalSignaturePolicy = SignaturePolicy.StrictSign,
     canRelayMessage = false,
     emitSelf = false
   }) {
@@ -109,14 +108,17 @@ class PubsubBaseProtocol extends EventEmitter {
      */
     this.peers = new Map()
 
-    // Message signing
-    this.signMessages = signMessages
+    // validate signature policy
+    if (!SignaturePolicy[globalSignaturePolicy]) {
+      throw errcode(new Error('Invalid global signature policy'), codes.ERR_INVALID_SIGUATURE_POLICY)
+    }
 
     /**
-     * If message signing should be required for incoming messages
-     * @type {boolean}
+     * The signature policy to follow by default
+     *
+     * @type {SignaturePolicy}
      */
-    this.strictSigning = strictSigning
+    this.globalSignaturePolicy = globalSignaturePolicy
 
     /**
      * If router can relay received messages, even if not subscribed
@@ -440,7 +442,15 @@ class PubsubBaseProtocol extends EventEmitter {
    * @returns {Uint8Array} message id as bytes
    */
   getMsgId (msg) {
-    return utils.msgId(msg.from, msg.seqno)
+    const signaturePolicy = this.globalSignaturePolicy
+    switch (signaturePolicy) {
+      case SignaturePolicy.StrictSign:
+        return utils.msgId(msg.from, msg.seqno)
+      case SignaturePolicy.StrictNoSign:
+        return utils.noSignMsgId(msg.data)
+      default:
+        throw errcode(new Error('Cannot get message id: unhandled signature policy: ' + signaturePolicy), codes.ERR_UNHANDLED_SIGNATURE_POLICY)
+    }
   }
 
   /**
@@ -511,16 +521,36 @@ class PubsubBaseProtocol extends EventEmitter {
    * @returns {Promise<void>}
    */
   async validate (message) { // eslint-disable-line require-await
-    // If strict signing is on and we have no signature, abort
-    if (this.strictSigning && !message.signature) {
-      throw errcode(new Error('Signing required and no signature was present'), codes.ERR_MISSING_SIGNATURE)
+    const signaturePolicy = this.globalSignaturePolicy
+    switch (signaturePolicy) {
+      case SignaturePolicy.StrictNoSign:
+        if (message.from) {
+          throw errcode(new Error('StrictNoSigning: from should not be present'), codes.ERR_UNEXPECTED_FROM)
+        }
+        if (message.signature) {
+          throw errcode(new Error('StrictNoSigning: signature should not be present'), codes.ERR_UNEXPECTED_SIGNATURE)
+        }
+        if (message.key) {
+          throw errcode(new Error('StrictNoSigning: key should not be present'), codes.ERR_UNEXPECTED_KEY)
+        }
+        if (message.seqno) {
+          throw errcode(new Error('StrictNoSigning: seqno should not be present'), codes.ERR_UNEXPECTED_SEQNO)
+        }
+        break
+      case SignaturePolicy.StrictSign:
+        if (!message.signature) {
+          throw errcode(new Error('StrictSigning: Signing required and no signature was present'), codes.ERR_MISSING_SIGNATURE)
+        }
+        if (!message.seqno) {
+          throw errcode(new Error('StrictSigning: Signing required and no seqno was present'), codes.ERR_MISSING_SEQNO)
+        }
+        if (!(await verifySignature(message))) {
+          throw errcode(new Error('StrictSigning: Invalid message signature'), codes.ERR_INVALID_SIGNATURE)
+        }
+        break
+      default:
+        throw errcode(new Error('Cannot validate message: unhandled signature policy: ' + signaturePolicy), codes.ERR_UNHANDLED_SIGNATURE_POLICY)
     }
-
-    // Check the message signature if present
-    if (message.signature && !(await verifySignature(message))) {
-      throw errcode(new Error('Invalid message signature'), codes.ERR_INVALID_SIGNATURE)
-    }
-
     for (const topic of message.topicIDs) {
       const validatorFn = this.topicValidators.get(topic)
       if (!validatorFn) {
@@ -538,11 +568,16 @@ class PubsubBaseProtocol extends EventEmitter {
    * @returns {Promise<Message>}
    */
   _buildMessage (message) {
-    const msg = utils.normalizeOutRpcMessage(message)
-    if (this.signMessages) {
-      return signMessage(this.peerId, msg)
-    } else {
-      return message
+    const signaturePolicy = this.globalSignaturePolicy
+    switch (signaturePolicy) {
+      case SignaturePolicy.StrictSign:
+        message.from = this.peerId.toB58String()
+        message.seqno = utils.randomSeqno()
+        return signMessage(this.peerId, utils.normalizeOutRpcMessage(message))
+      case SignaturePolicy.StrictNoSign:
+        return message
+      default:
+        throw errcode(new Error('Cannot build message: unhandled signature policy: ' + signaturePolicy), codes.ERR_UNHANDLED_SIGNATURE_POLICY)
     }
   }
 
@@ -586,13 +621,11 @@ class PubsubBaseProtocol extends EventEmitter {
     const from = this.peerId.toB58String()
     let msgObject = {
       receivedFrom: from,
-      from: from,
       data: message,
-      seqno: utils.randomSeqno(),
       topicIDs: [topic]
     }
 
-    // ensure that any operations performed on the message will include the signature
+    // ensure that the message follows the signature policy
     const outMsg = await this._buildMessage(msgObject)
     msgObject = utils.normalizeInRpcMessage(outMsg)
 
@@ -666,3 +699,4 @@ class PubsubBaseProtocol extends EventEmitter {
 module.exports = PubsubBaseProtocol
 module.exports.message = message
 module.exports.utils = utils
+module.exports.SignaturePolicy = SignaturePolicy

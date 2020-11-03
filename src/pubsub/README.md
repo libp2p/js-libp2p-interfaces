@@ -11,6 +11,9 @@ Table of Contents
     * [Extend interface](#extend-interface)
     * [Example](#example)
 * [API](#api)
+    * [Constructor](#constructor)
+      * [new Pubsub(options)](#new-pubsuboptions)
+          * [Parameters](#parameters)
     * [Start](#start)
       * [pubsub.start()](#pubsubstart)
           * [Returns](#returns)
@@ -19,24 +22,24 @@ Table of Contents
           * [Returns](#returns-1)
     * [Publish](#publish)
       * [pubsub.publish(topics, message)](#pubsubpublishtopics-message)
-          * [Parameters](#parameters)
+          * [Parameters](#parameters-1)
           * [Returns](#returns-2)
     * [Subscribe](#subscribe)
       * [pubsub.subscribe(topic)](#pubsubsubscribetopic)
-          * [Parameters](#parameters-1)
+          * [Parameters](#parameters-2)
     * [Unsubscribe](#unsubscribe)
       * [pubsub.unsubscribe(topic)](#pubsubunsubscribetopic)
-          * [Parameters](#parameters-2)
+          * [Parameters](#parameters-3)
     * [Get Topics](#get-topics)
       * [pubsub.getTopics()](#pubsubgettopics)
           * [Returns](#returns-3)
     * [Get Peers Subscribed to a topic](#get-peers-subscribed-to-a-topic)
       * [pubsub.getSubscribers(topic)](#pubsubgetsubscriberstopic)
-          * [Parameters](#parameters-3)
+          * [Parameters](#parameters-4)
           * [Returns](#returns-4)
     * [Validate](#validate)
       * [pubsub.validate(message)](#pubsubvalidatemessage)
-          * [Parameters](#parameters-4)
+          * [Parameters](#parameters-5)
       * [Returns](#returns-5)
 * [Test suite usage](#test-suite-usage)
 
@@ -49,7 +52,7 @@ You can check the following implementations as examples for building your own pu
 
 ## Interface usage
 
-`interface-pubsub` abstracts the implementation protocol registration within `libp2p` and takes care of all the protocol connections and streams, as well as the subscription management. This way, a pubsub implementation can focus on its message routing algorithm, instead of also needing to create the setup for it.
+`interface-pubsub` abstracts the implementation protocol registration within `libp2p` and takes care of all the protocol connections and streams, as well as the subscription management and the features describe in the libp2p [pubsub specs](https://github.com/libp2p/specs/tree/master/pubsub). This way, a pubsub implementation can focus on its message routing algorithm, instead of also needing to create the setup for it.
 
 ### Extend interface
 
@@ -74,7 +77,7 @@ All the remaining functions **MUST NOT** be overwritten.
 The following example aims to show how to create your pubsub implementation extending this base protocol. The pubsub implementation will handle the subscriptions logic.
 
 ```JavaScript
-const Pubsub = require('libp2p-pubsub')
+const Pubsub = require('libp2p-interfaces/src/pubsub')
 
 class PubsubImplementation extends Pubsub {
   constructor({ libp2p, options })
@@ -82,8 +85,7 @@ class PubsubImplementation extends Pubsub {
       debugName: 'libp2p:pubsub',
       multicodecs: '/pubsub-implementation/1.0.0',
       libp2p,
-      signMessages: options.signMessages,
-      strictSigning: options.strictSigning
+      globalSigningPolicy: options.globalSigningPolicy
     })
   }
 
@@ -97,6 +99,23 @@ class PubsubImplementation extends Pubsub {
 ## API
 
 The interface aims to specify a common interface that all pubsub router implementation should follow. A pubsub router implementation should extend the [EventEmitter](https://nodejs.org/api/events.html#events_class_eventemitter). When peers receive pubsub messages, these messages will be emitted by the event emitter where the `eventName` will be the `topic` associated with the message.
+
+### Constructor
+
+The base class constructor configures the pubsub instance for use with a libp2p instance. It includes settings for logging, signature policies, etc.
+
+#### `new Pubsub({options})`
+
+##### Parameters
+
+| Name | Type | Description | Default |
+|------|------|-------------|---------|
+| options.libp2p | `Libp2p` | libp2p instance | required, no default |
+| options.debugName | `string` | log namespace | required, no default |
+| options.multicodecs | `string \| Array<string>` | protocol identifier(s) | required, no default |
+| options.globalSignaturePolicy | `'StrictSign' \| 'StrictNoSign'` | signature policy to be globally applied | `'StrictSign'` |
+| options.canRelayMessage | `boolean` | if can relay messages if not subscribed | `false` |
+| options.emitSelf | `boolean` | if `publish` should emit to self, if subscribed | `false` |
 
 ### Start
 
@@ -185,7 +204,7 @@ Get a list of the [PeerId](https://github.com/libp2p/js-peer-id) strings that ar
 
 ### Validate
 
-Validates the signature of a message.
+Validates a message according to the signature policy and topic-specific validation function.
 
 #### `pubsub.validate(message)`
 
