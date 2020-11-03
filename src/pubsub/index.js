@@ -116,7 +116,7 @@ class PubsubBaseProtocol extends EventEmitter {
     /**
      * The signature policy to follow by default
      *
-     * @type {SignaturePolicy}
+     * @type {string}
      */
     this.globalSignaturePolicy = globalSignaturePolicy
 
