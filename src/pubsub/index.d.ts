@@ -22,18 +22,16 @@ declare class PubsubBaseProtocol {
      * @param {String} props.debugName log namespace
      * @param {Array<string>|string} props.multicodecs protocol identificers to connect
      * @param {Libp2p} props.libp2p
-     * @param {boolean} [props.signMessages = true] if messages should be signed
-     * @param {boolean} [props.strictSigning = true] if message signing should be required
+     * @param {SignaturePolicy} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] defines how signatures should be handled
      * @param {boolean} [props.canRelayMessage = false] if can relay messages not subscribed
      * @param {boolean} [props.emitSelf = false] if publish should emit to self, if subscribed
      * @abstract
      */
-    constructor({ debugName, multicodecs, libp2p, signMessages, strictSigning, canRelayMessage, emitSelf }: {
+    constructor({ debugName, multicodecs, libp2p, globalSignaturePolicy, canRelayMessage, emitSelf }: {
         debugName: string;
         multicodecs: string | string[];
         libp2p: any;
-        signMessages?: boolean;
-        strictSigning?: boolean;
+        globalSignaturePolicy?: any;
         canRelayMessage?: boolean;
         emitSelf?: boolean;
     });
@@ -66,12 +64,12 @@ declare class PubsubBaseProtocol {
      * @type {Map<string, import('./peer-streams')>}
      */
     peers: Map<string, import('./peer-streams')>;
-    signMessages: boolean;
     /**
-     * If message signing should be required for incoming messages
-     * @type {boolean}
+     * The signature policy to follow by default
+     *
+     * @type {string}
      */
-    strictSigning: boolean;
+    globalSignaturePolicy: string;
     /**
      * If router can relay received messages, even if not subscribed
      * @type {boolean}
@@ -284,7 +282,7 @@ declare class PubsubBaseProtocol {
     getTopics(): string[];
 }
 declare namespace PubsubBaseProtocol {
-    export { message, utils, InMessage, PeerId };
+    export { message, utils, SignaturePolicy, InMessage, PeerId };
 }
 type PeerId = import("peer-id");
 /**
@@ -305,3 +303,7 @@ type InMessage = {
  */
 declare const message: typeof import('./message');
 declare const utils: typeof import("./utils");
+declare const SignaturePolicy: {
+    StrictSign: string;
+    StrictNoSign: string;
+};
