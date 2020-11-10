@@ -52,26 +52,20 @@ module.exports = (common) => {
           await common.teardown()
         })
 
-        it('subscribe to the topic on node a', () => {
+        it('subscribe to the topic on node a', async () => {
           const topic = 'Z'
-          const defer = pDefer()
 
           psA.subscribe(topic)
           expectSet(psA.subscriptions, [topic])
 
-          psB.once('pubsub:subscription-change', () => {
-            expect(psB.peers.size).to.equal(2)
+          await new Promise((resolve) => psB.once('pubsub:subscription-change', resolve))
+          expect(psB.peers.size).to.equal(2)
 
-            const aPeerId = psA.peerId.toB58String()
-            expectSet(psB.topics.get(topic), [aPeerId])
+          const aPeerId = psA.peerId.toB58String()
+          expectSet(psB.topics.get(topic), [aPeerId])
 
-            expect(psC.peers.size).to.equal(1)
-            expect(psC.topics.get(topic)).to.not.exist()
-
-            defer.resolve()
-          })
-
-          return defer.promise
+          expect(psC.peers.size).to.equal(1)
+          expect(psC.topics.get(topic)).to.not.exist
         })
 
         it('subscribe to the topic on node b', async () => {

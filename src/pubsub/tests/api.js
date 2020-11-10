@@ -76,7 +76,7 @@ module.exports = (common) => {
       const defer = pDefer()
 
       const handler = (msg) => {
-        expect(msg).to.exist()
+        expect(msg).to.exist
         defer.resolve()
       }
 
