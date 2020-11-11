@@ -40,7 +40,7 @@ exports.msgId = (from, seqno) => {
  * @returns {Uint8Array}
  * @private
  */
-exports.noSignMsgId = (data) => multihash.encode(data, 'sha2')
+exports.noSignMsgId = (data) => multihash.encode(data, 'sha2-256')
 
 /**
  * Check if any member of the first set is also a member

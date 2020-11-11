@@ -10,6 +10,7 @@ const uint8ArrayFromString = require('uint8arrays/from-string')
 
 const { utils } = require('..')
 const PeerStreams = require('../peer-streams')
+const { SignaturePolicy } = require('../signature-policy')
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
@@ -31,24 +32,17 @@ module.exports = (common) => {
     })
 
     it('should emit normalized signed messages on publish', async () => {
+      pubsub.globalSignaturePolicy = SignaturePolicy.StrictSign
       sinon.spy(pubsub, '_emitMessage')
-      sinon.spy(utils, 'randomSeqno')
 
       await pubsub.publish(topic, data)
       expect(pubsub._emitMessage.callCount).to.eql(1)
 
       const [messageToEmit] = pubsub._emitMessage.getCall(0).args
 
-      const expected = utils.normalizeInRpcMessage(
-        await pubsub._buildMessage({
-          receivedFrom: pubsub.peerId.toB58String(),
-          from: pubsub.peerId.toB58String(),
-          data,
-          seqno: utils.randomSeqno.getCall(0).returnValue,
-          topicIDs: [topic]
-        }))
-
-      expect(messageToEmit).to.eql(expected)
+      expect(messageToEmit.seqno).to.not.eql(undefined)
+      expect(messageToEmit.key).to.not.eql(undefined)
+      expect(messageToEmit.signature).to.not.eql(undefined)
     })
 
     it('should drop unsigned messages', async () => {
@@ -83,18 +77,16 @@ module.exports = (common) => {
     })
 
     it('should not drop unsigned messages if strict signing is disabled', async () => {
+      pubsub.globalSignaturePolicy = SignaturePolicy.StrictNoSign
       sinon.spy(pubsub, '_emitMessage')
       sinon.spy(pubsub, '_publish')
       sinon.spy(pubsub, 'validate')
-      sinon.stub(pubsub, 'strictSigning').value(false)
 
       const peerStream = new PeerStreams({ id: await PeerId.create() })
       const rpc = {
         subscriptions: [],
         msgs: [{
-          from: peerStream.id.toBytes(),
           data,
-          seqno: utils.randomSeqno(),
           topicIDs: [topic]
         }]
       }
