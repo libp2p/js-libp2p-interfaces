@@ -1,3 +1,8 @@
+<a name="0.7.2"></a>
+## [0.7.2](https://github.com/libp2p/js-interfaces/compare/v0.7.1...v0.7.2) (2020-11-11)
+
+
+
 <a name="0.7.1"></a>
 ## [0.7.1](https://github.com/libp2p/js-interfaces/compare/v0.7.0...v0.7.1) (2020-11-03)
 
