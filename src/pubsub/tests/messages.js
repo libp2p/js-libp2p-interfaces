@@ -40,9 +40,9 @@ module.exports = (common) => {
 
       const [messageToEmit] = pubsub._emitMessage.getCall(0).args
 
-      expect(messageToEmit.seqno).to.not.be.undefined
-      expect(messageToEmit.key).to.not.be.undefined
-      expect(messageToEmit.signature).to.not.be.undefined
+      expect(messageToEmit.seqno).to.not.eql(undefined)
+      expect(messageToEmit.key).to.not.eql(undefined)
+      expect(messageToEmit.signature).to.not.eql(undefined)
     })
 
     it('should drop unsigned messages', async () => {

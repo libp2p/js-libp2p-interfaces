@@ -65,7 +65,7 @@ module.exports = (common) => {
           expectSet(psB.topics.get(topic), [aPeerId])
 
           expect(psC.peers.size).to.equal(1)
-          expect(psC.topics.get(topic)).to.not.exist
+          expect(psC.topics.get(topic)).to.eql(undefined)
         })
 
         it('subscribe to the topic on node b', async () => {
