@@ -1,5 +1,24 @@
 declare const _exports: typeof Connection;
 export = _exports;
+export type Sink = (source: Uint8Array) => Promise<Uint8Array>;
+export type DuplexIterableStream = {
+    sink: Sink;
+    source: () => AsyncIterator<Uint8Array, any, undefined>;
+};
+export type PeerId = import("peer-id");
+export type Multiaddr = import("multiaddr");
+/**
+ * @callback Sink
+ * @param {Uint8Array} source
+ * @returns {Promise<Uint8Array>}
+ *
+ * @typedef {object} DuplexIterableStream
+ * @property {Sink} sink
+ * @property {() AsyncIterator<Uint8Array>} source
+ *
+ * @typedef {import('peer-id')} PeerId
+ * @typedef {import('multiaddr')} Multiaddr
+ */
 /**
  * An implementation of the js-libp2p connection.
  * Any libp2p transport should use an upgrader to return this connection.
@@ -8,13 +27,13 @@ declare class Connection {
     /**
      * Creates an instance of Connection.
      * @param {object} properties properties of the connection.
-     * @param {multiaddr} [properties.localAddr] local multiaddr of the connection if known.
-     * @param {multiaddr} [properties.remoteAddr] remote multiaddr of the connection.
+     * @param {Multiaddr} [properties.localAddr] local multiaddr of the connection if known.
+     * @param {Multiaddr} [properties.remoteAddr] remote multiaddr of the connection.
      * @param {PeerId} properties.localPeer local peer-id.
      * @param {PeerId} properties.remotePeer remote peer-id.
      * @param {function} properties.newStream new stream muxer function.
      * @param {function} properties.close close raw connection function.
-     * @param {function(): Stream[]} properties.getStreams get streams from muxer function.
+     * @param {function(): DuplexIterableStream[]} properties.getStreams get streams from muxer function.
      * @param {object} properties.stat metadata of the connection.
      * @param {string} properties.stat.direction connection establishment direction ("inbound" or "outbound").
      * @param {object} properties.stat.timeline connection relevant events timestamp.
@@ -30,7 +49,7 @@ declare class Connection {
         remotePeer: import("peer-id");
         newStream: Function;
         close: Function;
-        getStreams: () => any[];
+        getStreams: () => DuplexIterableStream[];
         stat: {
             direction: string;
             timeline: {
@@ -85,7 +104,7 @@ declare class Connection {
     /**
      * Reference to the getStreams function of the muxer
      */
-    _getStreams: () => any[];
+    _getStreams: () => DuplexIterableStream[];
     /**
      * Connection streams registry
      */
@@ -113,25 +132,25 @@ declare class Connection {
      * Get all the streams of the muxer.
      * @this {Connection}
      */
-    get streams(): any[];
+    get streams(): DuplexIterableStream[];
     /**
      * Create a new stream from this connection
      * @param {string[]} protocols intended protocol for the stream
-     * @return {Promise<{stream: Stream, protocol: string}>} with muxed+multistream-selected stream and selected protocol
+     * @return {Promise<{stream: DuplexIterableStream, protocol: string}>} with muxed+multistream-selected stream and selected protocol
      */
     newStream(protocols: string[]): Promise<{
-        stream: any;
+        stream: DuplexIterableStream;
         protocol: string;
     }>;
     /**
      * Add a stream when it is opened to the registry.
-     * @param {*} muxedStream a muxed stream
+     * @param {DuplexIterableStream} muxedStream a muxed stream
      * @param {object} properties the stream properties to be registered
      * @param {string} properties.protocol the protocol used by the stream
      * @param {object} properties.metadata metadata of the stream
      * @return {void}
      */
-    addStream(muxedStream: any, { protocol, metadata }: {
+    addStream(muxedStream: DuplexIterableStream, { protocol, metadata }: {
         protocol: string;
         metadata: any;
     }): void;

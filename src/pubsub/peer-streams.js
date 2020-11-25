@@ -13,16 +13,9 @@ const log = debug('libp2p-pubsub:peer-streams')
 log.error = debug('libp2p-pubsub:peer-streams:error')
 
 /**
- * @callback Sink
- * @param {Uint8Array} source
- * @returns {Promise<Uint8Array>}
+ * @typedef {import('../connection/connection').DuplexIterableStream} DuplexIterableStream
  *
- * @typedef {object} DuplexIterableStream
- * @property {Sink} sink
- * @property {() AsyncIterator<Uint8Array>} source
- *
- * @typedef PeerId
- * @type import('peer-id')
+ * @typedef {import('peer-id')} PeerId
  */
 
 /**

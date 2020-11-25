@@ -1,56 +1,23 @@
 'use strict'
 
-const PeerId = require('peer-id')
-const multiaddr = require('multiaddr')
 const withIs = require('class-is')
 const errCode = require('err-code')
 const Status = require('./status')
 
-function validateArgs (localAddr, localPeer, remotePeer, newStream, close, getStreams, stat) {
-  if (localAddr && !multiaddr.isMultiaddr(localAddr)) {
-    throw errCode(new Error('localAddr must be an instance of multiaddr'), 'ERR_INVALID_PARAMETERS')
-  }
+const { validateArgs } = require('./utils')
 
-  if (!PeerId.isPeerId(localPeer)) {
-    throw errCode(new Error('localPeer must be an instance of peer-id'), 'ERR_INVALID_PARAMETERS')
-  }
-
-  if (!PeerId.isPeerId(remotePeer)) {
-    throw errCode(new Error('remotePeer must be an instance of peer-id'), 'ERR_INVALID_PARAMETERS')
-  }
-
-  if (typeof newStream !== 'function') {
-    throw errCode(new Error('new stream must be a function'), 'ERR_INVALID_PARAMETERS')
-  }
-
-  if (typeof close !== 'function') {
-    throw errCode(new Error('close must be a function'), 'ERR_INVALID_PARAMETERS')
-  }
-
-  if (typeof getStreams !== 'function') {
-    throw errCode(new Error('getStreams must be a function'), 'ERR_INVALID_PARAMETERS')
-  }
-
-  if (!stat) {
-    throw errCode(new Error('connection metadata object must be provided'), 'ERR_INVALID_PARAMETERS')
-  }
-
-  if (stat.direction !== 'inbound' && stat.direction !== 'outbound') {
-    throw errCode(new Error('direction must be "inbound" or "outbound"'), 'ERR_INVALID_PARAMETERS')
-  }
-
-  if (!stat.timeline) {
-    throw errCode(new Error('connection timeline object must be provided in the stat object'), 'ERR_INVALID_PARAMETERS')
-  }
-
-  if (!stat.timeline.open) {
-    throw errCode(new Error('connection open timestamp must be provided'), 'ERR_INVALID_PARAMETERS')
-  }
-
-  if (!stat.timeline.upgraded) {
-    throw errCode(new Error('connection upgraded timestamp must be provided'), 'ERR_INVALID_PARAMETERS')
-  }
-}
+/**
+ * @callback Sink
+ * @param {Uint8Array} source
+ * @returns {Promise<Uint8Array>}
+ *
+ * @typedef {object} DuplexIterableStream
+ * @property {Sink} sink
+ * @property {() AsyncIterator<Uint8Array>} source
+ *
+ * @typedef {import('peer-id')} PeerId
+ * @typedef {import('multiaddr')} Multiaddr
+ */
 
 /**
  * An implementation of the js-libp2p connection.
@@ -60,13 +27,13 @@ class Connection {
   /**
    * Creates an instance of Connection.
    * @param {object} properties properties of the connection.
-   * @param {multiaddr} [properties.localAddr] local multiaddr of the connection if known.
-   * @param {multiaddr} [properties.remoteAddr] remote multiaddr of the connection.
+   * @param {Multiaddr} [properties.localAddr] local multiaddr of the connection if known.
+   * @param {Multiaddr} [properties.remoteAddr] remote multiaddr of the connection.
    * @param {PeerId} properties.localPeer local peer-id.
    * @param {PeerId} properties.remotePeer remote peer-id.
    * @param {function} properties.newStream new stream muxer function.
    * @param {function} properties.close close raw connection function.
-   * @param {function(): Stream[]} properties.getStreams get streams from muxer function.
+   * @param {function(): DuplexIterableStream[]} properties.getStreams get streams from muxer function.
    * @param {object} properties.stat metadata of the connection.
    * @param {string} properties.stat.direction connection establishment direction ("inbound" or "outbound").
    * @param {object} properties.stat.timeline connection relevant events timestamp.
@@ -157,7 +124,7 @@ class Connection {
   /**
    * Create a new stream from this connection
    * @param {string[]} protocols intended protocol for the stream
-   * @return {Promise<{stream: Stream, protocol: string}>} with muxed+multistream-selected stream and selected protocol
+   * @return {Promise<{stream: DuplexIterableStream, protocol: string}>} with muxed+multistream-selected stream and selected protocol
    */
   async newStream (protocols) {
     if (this.stat.status === Status.CLOSING) {
@@ -182,7 +149,7 @@ class Connection {
 
   /**
    * Add a stream when it is opened to the registry.
-   * @param {*} muxedStream a muxed stream
+   * @param {DuplexIterableStream} muxedStream a muxed stream
    * @param {object} properties the stream properties to be registered
    * @param {string} properties.protocol the protocol used by the stream
    * @param {object} properties.metadata metadata of the stream
