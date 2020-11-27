@@ -1,10 +1,9 @@
-declare const _exports: MulticodecTopology;
-export = _exports;
+export = MulticodecTopology;
 declare class MulticodecTopology {
     /**
      * @param {Object} props
-     * @param {number} props.min minimum needed connections (default: 0)
-     * @param {number} props.max maximum needed connections (default: Infinity)
+     * @param {number} [props.min] minimum needed connections (default: 0)
+     * @param {number} [props.max] maximum needed connections (default: Infinity)
      * @param {Array<string>} props.multicodecs protocol multicodecs
      * @param {Object} props.handlers
      * @param {function} props.handlers.onConnect protocol "onConnect" handler
@@ -12,8 +11,8 @@ declare class MulticodecTopology {
      * @constructor
      */
     constructor({ min, max, multicodecs, handlers }: {
-        min: number;
-        max: number;
+        min?: number;
+        max?: number;
         multicodecs: string[];
         handlers: {
             onConnect: Function;
