@@ -1,5 +1,4 @@
-declare const _exports: MulticodecTopology;
-export = _exports;
+export = MulticodecTopology;
 declare class MulticodecTopology {
     /**
      * @param {Object} props
