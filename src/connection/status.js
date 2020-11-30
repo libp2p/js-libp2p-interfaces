@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  OPEN: 'open',
-  CLOSING: 'closing',
-  CLOSED: 'closed'
+  OPEN: /** @type {'open'} */('open'),
+  CLOSING: /** @type {'closing'} */('closing'),
+  CLOSED: /** @type {'closed'} */('closed')
 }
