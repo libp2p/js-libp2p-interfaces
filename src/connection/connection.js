@@ -2,9 +2,10 @@
 
 const PeerId = require('peer-id')
 const multiaddr = require('multiaddr')
-const withIs = require('class-is')
 const errCode = require('err-code')
 const Status = require('./status')
+
+const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
 
 function validateArgs (localAddr, localPeer, remotePeer, newStream, close, getStreams, stat) {
   if (localAddr && !multiaddr.isMultiaddr(localAddr)) {
@@ -138,6 +139,24 @@ class Connection {
     this.tags = []
   }
 
+  get [Symbol.toStringTag] () {
+    return 'Connection'
+  }
+
+  get [connectionSymbol]() {
+    return true
+  }
+
+  /**
+   * Checks if the given value is a `Connection` instance.
+   *
+   * @param {any} other
+   * @returns {other is Connection}
+   */
+  static isConnection(other) {
+    return Boolean(other && other[connectionSymbol])
+  }
+
   /**
    * Get connection metadata
    * @this {Connection}
@@ -227,8 +246,5 @@ class Connection {
   }
 }
 
-/**
- * @module
- * @type {typeof Connection}
- */
-module.exports = withIs(Connection, { className: 'Connection', symbolName: '@libp2p/interface-connection/connection' })
+
+module.exports = Connection

@@ -1,14 +1,14 @@
 'use strict'
 
-const withIs = require('class-is')
-
 const Topology = require('./index')
+const multicodecTopologySymbol = Symbol.for('@libp2p/js-interfaces/topology/multicodec-topology')
+
 
 class MulticodecTopology extends Topology {
   /**
    * @param {Object} props
-   * @param {number} props.min minimum needed connections (default: 0)
-   * @param {number} props.max maximum needed connections (default: Infinity)
+   * @param {number} [props.min] minimum needed connections (default: 0)
+   * @param {number} [props.max] maximum needed connections (default: Infinity)
    * @param {Array<string>} props.multicodecs protocol multicodecs
    * @param {Object} props.handlers
    * @param {function} props.handlers.onConnect protocol "onConnect" handler
@@ -44,6 +44,24 @@ class MulticodecTopology extends Topology {
 
     this._onProtocolChange = this._onProtocolChange.bind(this)
     this._onPeerConnect = this._onPeerConnect.bind(this)
+  }
+
+  get [Symbol.toStringTag] () {
+    return 'Topology'
+  }
+
+  get [multicodecTopologySymbol]() {
+    return true
+  }
+
+  /**
+   * Checks if the given value is a `MulticodecTopology` instance.
+   *
+   * @param {any} other
+   * @returns {other is MulticodecTopology}
+   */
+  static isMulticodecTopology(other) {
+    return Boolean(other && other[multicodecTopologySymbol])
   }
 
   set registrar (registrar) {
@@ -120,8 +138,4 @@ class MulticodecTopology extends Topology {
   }
 }
 
-/**
- * @module
- * @type {MulticodecTopology}
- */
-module.exports = withIs(MulticodecTopology, { className: 'MulticodecTopology', symbolName: '@libp2p/js-interfaces/topology/multicodec-topology' })
+module.exports = MulticodecTopology

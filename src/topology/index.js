@@ -1,13 +1,13 @@
 'use strict'
 
-const withIs = require('class-is')
 const noop = () => {}
+const topologySymbol = Symbol.for('@libp2p/js-interfaces/topology')
 
 class Topology {
   /**
    * @param {Object} props
-   * @param {number} props.min minimum needed connections (default: 0)
-   * @param {number} props.max maximum needed connections (default: Infinity)
+   * @param {number} [props.min] minimum needed connections (default: 0)
+   * @param {number} [props.max] maximum needed connections (default: Infinity)
    * @param {Object} [props.handlers]
    * @param {function} [props.handlers.onConnect] protocol "onConnect" handler
    * @param {function} [props.handlers.onDisconnect] protocol "onDisconnect" handler
@@ -32,6 +32,24 @@ class Topology {
     this.peers = new Set()
   }
 
+  get [Symbol.toStringTag] () {
+      return 'Topology'
+  }
+
+  get [topologySymbol]() {
+    return true
+  }
+
+  /**
+   * Checks if the given value is a Topology instance.
+   *
+   * @param {any} other
+   * @returns {other is Topology}
+   */
+  static isTopology(other) {
+    return Boolean(other && other[topologySymbol])
+  }
+
   set registrar (registrar) {
     this._registrar = registrar
   }
@@ -51,8 +69,4 @@ class Topology {
   }
 }
 
-/**
- * @module
- * @type {Topology}
- */
-module.exports = withIs(Topology, { className: 'Topology', symbolName: '@libp2p/js-interfaces/topology' })
+module.exports = Topology
