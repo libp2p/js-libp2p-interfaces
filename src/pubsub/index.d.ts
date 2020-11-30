@@ -13,27 +13,27 @@ export = PubsubBaseProtocol;
  * @type import('peer-id')
  */
 /**
-* PubsubBaseProtocol handles the peers and connections logic for pubsub routers
-* and specifies the API that pubsub routers should have.
-*/
+ * PubsubBaseProtocol handles the peers and connections logic for pubsub routers
+ * and specifies the API that pubsub routers should have.
+ */
 declare class PubsubBaseProtocol {
     /**
      * @param {Object} props
-     * @param {String} props.debugName log namespace
-     * @param {Array<string>|string} props.multicodecs protocol identificers to connect
+     * @param {string} props.debugName - log namespace
+     * @param {Array<string>|string} props.multicodecs - protocol identificers to connect
      * @param {Libp2p} props.libp2p
-     * @param {SignaturePolicy} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] defines how signatures should be handled
-     * @param {boolean} [props.canRelayMessage = false] if can relay messages not subscribed
-     * @param {boolean} [props.emitSelf = false] if publish should emit to self, if subscribed
+     * @param {SignaturePolicy} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] - defines how signatures should be handled
+     * @param {boolean} [props.canRelayMessage = false] - if can relay messages not subscribed
+     * @param {boolean} [props.emitSelf = false] - if publish should emit to self, if subscribed
      * @abstract
      */
     constructor({ debugName, multicodecs, libp2p, globalSignaturePolicy, canRelayMessage, emitSelf }: {
         debugName: string;
-        multicodecs: string | string[];
+        multicodecs: Array<string> | string;
         libp2p: any;
-        globalSignaturePolicy?: any;
-        canRelayMessage?: boolean;
-        emitSelf?: boolean;
+        globalSignaturePolicy: any;
+        canRelayMessage: boolean;
+        emitSelf: boolean;
     });
     log: any;
     /**
@@ -55,6 +55,7 @@ declare class PubsubBaseProtocol {
     topics: Map<string, Set<string>>;
     /**
      * List of our subscriptions
+     *
      * @type {Set<string>}
      */
     subscriptions: Set<string>;
@@ -72,16 +73,19 @@ declare class PubsubBaseProtocol {
     globalSignaturePolicy: string;
     /**
      * If router can relay received messages, even if not subscribed
+     *
      * @type {boolean}
      */
     canRelayMessage: boolean;
     /**
      * if publish should emit to self, if subscribed
+     *
      * @type {boolean}
      */
     emitSelf: boolean;
     /**
      * Topic validator function
+     *
      * @typedef {function(string, InMessage): Promise<void>} validator
      */
     /**
@@ -89,73 +93,79 @@ declare class PubsubBaseProtocol {
      *
      * Keyed by topic
      * Topic validators are functions with the following input:
+     *
      * @type {Map<string, validator>}
      */
-    topicValidators: Map<string, validator>;
+    topicValidators: Map<string, (arg0: string, arg1: InMessage) => Promise<void>>;
     _registrarId: any;
     /**
      * On an inbound stream opened.
+     *
      * @private
      * @param {Object} props
      * @param {string} props.protocol
      * @param {DuplexIterableStream} props.stream
-     * @param {Connection} props.connection connection
+     * @param {Connection} props.connection - connection
      */
-    _onIncomingStream({ protocol, stream, connection }: {
-        protocol: string;
-        stream: any;
-        connection: any;
-    }): void;
+    private _onIncomingStream;
     /**
      * Registrar notifies an established connection with pubsub protocol.
+     *
      * @private
-     * @param {PeerId} peerId remote peer-id
-     * @param {Connection} conn connection to the peer
+     * @param {PeerId} peerId - remote peer-id
+     * @param {Connection} conn - connection to the peer
      */
-    _onPeerConnected(peerId: import("peer-id"), conn: any): Promise<void>;
+    private _onPeerConnected;
     /**
      * Registrar notifies a closing connection with pubsub protocol.
+     *
      * @private
-     * @param {PeerId} peerId peerId
-     * @param {Error} err error for connection end
+     * @param {PeerId} peerId - peerId
+     * @param {Error} err - error for connection end
      */
-    _onPeerDisconnected(peerId: import("peer-id"), err: Error): void;
+    private _onPeerDisconnected;
     /**
      * Register the pubsub protocol onto the libp2p node.
+     *
      * @returns {void}
      */
     start(): void;
     /**
      * Unregister the pubsub protocol and the streams with other peers will be closed.
+     *
      * @returns {void}
      */
     stop(): void;
     /**
      * Notifies the router that a peer has been connected
+     *
      * @private
      * @param {PeerId} peerId
      * @param {string} protocol
      * @returns {PeerStreams}
      */
-    _addPeer(peerId: import("peer-id"), protocol: string): import("./peer-streams");
+    private _addPeer;
     /**
      * Notifies the router that a peer has been disconnected.
+     *
      * @private
      * @param {PeerId} peerId
      * @returns {PeerStreams | undefined}
      */
-    _removePeer(peerId: import("peer-id")): import("./peer-streams");
+    private _removePeer;
     /**
      * Responsible for processing each RPC message received by other peers.
-     * @param {string} idB58Str peer id string in base58
-     * @param {DuplexIterableStream} stream inbound stream
-     * @param {PeerStreams} peerStreams PubSub peer
+     *
+     * @param {string} idB58Str - peer id string in base58
+     * @param {DuplexIterableStream} stream - inbound stream
+     * @param {PeerStreams} peerStreams - PubSub peer
      * @returns {Promise<void>}
      */
     _processMessages(idB58Str: string, stream: any, peerStreams: import("./peer-streams")): Promise<void>;
     /**
      * Handles an rpc request from a peer
-     * @param {String} idB58Str
+     *
+     * @param {string} idB58Str
      * @param {PeerStreams} peerStreams
      * @param {RPC} rpc
      * @returns {boolean}
@@ -163,31 +173,36 @@ declare class PubsubBaseProtocol {
     _processRpc(idB58Str: string, peerStreams: import("./peer-streams"), rpc: any): boolean;
     /**
      * Handles a subscription change from a peer
+     *
      * @param {string} id
      * @param {RPC.SubOpt} subOpt
      */
     _processRpcSubOpt(id: string, subOpt: any): void;
     /**
      * Handles an message from a peer
+     *
      * @param {InMessage} msg
      * @returns {Promise<void>}
      */
     _processRpcMessage(msg: InMessage): Promise<void>;
     /**
      * Emit a message from a peer
+     *
      * @param {InMessage} message
      */
     _emitMessage(message: InMessage): void;
     /**
      * The default msgID implementation
      * Child class can override this.
-     * @param {RPC.Message} msg the message object
+     *
+     * @param {RPC.Message} msg - the message object
      * @returns {Uint8Array} message id as bytes
      */
     getMsgId(msg: any): Uint8Array;
     /**
      * Whether to accept a message from a peer
      * Override to create a graylist
+     *
      * @override
      * @param {string} id
      * @returns {boolean}
@@ -196,6 +211,7 @@ declare class PubsubBaseProtocol {
     /**
      * Decode Uint8Array into an RPC object.
      * This can be override to use a custom router protobuf.
+     *
      * @param {Uint8Array} bytes
      * @returns {RPC}
      */
@@ -203,28 +219,32 @@ declare class PubsubBaseProtocol {
     /**
      * Encode RPC object into a Uint8Array.
      * This can be override to use a custom router protobuf.
+     *
      * @param {RPC} rpc
      * @returns {Uint8Array}
      */
     _encodeRpc(rpc: any): Uint8Array;
     /**
      * Send an rpc object to a peer
-     * @param {string} id peer id
+     *
+     * @param {string} id - peer id
      * @param {RPC} rpc
      * @returns {void}
      */
     _sendRpc(id: string, rpc: any): void;
     /**
      * Send subscroptions to a peer
-     * @param {string} id peer id
+     *
+     * @param {string} id - peer id
      * @param {string[]} topics
-     * @param {boolean} subscribe set to false for unsubscriptions
+     * @param {boolean} subscribe - set to false for unsubscriptions
      * @returns {void}
      */
     _sendSubscriptions(id: string, topics: string[], subscribe: boolean): void;
     /**
      * Validates the given message. The signature will be checked for authenticity.
      * Throws an error on invalid messages
+     *
      * @param {InMessage} message
      * @returns {Promise<void>}
      */
@@ -232,19 +252,22 @@ declare class PubsubBaseProtocol {
     /**
      * Normalizes the message and signs it, if signing is enabled.
      * Should be used by the routers to create the message to send.
+     *
      * @private
      * @param {Message} message
      * @returns {Promise<Message>}
      */
-    _buildMessage(message: any): Promise<any>;
+    private _buildMessage;
     /**
      * Get a list of the peer-ids that are subscribed to one topic.
+     *
      * @param {string} topic
      * @returns {Array<string>}
      */
-    getSubscribers(topic: string): string[];
+    getSubscribers(topic: string): Array<string>;
     /**
      * Publishes messages to all subscribed peers
+     *
      * @override
      * @param {string} topic
      * @param {Buffer} message
@@ -254,6 +277,7 @@ declare class PubsubBaseProtocol {
     /**
      * Overriding the implementation of publish should handle the appropriate algorithms for the publish/subscriber implementation.
      * For example, a Floodsub implementation might simply publish each message to each topic for every peer
+     *
      * @abstract
      * @param {InMessage} message
      * @returns {Promise<void>}
@@ -262,6 +286,7 @@ declare class PubsubBaseProtocol {
     _publish(message: InMessage): Promise<void>;
     /**
      * Subscribes to a given topic.
+     *
      * @abstract
      * @param {string} topic
      * @returns {void}
@@ -269,6 +294,7 @@ declare class PubsubBaseProtocol {
     subscribe(topic: string): void;
     /**
      * Unsubscribe from the given topic.
+     *
      * @override
      * @param {string} topic
      * @returns {void}
@@ -276,19 +302,16 @@ declare class PubsubBaseProtocol {
     unsubscribe(topic: string): void;
     /**
      * Get the list of topics which the peer is subscribed to.
+     *
      * @override
-     * @returns {Array<String>}
+     * @returns {Array<string>}
      */
-    getTopics(): string[];
+    getTopics(): Array<string>;
 }
 declare namespace PubsubBaseProtocol {
     export { message, utils, SignaturePolicy, InMessage, PeerId };
 }
 type PeerId = import("peer-id");
-/**
- * Topic validator function
- */
-type validator = (arg0: string, arg1: InMessage) => Promise<void>;
 type InMessage = {
     from?: string;
     receivedFrom: string;

@@ -85,9 +85,10 @@ exports.ensureArray = (maybeArray) => {
 
 /**
  * Ensures `message.from` is base58 encoded
+ *
  * @param {object} message
- * @param {String} peerId
- * @return {object}
+ * @param {string} peerId
+ * @returns {object}
  */
 exports.normalizeInRpcMessage = (message, peerId) => {
   const m = Object.assign({}, message)
@@ -102,7 +103,7 @@ exports.normalizeInRpcMessage = (message, peerId) => {
 
 /**
  * @param {object} message
- * @return {object}
+ * @returns {object}
  */
 exports.normalizeOutRpcMessage = (message) => {
   const m = Object.assign({}, message)

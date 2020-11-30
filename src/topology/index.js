@@ -3,15 +3,25 @@
 const withIs = require('class-is')
 const noop = () => {}
 
+/**
+ * @typedef {import('peer-id')} PeerId
+ */
+
+/**
+ * @typedef {Object} TopologyHandlers
+ * @property {(peerId: PeerId, conn: import('../connection')) => void} [handlers.onConnect] - protocol "onConnect" handler
+ * @property {(peerId: PeerId) => void} [handlers.onDisconnect] - protocol "onDisconnect" handler
+ *
+ * @typedef {Object} TopologyOptions
+ * @property {number} [props.min = 0] - minimum needed connections
+ * @property {number} [props.max = Infinity] - maximum needed connections
+ * @property {TopologyHandlers} [props.handlers]
+ */
+
 class Topology {
   /**
-   * @param {Object} props
-   * @param {number} props.min minimum needed connections (default: 0)
-   * @param {number} props.max maximum needed connections (default: Infinity)
-   * @param {Object} [props.handlers]
-   * @param {function} [props.handlers.onConnect] protocol "onConnect" handler
-   * @param {function} [props.handlers.onDisconnect] protocol "onDisconnect" handler
-   * @constructor
+   * @class
+   * @param {TopologyHandlers} options
    */
   constructor ({
     min = 0,
@@ -27,22 +37,19 @@ class Topology {
 
     /**
      * Set of peers that support the protocol.
+     *
      * @type {Set<string>}
      */
     this.peers = new Set()
   }
 
-  set registrar (registrar) {
+  set registrar (registrar) { // eslint-disable-line
     this._registrar = registrar
   }
 
   /**
-   * @typedef PeerId
-   * @type {import('peer-id')}
-   */
-
-  /**
    * Notify about peer disconnected event.
+   *
    * @param {PeerId} peerId
    * @returns {void}
    */

@@ -1,3 +1,3 @@
-export declare const OPEN: string;
-export declare const CLOSING: string;
-export declare const CLOSED: string;
+export const OPEN: string;
+export const CLOSING: string;
+export const CLOSED: string;

@@ -16,12 +16,12 @@ export = PeerStreams;
  */
 declare class PeerStreams {
     /**
-     * @param {object} properties properties of the PeerStreams.
+     * @param {object} properties - properties of the PeerStreams.
      * @param {PeerId} properties.id
      * @param {string} properties.protocol
      */
     constructor({ id, protocol }: {
-        id: import("peer-id");
+        id: PeerId;
         protocol: string;
     });
     /**
@@ -30,34 +30,40 @@ declare class PeerStreams {
     id: import('peer-id');
     /**
      * Established protocol
+     *
      * @type {string}
      */
     protocol: string;
     /**
      * The raw outbound stream, as retrieved from conn.newStream
+     *
      * @private
      * @type {DuplexIterableStream}
      */
-    _rawOutboundStream: DuplexIterableStream;
+    private _rawOutboundStream;
     /**
      * The raw inbound stream, as retrieved from the callback from libp2p.handle
+     *
      * @private
      * @type {DuplexIterableStream}
      */
-    _rawInboundStream: DuplexIterableStream;
+    private _rawInboundStream;
     /**
      * An AbortController for controlled shutdown of the inbound stream
+     *
      * @private
      * @type {typeof AbortController}
      */
-    _inboundAbortController: typeof AbortController;
+    private _inboundAbortController;
     /**
      * Write stream -- its preferable to use the write method
+     *
      * @type {import('it-pushable').Pushable<Uint8Array>>}
      */
     outboundStream: import('it-pushable').Pushable<Uint8Array>;
     /**
      * Read stream
+     *
      * @type {DuplexIterableStream}
      */
     inboundStream: DuplexIterableStream;
@@ -97,6 +103,7 @@ declare class PeerStreams {
     attachOutboundStream(stream: any): Promise<void>;
     /**
      * Closes the open connection to peer
+     *
      * @returns {void}
      */
     close(): void;
@@ -106,8 +113,7 @@ declare namespace PeerStreams {
 }
 type DuplexIterableStream = {
     sink: Sink;
-    source: () => AsyncIterator<Uint8Array, any, undefined>;
+    source: () => AsyncIterator<Uint8Array>;
 };
-declare const AbortController: typeof import("abort-controller");
-type Sink = (source: Uint8Array) => Promise<Uint8Array>;
 type PeerId = import("peer-id");
+type Sink = (source: Uint8Array) => Promise<Uint8Array>;

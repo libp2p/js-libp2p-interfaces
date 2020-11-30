@@ -31,8 +31,9 @@ async function signMessage (peerId, message) {
 
 /**
  * Verifies the signature of the given message
+ *
  * @param {InMessage} message
- * @returns {Promise<Boolean>}
+ * @returns {Promise<boolean>}
  */
 async function verifySignature (message) {
   // Get message sans the signature

@@ -17,7 +17,8 @@ export function signMessage(peerId: import("peer-id"), message: any): Promise<an
 export const SignPrefix: any;
 /**
  * Verifies the signature of the given message
+ *
  * @param {InMessage} message
- * @returns {Promise<Boolean>}
+ * @returns {Promise<boolean>}
  */
 export function verifySignature(message: any): Promise<boolean>;

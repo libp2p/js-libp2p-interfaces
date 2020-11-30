@@ -2,38 +2,26 @@ declare const _exports: MulticodecTopology;
 export = _exports;
 declare class MulticodecTopology {
     /**
-     * @param {Object} props
-     * @param {number} props.min minimum needed connections (default: 0)
-     * @param {number} props.max maximum needed connections (default: Infinity)
-     * @param {Array<string>} props.multicodecs protocol multicodecs
-     * @param {Object} props.handlers
-     * @param {function} props.handlers.onConnect protocol "onConnect" handler
-     * @param {function} props.handlers.onDisconnect protocol "onDisconnect" handler
-     * @constructor
+     * @class
+     * @param {import('./').TopologyOptions} options
      */
-    constructor({ min, max, multicodecs, handlers }: {
-        min: number;
-        max: number;
-        multicodecs: string[];
-        handlers: {
-            onConnect: Function;
-            onDisconnect: Function;
-        };
-    });
-    multicodecs: string[];
+    constructor({ min, max, handlers, multicodecs, }: import('./').TopologyOptions);
+    multicodecs: any[];
     _registrar: any;
     /**
      * Check if a new peer support the multicodecs for this topology.
+     *
      * @param {Object} props
      * @param {PeerId} props.peerId
      * @param {Array<string>} props.protocols
      */
     _onProtocolChange({ peerId, protocols }: {
         peerId: any;
-        protocols: string[];
+        protocols: Array<string>;
     }): void;
     /**
      * Verify if a new connected peer has a topology multicodec and call _onConnect.
+     *
      * @param {Connection} connection
      * @returns {void}
      */
@@ -41,12 +29,13 @@ declare class MulticodecTopology {
     set registrar(arg: any);
     /**
      * Update topology.
+     *
      * @param {Array<{id: PeerId, multiaddrs: Array<Multiaddr>, protocols: Array<string>}>} peerDataIterable
      * @returns {void}
      */
-    _updatePeers(peerDataIterable: {
+    _updatePeers(peerDataIterable: Array<{
         id: any;
-        multiaddrs: any[];
-        protocols: string[];
-    }[]): void;
+        multiaddrs: Array<any>;
+        protocols: Array<string>;
+    }>): void;
 }

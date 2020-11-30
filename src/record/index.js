@@ -7,9 +7,9 @@ const errcode = require('err-code')
  */
 class Record {
   /**
-   * @constructor
-   * @param {String} domain signature domain
-   * @param {Uint8Array} codec identifier of the type of record
+   * @class
+   * @param {string} domain - signature domain
+   * @param {Uint8Array} codec - identifier of the type of record
    */
   constructor (domain, codec) {
     this.domain = domain
@@ -25,6 +25,7 @@ class Record {
 
   /**
    * Verifies if the other provided Record is identical to this one.
+   *
    * @param {Record} other
    */
   equals (other) {
