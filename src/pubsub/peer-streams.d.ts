@@ -21,7 +21,7 @@ declare class PeerStreams {
      * @param {string} properties.protocol
      */
     constructor({ id, protocol }: {
-        id: import("peer-id");
+        id: PeerId;
         protocol: string;
     });
     /**
@@ -38,19 +38,19 @@ declare class PeerStreams {
      * @private
      * @type {DuplexIterableStream}
      */
-    _rawOutboundStream: DuplexIterableStream;
+    private _rawOutboundStream;
     /**
      * The raw inbound stream, as retrieved from the callback from libp2p.handle
      * @private
      * @type {DuplexIterableStream}
      */
-    _rawInboundStream: DuplexIterableStream;
+    private _rawInboundStream;
     /**
      * An AbortController for controlled shutdown of the inbound stream
      * @private
      * @type {typeof AbortController}
      */
-    _inboundAbortController: typeof AbortController;
+    private _inboundAbortController;
     /**
      * Write stream -- its preferable to use the write method
      * @type {import('it-pushable').Pushable<Uint8Array>>}
@@ -106,8 +106,7 @@ declare namespace PeerStreams {
 }
 type DuplexIterableStream = {
     sink: Sink;
-    source: () => AsyncIterator<Uint8Array, any, undefined>;
+    source: () => AsyncIterator<Uint8Array>;
 };
-declare const AbortController: typeof import("abort-controller");
-type Sink = (source: Uint8Array) => Promise<Uint8Array>;
 type PeerId = import("peer-id");
+type Sink = (source: Uint8Array) => Promise<Uint8Array>;

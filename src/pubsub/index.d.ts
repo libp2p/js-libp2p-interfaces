@@ -29,11 +29,14 @@ declare class PubsubBaseProtocol {
      */
     constructor({ debugName, multicodecs, libp2p, globalSignaturePolicy, canRelayMessage, emitSelf }: {
         debugName: string;
-        multicodecs: string | string[];
+        multicodecs: Array<string> | string;
         libp2p: any;
-        globalSignaturePolicy?: any;
-        canRelayMessage?: boolean;
-        emitSelf?: boolean;
+        globalSignaturePolicy: {
+            StrictSign: "StrictSign";
+            StrictNoSign: string;
+        };
+        canRelayMessage: boolean;
+        emitSelf: boolean;
     });
     log: any;
     /**
@@ -91,7 +94,7 @@ declare class PubsubBaseProtocol {
      * Topic validators are functions with the following input:
      * @type {Map<string, validator>}
      */
-    topicValidators: Map<string, validator>;
+    topicValidators: Map<string, (arg0: string, arg1: InMessage) => Promise<void>>;
     _registrarId: any;
     /**
      * On an inbound stream opened.
@@ -101,25 +104,21 @@ declare class PubsubBaseProtocol {
      * @param {DuplexIterableStream} props.stream
      * @param {Connection} props.connection connection
      */
-    _onIncomingStream({ protocol, stream, connection }: {
-        protocol: string;
-        stream: any;
-        connection: any;
-    }): void;
+    private _onIncomingStream;
     /**
      * Registrar notifies an established connection with pubsub protocol.
      * @private
      * @param {PeerId} peerId remote peer-id
      * @param {Connection} conn connection to the peer
      */
-    _onPeerConnected(peerId: import("peer-id"), conn: any): Promise<void>;
+    private _onPeerConnected;
     /**
      * Registrar notifies a closing connection with pubsub protocol.
      * @private
      * @param {PeerId} peerId peerId
      * @param {Error} err error for connection end
      */
-    _onPeerDisconnected(peerId: import("peer-id"), err: Error): void;
+    private _onPeerDisconnected;
     /**
      * Register the pubsub protocol onto the libp2p node.
      * @returns {void}
@@ -137,14 +136,14 @@ declare class PubsubBaseProtocol {
      * @param {string} protocol
      * @returns {PeerStreams}
      */
-    _addPeer(peerId: import("peer-id"), protocol: string): import("./peer-streams");
+    private _addPeer;
     /**
      * Notifies the router that a peer has been disconnected.
      * @private
      * @param {PeerId} peerId
      * @returns {PeerStreams | undefined}
      */
-    _removePeer(peerId: import("peer-id")): import("./peer-streams");
+    private _removePeer;
     /**
      * Responsible for processing each RPC message received by other peers.
      * @param {string} idB58Str peer id string in base58
@@ -152,7 +151,7 @@ declare class PubsubBaseProtocol {
      * @param {PeerStreams} peerStreams PubSub peer
      * @returns {Promise<void>}
      */
-    _processMessages(idB58Str: string, stream: any, peerStreams: import("./peer-streams")): Promise<void>;
+    _processMessages(idB58Str: string, stream: any, peerStreams: PeerStreams): Promise<void>;
     /**
      * Handles an rpc request from a peer
      * @param {String} idB58Str
@@ -160,7 +159,7 @@ declare class PubsubBaseProtocol {
      * @param {RPC} rpc
      * @returns {boolean}
      */
-    _processRpc(idB58Str: string, peerStreams: import("./peer-streams"), rpc: any): boolean;
+    _processRpc(idB58Str: string, peerStreams: PeerStreams, rpc: any): boolean;
     /**
      * Handles a subscription change from a peer
      * @param {string} id
@@ -236,13 +235,13 @@ declare class PubsubBaseProtocol {
      * @param {Message} message
      * @returns {Promise<Message>}
      */
-    _buildMessage(message: any): Promise<any>;
+    private _buildMessage;
     /**
      * Get a list of the peer-ids that are subscribed to one topic.
      * @param {string} topic
      * @returns {Array<string>}
      */
-    getSubscribers(topic: string): string[];
+    getSubscribers(topic: string): Array<string>;
     /**
      * Publishes messages to all subscribed peers
      * @override
@@ -279,16 +278,12 @@ declare class PubsubBaseProtocol {
      * @override
      * @returns {Array<String>}
      */
-    getTopics(): string[];
+    getTopics(): Array<string>;
 }
 declare namespace PubsubBaseProtocol {
     export { message, utils, SignaturePolicy, InMessage, PeerId };
 }
 type PeerId = import("peer-id");
-/**
- * Topic validator function
- */
-type validator = (arg0: string, arg1: InMessage) => Promise<void>;
 type InMessage = {
     from?: string;
     receivedFrom: string;
@@ -298,12 +293,10 @@ type InMessage = {
     signature?: Uint8Array;
     key?: Uint8Array;
 };
+import PeerStreams = require("./peer-streams");
 /**
  * @type {typeof import('./message')}
  */
 declare const message: typeof import('./message');
-declare const utils: typeof import("./utils");
-declare const SignaturePolicy: {
-    StrictSign: string;
-    StrictNoSign: string;
-};
+import utils = require("./utils");
+import { SignaturePolicy } from "./signature-policy";

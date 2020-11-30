@@ -13,7 +13,7 @@ export function messagePublicKey(message: any): Promise<any>;
  * @param {Message} message
  * @returns {Promise<Message>}
  */
-export function signMessage(peerId: import("peer-id"), message: any): Promise<any>;
+export function signMessage(peerId: PeerId, message: any): Promise<any>;
 export const SignPrefix: any;
 /**
  * Verifies the signature of the given message
@@ -21,3 +21,4 @@ export const SignPrefix: any;
  * @returns {Promise<Boolean>}
  */
 export function verifySignature(message: any): Promise<boolean>;
+import PeerId = require("peer-id");

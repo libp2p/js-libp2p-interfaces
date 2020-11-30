@@ -1,5 +1,4 @@
-export var rpc: any;
-export var td: any;
-export var RPC: any;
-export var Message: any;
-export var SubOpts: any;
+declare const rpcProto: any;
+declare const topicDescriptorProto: any;
+export const RPC: any;
+export { rpcProto as rpc, topicDescriptorProto as td };

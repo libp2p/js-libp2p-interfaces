@@ -1,4 +1,4 @@
 export namespace SignaturePolicy {
-    export const StrictSign: string;
-    export const StrictNoSign: string;
+    const StrictSign: 'StrictSign';
+    const StrictNoSign: string;
 }

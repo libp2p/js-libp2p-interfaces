@@ -1,5 +1,12 @@
 export = MulticodecTopology;
-declare class MulticodecTopology {
+declare class MulticodecTopology extends Topology {
+    /**
+     * Checks if the given value is a `MulticodecTopology` instance.
+     *
+     * @param {any} other
+     * @returns {other is MulticodecTopology}
+     */
+    static isMulticodecTopology(other: any): other is MulticodecTopology;
     /**
      * @param {Object} props
      * @param {number} [props.min] minimum needed connections (default: 0)
@@ -11,16 +18,15 @@ declare class MulticodecTopology {
      * @constructor
      */
     constructor({ min, max, multicodecs, handlers }: {
-        min?: number;
-        max?: number;
-        multicodecs: string[];
+        min: number;
+        max: number;
+        multicodecs: Array<string>;
         handlers: {
             onConnect: Function;
             onDisconnect: Function;
         };
     });
     multicodecs: string[];
-    _registrar: any;
     /**
      * Check if a new peer support the multicodecs for this topology.
      * @param {Object} props
@@ -29,7 +35,7 @@ declare class MulticodecTopology {
      */
     _onProtocolChange({ peerId, protocols }: {
         peerId: any;
-        protocols: string[];
+        protocols: Array<string>;
     }): void;
     /**
      * Verify if a new connected peer has a topology multicodec and call _onConnect.
@@ -37,15 +43,17 @@ declare class MulticodecTopology {
      * @returns {void}
      */
     _onPeerConnect(connection: any): void;
-    set registrar(arg: any);
     /**
      * Update topology.
      * @param {Array<{id: PeerId, multiaddrs: Array<Multiaddr>, protocols: Array<string>}>} peerDataIterable
      * @returns {void}
      */
-    _updatePeers(peerDataIterable: {
+    _updatePeers(peerDataIterable: Array<{
         id: any;
-        multiaddrs: any[];
-        protocols: string[];
-    }[]): void;
+        multiaddrs: Array<any>;
+        protocols: Array<string>;
+    }>): void;
+    get [multicodecTopologySymbol](): boolean;
 }
+import Topology = require(".");
+declare const multicodecTopologySymbol: unique symbol;

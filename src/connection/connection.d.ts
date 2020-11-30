@@ -1,10 +1,16 @@
-declare const _exports: typeof Connection;
-export = _exports;
+export = Connection;
 /**
  * An implementation of the js-libp2p connection.
  * Any libp2p transport should use an upgrader to return this connection.
  */
 declare class Connection {
+    /**
+     * Checks if the given value is a `Connection` instance.
+     *
+     * @param {any} other
+     * @returns {other is Connection}
+     */
+    static isConnection(other: any): other is Connection;
     /**
      * Creates an instance of Connection.
      * @param {object} properties properties of the connection.
@@ -24,10 +30,10 @@ declare class Connection {
      * @param {string} [properties.stat.encryption] connection encryption method identifier.
      */
     constructor({ localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat }: {
-        localAddr?: import("multiaddr");
-        remoteAddr?: import("multiaddr");
-        localPeer: import("peer-id");
-        remotePeer: import("peer-id");
+        localAddr: multiaddr;
+        remoteAddr: multiaddr;
+        localPeer: PeerId;
+        remotePeer: PeerId;
         newStream: Function;
         close: Function;
         getStreams: () => any[];
@@ -37,35 +43,35 @@ declare class Connection {
                 open: string;
                 upgraded: string;
             };
-            multiplexer?: string;
-            encryption?: string;
+            multiplexer: string;
+            encryption: string;
         };
     });
     /**
      * Connection identifier.
      */
-    id: any;
+    id: string;
     /**
      * Observed multiaddr of the local peer
      */
-    localAddr: import("multiaddr");
+    localAddr: multiaddr;
     /**
      * Observed multiaddr of the remote peer
      */
-    remoteAddr: import("multiaddr");
+    remoteAddr: multiaddr;
     /**
      * Local peer id.
      */
-    localPeer: import("peer-id");
+    localPeer: PeerId;
     /**
      * Remote peer id.
      */
-    remotePeer: import("peer-id");
+    remotePeer: PeerId;
     /**
      * Connection metadata.
      */
     _stat: {
-        status: string;
+        status: "open";
         direction: string;
         timeline: {
             open: string;
@@ -95,12 +101,13 @@ declare class Connection {
      * @type {string[]}
      */
     tags: string[];
+    get [Symbol.toStringTag](): string;
     /**
      * Get connection metadata
      * @this {Connection}
      */
     get stat(): {
-        status: string;
+        status: "open";
         direction: string;
         timeline: {
             open: string;
@@ -133,7 +140,7 @@ declare class Connection {
      */
     addStream(muxedStream: any, { protocol, metadata }: {
         protocol: string;
-        metadata: any;
+        metadata: object;
     }): void;
     /**
      * Remove stream registry after it is closed.
@@ -146,4 +153,8 @@ declare class Connection {
      */
     close(): Promise<void>;
     _closing: any;
+    get [connectionSymbol](): boolean;
 }
+import multiaddr = require("multiaddr");
+import PeerId = require("peer-id");
+declare const connectionSymbol: unique symbol;
