@@ -35,22 +35,25 @@ declare class PeerStreams {
     protocol: string;
     /**
      * The raw outbound stream, as retrieved from conn.newStream
-     * @private
+     *
+     * @protected
      * @type {DuplexIterableStream}
      */
-    private _rawOutboundStream;
+    protected _rawOutboundStream: DuplexIterableStream;
     /**
      * The raw inbound stream, as retrieved from the callback from libp2p.handle
-     * @private
+     *
+     * @protected
      * @type {DuplexIterableStream}
      */
-    private _rawInboundStream;
+    protected _rawInboundStream: DuplexIterableStream;
     /**
      * An AbortController for controlled shutdown of the inbound stream
-     * @private
+     *
+     * @protected
      * @type {typeof AbortController}
      */
-    private _inboundAbortController;
+    protected _inboundAbortController: typeof AbortController;
     /**
      * Write stream -- its preferable to use the write method
      * @type {import('it-pushable').Pushable<Uint8Array>>}
@@ -108,5 +111,6 @@ type DuplexIterableStream = {
     sink: Sink;
     source: () => AsyncIterator<Uint8Array>;
 };
+import AbortController = require("abort-controller");
 type PeerId = import("peer-id");
 type Sink = (source: Uint8Array) => Promise<Uint8Array>;

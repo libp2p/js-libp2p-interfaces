@@ -23,33 +23,13 @@ const {
 } = require('./message/sign')
 
 /**
- * @typedef {Object} InMessage
- * @property {string} [from]
- * @property {string} receivedFrom
- * @property {string[]} topicIDs
- * @property {Uint8Array} [seqno]
- * @property {Uint8Array} data
- * @property {Uint8Array} [signature]
- * @property {Uint8Array} [key]
- *
- * @typedef PeerId
- * @type import('peer-id')
- */
-
-/**
 * PubsubBaseProtocol handles the peers and connections logic for pubsub routers
 * and specifies the API that pubsub routers should have.
 */
 class PubsubBaseProtocol extends EventEmitter {
   /**
-   * @param {Object} props
-   * @param {String} props.debugName log namespace
-   * @param {Array<string>|string} props.multicodecs protocol identificers to connect
-   * @param {Libp2p} props.libp2p
-   * @param {SignaturePolicy} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] defines how signatures should be handled
-   * @param {boolean} [props.canRelayMessage = false] if can relay messages not subscribed
-   * @param {boolean} [props.emitSelf = false] if publish should emit to self, if subscribed
    * @abstract
+   * @param {Options} options
    */
   constructor ({
     debugName,
@@ -206,7 +186,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * On an inbound stream opened.
-   * @private
+   *
+   * @protected
    * @param {Object} props
    * @param {string} props.protocol
    * @param {DuplexIterableStream} props.stream
@@ -223,7 +204,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Registrar notifies an established connection with pubsub protocol.
-   * @private
+   *
+   * @protected
    * @param {PeerId} peerId remote peer-id
    * @param {Connection} conn connection to the peer
    */
@@ -245,7 +227,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Registrar notifies a closing connection with pubsub protocol.
-   * @private
+   *
+   * @protected
    * @param {PeerId} peerId peerId
    * @param {Error} err error for connection end
    */
@@ -258,7 +241,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Notifies the router that a peer has been connected
-   * @private
+   *
+   * @protected
    * @param {PeerId} peerId
    * @param {string} protocol
    * @returns {PeerStreams}
@@ -288,7 +272,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Notifies the router that a peer has been disconnected.
-   * @private
+   *
+   * @protected
    * @param {PeerId} peerId
    * @returns {PeerStreams | undefined}
    */
@@ -564,7 +549,8 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Normalizes the message and signs it, if signing is enabled.
    * Should be used by the routers to create the message to send.
-   * @private
+   *
+   * @protected
    * @param {Message} message
    * @returns {Promise<Message>}
    */
@@ -697,6 +683,27 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 }
 
+/**
+ * @typedef {Object} Options
+ * @property {string} [debugName] - log namespace
+ * @property {string[]|string} [multicodecs] - protocol identificers to connect
+ * @property {Libp2p} libp2p
+ * @property {SignaturePolicyType} [globalSignaturePolicy = SignaturePolicy.StrictSign] - defines how signatures should be handled
+ * @property {boolean} [canRelayMessage = false] - if can relay messages not subscribed
+ * @property {boolean} [emitSelf = false] - if publish should emit to self, if subscribed
+ *
+ * @typedef {Object} InMessage
+ * @property {string} [from]
+ * @property {string} receivedFrom
+ * @property {string[]} topicIDs
+ * @property {Uint8Array} [seqno]
+ * @property {Uint8Array} data
+ * @property {Uint8Array} [signature]
+ * @property {Uint8Array} [key]
+ *
+ * @typedef {import('peer-id')} PeerId
+ * @typedef {import('./signature-policy').SignaturePolicyType} SignaturePolicyType
+ */
 module.exports = PubsubBaseProtocol
 module.exports.message = message
 module.exports.utils = utils

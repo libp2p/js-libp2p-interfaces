@@ -1,43 +1,14 @@
 export = PubsubBaseProtocol;
 /**
- * @typedef {Object} InMessage
- * @property {string} [from]
- * @property {string} receivedFrom
- * @property {string[]} topicIDs
- * @property {Uint8Array} [seqno]
- * @property {Uint8Array} data
- * @property {Uint8Array} [signature]
- * @property {Uint8Array} [key]
- *
- * @typedef PeerId
- * @type import('peer-id')
- */
-/**
 * PubsubBaseProtocol handles the peers and connections logic for pubsub routers
 * and specifies the API that pubsub routers should have.
 */
 declare class PubsubBaseProtocol {
     /**
-     * @param {Object} props
-     * @param {String} props.debugName log namespace
-     * @param {Array<string>|string} props.multicodecs protocol identificers to connect
-     * @param {Libp2p} props.libp2p
-     * @param {SignaturePolicy} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] defines how signatures should be handled
-     * @param {boolean} [props.canRelayMessage = false] if can relay messages not subscribed
-     * @param {boolean} [props.emitSelf = false] if publish should emit to self, if subscribed
      * @abstract
+     * @param {Options} options
      */
-    constructor({ debugName, multicodecs, libp2p, globalSignaturePolicy, canRelayMessage, emitSelf }: {
-        debugName: string;
-        multicodecs: Array<string> | string;
-        libp2p: any;
-        globalSignaturePolicy: {
-            StrictSign: "StrictSign";
-            StrictNoSign: string;
-        } | undefined;
-        canRelayMessage: boolean | undefined;
-        emitSelf: boolean | undefined;
-    });
+    constructor({ debugName, multicodecs, libp2p, globalSignaturePolicy, canRelayMessage, emitSelf }: Options);
     log: any;
     /**
      * @type {Array<string>}
@@ -98,27 +69,34 @@ declare class PubsubBaseProtocol {
     _registrarId: any;
     /**
      * On an inbound stream opened.
-     * @private
+     *
+     * @protected
      * @param {Object} props
      * @param {string} props.protocol
      * @param {DuplexIterableStream} props.stream
      * @param {Connection} props.connection connection
      */
-    private _onIncomingStream;
+    protected _onIncomingStream({ protocol, stream, connection }: {
+        protocol: string;
+        stream: any;
+        connection: any;
+    }): void;
     /**
      * Registrar notifies an established connection with pubsub protocol.
-     * @private
+     *
+     * @protected
      * @param {PeerId} peerId remote peer-id
      * @param {Connection} conn connection to the peer
      */
-    private _onPeerConnected;
+    protected _onPeerConnected(peerId: PeerId, conn: any): Promise<void>;
     /**
      * Registrar notifies a closing connection with pubsub protocol.
-     * @private
+     *
+     * @protected
      * @param {PeerId} peerId peerId
      * @param {Error} err error for connection end
      */
-    private _onPeerDisconnected;
+    protected _onPeerDisconnected(peerId: PeerId, err: Error): void;
     /**
      * Register the pubsub protocol onto the libp2p node.
      * @returns {void}
@@ -131,19 +109,21 @@ declare class PubsubBaseProtocol {
     stop(): void;
     /**
      * Notifies the router that a peer has been connected
-     * @private
+     *
+     * @protected
      * @param {PeerId} peerId
      * @param {string} protocol
      * @returns {PeerStreams}
      */
-    private _addPeer;
+    protected _addPeer(peerId: PeerId, protocol: string): PeerStreams;
     /**
      * Notifies the router that a peer has been disconnected.
-     * @private
+     *
+     * @protected
      * @param {PeerId} peerId
      * @returns {PeerStreams | undefined}
      */
-    private _removePeer;
+    protected _removePeer(peerId: PeerId): PeerStreams | undefined;
     /**
      * Responsible for processing each RPC message received by other peers.
      * @param {string} idB58Str peer id string in base58
@@ -231,11 +211,12 @@ declare class PubsubBaseProtocol {
     /**
      * Normalizes the message and signs it, if signing is enabled.
      * Should be used by the routers to create the message to send.
-     * @private
+     *
+     * @protected
      * @param {Message} message
      * @returns {Promise<Message>}
      */
-    private _buildMessage;
+    protected _buildMessage(message: any): Promise<any>;
     /**
      * Get a list of the peer-ids that are subscribed to one topic.
      * @param {string} topic
@@ -281,7 +262,7 @@ declare class PubsubBaseProtocol {
     getTopics(): Array<string>;
 }
 declare namespace PubsubBaseProtocol {
-    export { message, utils, SignaturePolicy, InMessage, PeerId };
+    export { message, utils, SignaturePolicy, Options, InMessage, PeerId, SignaturePolicyType };
 }
 type PeerId = import("peer-id");
 type InMessage = {
@@ -294,9 +275,33 @@ type InMessage = {
     key?: Uint8Array | undefined;
 };
 import PeerStreams = require("./peer-streams");
+type Options = {
+    /**
+     * - log namespace
+     */
+    debugName?: string | undefined;
+    /**
+     * - protocol identificers to connect
+     */
+    multicodecs?: string | string[] | undefined;
+    libp2p: any;
+    /**
+     * - defines how signatures should be handled
+     */
+    globalSignaturePolicy?: "StrictSign" | "StrictNoSign" | undefined;
+    /**
+     * - if can relay messages not subscribed
+     */
+    canRelayMessage?: boolean | undefined;
+    /**
+     * - if publish should emit to self, if subscribed
+     */
+    emitSelf?: boolean | undefined;
+};
 /**
  * @type {typeof import('./message')}
  */
 declare const message: typeof import('./message');
 import utils = require("./utils");
 import { SignaturePolicy } from "./signature-policy";
+type SignaturePolicyType = "StrictSign" | "StrictNoSign";

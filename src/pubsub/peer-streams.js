@@ -48,19 +48,22 @@ class PeerStreams extends EventEmitter {
     this.protocol = protocol
     /**
      * The raw outbound stream, as retrieved from conn.newStream
-     * @private
+     *
+     * @protected
      * @type {DuplexIterableStream}
      */
     this._rawOutboundStream = null
     /**
      * The raw inbound stream, as retrieved from the callback from libp2p.handle
-     * @private
+     *
+     * @protected
      * @type {DuplexIterableStream}
      */
     this._rawInboundStream = null
     /**
      * An AbortController for controlled shutdown of the inbound stream
-     * @private
+     *
+     * @protected
      * @type {typeof AbortController}
      */
     this._inboundAbortController = null
