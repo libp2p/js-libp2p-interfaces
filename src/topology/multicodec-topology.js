@@ -124,6 +124,7 @@ class MulticodecTopology extends Topology {
    * @returns {void}
    */
   _onPeerConnect (connection) {
+    // @ts-ignore - remotePeer does not existist on Connection
     const peerId = connection.remotePeer
     const protocols = this._registrar.peerStore.protoBook.get(peerId)
 
@@ -138,4 +139,9 @@ class MulticodecTopology extends Topology {
   }
 }
 
+/**
+ * @typedef {import('peer-id')} PeerId
+ * @typedef {import('multiaddr')} Multiaddr
+ * @typedef {import('../connection')} Connection
+ */
 module.exports = MulticodecTopology
