@@ -6,13 +6,7 @@ const topologySymbol = Symbol.for('@libp2p/js-interfaces/topology')
 
 class Topology {
   /**
-   * @param {Object} props
-   * @param {number} [props.min] minimum needed connections (default: 0)
-   * @param {number} [props.max] maximum needed connections (default: Infinity)
-   * @param {Object} [props.handlers]
-   * @param {function} [props.handlers.onConnect] protocol "onConnect" handler
-   * @param {function} [props.handlers.onDisconnect] protocol "onDisconnect" handler
-   * @constructor
+   * @param {Options} options
    */
   constructor ({
     min = 0,
@@ -69,5 +63,16 @@ class Topology {
     this._onDisconnect(peerId)
   }
 }
+
+/**
+ * @typedef {Object} Options
+ * @property {number} [min=0] - minimum needed connections.
+ * @property {number} [max=Infinity] - maximum needed connections.
+ * @property {Handlers} [handlers]
+ *
+ * @typedef {Object} Handlers
+ * @property {Function} [onConnect] - protocol "onConnect" handler
+ * @property {Function} [onDisconnect] - protocol "onDisconnect" handler
+ */
 
 module.exports = Topology

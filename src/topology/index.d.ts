@@ -8,22 +8,9 @@ declare class Topology {
      */
     static isTopology(other: any): other is Topology;
     /**
-     * @param {Object} props
-     * @param {number} [props.min] minimum needed connections (default: 0)
-     * @param {number} [props.max] maximum needed connections (default: Infinity)
-     * @param {Object} [props.handlers]
-     * @param {function} [props.handlers.onConnect] protocol "onConnect" handler
-     * @param {function} [props.handlers.onDisconnect] protocol "onDisconnect" handler
-     * @constructor
+     * @param {Options} options
      */
-    constructor({ min, max, handlers }: {
-        min: number | undefined;
-        max: number | undefined;
-        handlers: {
-            onConnect?: Function | undefined;
-            onDisconnect?: Function | undefined;
-        } | undefined;
-    });
+    constructor({ min, max, handlers }: Options);
     min: number;
     max: number;
     _onConnect: Function;
@@ -48,4 +35,28 @@ declare class Topology {
     disconnect(peerId: import("peer-id")): void;
     get [topologySymbol](): boolean;
 }
+declare namespace Topology {
+    export { Options, Handlers };
+}
 declare const topologySymbol: unique symbol;
+type Options = {
+    /**
+     * - minimum needed connections.
+     */
+    min?: number | undefined;
+    /**
+     * - maximum needed connections.
+     */
+    max?: number | undefined;
+    handlers?: Handlers | undefined;
+};
+type Handlers = {
+    /**
+     * - protocol "onConnect" handler
+     */
+    onConnect?: Function | undefined;
+    /**
+     * - protocol "onDisconnect" handler
+     */
+    onDisconnect?: Function | undefined;
+};

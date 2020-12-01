@@ -6,14 +6,7 @@ const multicodecTopologySymbol = Symbol.for('@libp2p/js-interfaces/topology/mult
 
 class MulticodecTopology extends Topology {
   /**
-   * @param {Object} props
-   * @param {number} [props.min] minimum needed connections (default: 0)
-   * @param {number} [props.max] maximum needed connections (default: Infinity)
-   * @param {Array<string>} props.multicodecs protocol multicodecs
-   * @param {Object} props.handlers
-   * @param {function} props.handlers.onConnect protocol "onConnect" handler
-   * @param {function} props.handlers.onDisconnect protocol "onDisconnect" handler
-   * @constructor
+   * @param {TopologyOptions & MulticodecOptions} props
    */
   constructor ({
     min,
@@ -143,5 +136,10 @@ class MulticodecTopology extends Topology {
  * @typedef {import('peer-id')} PeerId
  * @typedef {import('multiaddr')} Multiaddr
  * @typedef {import('../connection')} Connection
+ * @typedef {import('.').Options} TopologyOptions
+ * @typedef {Object} MulticodecOptions
+ * @property {string[]} multicodecs - protocol multicodecs
+ * @property {Required<Handlers>} handlers
+ * @typedef {import('.').Handlers} Handlers
  */
 module.exports = MulticodecTopology

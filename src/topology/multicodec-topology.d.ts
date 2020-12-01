@@ -8,24 +8,9 @@ declare class MulticodecTopology extends Topology {
      */
     static isMulticodecTopology(other: any): other is MulticodecTopology;
     /**
-     * @param {Object} props
-     * @param {number} [props.min] minimum needed connections (default: 0)
-     * @param {number} [props.max] maximum needed connections (default: Infinity)
-     * @param {Array<string>} props.multicodecs protocol multicodecs
-     * @param {Object} props.handlers
-     * @param {function} props.handlers.onConnect protocol "onConnect" handler
-     * @param {function} props.handlers.onDisconnect protocol "onDisconnect" handler
-     * @constructor
+     * @param {TopologyOptions & MulticodecOptions} props
      */
-    constructor({ min, max, multicodecs, handlers }: {
-        min: number | undefined;
-        max: number | undefined;
-        multicodecs: Array<string>;
-        handlers: {
-            onConnect: Function;
-            onDisconnect: Function;
-        };
-    });
+    constructor({ min, max, multicodecs, handlers }: TopologyOptions & MulticodecOptions);
     multicodecs: string[];
     /**
      * Check if a new peer support the multicodecs for this topology.
@@ -53,11 +38,41 @@ declare class MulticodecTopology extends Topology {
         multiaddrs: Array<Multiaddr>;
         protocols: Array<string>;
     }>): void;
+    get [multicodecTopologySymbol](): boolean;
 }
 declare namespace MulticodecTopology {
-    export { PeerId, Multiaddr, Connection };
+    export { PeerId, Multiaddr, Connection, TopologyOptions, MulticodecOptions, Handlers };
 }
 import Topology = require(".");
 type PeerId = import("peer-id");
 type Connection = typeof import("../connection");
 type Multiaddr = import("multiaddr");
+declare const multicodecTopologySymbol: unique symbol;
+type TopologyOptions = {
+    /**
+     * - minimum needed connections.
+     */
+    min?: number | undefined;
+    /**
+     * - maximum needed connections.
+     */
+    max?: number | undefined;
+    handlers?: Topology.Handlers | undefined;
+};
+type MulticodecOptions = {
+    /**
+     * - protocol multicodecs
+     */
+    multicodecs: string[];
+    handlers: Required<Handlers>;
+};
+type Handlers = {
+    /**
+     * - protocol "onConnect" handler
+     */
+    onConnect?: Function | undefined;
+    /**
+     * - protocol "onDisconnect" handler
+     */
+    onDisconnect?: Function | undefined;
+};
