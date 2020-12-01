@@ -30,8 +30,8 @@ declare class Connection {
      * @param {string} [properties.stat.encryption] connection encryption method identifier.
      */
     constructor({ localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat }: {
-        localAddr: multiaddr;
-        remoteAddr: multiaddr;
+        localAddr: multiaddr | undefined;
+        remoteAddr: multiaddr | undefined;
         localPeer: PeerId;
         remotePeer: PeerId;
         newStream: Function;
@@ -43,8 +43,8 @@ declare class Connection {
                 open: string;
                 upgraded: string;
             };
-            multiplexer: string;
-            encryption: string;
+            multiplexer: string | undefined;
+            encryption: string | undefined;
         };
     });
     /**
@@ -54,11 +54,11 @@ declare class Connection {
     /**
      * Observed multiaddr of the local peer
      */
-    localAddr: multiaddr;
+    localAddr: multiaddr | undefined;
     /**
      * Observed multiaddr of the remote peer
      */
-    remoteAddr: multiaddr;
+    remoteAddr: multiaddr | undefined;
     /**
      * Local peer id.
      */
@@ -77,8 +77,8 @@ declare class Connection {
             open: string;
             upgraded: string;
         };
-        multiplexer?: string;
-        encryption?: string;
+        multiplexer?: string | undefined;
+        encryption?: string | undefined;
     };
     /**
      * Reference to the new stream function of the multiplexer
@@ -113,8 +113,8 @@ declare class Connection {
             open: string;
             upgraded: string;
         };
-        multiplexer?: string;
-        encryption?: string;
+        multiplexer?: string | undefined;
+        encryption?: string | undefined;
     };
     /**
      * Get all the streams of the muxer.

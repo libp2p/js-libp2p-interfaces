@@ -17,12 +17,12 @@ declare class Topology {
      * @constructor
      */
     constructor({ min, max, handlers }: {
-        min: number;
-        max: number;
+        min: number | undefined;
+        max: number | undefined;
         handlers: {
-            onConnect: Function;
-            onDisconnect: Function;
-        };
+            onConnect?: Function | undefined;
+            onDisconnect?: Function | undefined;
+        } | undefined;
     });
     min: number;
     max: number;

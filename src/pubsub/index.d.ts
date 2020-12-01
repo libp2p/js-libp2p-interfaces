@@ -34,9 +34,9 @@ declare class PubsubBaseProtocol {
         globalSignaturePolicy: {
             StrictSign: "StrictSign";
             StrictNoSign: string;
-        };
-        canRelayMessage: boolean;
-        emitSelf: boolean;
+        } | undefined;
+        canRelayMessage: boolean | undefined;
+        emitSelf: boolean | undefined;
     });
     log: any;
     /**
@@ -285,13 +285,13 @@ declare namespace PubsubBaseProtocol {
 }
 type PeerId = import("peer-id");
 type InMessage = {
-    from?: string;
+    from?: string | undefined;
     receivedFrom: string;
     topicIDs: string[];
-    seqno?: Uint8Array;
+    seqno?: Uint8Array | undefined;
     data: Uint8Array;
-    signature?: Uint8Array;
-    key?: Uint8Array;
+    signature?: Uint8Array | undefined;
+    key?: Uint8Array | undefined;
 };
 import PeerStreams = require("./peer-streams");
 /**

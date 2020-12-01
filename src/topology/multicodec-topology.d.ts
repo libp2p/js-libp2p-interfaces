@@ -18,8 +18,8 @@ declare class MulticodecTopology extends Topology {
      * @constructor
      */
     constructor({ min, max, multicodecs, handlers }: {
-        min: number;
-        max: number;
+        min: number | undefined;
+        max: number | undefined;
         multicodecs: Array<string>;
         handlers: {
             onConnect: Function;
@@ -34,7 +34,7 @@ declare class MulticodecTopology extends Topology {
      * @param {Array<string>} props.protocols
      */
     _onProtocolChange({ peerId, protocols }: {
-        peerId: any;
+        peerId: PeerId;
         protocols: Array<string>;
     }): void;
     /**
@@ -42,18 +42,22 @@ declare class MulticodecTopology extends Topology {
      * @param {Connection} connection
      * @returns {void}
      */
-    _onPeerConnect(connection: any): void;
+    _onPeerConnect(connection: Connection): void;
     /**
      * Update topology.
      * @param {Array<{id: PeerId, multiaddrs: Array<Multiaddr>, protocols: Array<string>}>} peerDataIterable
      * @returns {void}
      */
     _updatePeers(peerDataIterable: Array<{
-        id: any;
-        multiaddrs: Array<any>;
+        id: PeerId;
+        multiaddrs: Array<Multiaddr>;
         protocols: Array<string>;
     }>): void;
-    get [multicodecTopologySymbol](): boolean;
+}
+declare namespace MulticodecTopology {
+    export { PeerId, Multiaddr, Connection };
 }
 import Topology = require(".");
-declare const multicodecTopologySymbol: unique symbol;
+type PeerId = import("peer-id");
+type Connection = typeof import("../connection");
+type Multiaddr = import("multiaddr");
