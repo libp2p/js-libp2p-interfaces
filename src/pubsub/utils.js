@@ -91,7 +91,7 @@ exports.ensureArray = (maybeArray) => {
  * @template {Object} T
  * @param {T} message
  * @param {string} [peerId]
- * @return {T & {from?: string, peerId?: string }}
+ * @returns {T & {from?: string, peerId?: string }}
  */
 exports.normalizeInRpcMessage = (message, peerId) => {
   const m = Object.assign({}, message)
@@ -108,7 +108,7 @@ exports.normalizeInRpcMessage = (message, peerId) => {
  * @template {Object} T
  *
  * @param {T} message
- * @return {T & {from?: Uint8Array, data?: Uint8Array}}
+ * @returns {T & {from?: Uint8Array, data?: Uint8Array}}
  */
 exports.normalizeOutRpcMessage = (message) => {
   const m = Object.assign({}, message)

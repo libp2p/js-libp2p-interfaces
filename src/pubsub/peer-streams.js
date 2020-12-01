@@ -30,7 +30,7 @@ log.error = debug('libp2p-pubsub:peer-streams:error')
  */
 class PeerStreams extends EventEmitter {
   /**
-   * @param {object} properties properties of the PeerStreams.
+   * @param {object} properties - properties of the PeerStreams.
    * @param {PeerId} properties.id
    * @param {string} properties.protocol
    */
@@ -43,34 +43,40 @@ class PeerStreams extends EventEmitter {
     this.id = id
     /**
      * Established protocol
+     *
      * @type {string}
      */
     this.protocol = protocol
     /**
      * The raw outbound stream, as retrieved from conn.newStream
+     *
      * @private
      * @type {DuplexIterableStream}
      */
     this._rawOutboundStream = null
     /**
      * The raw inbound stream, as retrieved from the callback from libp2p.handle
+     *
      * @private
      * @type {DuplexIterableStream}
      */
     this._rawInboundStream = null
     /**
      * An AbortController for controlled shutdown of the inbound stream
+     *
      * @private
      * @type {typeof AbortController}
      */
     this._inboundAbortController = null
     /**
      * Write stream -- its preferable to use the write method
+     *
      * @type {import('it-pushable').Pushable<Uint8Array>>}
      */
     this.outboundStream = null
     /**
      * Read stream
+     *
      * @type {DuplexIterableStream}
      */
     this.inboundStream = null
@@ -179,6 +185,7 @@ class PeerStreams extends EventEmitter {
 
   /**
    * Closes the open connection to peer
+   *
    * @returns {void}
    */
   close () {

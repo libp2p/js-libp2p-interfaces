@@ -1,5 +1,6 @@
 export = MulticodecTopology;
-declare class MulticodecTopology extends Topology {
+declare const MulticodecTopology_base: typeof import(".");
+declare class MulticodecTopology extends MulticodecTopology_base {
     /**
      * Checks if the given value is a `MulticodecTopology` instance.
      *
@@ -14,6 +15,7 @@ declare class MulticodecTopology extends Topology {
     multicodecs: string[];
     /**
      * Check if a new peer support the multicodecs for this topology.
+     *
      * @param {Object} props
      * @param {PeerId} props.peerId
      * @param {Array<string>} props.protocols
@@ -24,12 +26,14 @@ declare class MulticodecTopology extends Topology {
     }): void;
     /**
      * Verify if a new connected peer has a topology multicodec and call _onConnect.
+     *
      * @param {Connection} connection
      * @returns {void}
      */
     _onPeerConnect(connection: Connection): void;
     /**
      * Update topology.
+     *
      * @param {Array<{id: PeerId, multiaddrs: Array<Multiaddr>, protocols: Array<string>}>} peerDataIterable
      * @returns {void}
      */
@@ -43,7 +47,6 @@ declare class MulticodecTopology extends Topology {
 declare namespace MulticodecTopology {
     export { PeerId, Multiaddr, Connection, TopologyOptions, MulticodecOptions, Handlers };
 }
-import Topology = require(".");
 type PeerId = import("peer-id");
 type Connection = typeof import("../connection");
 type Multiaddr = import("multiaddr");
@@ -57,7 +60,7 @@ type TopologyOptions = {
      * - maximum needed connections.
      */
     max?: number | undefined;
-    handlers?: Topology.Handlers | undefined;
+    handlers?: import(".").Handlers | undefined;
 };
 type MulticodecOptions = {
     /**
@@ -70,9 +73,9 @@ type Handlers = {
     /**
      * - protocol "onConnect" handler
      */
-    onConnect?: Function | undefined;
+    onConnect?: ((peerId: import("peer-id"), conn: typeof import("../connection")) => void) | undefined;
     /**
      * - protocol "onDisconnect" handler
      */
-    onDisconnect?: Function | undefined;
+    onDisconnect?: ((peerId: import("peer-id")) => void) | undefined;
 };

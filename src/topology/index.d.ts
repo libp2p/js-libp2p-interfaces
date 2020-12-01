@@ -1,4 +1,17 @@
 export = Topology;
+/**
+ * @typedef {import('peer-id')} PeerId
+ */
+/**
+ * @typedef {Object} Options
+ * @property {number} [min=0] - minimum needed connections.
+ * @property {number} [max=Infinity] - maximum needed connections.
+ * @property {Handlers} [handlers]
+ *
+ * @typedef {Object} Handlers
+ * @property {(peerId: PeerId, conn: import('../connection')) => void} [onConnect] - protocol "onConnect" handler
+ * @property {(peerId: PeerId) => void} [onDisconnect] - protocol "onDisconnect" handler
+ */
 declare class Topology {
     /**
      * Checks if the given value is a Topology instance.
@@ -13,10 +26,11 @@ declare class Topology {
     constructor({ min, max, handlers }: Options);
     min: number;
     max: number;
-    _onConnect: Function;
-    _onDisconnect: Function;
+    _onConnect: (peerId: PeerId, conn: import('../connection')) => void;
+    _onDisconnect: (peerId: PeerId) => void;
     /**
      * Set of peers that support the protocol.
+     *
      * @type {Set<string>}
      */
     peers: Set<string>;
@@ -24,20 +38,18 @@ declare class Topology {
     set registrar(arg: any);
     _registrar: any;
     /**
-     * @typedef PeerId
-     * @type {import('peer-id')}
-     */
-    /**
      * Notify about peer disconnected event.
+     *
      * @param {PeerId} peerId
      * @returns {void}
      */
-    disconnect(peerId: import("peer-id")): void;
+    disconnect(peerId: PeerId): void;
     get [topologySymbol](): boolean;
 }
 declare namespace Topology {
-    export { Options, Handlers };
+    export { PeerId, Options, Handlers };
 }
+type PeerId = import("peer-id");
 declare const topologySymbol: unique symbol;
 type Options = {
     /**
@@ -54,9 +66,9 @@ type Handlers = {
     /**
      * - protocol "onConnect" handler
      */
-    onConnect?: Function | undefined;
+    onConnect?: ((peerId: PeerId, conn: import('../connection')) => void) | undefined;
     /**
      * - protocol "onDisconnect" handler
      */
-    onDisconnect?: Function | undefined;
+    onDisconnect?: ((peerId: PeerId) => void) | undefined;
 };

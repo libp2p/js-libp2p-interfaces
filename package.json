@@ -12,15 +12,15 @@
   "scripts": {
     "lint": "aegir lint",
     "build": "aegir build",
-    "pregenerate:types": "rimraf './src/**/*.d.ts'",
-    "generate:types": "tsc --build",
     "test": "aegir test",
     "test:node": "aegir test --target node",
     "test:browser": "aegir test --target browser",
+    "test:types": "aegir ts -p check",
     "prepublishOnly": "npm run generate:types",
     "release": "aegir release -t node -t browser",
     "release-minor": "aegir release --type minor -t node -t browser",
-    "release-major": "aegir release --type major -t node -t browser"
+    "release-major": "aegir release --type major -t node -t browser",
+    "remove:types": "rimraf './src/**/*.d.ts'"
   },
   "repository": {
     "type": "git",
@@ -63,13 +63,13 @@
     "protons": "^2.0.0",
     "sinon": "^9.0.2",
     "streaming-iterables": "^5.0.2",
+    "typescript": "^4.1.2",
     "uint8arrays": "^1.1.0"
   },
   "devDependencies": {
-    "aegir": "^25.0.0",
+    "aegir": "^29.2.0",
     "it-handshake": "^1.0.1",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.0.5"
+    "rimraf": "^3.0.2"
   },
   "contributors": [
     "Alan Shaw <alan.shaw@protocol.ai>",

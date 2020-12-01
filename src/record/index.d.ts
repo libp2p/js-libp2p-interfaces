@@ -4,20 +4,23 @@ export = Record;
  */
 declare class Record {
     /**
-     * @constructor
-     * @param {String} domain signature domain
-     * @param {Uint8Array} codec identifier of the type of record
+     * @class
+     * @param {string} domain - signature domain
+     * @param {Uint8Array} codec - identifier of the type of record
      */
     constructor(domain: string, codec: Uint8Array);
     domain: string;
     codec: Uint8Array;
     /**
      * Marshal a record to be used in an envelope.
+     * @returns {Uint8Array}
      */
-    marshal(): void;
+    marshal(): Uint8Array;
     /**
      * Verifies if the other provided Record is identical to this one.
+     *
      * @param {Record} other
+     * @returns {boolean}
      */
-    equals(other: Record): void;
+    equals(other: Record): boolean;
 }

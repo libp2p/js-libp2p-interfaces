@@ -4,6 +4,21 @@
 const noop = () => {}
 const topologySymbol = Symbol.for('@libp2p/js-interfaces/topology')
 
+/**
+ * @typedef {import('peer-id')} PeerId
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {number} [min=0] - minimum needed connections.
+ * @property {number} [max=Infinity] - maximum needed connections.
+ * @property {Handlers} [handlers]
+ *
+ * @typedef {Object} Handlers
+ * @property {(peerId: PeerId, conn: import('../connection')) => void} [onConnect] - protocol "onConnect" handler
+ * @property {(peerId: PeerId) => void} [onDisconnect] - protocol "onDisconnect" handler
+ */
+
 class Topology {
   /**
    * @param {Options} options
@@ -22,6 +37,7 @@ class Topology {
 
     /**
      * Set of peers that support the protocol.
+     *
      * @type {Set<string>}
      */
     this.peers = new Set()
@@ -45,17 +61,13 @@ class Topology {
     return Boolean(other && other[topologySymbol])
   }
 
-  set registrar (registrar) {
+  set registrar (registrar) { // eslint-disable-line
     this._registrar = registrar
   }
 
   /**
-   * @typedef PeerId
-   * @type {import('peer-id')}
-   */
-
-  /**
    * Notify about peer disconnected event.
+   *
    * @param {PeerId} peerId
    * @returns {void}
    */
@@ -63,16 +75,5 @@ class Topology {
     this._onDisconnect(peerId)
   }
 }
-
-/**
- * @typedef {Object} Options
- * @property {number} [min=0] - minimum needed connections.
- * @property {number} [max=Infinity] - maximum needed connections.
- * @property {Handlers} [handlers]
- *
- * @typedef {Object} Handlers
- * @property {Function} [onConnect] - protocol "onConnect" handler
- * @property {Function} [onDisconnect] - protocol "onDisconnect" handler
- */
 
 module.exports = Topology

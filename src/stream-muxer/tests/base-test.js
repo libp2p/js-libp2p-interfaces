@@ -20,8 +20,9 @@ async function closeAndWait (stream) {
 /**
  * A tick is considered valid if it happened between now
  * and `ms` milliseconds ago
- * @param {number} date Time in ticks
- * @param {number} ms max milliseconds that should have expired
+ *
+ * @param {number} date - Time in ticks
+ * @param {number} ms - max milliseconds that should have expired
  * @returns {boolean}
  */
 function isValidTick (date, ms = 5000) {

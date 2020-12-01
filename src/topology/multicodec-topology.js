@@ -57,7 +57,7 @@ class MulticodecTopology extends Topology {
     return Boolean(other && other[multicodecTopologySymbol])
   }
 
-  set registrar (registrar) {
+  set registrar (registrar) { // eslint-disable-line
     this._registrar = registrar
     this._registrar.peerStore.on('change:protocols', this._onProtocolChange)
     this._registrar.connectionManager.on('peer:connect', this._onPeerConnect)
@@ -68,6 +68,7 @@ class MulticodecTopology extends Topology {
 
   /**
    * Update topology.
+   *
    * @param {Array<{id: PeerId, multiaddrs: Array<Multiaddr>, protocols: Array<string>}>} peerDataIterable
    * @returns {void}
    */
@@ -88,6 +89,7 @@ class MulticodecTopology extends Topology {
 
   /**
    * Check if a new peer support the multicodecs for this topology.
+   *
    * @param {Object} props
    * @param {PeerId} props.peerId
    * @param {Array<string>} props.protocols
@@ -113,6 +115,7 @@ class MulticodecTopology extends Topology {
 
   /**
    * Verify if a new connected peer has a topology multicodec and call _onConnect.
+   *
    * @param {Connection} connection
    * @returns {void}
    */
