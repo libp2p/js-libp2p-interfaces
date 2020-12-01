@@ -1,4 +1,5 @@
 'use strict'
+/* eslint-disable valid-jsdoc */
 
 const randomBytes = require('libp2p-crypto/src/random-bytes')
 const uint8ArrayToString = require('uint8arrays/to-string')
@@ -105,7 +106,7 @@ exports.normalizeInRpcMessage = (message, peerId) => {
 
 /**
  * @template {Object} T
- * 
+ *
  * @param {T} message
  * @return {T & {from?: Uint8Array, data?: Uint8Array}}
  */

@@ -1,4 +1,5 @@
 'use strict'
+/* eslint-disable valid-jsdoc */
 
 const debug = require('debug')
 const EventEmitter = require('events')

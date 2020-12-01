@@ -1,8 +1,8 @@
 'use strict'
+/* eslint-disable valid-jsdoc */
 
 const Topology = require('./index')
 const multicodecTopologySymbol = Symbol.for('@libp2p/js-interfaces/topology/multicodec-topology')
-
 
 class MulticodecTopology extends Topology {
   /**
@@ -50,7 +50,7 @@ class MulticodecTopology extends Topology {
     return 'Topology'
   }
 
-  get [multicodecTopologySymbol]() {
+  get [multicodecTopologySymbol] () {
     return true
   }
 
@@ -60,7 +60,7 @@ class MulticodecTopology extends Topology {
    * @param {any} other
    * @returns {other is MulticodecTopology}
    */
-  static isMulticodecTopology(other) {
+  static isMulticodecTopology (other) {
     return Boolean(other && other[multicodecTopologySymbol])
   }
 

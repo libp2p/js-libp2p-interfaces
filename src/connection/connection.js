@@ -1,4 +1,5 @@
 'use strict'
+/* eslint-disable valid-jsdoc */
 
 const PeerId = require('peer-id')
 const multiaddr = require('multiaddr')
@@ -143,7 +144,7 @@ class Connection {
     return 'Connection'
   }
 
-  get [connectionSymbol]() {
+  get [connectionSymbol] () {
     return true
   }
 
@@ -153,7 +154,7 @@ class Connection {
    * @param {any} other
    * @returns {other is Connection}
    */
-  static isConnection(other) {
+  static isConnection (other) {
     return Boolean(other && other[connectionSymbol])
   }
 
@@ -245,6 +246,5 @@ class Connection {
     this.stat.status = Status.CLOSED
   }
 }
-
 
 module.exports = Connection

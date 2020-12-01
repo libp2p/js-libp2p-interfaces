@@ -1,4 +1,5 @@
 'use strict'
+/* eslint-disable valid-jsdoc */
 
 const noop = () => {}
 const topologySymbol = Symbol.for('@libp2p/js-interfaces/topology')
@@ -33,10 +34,10 @@ class Topology {
   }
 
   get [Symbol.toStringTag] () {
-      return 'Topology'
+    return 'Topology'
   }
 
-  get [topologySymbol]() {
+  get [topologySymbol] () {
     return true
   }
 
@@ -46,7 +47,7 @@ class Topology {
    * @param {any} other
    * @returns {other is Topology}
    */
-  static isTopology(other) {
+  static isTopology (other) {
     return Boolean(other && other[topologySymbol])
   }
 
