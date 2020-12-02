@@ -6,6 +6,7 @@ import Connection from '../connection/connection'
  * A libp2p transport is understood as something that offers a dial and listen interface to establish connections.
  */
 export interface Transport {
+  new (upgrader: Upgrader, ...others: any): Transport; // eslint-disable-line
   /**
    * Dial a given multiaddr.
    */

@@ -2,6 +2,7 @@
  * A libp2p stream muxer
  */
 export interface Muxer {
+  new (options: MuxerOptions): Muxer;  // eslint-disable-line
   multicodec: string;
   readonly streams: Array<MuxedStream>;
   /**
@@ -19,6 +20,12 @@ export interface Muxer {
    * A function called when a stream ends.
    */
   onStreamEnd (stream: MuxedStream): void;
+}
+
+export type MuxerOptions = {
+  onStream: (stream: MuxedStream) => void;
+  onStreamEnd: (stream: MuxedStream) => void;
+  maxMsgSize?: number;
 }
 
 export type MuxedTimeline = {
