@@ -3,12 +3,12 @@
 'use strict'
 
 const pair = require('it-pair/duplex')
-const pipe = require('it-pipe')
+const { pipe } = require('it-pipe')
 const { consume } = require('streaming-iterables')
 const Tcp = require('libp2p-tcp')
 const multiaddr = require('multiaddr')
-const abortable = require('abortable-iterator')
-const AbortController = require('abort-controller')
+const { source: abortable } = require('abortable-iterator')
+const AbortController = require('abort-controller').default
 const uint8arrayFromString = require('uint8arrays/from-string')
 
 const mh = multiaddr('/ip4/127.0.0.1/tcp/0')

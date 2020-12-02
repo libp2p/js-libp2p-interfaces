@@ -62,7 +62,7 @@ module.exports = (common) => {
         pubsub.publish(topic, data)
 
         // Wait 1 second to guarantee that self is not noticed
-        return new Promise((resolve) => setTimeout(() => resolve(), 1000))
+        return new Promise((resolve) => setTimeout(resolve, 1000))
       })
     })
   })

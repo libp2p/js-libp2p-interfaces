@@ -40,6 +40,7 @@ async function verifySignature (message) {
   const baseMessage = { ...message }
   delete baseMessage.signature
   delete baseMessage.key
+  // @ts-ignore - from is optional
   baseMessage.from = PeerId.createFromCID(baseMessage.from).toBytes()
   const bytes = uint8ArrayConcat([
     SignPrefix,
@@ -50,6 +51,7 @@ async function verifySignature (message) {
   const pubKey = await messagePublicKey(message)
 
   // verify the base message
+  // @ts-ignore - may not have signature
   return pubKey.verify(bytes, message.signature)
 }
 
@@ -62,6 +64,7 @@ async function verifySignature (message) {
  */
 async function messagePublicKey (message) {
   // should be available in the from property of the message (peer id)
+  // @ts-ignore - from is optional
   const from = PeerId.createFromCID(message.from)
 
   if (message.key) {
@@ -77,6 +80,11 @@ async function messagePublicKey (message) {
     throw new Error('Could not get the public key from the originator id')
   }
 }
+
+/**
+ * @typedef {import('..').InMessage} InMessage
+ * @typedef {import('libp2p-crypto').PublicKey} PublicKey
+ */
 
 module.exports = {
   messagePublicKey,

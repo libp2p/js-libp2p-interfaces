@@ -6,7 +6,7 @@ const expect = chai.expect
 chai.use(require('dirty-chai'))
 
 const duplexPair = require('it-pair/duplex')
-const pipe = require('it-pipe')
+const { pipe } = require('it-pipe')
 const PeerId = require('peer-id')
 const { collect } = require('streaming-iterables')
 const uint8arrayFromString = require('uint8arrays/from-string')

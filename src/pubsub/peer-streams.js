@@ -1,12 +1,15 @@
 'use strict'
 
-const EventEmitter = require('events')
+const { EventEmitter } = require('events')
 
 const lp = require('it-length-prefixed')
+
+/** @type {typeof import('it-pushable').default} */
+// @ts-ignore
 const pushable = require('it-pushable')
-const pipe = require('it-pipe')
-const abortable = require('abortable-iterator')
-const AbortController = require('abort-controller')
+const { pipe } = require('it-pipe')
+const { source: abortable } = require('abortable-iterator')
+const AbortController = require('abort-controller').default
 const debug = require('debug')
 
 const log = debug('libp2p-pubsub:peer-streams')
@@ -19,7 +22,7 @@ log.error = debug('libp2p-pubsub:peer-streams:error')
  *
  * @typedef {object} DuplexIterableStream
  * @property {Sink} sink
- * @property {() AsyncIterator<Uint8Array>} source
+ * @property {AsyncIterator<Uint8Array>} source
  *
  * @typedef PeerId
  * @type import('peer-id')
@@ -51,33 +54,33 @@ class PeerStreams extends EventEmitter {
      * The raw outbound stream, as retrieved from conn.newStream
      *
      * @private
-     * @type {DuplexIterableStream}
+     * @type {null|DuplexIterableStream}
      */
     this._rawOutboundStream = null
     /**
      * The raw inbound stream, as retrieved from the callback from libp2p.handle
      *
      * @private
-     * @type {DuplexIterableStream}
+     * @type {null|DuplexIterableStream}
      */
     this._rawInboundStream = null
     /**
      * An AbortController for controlled shutdown of the inbound stream
      *
      * @private
-     * @type {typeof AbortController}
+     * @type {null|AbortController}
      */
     this._inboundAbortController = null
     /**
      * Write stream -- its preferable to use the write method
      *
-     * @type {import('it-pushable').Pushable<Uint8Array>>}
+     * @type {null|import('it-pushable').Pushable<Uint8Array>}
      */
     this.outboundStream = null
     /**
      * Read stream
      *
-     * @type {DuplexIterableStream}
+     * @type {null|DuplexIterableStream}
      */
     this.inboundStream = null
   }
@@ -113,6 +116,7 @@ class PeerStreams extends EventEmitter {
       throw new Error('No writable connection to ' + id)
     }
 
+    // @ts-ignore - this.outboundStream could be null
     this.outboundStream.push(data)
   }
 
@@ -129,11 +133,13 @@ class PeerStreams extends EventEmitter {
     // - transformed with length-prefix transform
     this._inboundAbortController = new AbortController()
     this._rawInboundStream = stream
+    // @ts-ignore - abortable returns AsyncIterable and not a DuplexIterableStream
     this.inboundStream = abortable(
       pipe(
         this._rawInboundStream,
         lp.decode()
       ),
+      // @ts-ignore - possibly null
       this._inboundAbortController.signal,
       { returnOnAbort: true }
     )
@@ -144,7 +150,7 @@ class PeerStreams extends EventEmitter {
   /**
    * Attach a raw outbound stream and setup a write stream
    *
-   * @param {Stream} stream
+   * @param {DuplexIterableStream} stream
    * @returns {Promise<void>}
    */
   async attachOutboundStream (stream) {
@@ -153,6 +159,7 @@ class PeerStreams extends EventEmitter {
     const _prevStream = this.outboundStream
     if (_prevStream) {
       // End the stream without emitting a close event
+      // @ts-ignore - outboundStream may be null
       await this.outboundStream.end(false)
     }
 
@@ -160,9 +167,12 @@ class PeerStreams extends EventEmitter {
     this.outboundStream = pushable({
       onEnd: (shouldEmit) => {
         // close writable side of the stream
-        this._rawOutboundStream.reset && this._rawOutboundStream.reset()
+        // @ts-ignore - DuplexIterableStream does not define reset
+        this._rawOutboundStream && this._rawOutboundStream.reset && this._rawOutboundStream.reset()
         this._rawOutboundStream = null
         this.outboundStream = null
+        // @ts-ignore - shouldEmit is `Error | undefined` so condition is
+        // always false
         if (shouldEmit !== false) {
           this.emit('close')
         }
@@ -195,6 +205,7 @@ class PeerStreams extends EventEmitter {
     }
     // End the inbound stream
     if (this.inboundStream) {
+      // @ts-ignore - possibly null
       this._inboundAbortController.abort()
     }
 
