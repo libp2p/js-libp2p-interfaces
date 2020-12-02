@@ -4,9 +4,7 @@ const { expect } = require('chai')
 const pair = require('it-pair/duplex')
 const { pipe } = require('it-pipe')
 
-/** @type {typeof import('p-limit').default} */
-// @ts-ignore - wrong type defs
-const pLimit = require('p-limit')
+const pLimit = require('p-limit').default
 const { collect, tap, consume } = require('streaming-iterables')
 
 module.exports = async (Muxer, nStreams, nMsg, limit) => {

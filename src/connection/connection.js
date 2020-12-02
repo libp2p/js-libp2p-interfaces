@@ -9,9 +9,15 @@ const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
 
 /**
  * @typedef {import('../stream-muxer/types').MuxedStream} MuxedStream
+ * @typedef {import('./status').Status} Status
  */
 
 /**
+ * @typedef {Object} Timeline
+ * @property {number} open - connection opening timestamp.
+ * @property {number} [upgraded] - connection upgraded timestamp.
+ * @property {number} [close]
+ *
  * @typedef {Object} ConectionStat
  * @property {string} direction - connection establishment direction ("inbound" or "outbound").
  * @property {object} timeline - connection relevant events timestamp.
@@ -75,7 +81,7 @@ class Connection {
     /**
      * Connection metadata.
      *
-     * @type {Stat & {status: Status}}
+     * @type {ConectionStat & {status: Status}}
      */
     this._stat = {
       ...stat,
@@ -222,21 +228,6 @@ class Connection {
     this.stat.status = CLOSED
   }
 }
-
-/**
- * @typedef {Object} Stat
- * @property {string} direction - connection establishment direction ("inbound" or "outbound").
- * @property {Timeline} timeline - connection relevant events timestamp.
- * @property {string} [multiplexer] - connection multiplexing identifier.
- * @property {string} [encryption] - connection encryption method identifier.
- *
- * @typedef {Object} Timeline
- * @property {number} open - connection opening timestamp.
- * @property {number} [upgraded] - connection upgraded timestamp.
- * @property {number} [close]
- *
- * @typedef {import('./status').Status} Status
- */
 
 module.exports = Connection
 

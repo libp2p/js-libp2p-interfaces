@@ -40,11 +40,12 @@ async function verifySignature (message) {
   const baseMessage = { ...message }
   delete baseMessage.signature
   delete baseMessage.key
-  // @ts-ignore - from is optional
-  baseMessage.from = PeerId.createFromCID(baseMessage.from).toBytes()
+
   const bytes = uint8ArrayConcat([
     SignPrefix,
-    Message.encode(baseMessage)
+    Message.encode(Object.assign(baseMessage, {
+      from: baseMessage.from && PeerId.createFromCID(baseMessage.from).toBytes()
+    }))
   ])
 
   // Get the public key
@@ -64,14 +65,14 @@ async function verifySignature (message) {
  */
 async function messagePublicKey (message) {
   // should be available in the from property of the message (peer id)
-  // @ts-ignore - from is optional
+  // @ts-ignore - from type changed
   const from = PeerId.createFromCID(message.from)
 
   if (message.key) {
     const keyPeerId = await PeerId.createFromPubKey(message.key)
 
     // the key belongs to the sender, return the key
-    if (keyPeerId.isEqual(from)) return keyPeerId.pubKey
+    if (keyPeerId.equals(from)) return keyPeerId.pubKey
     // We couldn't validate pubkey is from the originator, error
     throw new Error('Public Key does not match the originator')
   } else if (from.pubKey) {

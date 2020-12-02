@@ -216,7 +216,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * @private
    * @param {Object} props
    * @param {string} props.protocol
-   * @param {DuplexIterableStream} props.stream
+   * @param {MuxedStream} props.stream
    * @param {Connection} props.connection - connection
    */
   _onIncomingStream ({ protocol, stream, connection }) {
@@ -225,8 +225,7 @@ class PubsubBaseProtocol extends EventEmitter {
     const peer = this._addPeer(peerId, protocol)
     peer.attachInboundStream(stream)
 
-    // @ts-ignore - peer.inboundStream maybe null
-    this._processMessages(idB58Str, peer.inboundStream, peer)
+    peer.inboundStream && this._processMessages(idB58Str, peer.inboundStream, peer)
   }
 
   /**
@@ -243,7 +242,6 @@ class PubsubBaseProtocol extends EventEmitter {
     try {
       const { stream, protocol } = await conn.newStream(this.multicodecs)
       const peer = this._addPeer(peerId, protocol)
-      // @ts-ignore MuxedStream is not DuplexIterableStream
       await peer.attachOutboundStream(stream)
     } catch (err) {
       this.log.err(err)
@@ -333,7 +331,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * Responsible for processing each RPC message received by other peers.
    *
    * @param {string} idB58Str - peer id string in base58
-   * @param {DuplexIterableStream} stream - inbound stream
+   * @param {MuxedStream} stream - inbound stream
    * @param {PeerStreams} peerStreams - PubSub peer
    * @returns {Promise<void>}
    */
@@ -342,8 +340,8 @@ class PubsubBaseProtocol extends EventEmitter {
       await pipe(
         stream,
         async (source) => {
-          // @ts-ignore - DuplexIterableStream isn't defined as iterable
           for await (const data of source) {
+            // @ts-ignore data slice from BufferList
             const rpcBytes = data instanceof Uint8Array ? data : data.slice()
             const rpcMsg = this._decodeRpc(rpcBytes)
 
@@ -732,7 +730,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
 /**
  * @typedef {any} Libp2p
- * @typedef {import('./peer-streams').DuplexIterableStream} DuplexIterableStream
+ * @typedef {object} MuxedStream
+ * @type import('../stream-muxer/types').MuxedStream
  * @typedef {import('../connection/connection')} Connection
  * @typedef {import('./message').RPC} RPC
  * @typedef {import('./message').SubOpts} RPCSubOpts
@@ -740,7 +739,8 @@ class PubsubBaseProtocol extends EventEmitter {
  * @typedef {import('./signature-policy').SignaturePolicyType} SignaturePolicyType
  */
 
+PubsubBaseProtocol.message = message
+PubsubBaseProtocol.utils = utils
+PubsubBaseProtocol.SignaturePolicy = SignaturePolicy
+
 module.exports = PubsubBaseProtocol
-module.exports.message = message
-module.exports.utils = utils
-module.exports.SignaturePolicy = SignaturePolicy

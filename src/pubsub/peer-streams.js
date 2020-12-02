@@ -20,12 +20,14 @@ log.error = debug('libp2p-pubsub:peer-streams:error')
  * @param {Uint8Array} source
  * @returns {Promise<Uint8Array>}
  *
- * @typedef {object} DuplexIterableStream
- * @property {Sink} sink
- * @property {AsyncIterator<Uint8Array>} source
+ * @typedef {object} MuxedStream
+ * @type import('../stream-muxer/types').MuxedStream
  *
  * @typedef PeerId
  * @type import('peer-id')
+ *
+ * @typedef PushableStream
+ * @type import('it-pushable').Pushable<Uint8Array>
  */
 
 /**
@@ -54,33 +56,33 @@ class PeerStreams extends EventEmitter {
      * The raw outbound stream, as retrieved from conn.newStream
      *
      * @private
-     * @type {null|DuplexIterableStream}
+     * @type {null|MuxedStream}
      */
     this._rawOutboundStream = null
     /**
      * The raw inbound stream, as retrieved from the callback from libp2p.handle
      *
      * @private
-     * @type {null|DuplexIterableStream}
+     * @type {null|MuxedStream}
      */
     this._rawInboundStream = null
     /**
      * An AbortController for controlled shutdown of the inbound stream
      *
      * @private
-     * @type {null|AbortController}
+     * @type {AbortController}
      */
-    this._inboundAbortController = null
+    this._inboundAbortController = new AbortController()
     /**
      * Write stream -- its preferable to use the write method
      *
-     * @type {null|import('it-pushable').Pushable<Uint8Array>}
+     * @type {null|PushableStream}
      */
     this.outboundStream = null
     /**
      * Read stream
      *
-     * @type {null|DuplexIterableStream}
+     * @type {null|MuxedStream}
      */
     this.inboundStream = null
   }
@@ -123,7 +125,7 @@ class PeerStreams extends EventEmitter {
   /**
    * Attach a raw inbound stream and setup a read stream
    *
-   * @param {DuplexIterableStream} stream
+   * @param {MuxedStream} stream
    * @returns {void}
    */
   attachInboundStream (stream) {
@@ -131,15 +133,13 @@ class PeerStreams extends EventEmitter {
     // The inbound stream is:
     // - abortable, set to only return on abort, rather than throw
     // - transformed with length-prefix transform
-    this._inboundAbortController = new AbortController()
     this._rawInboundStream = stream
-    // @ts-ignore - abortable returns AsyncIterable and not a DuplexIterableStream
+    // @ts-ignore - abortable returns AsyncIterable and not a MuxedStream
     this.inboundStream = abortable(
       pipe(
         this._rawInboundStream,
         lp.decode()
       ),
-      // @ts-ignore - possibly null
       this._inboundAbortController.signal,
       { returnOnAbort: true }
     )
@@ -150,30 +150,26 @@ class PeerStreams extends EventEmitter {
   /**
    * Attach a raw outbound stream and setup a write stream
    *
-   * @param {DuplexIterableStream} stream
+   * @param {MuxedStream} stream
    * @returns {Promise<void>}
    */
   async attachOutboundStream (stream) {
     // If an outbound stream already exists,
     // gently close it
     const _prevStream = this.outboundStream
-    if (_prevStream) {
+    if (this.outboundStream) {
       // End the stream without emitting a close event
-      // @ts-ignore - outboundStream may be null
-      await this.outboundStream.end(false)
+      await this.outboundStream.end()
     }
 
     this._rawOutboundStream = stream
     this.outboundStream = pushable({
       onEnd: (shouldEmit) => {
         // close writable side of the stream
-        // @ts-ignore - DuplexIterableStream does not define reset
         this._rawOutboundStream && this._rawOutboundStream.reset && this._rawOutboundStream.reset()
         this._rawOutboundStream = null
         this.outboundStream = null
-        // @ts-ignore - shouldEmit is `Error | undefined` so condition is
-        // always false
-        if (shouldEmit !== false) {
+        if (shouldEmit) {
           this.emit('close')
         }
       }
@@ -205,7 +201,6 @@ class PeerStreams extends EventEmitter {
     }
     // End the inbound stream
     if (this.inboundStream) {
-      // @ts-ignore - possibly null
       this._inboundAbortController.abort()
     }
 
