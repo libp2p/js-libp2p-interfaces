@@ -24,6 +24,7 @@ const {
 /**
  * @typedef {any} Libp2p
  * @typedef {import('peer-id')} PeerId
+ * @typedef {import('bl')} BufferList
  * @typedef {import('../stream-muxer/types').MuxedStream} MuxedStream
  * @typedef {import('../connection/connection')} Connection
  * @typedef {import('./message').RPC} RPC
@@ -339,7 +340,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * Responsible for processing each RPC message received by other peers.
    *
    * @param {string} idB58Str - peer id string in base58
-   * @param {MuxedStream} stream - inbound stream
+   * @param {AsyncIterable<Uint8Array|BufferList>} stream - inbound stream
    * @param {PeerStreams} peerStreams - PubSub peer
    * @returns {Promise<void>}
    */

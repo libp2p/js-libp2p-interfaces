@@ -73,7 +73,7 @@ class PeerStreams extends EventEmitter {
     /**
      * Read stream
      *
-     * @type {null|MuxedStream}
+     * @type {null| AsyncIterable<Uint8Array>}
      */
     this.inboundStream = null
   }
@@ -125,7 +125,6 @@ class PeerStreams extends EventEmitter {
     // - abortable, set to only return on abort, rather than throw
     // - transformed with length-prefix transform
     this._rawInboundStream = stream
-    // @ts-ignore - abortable returns AsyncIterable and not a MuxedStream
     this.inboundStream = abortable(
       pipe(
         this._rawInboundStream,
