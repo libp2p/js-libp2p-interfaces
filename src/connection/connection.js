@@ -74,6 +74,7 @@ class Connection {
 
     /**
      * Connection metadata.
+     *
      * @type {Stat & {status: Status}}
      */
     this._stat = {
@@ -233,7 +234,7 @@ class Connection {
  * @property {number} open - connection opening timestamp.
  * @property {number} [upgraded] - connection upgraded timestamp.
  * @property {number} [close]
- * 
+ *
  * @typedef {import('./status').Status} Status
  */
 

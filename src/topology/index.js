@@ -16,7 +16,7 @@ const topologySymbol = Symbol.for('@libp2p/js-interfaces/topology')
  * @typedef {Object} Handlers
  * @property {(peerId: PeerId, conn: Connection) => void} [onConnect] - protocol "onConnect" handler
  * @property {(peerId: PeerId, error?:Error) => void} [onDisconnect] - protocol "onDisconnect" handler
- * 
+ *
  * @typedef {import('../connection/connection')} Connection
  */
 

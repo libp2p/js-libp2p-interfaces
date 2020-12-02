@@ -9,6 +9,9 @@
     "types",
     "dist"
   ],
+  "eslintConfig": {
+    "extends": "ipfs"
+  },
   "scripts": {
     "lint": "aegir lint",
     "build": "aegir build",
