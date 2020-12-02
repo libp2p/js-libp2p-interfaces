@@ -10,7 +10,7 @@ const { isValidTick } = require('./utils')
 const goodbye = require('it-goodbye')
 const { collect } = require('streaming-iterables')
 const { pipe } = require('it-pipe')
-const { AbortController } = require('abort-controller')
+const AbortController = require('abort-controller').default
 const AbortError = require('../errors').AbortError
 const sinon = require('sinon')
 

@@ -9,7 +9,7 @@ const lp = require('it-length-prefixed')
 const pushable = require('it-pushable')
 const { pipe } = require('it-pipe')
 const { source: abortable } = require('abortable-iterator')
-const { AbortController } = require('abort-controller')
+const AbortController = require('abort-controller').default
 const debug = require('debug')
 
 const log = debug('libp2p-pubsub:peer-streams')
