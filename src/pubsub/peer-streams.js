@@ -16,18 +16,9 @@ const log = debug('libp2p-pubsub:peer-streams')
 log.error = debug('libp2p-pubsub:peer-streams:error')
 
 /**
- * @callback Sink
- * @param {Uint8Array} source
- * @returns {Promise<Uint8Array>}
- *
- * @typedef {object} MuxedStream
- * @type import('../stream-muxer/types').MuxedStream
- *
- * @typedef PeerId
- * @type import('peer-id')
- *
- * @typedef PushableStream
- * @type import('it-pushable').Pushable<Uint8Array>
+ * @typedef {import('../stream-muxer/types').MuxedStream} MuxedStream
+ * @typedef {import('peer-id')} PeerId
+ * @typedef {import('it-pushable').Pushable<Uint8Array>} PushableStream
  */
 
 /**

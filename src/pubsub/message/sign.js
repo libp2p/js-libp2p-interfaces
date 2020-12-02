@@ -65,7 +65,10 @@ async function verifySignature (message) {
  */
 async function messagePublicKey (message) {
   // should be available in the from property of the message (peer id)
-  // @ts-ignore - from type changed
+  if (!message.from) {
+    throw new Error('Could not get the public key from the originator id')
+  }
+
   const from = PeerId.createFromCID(message.from)
 
   if (message.key) {

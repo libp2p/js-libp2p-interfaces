@@ -1,12 +1,14 @@
 import events from 'events'
 import Multiaddr from 'multiaddr'
 import Connection from '../connection/connection'
+import { Sink } from '../stream-muxer/types'
 
 /**
  * A libp2p transport is understood as something that offers a dial and listen interface to establish connections.
  */
 export interface Transport {
   new (upgrader: Upgrader, ...others: any): Transport; // eslint-disable-line
+  prototype: Transport;
   /**
    * Dial a given multiaddr.
    */
@@ -65,5 +67,3 @@ export type MultiaddrConnection = {
   localAddr?: Multiaddr;
   timeline: MultiaddrConnectionTimeline;
 }
-
-export type Sink = (source: Uint8Array) => Promise<Uint8Array>;

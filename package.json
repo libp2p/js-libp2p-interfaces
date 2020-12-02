@@ -27,12 +27,10 @@
     "test": "aegir test",
     "test:node": "aegir test --target node",
     "test:browser": "aegir test --target browser",
-    "test:types": "aegir ts -p check",
     "prepublishOnly": "npm run generate:types",
     "release": "aegir release -t node -t browser",
     "release-minor": "aegir release --type minor -t node -t browser",
-    "release-major": "aegir release --type major -t node -t browser",
-    "remove:types": "rimraf './src/**/*.d.ts'"
+    "release-major": "aegir release --type major -t node -t browser"
   },
   "repository": {
     "type": "git",
@@ -49,6 +47,7 @@
   },
   "homepage": "https://github.com/libp2p/js-interfaces#readme",
   "dependencies": {
+    "@types/bl": "^2.1.0",
     "abort-controller": "^3.0.0",
     "abortable-iterator": "^3.0.0",
     "chai": "^4.2.0",

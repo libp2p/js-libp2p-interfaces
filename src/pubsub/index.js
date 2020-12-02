@@ -22,6 +22,17 @@ const {
 } = require('./message/sign')
 
 /**
+ * @typedef {any} Libp2p
+ * @typedef {import('peer-id')} PeerId
+ * @typedef {import('../stream-muxer/types').MuxedStream} MuxedStream
+ * @typedef {import('../connection/connection')} Connection
+ * @typedef {import('./message').RPC} RPC
+ * @typedef {import('./message').SubOpts} RPCSubOpts
+ * @typedef {import('./message').Message} RPCMessage
+ * @typedef {import('./signature-policy').SignaturePolicyType} SignaturePolicyType
+ */
+
+/**
  * @typedef {Object} InMessage
  * @property {string} [from]
  * @property {string} receivedFrom
@@ -30,9 +41,6 @@ const {
  * @property {Uint8Array} data
  * @property {Uint8Array} [signature]
  * @property {Uint8Array} [key]
- *
- * @typedef PeerId
- * @type import('peer-id')
  */
 
 /**
@@ -213,7 +221,7 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * On an inbound stream opened.
    *
-   * @private
+   * @protected
    * @param {Object} props
    * @param {string} props.protocol
    * @param {MuxedStream} props.stream
@@ -231,7 +239,7 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Registrar notifies an established connection with pubsub protocol.
    *
-   * @private
+   * @protected
    * @param {PeerId} peerId - remote peer-id
    * @param {Connection} conn - connection to the peer
    */
@@ -254,7 +262,7 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Registrar notifies a closing connection with pubsub protocol.
    *
-   * @private
+   * @protected
    * @param {PeerId} peerId - peerId
    * @param {Error} [err] - error for connection end
    */
@@ -268,7 +276,7 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Notifies the router that a peer has been connected
    *
-   * @private
+   * @protected
    * @param {PeerId} peerId
    * @param {string} protocol
    * @returns {PeerStreams}
@@ -299,7 +307,7 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Notifies the router that a peer has been disconnected.
    *
-   * @private
+   * @protected
    * @param {PeerId} peerId
    * @returns {PeerStreams | undefined}
    */
@@ -341,7 +349,6 @@ class PubsubBaseProtocol extends EventEmitter {
         stream,
         async (source) => {
           for await (const data of source) {
-            // @ts-ignore data slice from BufferList
             const rpcBytes = data instanceof Uint8Array ? data : data.slice()
             const rpcMsg = this._decodeRpc(rpcBytes)
 
@@ -589,7 +596,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * Normalizes the message and signs it, if signing is enabled.
    * Should be used by the routers to create the message to send.
    *
-   * @private
+   * @protected
    * @param {RPCMessage} message
    * @returns {Promise<RPCMessage>}
    */
@@ -727,17 +734,6 @@ class PubsubBaseProtocol extends EventEmitter {
     return Array.from(this.subscriptions)
   }
 }
-
-/**
- * @typedef {any} Libp2p
- * @typedef {object} MuxedStream
- * @type import('../stream-muxer/types').MuxedStream
- * @typedef {import('../connection/connection')} Connection
- * @typedef {import('./message').RPC} RPC
- * @typedef {import('./message').SubOpts} RPCSubOpts
- * @typedef {import('./message').Message} RPCMessage
- * @typedef {import('./signature-policy').SignaturePolicyType} SignaturePolicyType
- */
 
 PubsubBaseProtocol.message = message
 PubsubBaseProtocol.utils = utils

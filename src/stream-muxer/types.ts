@@ -1,3 +1,5 @@
+import BufferList from 'bl'
+
 /**
  * A libp2p stream muxer
  */
@@ -5,6 +7,7 @@ export interface Muxer {
   new (options: MuxerOptions): Muxer;  // eslint-disable-line
   multicodec: string;
   readonly streams: Array<MuxedStream>;
+  prototype: Muxer;
   /**
    * Initiate a new stream with the given name. If no name is
    * provided, the id of th stream will be used.
@@ -33,15 +36,14 @@ export type MuxedTimeline = {
   close?: number;
 }
 
-export type MuxedStream = {
+export interface MuxedStream extends AsyncIterable<Uint8Array | BufferList> {
   close: () => void;
   abort: () => void;
   reset: () => void;
   sink: Sink;
-  source: () => AsyncIterable<Uint8Array>;
+  source: () => AsyncIterable<Uint8Array | BufferList>;
   timeline: MuxedTimeline;
   id: string;
-  [Symbol.asyncIterator](): AsyncIterator<Uint8Array>;
 }
 
-type Sink = (source: Uint8Array) => Promise<Uint8Array>;
+export type Sink = (source: Uint8Array) => Promise<Uint8Array>;
