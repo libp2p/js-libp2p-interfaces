@@ -9,6 +9,15 @@
     "types",
     "dist"
   ],
+  "types": "dist/src/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "src/*": [
+        "dist/src/*",
+        "dist/src/*/index"
+      ]
+    }
+  },
   "eslintConfig": {
     "extends": "ipfs"
   },
