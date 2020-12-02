@@ -3,16 +3,20 @@ import Multiaddr from 'multiaddr'
 import Connection from '../connection/connection'
 import { Sink } from '../stream-muxer/types'
 
+export type DialOptions = {
+  signal?: AbortSignal
+}
+
 /**
  * A libp2p transport is understood as something that offers a dial and listen interface to establish connections.
  */
-export interface Transport {
-  new (upgrader: Upgrader, ...others: any): Transport; // eslint-disable-line
-  prototype: Transport;
+export interface Transport <DialOptions extends { signal?: AbortSignal }> {
+  new (upgrader: Upgrader, ...others: any): Transport<DialOptions>; // eslint-disable-line
+  prototype: Transport <DialOptions>;
   /**
    * Dial a given multiaddr.
    */
-  dial(ma: Multiaddr, options?: any): Promise<Connection>;
+  dial(ma: Multiaddr, options?: DialOptions): Promise<Connection>;
   /**
    * Create transport listeners.
    */
