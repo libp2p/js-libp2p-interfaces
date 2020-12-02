@@ -4,7 +4,7 @@
  * Enum for Signature Policy
  * Details how message signatures are produced/consumed
  */
-exports.SignaturePolicy = {
+const SignaturePolicy = {
   /**
    * On the producing side:
    * * Build messages with the signature, key (from may be enough for certain inlineable public key types), from and seqno fields.
@@ -24,5 +24,10 @@ exports.SignaturePolicy = {
    * * Propagate only if the fields are absent, reject otherwise.
    * * A message_id function will not be able to use the above fields, and should instead rely on the data field. A commonplace strategy is to calculate a hash.
    */
-  StrictNoSign: /** @type {'StrictNoSign'} */ 'StrictNoSign'
+  StrictNoSign: /** @type {'StrictNoSign'} */ ('StrictNoSign')
 }
+exports.SignaturePolicy = SignaturePolicy
+
+/**
+ * @typedef {SignaturePolicy[keyof SignaturePolicy]} SignaturePolicyType
+ */

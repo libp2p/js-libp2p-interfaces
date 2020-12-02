@@ -1,11 +1,10 @@
 'use strict'
-/* eslint-disable valid-jsdoc */
 
 const debug = require('debug')
-const EventEmitter = require('events')
+const { EventEmitter } = require('events')
 const errcode = require('err-code')
 
-const pipe = require('it-pipe')
+const { pipe } = require('it-pipe')
 
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
@@ -46,7 +45,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * @param {string} props.debugName - log namespace
    * @param {Array<string>|string} props.multicodecs - protocol identificers to connect
    * @param {Libp2p} props.libp2p
-   * @param {SignaturePolicy} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] - defines how signatures should be handled
+   * @param {SignaturePolicyType} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] - defines how signatures should be handled
    * @param {boolean} [props.canRelayMessage = false] - if can relay messages not subscribed
    * @param {boolean} [props.emitSelf = false] - if publish should emit to self, if subscribed
    * @abstract
@@ -226,6 +225,7 @@ class PubsubBaseProtocol extends EventEmitter {
     const peer = this._addPeer(peerId, protocol)
     peer.attachInboundStream(stream)
 
+    // @ts-ignore - peer.inboundStream maybe null
     this._processMessages(idB58Str, peer.inboundStream, peer)
   }
 
@@ -243,6 +243,7 @@ class PubsubBaseProtocol extends EventEmitter {
     try {
       const { stream, protocol } = await conn.newStream(this.multicodecs)
       const peer = this._addPeer(peerId, protocol)
+      // @ts-ignore MuxedStream is not DuplexIterableStream
       await peer.attachOutboundStream(stream)
     } catch (err) {
       this.log.err(err)
@@ -257,7 +258,7 @@ class PubsubBaseProtocol extends EventEmitter {
    *
    * @private
    * @param {PeerId} peerId - peerId
-   * @param {Error} err - error for connection end
+   * @param {Error} [err] - error for connection end
    */
   _onPeerDisconnected (peerId, err) {
     const idB58Str = peerId.toB58String()
@@ -341,6 +342,7 @@ class PubsubBaseProtocol extends EventEmitter {
       await pipe(
         stream,
         async (source) => {
+          // @ts-ignore - DuplexIterableStream isn't defined as iterable
           for await (const data of source) {
             const rpcBytes = data instanceof Uint8Array ? data : data.slice()
             const rpcMsg = this._decodeRpc(rpcBytes)
@@ -395,7 +397,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * Handles a subscription change from a peer
    *
    * @param {string} id
-   * @param {RPC.SubOpt} subOpt
+   * @param {RPCSubOpts} subOpt
    */
   _processRpcSubOpt (id, subOpt) {
     const t = subOpt.topicID
@@ -457,7 +459,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * The default msgID implementation
    * Child class can override this.
    *
-   * @param {RPC.Message} msg - the message object
+   * @param {RPCMessage} msg - the message object
    * @returns {Uint8Array} message id as bytes
    */
   getMsgId (msg) {
@@ -590,8 +592,8 @@ class PubsubBaseProtocol extends EventEmitter {
    * Should be used by the routers to create the message to send.
    *
    * @private
-   * @param {Message} message
-   * @returns {Promise<Message>}
+   * @param {RPCMessage} message
+   * @returns {Promise<RPCMessage>}
    */
   _buildMessage (message) {
     const signaturePolicy = this.globalSignaturePolicy
@@ -727,6 +729,16 @@ class PubsubBaseProtocol extends EventEmitter {
     return Array.from(this.subscriptions)
   }
 }
+
+/**
+ * @typedef {any} Libp2p
+ * @typedef {import('./peer-streams').DuplexIterableStream} DuplexIterableStream
+ * @typedef {import('../connection/connection')} Connection
+ * @typedef {import('./message').RPC} RPC
+ * @typedef {import('./message').SubOpts} RPCSubOpts
+ * @typedef {import('./message').Message} RPCMessage
+ * @typedef {import('./signature-policy').SignaturePolicyType} SignaturePolicyType
+ */
 
 module.exports = PubsubBaseProtocol
 module.exports.message = message

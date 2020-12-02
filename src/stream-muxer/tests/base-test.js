@@ -5,7 +5,7 @@ const chai = require('chai')
 chai.use(require('chai-checkmark'))
 const { expect } = chai
 const pair = require('it-pair/duplex')
-const pipe = require('it-pipe')
+const { pipe } = require('it-pipe')
 const { collect, map, consume } = require('streaming-iterables')
 
 function close (stream) {

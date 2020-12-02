@@ -1,5 +1,4 @@
 'use strict'
-/* eslint-disable valid-jsdoc */
 
 const Topology = require('./index')
 const multicodecTopologySymbol = Symbol.for('@libp2p/js-interfaces/topology/multicodec-topology')
@@ -138,7 +137,7 @@ class MulticodecTopology extends Topology {
 /**
  * @typedef {import('peer-id')} PeerId
  * @typedef {import('multiaddr')} Multiaddr
- * @typedef {import('../connection')} Connection
+ * @typedef {import('../connection/connection')} Connection
  * @typedef {import('.').Options} TopologyOptions
  * @typedef {Object} MulticodecOptions
  * @property {string[]} multicodecs - protocol multicodecs

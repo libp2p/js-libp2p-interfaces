@@ -74,6 +74,7 @@ module.exports = (test) => {
       let timelineProxy
       const proxyHandler = {
         set () {
+          // @ts-ignore - TS fails to infer here
           return Reflect.set(...arguments)
         }
       }
@@ -138,7 +139,9 @@ module.exports = (test) => {
         expect(connection.stat.timeline.close).to.not.exist()
 
         await connection.close()
+        // @ts-ignore - fails to infer callCount
         expect(proxyHandler.set.callCount).to.equal(1)
+        // @ts-ignore - fails to infer getCall
         const [obj, key, value] = proxyHandler.set.getCall(0).args
         expect(obj).to.eql(connection.stat.timeline)
         expect(key).to.equal('close')

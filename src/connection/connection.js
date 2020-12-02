@@ -1,10 +1,9 @@
 'use strict'
-/* eslint-disable valid-jsdoc */
 
 const PeerId = require('peer-id')
 const multiaddr = require('multiaddr')
 const errCode = require('err-code')
-const Status = require('./status')
+const { OPEN, CLOSING, CLOSED } = require('./status')
 
 const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
 
@@ -51,7 +50,7 @@ class Connection {
     /**
      * Connection identifier.
      */
-    this.id = (parseInt(Math.random() * 1e9)).toString(36) + Date.now()
+    this.id = (parseInt(String(Math.random() * 1e9))).toString(36) + Date.now()
 
     /**
      * Observed multiaddr of the local peer
@@ -75,10 +74,11 @@ class Connection {
 
     /**
      * Connection metadata.
+     * @type {Stat & {status: Status}}
      */
     this._stat = {
       ...stat,
-      status: Status.OPEN
+      status: OPEN
     }
 
     /**
@@ -152,11 +152,11 @@ class Connection {
    * @returns {Promise<{stream: MuxedStream, protocol: string}>} with muxed+multistream-selected stream and selected protocol
    */
   async newStream (protocols) {
-    if (this.stat.status === Status.CLOSING) {
+    if (this.stat.status === CLOSING) {
       throw errCode(new Error('the connection is being closed'), 'ERR_CONNECTION_BEING_CLOSED')
     }
 
-    if (this.stat.status === Status.CLOSED) {
+    if (this.stat.status === CLOSED) {
       throw errCode(new Error('the connection is closed'), 'ERR_CONNECTION_CLOSED')
     }
 
@@ -178,7 +178,7 @@ class Connection {
    * @param {MuxedStream} muxedStream - a muxed stream
    * @param {object} properties - the stream properties to be registered
    * @param {string} properties.protocol - the protocol used by the stream
-   * @param {object} properties.metadata - metadata of the stream
+   * @param {object} [properties.metadata] - metadata of the stream
    * @returns {void}
    */
   addStream (muxedStream, { protocol, metadata = {} }) {
@@ -204,7 +204,7 @@ class Connection {
    * @returns {Promise<void>}
    */
   async close () {
-    if (this.stat.status === Status.CLOSED) {
+    if (this.stat.status === CLOSED) {
       return
     }
 
@@ -212,15 +212,30 @@ class Connection {
       return this._closing
     }
 
-    this.stat.status = Status.CLOSING
+    this.stat.status = CLOSING
 
     // Close raw connection
     this._closing = await this._close()
 
     this._stat.timeline.close = Date.now()
-    this.stat.status = Status.CLOSED
+    this.stat.status = CLOSED
   }
 }
+
+/**
+ * @typedef {Object} Stat
+ * @property {string} direction - connection establishment direction ("inbound" or "outbound").
+ * @property {Timeline} timeline - connection relevant events timestamp.
+ * @property {string} [multiplexer] - connection multiplexing identifier.
+ * @property {string} [encryption] - connection encryption method identifier.
+ *
+ * @typedef {Object} Timeline
+ * @property {number} open - connection opening timestamp.
+ * @property {number} [upgraded] - connection upgraded timestamp.
+ * @property {number} [close]
+ * 
+ * @typedef {import('./status').Status} Status
+ */
 
 module.exports = Connection
 

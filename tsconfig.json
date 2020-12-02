@@ -1,32 +1,9 @@
 {
-  "include": ["src/**/*.js"],
-  "exclude": ["src/**/tests/*", "src/utils"],
-
+  "extends": "./node_modules/aegir/src/config/tsconfig.aegir.json",
   "compilerOptions": {
-    // Tells TypeScript to read JS files, as
-    // normally they are ignored as source files
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": false,
-    "noImplicitAny": false, 
-    "noImplicitThis": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "strictBindCallApply": true,
-    "strict": true,
-    "alwaysStrict": true,
-    "stripInternal": true,
-    // Generate d.ts files
-    "declaration": true,
-    // This compiler run should
-    // only output d.ts files
-    "emitDeclarationOnly": true,
-    "esModuleInterop": true,
-    "rootDir": "./src",
-    "outDir": "./src"
-  }
+    "outDir": "dist"
+  },
+  "include": [
+    "src"
+  ]
 }
