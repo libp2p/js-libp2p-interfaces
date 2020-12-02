@@ -22,6 +22,7 @@
     "extends": "ipfs"
   },
   "scripts": {
+    "prepare": "aegir build",
     "lint": "aegir lint",
     "build": "aegir build",
     "test": "aegir test",
