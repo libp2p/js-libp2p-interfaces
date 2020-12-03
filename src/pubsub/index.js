@@ -232,9 +232,9 @@ class PubsubBaseProtocol extends EventEmitter {
     const peerId = connection.remotePeer
     const idB58Str = peerId.toB58String()
     const peer = this._addPeer(peerId, protocol)
-    peer.attachInboundStream(stream)
+    const inboundStream = peer.attachInboundStream(stream)
 
-    peer.inboundStream && this._processMessages(idB58Str, peer.inboundStream, peer)
+    this._processMessages(idB58Str, inboundStream, peer)
   }
 
   /**

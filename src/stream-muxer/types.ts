@@ -1,13 +1,15 @@
 import BufferList from 'bl'
 
+export interface MuxerFactory {
+  new (options: MuxerOptions): Muxer;
+  multicodec: string;
+}
+
 /**
  * A libp2p stream muxer
  */
 export interface Muxer {
-  new (options: MuxerOptions): Muxer;  // eslint-disable-line
-  multicodec: string;
   readonly streams: Array<MuxedStream>;
-  prototype: Muxer;
   /**
    * Initiate a new stream with the given name. If no name is
    * provided, the id of th stream will be used.

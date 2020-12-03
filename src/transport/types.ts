@@ -7,12 +7,14 @@ export type DialOptions = {
   signal?: AbortSignal
 }
 
+export interface TransportFactory<DialOptions extends { signal?: AbortSignal }> {
+  new(upgrader: Upgrader): Transport<DialOptions>;
+}
+
 /**
  * A libp2p transport is understood as something that offers a dial and listen interface to establish connections.
  */
 export interface Transport <DialOptions extends { signal?: AbortSignal }> {
-  new (upgrader: Upgrader, ...others: any): Transport<DialOptions>; // eslint-disable-line
-  prototype: Transport <DialOptions>;
   /**
    * Dial a given multiaddr.
    */
@@ -20,7 +22,7 @@ export interface Transport <DialOptions extends { signal?: AbortSignal }> {
   /**
    * Create transport listeners.
    */
-  createListener(options: any, handler: (Connection) => void): Listener;
+  createListener(options: unknown, handler?: (connection: Connection) => void): Listener;
   /**
    * Takes a list of `Multiaddr`s and returns only valid addresses for the transport
    */
@@ -66,7 +68,7 @@ export type MultiaddrConnection = {
   sink: Sink;
   source: () => AsyncIterable<Uint8Array>;
   close: (err?: Error) => Promise<void>;
-  conn: any;
+  conn: unknown;
   remoteAddr: Multiaddr;
   localAddr?: Multiaddr;
   timeline: MultiaddrConnectionTimeline;

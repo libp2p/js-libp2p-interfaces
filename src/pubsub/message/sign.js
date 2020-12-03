@@ -36,23 +36,25 @@ async function signMessage (peerId, message) {
  * @returns {Promise<boolean>}
  */
 async function verifySignature (message) {
-  // Get message sans the signature
-  const baseMessage = { ...message }
-  delete baseMessage.signature
-  delete baseMessage.key
+  if (!message.signature) {
+    throw new Error('Message must contain a signature to be verified')
+  }
 
+  // Get message sans the signature
   const bytes = uint8ArrayConcat([
     SignPrefix,
-    Message.encode(Object.assign(baseMessage, {
-      from: baseMessage.from && PeerId.createFromCID(baseMessage.from).toBytes()
-    }))
+    Message.encode({
+      ...message,
+      from: message.from && PeerId.createFromCID(message.from).toBytes(),
+      signature: undefined,
+      key: undefined
+    })
   ])
 
   // Get the public key
   const pubKey = await messagePublicKey(message)
 
   // verify the base message
-  // @ts-ignore - may not have signature
   return pubKey.verify(bytes, message.signature)
 }
 

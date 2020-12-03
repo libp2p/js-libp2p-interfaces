@@ -104,12 +104,11 @@ class PeerStreams extends EventEmitter {
    * @returns {void}
    */
   write (data) {
-    if (!this.isWritable) {
+    if (!this.outboundStream) {
       const id = this.id.toB58String()
       throw new Error('No writable connection to ' + id)
     }
 
-    // @ts-ignore - this.outboundStream could be null
     this.outboundStream.push(data)
   }
 
@@ -117,7 +116,7 @@ class PeerStreams extends EventEmitter {
    * Attach a raw inbound stream and setup a read stream
    *
    * @param {MuxedStream} stream
-   * @returns {void}
+   * @returns {AsyncIterable<Uint8Array>}
    */
   attachInboundStream (stream) {
     // Create and attach a new inbound stream
@@ -135,6 +134,7 @@ class PeerStreams extends EventEmitter {
     )
 
     this.emit('stream:inbound')
+    return this.inboundStream
   }
 
   /**
@@ -144,8 +144,7 @@ class PeerStreams extends EventEmitter {
    * @returns {Promise<void>}
    */
   async attachOutboundStream (stream) {
-    // If an outbound stream already exists,
-    // gently close it
+    // If an outbound stream already exists, gently close it
     const _prevStream = this.outboundStream
     if (this.outboundStream) {
       // End the stream without emitting a close event
