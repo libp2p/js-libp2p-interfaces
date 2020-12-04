@@ -3,18 +3,14 @@ import Multiaddr from 'multiaddr'
 import Connection from '../connection/connection'
 import { Sink } from '../stream-muxer/types'
 
-export type DialOptions = {
-  signal?: AbortSignal
-}
-
-export interface TransportFactory<DialOptions extends { signal?: AbortSignal }> {
-  new(upgrader: Upgrader): Transport<DialOptions>;
+export interface TransportFactory<DialOptions extends { signal?: AbortSignal }, ListenerOptions> {
+  new(upgrader: Upgrader): Transport<DialOptions, ListenerOptions>;
 }
 
 /**
  * A libp2p transport is understood as something that offers a dial and listen interface to establish connections.
  */
-export interface Transport <DialOptions extends { signal?: AbortSignal }> {
+export interface Transport <DialOptions extends { signal?: AbortSignal }, ListenerOptions> {
   /**
    * Dial a given multiaddr.
    */
@@ -22,7 +18,7 @@ export interface Transport <DialOptions extends { signal?: AbortSignal }> {
   /**
    * Create transport listeners.
    */
-  createListener(options: unknown, handler?: (connection: Connection) => void): Listener;
+  createListener(options: ListenerOptions, handler?: (connection: Connection) => void): Listener;
   /**
    * Takes a list of `Multiaddr`s and returns only valid addresses for the transport
    */
