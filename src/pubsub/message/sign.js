@@ -31,18 +31,24 @@ async function signMessage (peerId, message) {
 
 /**
  * Verifies the signature of the given message
+ *
  * @param {InMessage} message
- * @returns {Promise<Boolean>}
+ * @returns {Promise<boolean>}
  */
 async function verifySignature (message) {
+  if (!message.signature) {
+    throw new Error('Message must contain a signature to be verified')
+  }
+
   // Get message sans the signature
-  const baseMessage = { ...message }
-  delete baseMessage.signature
-  delete baseMessage.key
-  baseMessage.from = PeerId.createFromCID(baseMessage.from).toBytes()
   const bytes = uint8ArrayConcat([
     SignPrefix,
-    Message.encode(baseMessage)
+    Message.encode({
+      ...message,
+      from: message.from && PeerId.createFromCID(message.from).toBytes(),
+      signature: undefined,
+      key: undefined
+    })
   ])
 
   // Get the public key
@@ -61,13 +67,17 @@ async function verifySignature (message) {
  */
 async function messagePublicKey (message) {
   // should be available in the from property of the message (peer id)
+  if (!message.from) {
+    throw new Error('Could not get the public key from the originator id')
+  }
+
   const from = PeerId.createFromCID(message.from)
 
   if (message.key) {
     const keyPeerId = await PeerId.createFromPubKey(message.key)
 
     // the key belongs to the sender, return the key
-    if (keyPeerId.isEqual(from)) return keyPeerId.pubKey
+    if (keyPeerId.equals(from)) return keyPeerId.pubKey
     // We couldn't validate pubkey is from the originator, error
     throw new Error('Public Key does not match the originator')
   } else if (from.pubKey) {
@@ -76,6 +86,11 @@ async function messagePublicKey (message) {
     throw new Error('Could not get the public key from the originator id')
   }
 }
+
+/**
+ * @typedef {import('..').InMessage} InMessage
+ * @typedef {import('libp2p-crypto').PublicKey} PublicKey
+ */
 
 module.exports = {
   messagePublicKey,

@@ -36,15 +36,30 @@ const fromString = require('uint8arrays/from-string')
 const ENVELOPE_DOMAIN_PEER_RECORD = 'libp2p-peer-record'
 const ENVELOPE_PAYLOAD_TYPE_PEER_RECORD = fromString('0301', 'hex')
 
-class PeerRecord extends Record {
+/**
+ * @implements {import('libp2p-interfaces/src/record/types').Record}
+ */
+class PeerRecord {
   constructor (peerId, multiaddrs, seqNumber) {
-    super (ENVELOPE_DOMAIN_PEER_RECORD, ENVELOPE_PAYLOAD_TYPE_PEER_RECORD)
+    this.domain = ENVELOPE_DOMAIN_PEER_RECORD
+    this.codec = ENVELOPE_PAYLOAD_TYPE_PEER_RECORD
   }
 
+  /**
+   * Marshal a record to be used in an envelope.
+   *
+   * @returns {Uint8Array}
+   */
   marshal () {
     // Implement and return using Protobuf
   }
 
+  /**
+   * Returns true if `this` record equals the `other`.
+   *
+   * @param {PeerRecord} other
+   * @returns {other is Record}
+   */
   equals (other) {
     // Verify
   }
@@ -73,4 +88,4 @@ Verifies if the other Record is identical to this one.
 - other is a `Record` to compare with the current instance.
 
 **Returns**
-- `boolean`
+- `other is Record`

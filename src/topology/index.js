@@ -1,17 +1,28 @@
 'use strict'
 
-const withIs = require('class-is')
 const noop = () => {}
+const topologySymbol = Symbol.for('@libp2p/js-interfaces/topology')
+
+/**
+ * @typedef {import('peer-id')} PeerId
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {number} [min=0] - minimum needed connections.
+ * @property {number} [max=Infinity] - maximum needed connections.
+ * @property {Handlers} [handlers]
+ *
+ * @typedef {Object} Handlers
+ * @property {(peerId: PeerId, conn: Connection) => void} [onConnect] - protocol "onConnect" handler
+ * @property {(peerId: PeerId, error?:Error) => void} [onDisconnect] - protocol "onDisconnect" handler
+ *
+ * @typedef {import('../connection/connection')} Connection
+ */
 
 class Topology {
   /**
-   * @param {Object} props
-   * @param {number} props.min minimum needed connections (default: 0)
-   * @param {number} props.max maximum needed connections (default: Infinity)
-   * @param {Object} [props.handlers]
-   * @param {function} [props.handlers.onConnect] protocol "onConnect" handler
-   * @param {function} [props.handlers.onDisconnect] protocol "onDisconnect" handler
-   * @constructor
+   * @param {Options} options
    */
   constructor ({
     min = 0,
@@ -27,22 +38,37 @@ class Topology {
 
     /**
      * Set of peers that support the protocol.
+     *
      * @type {Set<string>}
      */
     this.peers = new Set()
   }
 
-  set registrar (registrar) {
+  get [Symbol.toStringTag] () {
+    return 'Topology'
+  }
+
+  get [topologySymbol] () {
+    return true
+  }
+
+  /**
+   * Checks if the given value is a Topology instance.
+   *
+   * @param {any} other
+   * @returns {other is Topology}
+   */
+  static isTopology (other) {
+    return Boolean(other && other[topologySymbol])
+  }
+
+  set registrar (registrar) { // eslint-disable-line
     this._registrar = registrar
   }
 
   /**
-   * @typedef PeerId
-   * @type {import('peer-id')}
-   */
-
-  /**
    * Notify about peer disconnected event.
+   *
    * @param {PeerId} peerId
    * @returns {void}
    */
@@ -51,8 +77,4 @@ class Topology {
   }
 }
 
-/**
- * @module
- * @type {Topology}
- */
-module.exports = withIs(Topology, { className: 'Topology', symbolName: '@libp2p/js-interfaces/topology' })
+module.exports = Topology

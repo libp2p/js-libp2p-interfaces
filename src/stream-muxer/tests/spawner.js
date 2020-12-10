@@ -2,8 +2,9 @@
 
 const { expect } = require('chai')
 const pair = require('it-pair/duplex')
-const pipe = require('it-pipe')
-const pLimit = require('p-limit')
+const { pipe } = require('it-pipe')
+
+const pLimit = require('p-limit').default
 const { collect, tap, consume } = require('streaming-iterables')
 
 module.exports = async (Muxer, nStreams, nMsg, limit) => {
@@ -61,8 +62,11 @@ module.exports = async (Muxer, nStreams, nMsg, limit) => {
 }
 
 function marker (n) {
+  /** @type {Function} */
   let check
   let i = 0
+
+  /** @type {Promise<void>} */
   const done = new Promise((resolve, reject) => {
     check = err => {
       i++
@@ -78,5 +82,7 @@ function marker (n) {
       }
     }
   })
+
+  // @ts-ignore - TS can't see that assignement occured
   return { check, done }
 }

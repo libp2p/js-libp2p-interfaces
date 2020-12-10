@@ -50,7 +50,10 @@ module.exports = (common) => {
       sinon.spy(pubsub, '_publish')
       sinon.spy(pubsub, 'validate')
 
-      const peerStream = new PeerStreams({ id: await PeerId.create() })
+      const peerStream = new PeerStreams({
+        id: await PeerId.create(),
+        protocol: 'test'
+      })
       const rpc = {
         subscriptions: [],
         msgs: [{
@@ -82,7 +85,11 @@ module.exports = (common) => {
       sinon.spy(pubsub, '_publish')
       sinon.spy(pubsub, 'validate')
 
-      const peerStream = new PeerStreams({ id: await PeerId.create() })
+      const peerStream = new PeerStreams({
+        id: await PeerId.create(),
+        protocol: 'test'
+      })
+
       const rpc = {
         subscriptions: [],
         msgs: [{

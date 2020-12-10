@@ -113,9 +113,9 @@ module.exports = (common) => {
 
           // await subscription change
           await Promise.all([
-            new Promise(resolve => psA.once('pubsub:subscription-change', () => resolve())),
-            new Promise(resolve => psB.once('pubsub:subscription-change', () => resolve())),
-            new Promise(resolve => psC.once('pubsub:subscription-change', () => resolve()))
+            new Promise(resolve => psA.once('pubsub:subscription-change', () => resolve(null))),
+            new Promise(resolve => psB.once('pubsub:subscription-change', () => resolve(null))),
+            new Promise(resolve => psC.once('pubsub:subscription-change', () => resolve(null)))
           ])
 
           // await a cycle
@@ -166,9 +166,9 @@ module.exports = (common) => {
 
             // await subscription change
             await Promise.all([
-              new Promise(resolve => psA.once('pubsub:subscription-change', () => resolve())),
-              new Promise(resolve => psB.once('pubsub:subscription-change', () => resolve())),
-              new Promise(resolve => psC.once('pubsub:subscription-change', () => resolve()))
+              new Promise(resolve => psA.once('pubsub:subscription-change', () => resolve(null))),
+              new Promise(resolve => psB.once('pubsub:subscription-change', () => resolve(null))),
+              new Promise(resolve => psC.once('pubsub:subscription-change', () => resolve(null)))
             ])
 
             psA.on(topic, incMsg)

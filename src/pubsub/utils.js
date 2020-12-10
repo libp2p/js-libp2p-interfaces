@@ -71,8 +71,9 @@ exports.anyMatch = (a, b) => {
 /**
  * Make everything an array.
  *
- * @param {any} maybeArray
- * @returns {Array}
+ * @template T
+ * @param {T|T[]} maybeArray
+ * @returns {T[]}
  * @private
  */
 exports.ensureArray = (maybeArray) => {
@@ -85,9 +86,11 @@ exports.ensureArray = (maybeArray) => {
 
 /**
  * Ensures `message.from` is base58 encoded
- * @param {object} message
- * @param {String} peerId
- * @return {object}
+ *
+ * @template {{from?:any}} T
+ * @param {T & {from?:string, receivedFrom:string}} message
+ * @param {string} [peerId]
+ * @returns {T & {from?: string, peerId?: string }}
  */
 exports.normalizeInRpcMessage = (message, peerId) => {
   const m = Object.assign({}, message)
@@ -101,8 +104,10 @@ exports.normalizeInRpcMessage = (message, peerId) => {
 }
 
 /**
- * @param {object} message
- * @return {object}
+ * @template {{from?:any, data?:any}} T
+ *
+ * @param {T} message
+ * @returns {T & {from?: Uint8Array, data?: Uint8Array}}
  */
 exports.normalizeOutRpcMessage = (message) => {
   const m = Object.assign({}, message)

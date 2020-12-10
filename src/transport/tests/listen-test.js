@@ -9,7 +9,7 @@ chai.use(dirtyChai)
 const sinon = require('sinon')
 
 const pWaitFor = require('p-wait-for')
-const pipe = require('it-pipe')
+const { pipe } = require('it-pipe')
 const uint8arrayFromString = require('uint8arrays/from-string')
 const { isValidTick } = require('./utils')
 

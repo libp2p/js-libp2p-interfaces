@@ -1,19 +1,11 @@
 'use strict'
 
-const withIs = require('class-is')
-
 const Topology = require('./index')
+const multicodecTopologySymbol = Symbol.for('@libp2p/js-interfaces/topology/multicodec-topology')
 
 class MulticodecTopology extends Topology {
   /**
-   * @param {Object} props
-   * @param {number} props.min minimum needed connections (default: 0)
-   * @param {number} props.max maximum needed connections (default: Infinity)
-   * @param {Array<string>} props.multicodecs protocol multicodecs
-   * @param {Object} props.handlers
-   * @param {function} props.handlers.onConnect protocol "onConnect" handler
-   * @param {function} props.handlers.onDisconnect protocol "onDisconnect" handler
-   * @constructor
+   * @param {TopologyOptions & MulticodecOptions} props
    */
   constructor ({
     min,
@@ -46,7 +38,25 @@ class MulticodecTopology extends Topology {
     this._onPeerConnect = this._onPeerConnect.bind(this)
   }
 
-  set registrar (registrar) {
+  get [Symbol.toStringTag] () {
+    return 'Topology'
+  }
+
+  get [multicodecTopologySymbol] () {
+    return true
+  }
+
+  /**
+   * Checks if the given value is a `MulticodecTopology` instance.
+   *
+   * @param {any} other
+   * @returns {other is MulticodecTopology}
+   */
+  static isMulticodecTopology (other) {
+    return Boolean(other && other[multicodecTopologySymbol])
+  }
+
+  set registrar (registrar) { // eslint-disable-line
     this._registrar = registrar
     this._registrar.peerStore.on('change:protocols', this._onProtocolChange)
     this._registrar.connectionManager.on('peer:connect', this._onPeerConnect)
@@ -57,6 +67,7 @@ class MulticodecTopology extends Topology {
 
   /**
    * Update topology.
+   *
    * @param {Array<{id: PeerId, multiaddrs: Array<Multiaddr>, protocols: Array<string>}>} peerDataIterable
    * @returns {void}
    */
@@ -77,6 +88,7 @@ class MulticodecTopology extends Topology {
 
   /**
    * Check if a new peer support the multicodecs for this topology.
+   *
    * @param {Object} props
    * @param {PeerId} props.peerId
    * @param {Array<string>} props.protocols
@@ -102,10 +114,12 @@ class MulticodecTopology extends Topology {
 
   /**
    * Verify if a new connected peer has a topology multicodec and call _onConnect.
+   *
    * @param {Connection} connection
    * @returns {void}
    */
   _onPeerConnect (connection) {
+    // @ts-ignore - remotePeer does not existist on Connection
     const peerId = connection.remotePeer
     const protocols = this._registrar.peerStore.protoBook.get(peerId)
 
@@ -121,7 +135,13 @@ class MulticodecTopology extends Topology {
 }
 
 /**
- * @module
- * @type {MulticodecTopology}
+ * @typedef {import('peer-id')} PeerId
+ * @typedef {import('multiaddr')} Multiaddr
+ * @typedef {import('../connection/connection')} Connection
+ * @typedef {import('.').Options} TopologyOptions
+ * @typedef {Object} MulticodecOptions
+ * @property {string[]} multicodecs - protocol multicodecs
+ * @property {Required<Handlers>} handlers
+ * @typedef {import('.').Handlers} Handlers
  */
-module.exports = withIs(MulticodecTopology, { className: 'MulticodecTopology', symbolName: '@libp2p/js-interfaces/topology/multicodec-topology' })
+module.exports = MulticodecTopology

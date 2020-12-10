@@ -13,6 +13,7 @@ describe('compliance tests', () => {
     /**
      * Test setup. `properties` allows the compliance test to override
      * certain values for testing.
+     *
      * @param {*} properties
      */
     async setup (properties) {

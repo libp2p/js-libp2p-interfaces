@@ -1,10 +1,10 @@
 'use strict'
 
 const debug = require('debug')
-const EventEmitter = require('events')
+const { EventEmitter } = require('events')
 const errcode = require('err-code')
 
-const pipe = require('it-pipe')
+const { pipe } = require('it-pipe')
 
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
@@ -22,6 +22,18 @@ const {
 } = require('./message/sign')
 
 /**
+ * @typedef {any} Libp2p
+ * @typedef {import('peer-id')} PeerId
+ * @typedef {import('bl')} BufferList
+ * @typedef {import('../stream-muxer/types').MuxedStream} MuxedStream
+ * @typedef {import('../connection/connection')} Connection
+ * @typedef {import('./message').RPC} RPC
+ * @typedef {import('./message').SubOpts} RPCSubOpts
+ * @typedef {import('./message').Message} RPCMessage
+ * @typedef {import('./signature-policy').SignaturePolicyType} SignaturePolicyType
+ */
+
+/**
  * @typedef {Object} InMessage
  * @property {string} [from]
  * @property {string} receivedFrom
@@ -30,24 +42,21 @@ const {
  * @property {Uint8Array} data
  * @property {Uint8Array} [signature]
  * @property {Uint8Array} [key]
- *
- * @typedef PeerId
- * @type import('peer-id')
  */
 
 /**
-* PubsubBaseProtocol handles the peers and connections logic for pubsub routers
-* and specifies the API that pubsub routers should have.
-*/
+ * PubsubBaseProtocol handles the peers and connections logic for pubsub routers
+ * and specifies the API that pubsub routers should have.
+ */
 class PubsubBaseProtocol extends EventEmitter {
   /**
    * @param {Object} props
-   * @param {String} props.debugName log namespace
-   * @param {Array<string>|string} props.multicodecs protocol identificers to connect
+   * @param {string} props.debugName - log namespace
+   * @param {Array<string>|string} props.multicodecs - protocol identificers to connect
    * @param {Libp2p} props.libp2p
-   * @param {SignaturePolicy} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] defines how signatures should be handled
-   * @param {boolean} [props.canRelayMessage = false] if can relay messages not subscribed
-   * @param {boolean} [props.emitSelf = false] if publish should emit to self, if subscribed
+   * @param {SignaturePolicyType} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] - defines how signatures should be handled
+   * @param {boolean} [props.canRelayMessage = false] - if can relay messages not subscribed
+   * @param {boolean} [props.emitSelf = false] - if publish should emit to self, if subscribed
    * @abstract
    */
   constructor ({
@@ -97,6 +106,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
     /**
      * List of our subscriptions
+     *
      * @type {Set<string>}
      */
     this.subscriptions = new Set()
@@ -122,18 +132,21 @@ class PubsubBaseProtocol extends EventEmitter {
 
     /**
      * If router can relay received messages, even if not subscribed
+     *
      * @type {boolean}
      */
     this.canRelayMessage = canRelayMessage
 
     /**
      * if publish should emit to self, if subscribed
+     *
      * @type {boolean}
      */
     this.emitSelf = emitSelf
 
     /**
      * Topic validator function
+     *
      * @typedef {function(string, InMessage): Promise<void>} validator
      */
     /**
@@ -141,6 +154,7 @@ class PubsubBaseProtocol extends EventEmitter {
      *
      * Keyed by topic
      * Topic validators are functions with the following input:
+     *
      * @type {Map<string, validator>}
      */
     this.topicValidators = new Map()
@@ -155,6 +169,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Register the pubsub protocol onto the libp2p node.
+   *
    * @returns {void}
    */
   start () {
@@ -184,6 +199,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Unregister the pubsub protocol and the streams with other peers will be closed.
+   *
    * @returns {void}
    */
   stop () {
@@ -205,26 +221,28 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * On an inbound stream opened.
-   * @private
+   *
+   * @protected
    * @param {Object} props
    * @param {string} props.protocol
-   * @param {DuplexIterableStream} props.stream
-   * @param {Connection} props.connection connection
+   * @param {MuxedStream} props.stream
+   * @param {Connection} props.connection - connection
    */
   _onIncomingStream ({ protocol, stream, connection }) {
     const peerId = connection.remotePeer
     const idB58Str = peerId.toB58String()
     const peer = this._addPeer(peerId, protocol)
-    peer.attachInboundStream(stream)
+    const inboundStream = peer.attachInboundStream(stream)
 
-    this._processMessages(idB58Str, peer.inboundStream, peer)
+    this._processMessages(idB58Str, inboundStream, peer)
   }
 
   /**
    * Registrar notifies an established connection with pubsub protocol.
-   * @private
-   * @param {PeerId} peerId remote peer-id
-   * @param {Connection} conn connection to the peer
+   *
+   * @protected
+   * @param {PeerId} peerId - remote peer-id
+   * @param {Connection} conn - connection to the peer
    */
   async _onPeerConnected (peerId, conn) {
     const idB58Str = peerId.toB58String()
@@ -244,9 +262,10 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Registrar notifies a closing connection with pubsub protocol.
-   * @private
-   * @param {PeerId} peerId peerId
-   * @param {Error} err error for connection end
+   *
+   * @protected
+   * @param {PeerId} peerId - peerId
+   * @param {Error} [err] - error for connection end
    */
   _onPeerDisconnected (peerId, err) {
     const idB58Str = peerId.toB58String()
@@ -257,7 +276,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Notifies the router that a peer has been connected
-   * @private
+   *
+   * @protected
    * @param {PeerId} peerId
    * @param {string} protocol
    * @returns {PeerStreams}
@@ -287,7 +307,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Notifies the router that a peer has been disconnected.
-   * @private
+   *
+   * @protected
    * @param {PeerId} peerId
    * @returns {PeerStreams | undefined}
    */
@@ -317,9 +338,10 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Responsible for processing each RPC message received by other peers.
-   * @param {string} idB58Str peer id string in base58
-   * @param {DuplexIterableStream} stream inbound stream
-   * @param {PeerStreams} peerStreams PubSub peer
+   *
+   * @param {string} idB58Str - peer id string in base58
+   * @param {AsyncIterable<Uint8Array|BufferList>} stream - inbound stream
+   * @param {PeerStreams} peerStreams - PubSub peer
    * @returns {Promise<void>}
    */
   async _processMessages (idB58Str, stream, peerStreams) {
@@ -342,7 +364,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Handles an rpc request from a peer
-   * @param {String} idB58Str
+   *
+   * @param {string} idB58Str
    * @param {PeerStreams} peerStreams
    * @param {RPC} rpc
    * @returns {boolean}
@@ -378,8 +401,9 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Handles a subscription change from a peer
+   *
    * @param {string} id
-   * @param {RPC.SubOpt} subOpt
+   * @param {RPCSubOpts} subOpt
    */
   _processRpcSubOpt (id, subOpt) {
     const t = subOpt.topicID
@@ -401,6 +425,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Handles an message from a peer
+   *
    * @param {InMessage} msg
    * @returns {Promise<void>}
    */
@@ -425,6 +450,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Emit a message from a peer
+   *
    * @param {InMessage} message
    */
   _emitMessage (message) {
@@ -438,7 +464,8 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * The default msgID implementation
    * Child class can override this.
-   * @param {RPC.Message} msg the message object
+   *
+   * @param {RPCMessage} msg - the message object
    * @returns {Uint8Array} message id as bytes
    */
   getMsgId (msg) {
@@ -456,6 +483,7 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Whether to accept a message from a peer
    * Override to create a graylist
+   *
    * @override
    * @param {string} id
    * @returns {boolean}
@@ -467,6 +495,7 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Decode Uint8Array into an RPC object.
    * This can be override to use a custom router protobuf.
+   *
    * @param {Uint8Array} bytes
    * @returns {RPC}
    */
@@ -477,6 +506,7 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Encode RPC object into a Uint8Array.
    * This can be override to use a custom router protobuf.
+   *
    * @param {RPC} rpc
    * @returns {Uint8Array}
    */
@@ -486,7 +516,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Send an rpc object to a peer
-   * @param {string} id peer id
+   *
+   * @param {string} id - peer id
    * @param {RPC} rpc
    * @returns {void}
    */
@@ -503,9 +534,10 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Send subscroptions to a peer
-   * @param {string} id peer id
+   *
+   * @param {string} id - peer id
    * @param {string[]} topics
-   * @param {boolean} subscribe set to false for unsubscriptions
+   * @param {boolean} subscribe - set to false for unsubscriptions
    * @returns {void}
    */
   _sendSubscriptions (id, topics, subscribe) {
@@ -517,6 +549,7 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Validates the given message. The signature will be checked for authenticity.
    * Throws an error on invalid messages
+   *
    * @param {InMessage} message
    * @returns {Promise<void>}
    */
@@ -563,9 +596,10 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Normalizes the message and signs it, if signing is enabled.
    * Should be used by the routers to create the message to send.
-   * @private
-   * @param {Message} message
-   * @returns {Promise<Message>}
+   *
+   * @protected
+   * @param {RPCMessage} message
+   * @returns {Promise<RPCMessage>}
    */
   _buildMessage (message) {
     const signaturePolicy = this.globalSignaturePolicy
@@ -585,6 +619,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Get a list of the peer-ids that are subscribed to one topic.
+   *
    * @param {string} topic
    * @returns {Array<string>}
    */
@@ -606,6 +641,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Publishes messages to all subscribed peers
+   *
    * @override
    * @param {string} topic
    * @param {Buffer} message
@@ -639,6 +675,7 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Overriding the implementation of publish should handle the appropriate algorithms for the publish/subscriber implementation.
    * For example, a Floodsub implementation might simply publish each message to each topic for every peer
+   *
    * @abstract
    * @param {InMessage} message
    * @returns {Promise<void>}
@@ -650,6 +687,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Subscribes to a given topic.
+   *
    * @abstract
    * @param {string} topic
    * @returns {void}
@@ -667,6 +705,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Unsubscribe from the given topic.
+   *
    * @override
    * @param {string} topic
    * @returns {void}
@@ -684,8 +723,9 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Get the list of topics which the peer is subscribed to.
+   *
    * @override
-   * @returns {Array<String>}
+   * @returns {Array<string>}
    */
   getTopics () {
     if (!this.started) {
@@ -696,7 +736,8 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 }
 
+PubsubBaseProtocol.message = message
+PubsubBaseProtocol.utils = utils
+PubsubBaseProtocol.SignaturePolicy = SignaturePolicy
+
 module.exports = PubsubBaseProtocol
-module.exports.message = message
-module.exports.utils = utils
-module.exports.SignaturePolicy = SignaturePolicy
