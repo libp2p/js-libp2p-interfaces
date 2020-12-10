@@ -1,3 +1,12 @@
+# [0.8.0](https://github.com/libp2p/js-interfaces/compare/v0.7.2...v0.8.0) (2020-12-10)
+
+
+### Features
+
+* add types ([#74](https://github.com/libp2p/js-interfaces/issues/74)) ([e2419ea](https://github.com/libp2p/js-interfaces/commit/e2419ea308b5db38966850ba6349602c93ce3b0e))
+
+
+
 <a name="0.7.2"></a>
 ## [0.7.2](https://github.com/libp2p/js-interfaces/compare/v0.7.1...v0.7.2) (2020-11-11)
 
