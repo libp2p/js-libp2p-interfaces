@@ -15,7 +15,7 @@ export interface Record {
    */
   marshal(): Uint8Array;
   /**
-   * erifies if the other provided Record is identical to this one.
+   * Verifies if the other provided Record is identical to this one.
    */
-  equals(other: any): other is Record
+  equals(other: unknown): boolean
 }
