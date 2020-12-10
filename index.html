@@ -1,45 +1,389 @@
 <!doctype html>
-<html lang="en">
+<html class="default no-js">
 <head>
-  <meta charset='utf-8'>
-  <title>libp2p-interfaces 0.7.2 | Documentation</title>
-  <meta name='description' content='Interfaces for JS Libp2p'>
-  <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <link href='assets/bass.css' rel='stylesheet'>
-  <link href='assets/style.css' rel='stylesheet'>
-  <link href='assets/github.css' rel='stylesheet'>
-  <link href='assets/split.css' rel='stylesheet'>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>libp2p-interfaces - v0.8.0</title>
+	<meta name="description" content="Documentation for libp2p-interfaces - v0.8.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<link href="https://unpkg.com/nord-highlightjs@0.1.0/dist/nord.css" rel="stylesheet" type="text/css" />
+	<style>
+        .toolbar-icon {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .toolbar-icon-search {
+            box-sizing: border-box;
+            position: absolute;
+            overflow: hidden;
+            right: -40px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            @media (min-width: 901px){
+                display: none
+            }
+        }
+            @media (min-width: 901px){
+                .toolbar-icon-menu {
+                    display: none
+                }
+                .toolbar-icon-options {
+                    display: none
+                }
+            }
+
+        .gg-menu {
+            transform: scale(var(--ggs,1))
+        }
+        .gg-menu,
+        .gg-menu::after,
+        .gg-menu::before {
+            box-sizing: border-box;
+            position: relative;
+            display: block;
+            width: 20px;
+            height: 2px;
+            border-radius: 3px;
+            background: currentColor
+        }
+        .gg-menu::after,
+        .gg-menu::before {
+            content: "";
+            position: absolute;
+            top: -6px
+        }
+        .gg-menu::after {
+            top: 6px
+        }
+        .gg-options {
+            box-sizing: border-box;
+            position: relative;
+            display: block;
+            transform: scale(var(--ggs,1));
+            width: 10px;
+            height: 2px;
+            box-shadow:
+                -3px 4px 0 0,
+                3px -4px 0 0
+        }
+        .gg-options::after,
+        .gg-options::before {
+            content: "";
+            display: block;
+            box-sizing: border-box;
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 2px solid;
+            border-radius: 100%
+        }
+        .gg-options::before {
+            top: -7px;
+            left: -4px
+        }
+        .gg-options::after {
+            bottom: -7px;
+            right: -4px
+        }
+        .gg-search {
+            box-sizing: border-box;
+            position: relative;
+            display: block;
+            transform: scale(var(--ggs,1));
+            width: 16px;
+            height: 16px;
+            border: 2px solid;
+            border-radius: 100%;
+            margin-left: -4px;
+            margin-top: -4px
+        }
+        .gg-search::after {
+            content: "";
+            display: block;
+            box-sizing: border-box;
+            position: absolute;
+            border-radius: 3px;
+            width: 2px;
+            height: 8px;
+            background: currentColor;
+            transform: rotate(-45deg);
+            top: 10px;
+            left: 12px
+        }
+    </style>
 </head>
-<body class='documentation m0'>
-    <div class='flex'>
-      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
-        <div class='py1 px2'>
-          <h3 class='mb0 no-anchor'>libp2p-interfaces</h3>
-          <div class='mb1'><code>0.7.2</code></div>
-          <input
-            placeholder='Filter'
-            id='filter-input'
-            class='col12 block input'
-            spellcheck='false'
-            autocapitalize='off'
-            autocorrect='off'
-            type='text' />
-          <div id='toc'>
-            <ul class='list-reset h5 py1-ul'>
-              
-            </ul>
-          </div>
-          <div class='mt1 h6 quiet'>
-            <a href='https://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
-          </div>
-        </div>
-      </div>
-      <div id='split-right' class='relative overflow-auto height-viewport-100'>
-        
-      </div>
-    </div>
-  <script src='assets/anchor.js'></script>
-  <script src='assets/split.js'></script>
-  <script src='assets/site.js'></script>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="toolbar-icon toolbar-icon-search"><i class="gg-search"></i></label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">libp2p-interfaces - v0.8.0</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<a href="#" class="toolbar-icon toolbar-icon-menu" data-toggle="menu"><i class="gg-menu"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+			</ul>
+			<h1>libp2p-interfaces - v0.8.0</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#js-libp2p-interfaces" id="js-libp2p-interfaces" style="color: inherit; text-decoration: none;">
+					<h1>JS libp2p Interfaces</h1>
+				</a>
+				<p><a href="http://protocol.ai"><img src="https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square" alt=""></a>
+					<a href="http://libp2p.io/"><img src="https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square" alt=""></a>
+					<a href="http://webchat.freenode.net/?channels=%23libp2p"><img src="https://img.shields.io/badge/freenode-%23libp2p-yellow.svg?style=flat-square" alt=""></a>
+				<a href="https://discuss.libp2p.io"><img src="https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg" alt=""></a></p>
+				<blockquote>
+					<p>Contains test suites and interfaces you can use to implement the various components of libp2p.</p>
+				</blockquote>
+				<a href="#lead-maintainer" id="lead-maintainer" style="color: inherit; text-decoration: none;">
+					<h2>Lead Maintainer</h2>
+				</a>
+				<p><a href="https://github.com/jacobheun">Jacob Heun</a>.</p>
+				<a href="#interfaces" id="interfaces" style="color: inherit; text-decoration: none;">
+					<h2>Interfaces</h2>
+				</a>
+				<ul>
+					<li><a href="./src/connection">Connection</a></li>
+					<li><a href="./src/content-routing">Content Routing</a></li>
+					<li><a href="./src/crypto">Crypto</a></li>
+					<li><a href="./src/peer-discovery">Peer Discovery</a></li>
+					<li><a href="./src/peer-routing">Peer Routing</a></li>
+					<li><a href="./src/pubsub">Pubsub</a></li>
+					<li><a href="./src/record">Record</a></li>
+					<li><a href="./src/stream-muxer">Stream Muxer</a></li>
+					<li><a href="./src/topology">Topology</a></li>
+					<li><a href="./src/transport">Transport</a></li>
+				</ul>
+				<a href="#origin-repositories" id="origin-repositories" style="color: inherit; text-decoration: none;">
+					<h3>Origin Repositories</h3>
+				</a>
+				<p>For posterity, here are links to the original repositories for each of the interfaces (if they had one).</p>
+				<ul>
+					<li><a href="https://github.com/libp2p/interface-connection">Connection</a></li>
+					<li><a href="https://github.com/libp2p/interface-content-routing">Content Routing</a></li>
+					<li><a href="https://github.com/libp2p/interface-peer-discovery">Peer Discovery</a></li>
+					<li><a href="https://github.com/libp2p/interface-peer-routing">Peer Routing</a></li>
+					<li><a href="https://github.com/libp2p/js-libp2p-pubsub">Pubsub</a></li>
+					<li><a href="https://github.com/libp2p/interface-stream-muxer">Stream Muxer</a></li>
+					<li><a href="https://github.com/libp2p/interface-transport">Transport</a></li>
+				</ul>
+				<a href="#contribute" id="contribute" style="color: inherit; text-decoration: none;">
+					<h2>Contribute</h2>
+				</a>
+				<p>Feel free to join in. All welcome. Open an <a href="https://github.com/libp2p/js-interfaces/issues">issue</a>!</p>
+				<p>This repository falls under the IPFS <a href="https://github.com/ipfs/community/blob/master/code-of-conduct.md">Code of Conduct</a>.</p>
+				<p><a href="https://github.com/ipfs/community/blob/master/contributing.md"><img src="https://cdn.rawgit.com/jbenet/contribute-ipfs-gif/master/img/contribute.gif" alt=""></a></p>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
+				<p>MIT - Protocol Labs 2019</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" tsd-kind-module">
+						<a href="modules/__libp2p_interfaces_.html"> libp2p-interfaces</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_connection_connection_.html">connection/connection</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_connection_index_.html">connection/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_connection_status_.html">connection/status</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_connection_tests_connection_.html">connection/tests/connection</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_connection_tests_index_.html">connection/tests/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_content_routing_types_.html">content-routing/types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_crypto_errors_.html">crypto/errors</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_crypto_tests_index_.html">crypto/tests/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_crypto_types_.html">crypto/types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_peer_discovery_tests_index_.html">peer-discovery/tests/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_errors_.html">pubsub/errors</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_index_.html">pubsub/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_message_index_.html">pubsub/message/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_message_rpc_proto_.html">pubsub/message/rpc.proto</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_message_sign_.html">pubsub/message/sign</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_message_topic_descriptor_proto_.html">pubsub/message/topic-descriptor.proto</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_peer_streams_.html">pubsub/peer-streams</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_signature_policy_.html">pubsub/signature-policy</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_tests_api_.html">pubsub/tests/api</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_tests_emit_self_.html">pubsub/tests/emit-self</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_tests_index_.html">pubsub/tests/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_tests_messages_.html">pubsub/tests/messages</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_tests_multiple_nodes_.html">pubsub/tests/multiple-nodes</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_tests_two_nodes_.html">pubsub/tests/two-nodes</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_tests_utils_.html">pubsub/tests/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_pubsub_utils_.html">pubsub/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_record_tests_index_.html">record/tests/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_record_types_.html">record/types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_stream_muxer_tests_base_test_.html">stream-muxer/tests/base-test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_stream_muxer_tests_close_test_.html">stream-muxer/tests/close-test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_stream_muxer_tests_index_.html">stream-muxer/tests/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_stream_muxer_tests_mega_stress_test_.html">stream-muxer/tests/mega-stress-test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_stream_muxer_tests_spawner_.html">stream-muxer/tests/spawner</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_stream_muxer_tests_stress_test_.html">stream-muxer/tests/stress-test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_stream_muxer_types_.html">stream-muxer/types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_topology_index_.html">topology/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_topology_multicodec_topology_.html">topology/multicodec-topology</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_topology_tests_multicodec_topology_.html">topology/tests/multicodec-topology</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_topology_tests_topology_.html">topology/tests/topology</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_transport_errors_.html">transport/errors</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_transport_tests_dial_test_.html">transport/tests/dial-test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_transport_tests_filter_test_.html">transport/tests/filter-test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_transport_tests_index_.html">transport/tests/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_transport_tests_listen_test_.html">transport/tests/listen-test</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_transport_tests_utils_index_.html">transport/tests/utils/index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_transport_types_.html">transport/types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_utils_peers_.html">utils/peers</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
