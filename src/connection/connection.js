@@ -33,6 +33,10 @@ const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
  * @property {() => Promise<void>} close - close raw connection function.
  * @property {() => MuxedStream[]} getStreams - get streams from muxer function.
  * @property {ConectionStat} stat - metadata of the connection.
+ *
+ * @typedef {Object} StreamData
+ * @property {string} protocol - the protocol used by the stream
+ * @property {Object} [metadata] - metadata of the stream
  */
 
 /**
@@ -180,9 +184,7 @@ class Connection {
    * Add a stream when it is opened to the registry.
    *
    * @param {MuxedStream} muxedStream - a muxed stream
-   * @param {object} properties - the stream properties to be registered
-   * @param {string} properties.protocol - the protocol used by the stream
-   * @param {object} [properties.metadata] - metadata of the stream
+   * @param {StreamData} data - the stream data to be registered
    * @returns {void}
    */
   addStream (muxedStream, { protocol, metadata = {} }) {
