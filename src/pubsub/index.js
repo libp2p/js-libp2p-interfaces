@@ -644,7 +644,7 @@ class PubsubBaseProtocol extends EventEmitter {
    *
    * @override
    * @param {string} topic
-   * @param {Buffer} message
+   * @param {Uint8Array} message
    * @returns {Promise<void>}
    */
   async publish (topic, message) {
