@@ -1,3 +1,12 @@
+## [0.8.1](https://github.com/libp2p/js-interfaces/compare/v0.8.0...v0.8.1) (2020-12-11)
+
+
+### Bug Fixes
+
+* pubsub publish message should be uint8array ([#77](https://github.com/libp2p/js-interfaces/issues/77)) ([5b99e6b](https://github.com/libp2p/js-interfaces/commit/5b99e6b56b10439a82ee88fb4e31fb95c182264f))
+
+
+
 # [0.8.0](https://github.com/libp2p/js-interfaces/compare/v0.7.2...v0.8.0) (2020-12-10)
 
 
