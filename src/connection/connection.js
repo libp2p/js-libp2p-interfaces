@@ -25,6 +25,7 @@ const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
  * @property {string} [encryption] - connection encryption method identifier.
  *
  * @typedef {Object} ConnectionOptions
+ * @property {Object} [rawConn] - raw connection
  * @property {multiaddr} [localAddr] - local multiaddr of the connection if known.
  * @property {multiaddr} remoteAddr - remote multiaddr of the connection.
  * @property {PeerId} localPeer - local peer-id.
@@ -51,13 +52,18 @@ class Connection {
    * @class
    * @param {ConnectionOptions} options
    */
-  constructor ({ localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat }) {
-    validateArgs(localAddr, localPeer, remotePeer, newStream, close, getStreams, stat)
+  constructor ({ rawConn, localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat }) {
+    validateArgs(rawConn, localAddr, localPeer, remotePeer, newStream, close, getStreams, stat)
 
     /**
      * Connection identifier.
      */
     this.id = (parseInt(String(Math.random() * 1e9))).toString(36) + Date.now()
+
+    /**
+     * The raw connection
+     */
+    this.rawConn = rawConn
 
     /**
      * Observed multiaddr of the local peer
@@ -230,7 +236,7 @@ class Connection {
 
 module.exports = Connection
 
-function validateArgs (localAddr, localPeer, remotePeer, newStream, close, getStreams, stat) {
+function validateArgs (rawConn, localAddr, localPeer, remotePeer, newStream, close, getStreams, stat) {
   if (localAddr && !multiaddr.isMultiaddr(localAddr)) {
     throw errCode(new Error('localAddr must be an instance of multiaddr'), 'ERR_INVALID_PARAMETERS')
   }
