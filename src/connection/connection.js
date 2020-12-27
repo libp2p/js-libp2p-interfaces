@@ -34,6 +34,7 @@ const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
  * @property {() => Promise<void>} close - close raw connection function.
  * @property {() => MuxedStream[]} getStreams - get streams from muxer function.
  * @property {ConectionStat} stat - metadata of the connection.
+ * @property {string} transportTag - transport identifier
  *
  * @typedef {Object} StreamData
  * @property {string} protocol - the protocol used by the stream
@@ -52,8 +53,8 @@ class Connection {
    * @class
    * @param {ConnectionOptions} options
    */
-  constructor ({ rawConn, localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat }) {
-    validateArgs(rawConn, localAddr, localPeer, remotePeer, newStream, close, getStreams, stat)
+  constructor ({ rawConn, localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat, transportTag = '' }) {
+    validateArgs(rawConn, localAddr, localPeer, remotePeer, newStream, close, getStreams, stat, transportTag)
 
     /**
      * Connection identifier.
@@ -84,6 +85,8 @@ class Connection {
      * Remote peer id.
      */
     this.remotePeer = remotePeer
+
+    this.transportTag = transportTag
 
     /**
      * Connection metadata.
@@ -236,7 +239,7 @@ class Connection {
 
 module.exports = Connection
 
-function validateArgs (rawConn, localAddr, localPeer, remotePeer, newStream, close, getStreams, stat) {
+function validateArgs (rawConn, localAddr, localPeer, remotePeer, newStream, close, getStreams, stat, transportTag) {
   if (localAddr && !multiaddr.isMultiaddr(localAddr)) {
     throw errCode(new Error('localAddr must be an instance of multiaddr'), 'ERR_INVALID_PARAMETERS')
   }
