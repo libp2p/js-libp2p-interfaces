@@ -117,7 +117,6 @@ Creates a new Connection instance.
 
 `rawConn` is the optional `object` raw connection used by the transport internally.
 `localAddr` is the optional [multiaddr](https://github.com/multiformats/multiaddr) address used by the local peer to reach the remote.
-`localAddr` is the optional [multiaddr](https://github.com/multiformats/multiaddr) address used by the local peer to reach the remote.
 `remoteAddr` is the optional [multiaddr](https://github.com/multiformats/multiaddr) address used to communicate with the remote peer.
 `localPeer` is the [PeerId](https://github.com/libp2p/js-peer-id) of the local peer.
 `remotePeer` is the [PeerId](https://github.com/libp2p/js-peer-id) of the remote peer.
