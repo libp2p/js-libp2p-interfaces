@@ -116,7 +116,7 @@ The `Upgrader` methods take a [MultiaddrConnection](#multiaddrconnection) and wi
   - `timeline<object>`: A hash map of connection time events
     - `open<number>`: The time in ticks the connection was opened
     - `close<number>`: The time in ticks the connection was closed
-  - `transportTag`: An optional string used to identify the transport class the connection uses.
+  - `[transportTag]`: An optional string used to identify the transport class the connection uses.
 
 ### Creating a transport instance
 
