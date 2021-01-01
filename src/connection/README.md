@@ -48,6 +48,7 @@ A valid connection (one that follows this abstraction), must implement the follo
 - type: `Connection`
 ```js
 new Connection({
+  rawConn,
   localAddr,
   remoteAddr,
   localPeer,
@@ -63,9 +64,11 @@ new Connection({
     },
     multiplexer,
     encryption
-  }
+  },
+  transportTag
 })
 ```
+  - `<any> conn.rawConn`
   - `<Multiaddr> conn.localAddr`
   - `<Multiaddr> conn.remoteAddr`
   - `<PeerId> conn.localPeer`
@@ -77,6 +80,7 @@ new Connection({
   - `<void> conn.removeStream(id)`
   - `<Stream> conn.addStream(stream, protocol, metadata)`
   - `Promise<> conn.close()`
+  - `<string> conn.transportTag`
 
 It can be obtained as follows:
 
@@ -84,6 +88,7 @@ It can be obtained as follows:
 const { Connection } = require('interface-connection')
 
 const conn = new Connection({
+  rawConn: maConn.conn,
   localAddr: maConn.localAddr,
   remoteAddr: maConn.remoteAddr,
   localPeer: this._peerId,
@@ -99,16 +104,19 @@ const conn = new Connection({
     },
     multiplexer,
     encryption
-  }
+  },
+  transportTag: maConn.transportTag
 })
 ```
 
 #### Creating a connection instance
 
-- `JavaScript` - `const conn = new Connection({localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, direction, multiplexer, encryption})`
+- `JavaScript` - `const conn = new Connection({rawConn, localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, direction, multiplexer, encryption, transportTag})`
 
 Creates a new Connection instance.
 
+`rawConn` is the optional `object` raw connection used by the transport internally.
+`localAddr` is the optional [multiaddr](https://github.com/multiformats/multiaddr) address used by the local peer to reach the remote.
 `localAddr` is the optional [multiaddr](https://github.com/multiformats/multiaddr) address used by the local peer to reach the remote.
 `remoteAddr` is the optional [multiaddr](https://github.com/multiformats/multiaddr) address used to communicate with the remote peer.
 `localPeer` is the [PeerId](https://github.com/libp2p/js-peer-id) of the local peer.
@@ -122,6 +130,7 @@ Creates a new Connection instance.
 - `multiplexer` is a `string` with the connection multiplexing codec (optional).
 - `encryption` is a `string` with the connection encryption method identifier (optional).
 - `status` is a `string` indicating the overall status of the connection. It is one of [`'open'`, `'closing'`, `'closed'`]
+`transportTag` is an optional string used to identify the transport class the connection uses.
 
 #### Create a new stream
 

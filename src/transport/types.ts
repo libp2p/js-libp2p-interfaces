@@ -68,4 +68,5 @@ export type MultiaddrConnection = {
   remoteAddr: Multiaddr;
   localAddr?: Multiaddr;
   timeline: MultiaddrConnectionTimeline;
+  transportTag?: string;
 }
