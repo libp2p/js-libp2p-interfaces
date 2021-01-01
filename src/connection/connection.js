@@ -34,7 +34,7 @@ const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
  * @property {() => Promise<void>} close - close raw connection function.
  * @property {() => MuxedStream[]} getStreams - get streams from muxer function.
  * @property {ConectionStat} stat - metadata of the connection.
- * @property {string} transportTag - transport identifier
+ * @property {string} [transportTag] - transport identifier
  *
  * @typedef {Object} StreamData
  * @property {string} protocol - the protocol used by the stream
