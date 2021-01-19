@@ -1,6 +1,8 @@
 'use strict'
 
-const { EventEmitter } = require('events')
+/** @typedef {import('../types').EventEmitterFactory} Events */
+/** @type Events */
+const EventEmitter = require('events')
 
 const lp = require('it-length-prefixed')
 
