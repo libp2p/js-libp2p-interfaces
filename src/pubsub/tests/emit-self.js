@@ -2,8 +2,7 @@
 /* eslint-env mocha */
 'use strict'
 
-const chai = require('chai')
-const { expect } = chai
+const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
 
 const uint8ArrayFromString = require('uint8arrays/from-string')

@@ -3,8 +3,7 @@
 /* eslint max-nested-callbacks: ["error", 6] */
 'use strict'
 
-const chai = require('chai')
-const { expect } = chai
+const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
 
 const delay = require('delay')

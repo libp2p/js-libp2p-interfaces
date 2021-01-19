@@ -1,7 +1,7 @@
 // @ts-nocheck interface tests
 'use strict'
 
-const { expect } = require('chai')
+const { expect } = require('aegir/utils/chai')
 
 exports.first = (map) => map.values().next().value
 
