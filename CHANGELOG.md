@@ -1,3 +1,12 @@
+## [0.8.2](https://github.com/libp2p/js-interfaces/compare/v0.8.1...v0.8.2) (2021-01-20)
+
+
+### Bug Fixes
+
+* event emitter types with local types ([#80](https://github.com/libp2p/js-interfaces/issues/80)) ([ca52077](https://github.com/libp2p/js-interfaces/commit/ca520775eb26f5ed501375fdb24ba698c9a8c8c8))
+
+
+
 ## [0.8.1](https://github.com/libp2p/js-interfaces/compare/v0.8.0...v0.8.1) (2020-12-11)
 
 
