@@ -111,10 +111,10 @@ exports.normalizeInRpcMessage = (message, peerId) => {
  */
 exports.normalizeOutRpcMessage = (message) => {
   const m = Object.assign({}, message)
-  if (typeof message.from === 'string' || message.from instanceof String) {
+  if (typeof message.from === 'string') {
     m.from = uint8ArrayFromString(message.from, 'base58btc')
   }
-  if (typeof message.data === 'string' || message.data instanceof String) {
+  if (typeof message.data === 'string') {
     m.data = uint8ArrayFromString(message.data)
   }
   return m

@@ -6,8 +6,6 @@ const EventEmitter = require('events')
 
 const lp = require('it-length-prefixed')
 
-/** @type {typeof import('it-pushable').default} */
-// @ts-ignore
 const pushable = require('it-pushable')
 const { pipe } = require('it-pipe')
 const { source: abortable } = require('abortable-iterator')
