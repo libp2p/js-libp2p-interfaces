@@ -4,7 +4,7 @@ const { expect } = require('chai')
 const pair = require('it-pair/duplex')
 const { pipe } = require('it-pipe')
 
-const pLimit = require('p-limit').default
+const pLimit = require('p-limit')
 const { collect, tap, consume } = require('streaming-iterables')
 
 module.exports = async (Muxer, nStreams, nMsg, limit) => {
