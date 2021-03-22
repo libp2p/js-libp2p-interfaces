@@ -1,3 +1,12 @@
+## [0.8.4](https://github.com/libp2p/js-interfaces/compare/v0.8.3...v0.8.4) (2021-03-22)
+
+
+### Bug Fixes
+
+* specify connection direction ([#86](https://github.com/libp2p/js-interfaces/issues/86)) ([3b960d5](https://github.com/libp2p/js-interfaces/commit/3b960d516f70f7e198574a736cb09000ddd7a94c))
+
+
+
 ## [0.8.3](https://github.com/libp2p/js-interfaces/compare/v0.8.2...v0.8.3) (2021-01-26)
 
 
