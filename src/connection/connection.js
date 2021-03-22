@@ -19,7 +19,7 @@ const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
  * @property {number} [close]
  *
  * @typedef {Object} ConectionStat
- * @property {string} direction - connection establishment direction ("inbound" or "outbound").
+ * @property {'inbound' | 'outbound'} direction - connection establishment direction
  * @property {Timeline} timeline - connection relevant events timestamp.
  * @property {string} [multiplexer] - connection multiplexing identifier.
  * @property {string} [encryption] - connection encryption method identifier.
