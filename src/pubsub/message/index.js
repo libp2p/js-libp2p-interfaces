@@ -1,6 +1,6 @@
-// @ts-nocheck
 'use strict'
 
+// @ts-ignore protons not typed
 const protons = require('protons')
 
 const rpcProto = protons(require('./rpc.proto.js'))

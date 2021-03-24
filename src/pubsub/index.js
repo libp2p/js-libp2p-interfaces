@@ -11,7 +11,7 @@ const { pipe } = require('it-pipe')
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
 
-const { rpc, RPC, Message, SubOpts } = require('./message') // eslint-disable-line no-unused-vars
+const message = require('./message')
 const PeerStreams = require('./peer-streams')
 const { SignaturePolicy } = require('./signature-policy')
 const utils = require('./utils')
@@ -27,9 +27,9 @@ const {
  * @typedef {import('bl')} BufferList
  * @typedef {import('../stream-muxer/types').MuxedStream} MuxedStream
  * @typedef {import('../connection/connection')} Connection
- * @typedef {RPC} RPCM
- * @typedef {SubOpts} RPCSubOpts
- * @typedef {Message} RPCMessage
+ * @typedef {import('./message/types').RPC} RPC
+ * @typedef {import('./message/types').SubOpts} RPCSubOpts
+ * @typedef {import('./message/types').Message} RPCMessage
  * @typedef {import('./signature-policy').SignaturePolicyType} SignaturePolicyType
  */
 
@@ -372,7 +372,7 @@ class PubsubBaseProtocol extends EventEmitter {
    *
    * @param {string} idB58Str
    * @param {PeerStreams} peerStreams
-   * @param {RPCM} rpc
+   * @param {RPC} rpc
    * @returns {boolean}
    */
   _processRpc (idB58Str, peerStreams, rpc) {
@@ -394,7 +394,7 @@ class PubsubBaseProtocol extends EventEmitter {
     }
 
     if (msgs.length) {
-      // @ts-ignore RPC message
+      // @ts-ignore RPC message is modified
       msgs.forEach((message) => {
         if (!(this.canRelayMessage || message.topicIDs.some((/** @type {string} */ topic) => this.subscriptions.has(topic)))) {
           this.log('received message we didn\'t subscribe to. Dropping.')
@@ -505,28 +505,28 @@ class PubsubBaseProtocol extends EventEmitter {
    * This can be override to use a custom router protobuf.
    *
    * @param {Uint8Array} bytes
-   * @returns {RPCM}
+   * @returns {RPC}
    */
   _decodeRpc (bytes) {
-    return rpc.RPC.decode(bytes)
+    return message.rpc.RPC.decode(bytes)
   }
 
   /**
    * Encode RPC object into a Uint8Array.
    * This can be override to use a custom router protobuf.
    *
-   * @param {RPCM} rpc
+   * @param {RPC} rpc
    * @returns {Uint8Array}
    */
   _encodeRpc (rpc) {
-    return rpc.RPC.encode(rpc)
+    return message.rpc.RPC.encode(rpc)
   }
 
   /**
    * Send an rpc object to a peer
    *
    * @param {string} id - peer id
-   * @param {RPCM} rpc
+   * @param {RPC} rpc
    * @returns {void}
    */
   _sendRpc (id, rpc) {
@@ -744,7 +744,7 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 }
 
-PubsubBaseProtocol.message = { rpc }
+PubsubBaseProtocol.message = message
 PubsubBaseProtocol.utils = utils
 PubsubBaseProtocol.SignaturePolicy = SignaturePolicy
 
