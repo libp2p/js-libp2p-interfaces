@@ -1,5 +1,10 @@
 'use strict'
 
+const debug = require('debug')
+const log = Object.assign(debug('libp2p-pubsub:peer-streams'), {
+  error: debug('libp2p-pubsub:peer-streams:err')
+})
+
 /** @typedef {import('../types').EventEmitterFactory} Events */
 /** @type Events */
 const EventEmitter = require('events')
@@ -10,10 +15,6 @@ const pushable = require('it-pushable')
 const { pipe } = require('it-pipe')
 const { source: abortable } = require('abortable-iterator')
 const AbortController = require('abort-controller').default
-const debug = require('debug')
-
-const log = debug('libp2p-pubsub:peer-streams')
-log.error = debug('libp2p-pubsub:peer-streams:error')
 
 /**
  * @typedef {import('../stream-muxer/types').MuxedStream} MuxedStream
@@ -168,7 +169,7 @@ class PeerStreams extends EventEmitter {
       this.outboundStream,
       lp.encode(),
       this._rawOutboundStream
-    ).catch(err => {
+    ).catch(/** @param {Error} err */ err => {
       log.error(err)
     })
 

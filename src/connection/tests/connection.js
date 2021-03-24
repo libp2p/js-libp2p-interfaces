@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-env mocha */
 
 'use strict'

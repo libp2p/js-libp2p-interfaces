@@ -10,10 +10,8 @@ const { pipe } = require('it-pipe')
 
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
-/**
- * @type {typeof import('./message')}
- */
-const message = require('./message')
+
+const { rpc, RPC, Message, SubOpts } = require('./message') // eslint-disable-line no-unused-vars
 const PeerStreams = require('./peer-streams')
 const { SignaturePolicy } = require('./signature-policy')
 const utils = require('./utils')
@@ -29,9 +27,9 @@ const {
  * @typedef {import('bl')} BufferList
  * @typedef {import('../stream-muxer/types').MuxedStream} MuxedStream
  * @typedef {import('../connection/connection')} Connection
- * @typedef {import('./message').RPC} RPC
- * @typedef {import('./message').SubOpts} RPCSubOpts
- * @typedef {import('./message').Message} RPCMessage
+ * @typedef {RPC} RPCM
+ * @typedef {SubOpts} RPCSubOpts
+ * @typedef {Message} RPCMessage
  * @typedef {import('./signature-policy').SignaturePolicyType} SignaturePolicyType
  */
 
@@ -44,6 +42,16 @@ const {
  * @property {Uint8Array} data
  * @property {Uint8Array} [signature]
  * @property {Uint8Array} [key]
+ *
+ * @typedef {Object} PubsubProperties
+ * @property {string} debugName - log namespace
+ * @property {Array<string>|string} multicodecs - protocol identificers to connect
+ * @property {Libp2p} libp2p
+ *
+ * @typedef {Object} PubsubOptions
+ * @property {SignaturePolicyType} [globalSignaturePolicy = SignaturePolicy.StrictSign] - defines how signatures should be handled
+ * @property {boolean} [canRelayMessage = false] - if can relay messages not subscribed
+ * @property {boolean} [emitSelf = false] - if publish should emit to self, if subscribed
  */
 
 /**
@@ -52,13 +60,7 @@ const {
  */
 class PubsubBaseProtocol extends EventEmitter {
   /**
-   * @param {Object} props
-   * @param {string} props.debugName - log namespace
-   * @param {Array<string>|string} props.multicodecs - protocol identificers to connect
-   * @param {Libp2p} props.libp2p
-   * @param {SignaturePolicyType} [props.globalSignaturePolicy = SignaturePolicy.StrictSign] - defines how signatures should be handled
-   * @param {boolean} [props.canRelayMessage = false] - if can relay messages not subscribed
-   * @param {boolean} [props.emitSelf = false] - if publish should emit to self, if subscribed
+   * @param {PubsubProperties & PubsubOptions} props
    * @abstract
    */
   constructor ({
@@ -83,8 +85,9 @@ class PubsubBaseProtocol extends EventEmitter {
 
     super()
 
-    this.log = debug(debugName)
-    this.log.err = debug(`${debugName}:error`)
+    this.log = Object.assign(debug(debugName), {
+      err: debug(`${debugName}:error`)
+    })
 
     /**
      * @type {Array<string>}
@@ -122,7 +125,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
     // validate signature policy
     if (!SignaturePolicy[globalSignaturePolicy]) {
-      throw errcode(new Error('Invalid global signature policy'), codes.ERR_INVALID_SIGUATURE_POLICY)
+      throw errcode(new Error('Invalid global signature policy'), codes.ERR_INVALID_SIGNATURE_POLICY)
     }
 
     /**
@@ -369,7 +372,7 @@ class PubsubBaseProtocol extends EventEmitter {
    *
    * @param {string} idB58Str
    * @param {PeerStreams} peerStreams
-   * @param {RPC} rpc
+   * @param {RPCM} rpc
    * @returns {boolean}
    */
   _processRpc (idB58Str, peerStreams, rpc) {
@@ -379,7 +382,9 @@ class PubsubBaseProtocol extends EventEmitter {
 
     if (subs.length) {
       // update peer subscriptions
-      subs.forEach((subOpt) => this._processRpcSubOpt(idB58Str, subOpt))
+      subs.forEach((/** @type {RPCSubOpts} */ subOpt) => {
+        this._processRpcSubOpt(idB58Str, subOpt)
+      })
       this.emit('pubsub:subscription-change', peerStreams.id, subs)
     }
 
@@ -389,8 +394,9 @@ class PubsubBaseProtocol extends EventEmitter {
     }
 
     if (msgs.length) {
-      msgs.forEach(message => {
-        if (!(this.canRelayMessage || message.topicIDs.some((topic) => this.subscriptions.has(topic)))) {
+      // @ts-ignore RPC message
+      msgs.forEach((message) => {
+        if (!(this.canRelayMessage || message.topicIDs.some((/** @type {string} */ topic) => this.subscriptions.has(topic)))) {
           this.log('received message we didn\'t subscribe to. Dropping.')
           return
         }
@@ -499,28 +505,28 @@ class PubsubBaseProtocol extends EventEmitter {
    * This can be override to use a custom router protobuf.
    *
    * @param {Uint8Array} bytes
-   * @returns {RPC}
+   * @returns {RPCM}
    */
   _decodeRpc (bytes) {
-    return message.rpc.RPC.decode(bytes)
+    return rpc.RPC.decode(bytes)
   }
 
   /**
    * Encode RPC object into a Uint8Array.
    * This can be override to use a custom router protobuf.
    *
-   * @param {RPC} rpc
+   * @param {RPCM} rpc
    * @returns {Uint8Array}
    */
   _encodeRpc (rpc) {
-    return message.rpc.RPC.encode(rpc)
+    return rpc.RPC.encode(rpc)
   }
 
   /**
    * Send an rpc object to a peer
    *
    * @param {string} id - peer id
-   * @param {RPC} rpc
+   * @param {RPCM} rpc
    * @returns {void}
    */
   _sendRpc (id, rpc) {
@@ -589,7 +595,7 @@ class PubsubBaseProtocol extends EventEmitter {
     for (const topic of message.topicIDs) {
       const validatorFn = this.topicValidators.get(topic)
       if (!validatorFn) {
-        continue
+        continue // eslint-disable-line 
       }
       await validatorFn(topic, message)
     }
@@ -738,7 +744,7 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 }
 
-PubsubBaseProtocol.message = message
+PubsubBaseProtocol.message = { rpc }
 PubsubBaseProtocol.utils = utils
 PubsubBaseProtocol.SignaturePolicy = SignaturePolicy
 

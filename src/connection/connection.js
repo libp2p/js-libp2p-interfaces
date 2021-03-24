@@ -230,6 +230,15 @@ class Connection {
 
 module.exports = Connection
 
+/**
+ * @param {multiaddr|undefined} localAddr
+ * @param {PeerId} localPeer
+ * @param {PeerId} remotePeer
+ * @param {(protocols: string | string[]) => Promise<{ stream: import("../stream-muxer/types").MuxedStream; protocol: string; }>} newStream
+ * @param {() => Promise<void>} close
+ * @param {() => import("../stream-muxer/types").MuxedStream[]} getStreams
+ * @param {{ direction: any; timeline: any; multiplexer?: string | undefined; encryption?: string | undefined; }} stat
+ */
 function validateArgs (localAddr, localPeer, remotePeer, newStream, close, getStreams, stat) {
   if (localAddr && !multiaddr.isMultiaddr(localAddr)) {
     throw errCode(new Error('localAddr must be an instance of multiaddr'), 'ERR_INVALID_PARAMETERS')

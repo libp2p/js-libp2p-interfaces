@@ -62,6 +62,9 @@ class Topology {
     return Boolean(other && other[topologySymbol])
   }
 
+  /**
+   * @param {any} registrar
+   */
   set registrar (registrar) { // eslint-disable-line
     this._registrar = registrar
   }
