@@ -48,4 +48,4 @@ export interface MuxedStream extends AsyncIterable<Uint8Array | BufferList> {
   id: string;
 }
 
-export type Sink = (source: Uint8Array) => Promise<Uint8Array>;
+export type Sink = (source: Uint8Array) => Promise<void>;
