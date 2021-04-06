@@ -1,3 +1,5 @@
+export = ContentRouting;
+
 import PeerId from 'peer-id'
 import Multiaddr from 'multiaddr'
 import CID from 'cids'

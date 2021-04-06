@@ -43,7 +43,7 @@ export interface MuxedStream extends AsyncIterable<Uint8Array | BufferList> {
   abort: () => void;
   reset: () => void;
   sink: Sink;
-  source: () => AsyncIterable<Uint8Array | BufferList>;
+  source: AsyncIterable<Uint8Array | BufferList>;
   timeline: MuxedTimeline;
   id: string;
 }

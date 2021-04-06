@@ -1,3 +1,5 @@
+export = PeerRouting;
+
 import PeerId from 'peer-id'
 import Multiaddr from 'multiaddr'
 

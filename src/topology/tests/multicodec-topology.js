@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-nocheck interface tests
 /* eslint-env mocha */
 
 'use strict'

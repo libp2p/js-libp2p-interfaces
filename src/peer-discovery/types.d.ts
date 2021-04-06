@@ -1,3 +1,5 @@
+export = PeerDiscovery;
+
 import events from 'events';
 
 declare class PeerDiscovery extends events.EventEmitter {

@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-nocheck interface tests
 'use strict'
 
 const { expect } = require('chai')
