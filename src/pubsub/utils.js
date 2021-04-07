@@ -8,6 +8,12 @@ const PeerId = require('peer-id')
 const multihash = require('multihashes')
 
 /**
+ * @typedef {import('./message/rpc').RPC.IMessage} IMessage
+ * @typedef {import('./message/rpc').RPC.Message} Message
+ * @typedef {import('.').InMessage} NormalizedIMessage
+ */
+
+/**
  * Generatea random sequence number.
  *
  * @returns {Uint8Array}
@@ -94,11 +100,13 @@ const ensureArray = (maybeArray) => {
  * Ensures `message.from` is base58 encoded
  *
  * @template {{from?:any}} T
- * @param {T & {from?:string, receivedFrom:string}} message
+ * @param {T & IMessage} message
  * @param {string} [peerId]
- * @returns {T & {from?: string, peerId?: string }}
+ * @returns {NormalizedIMessage}
  */
 const normalizeInRpcMessage = (message, peerId) => {
+  /** @type {NormalizedIMessage} */
+  // @ts-ignore receivedFrom not yet defined
   const m = Object.assign({}, message)
   if (message.from instanceof Uint8Array) {
     m.from = uint8ArrayToString(message.from, 'base58btc')
@@ -112,10 +120,12 @@ const normalizeInRpcMessage = (message, peerId) => {
 /**
  * @template {{from?:any, data?:any}} T
  *
- * @param {T} message
- * @returns {T & {from?: Uint8Array, data?: Uint8Array}}
+ * @param {T & NormalizedIMessage} message
+ * @returns {Message}
  */
 const normalizeOutRpcMessage = (message) => {
+  /** @type {Message} */
+  // @ts-ignore from not yet defined
   const m = Object.assign({}, message)
   if (typeof message.from === 'string') {
     m.from = uint8ArrayFromString(message.from, 'base58btc')

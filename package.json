@@ -24,7 +24,14 @@
   "scripts": {
     "prepare": "aegir build --no-bundle",
     "lint": "aegir lint",
-    "build": "aegir build",
+    "build": "npm run build:proto && npm run build:proto-types && npm run build:types",
+    "build:types": "aegir build --no-bundle",
+    "build:proto": "npm run build:proto:rpc && npm run build:proto:topic-descriptor",
+    "build:proto:rpc": "pbjs -t static-module -w commonjs --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/pubsub/message/rpc.js ./src/pubsub/message/rpc.proto",
+    "build:proto:topic-descriptor": "pbjs -t static-module -w commonjs --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/pubsub/message/topic-descriptor.js ./src/pubsub/message/topic-descriptor.proto",
+    "build:proto-types": "npm run build:proto-types:rpc && npm run build:proto-types:topic-descriptor",
+    "build:proto-types:rpc": "pbts -o src/pubsub/message/rpc.d.ts src/pubsub/message/rpc.js",
+    "build:proto-types:topic-descriptor": "pbts -o src/pubsub/message/topic-descriptor.d.ts src/pubsub/message/topic-descriptor.js",
     "test": "aegir test",
     "test:node": "aegir test --target node",
     "test:browser": "aegir test --target browser",
@@ -47,7 +54,7 @@
   },
   "homepage": "https://github.com/libp2p/js-interfaces#readme",
   "dependencies": {
-    "@types/bl": "4.1.0",
+    "@types/bl": "^4.1.0",
     "abort-controller": "^3.0.0",
     "abortable-iterator": "^3.0.0",
     "chai": "^4.3.4",
@@ -71,7 +78,7 @@
     "p-limit": "^3.1.0",
     "p-wait-for": "^3.2.0",
     "peer-id": "^0.14.2",
-    "protons": "^2.0.0",
+    "protobufjs": "^6.10.2",
     "sinon": "^10.0.0",
     "streaming-iterables": "^5.0.4",
     "uint8arrays": "^2.1.3"

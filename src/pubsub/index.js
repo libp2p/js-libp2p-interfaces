@@ -11,7 +11,7 @@ const { pipe } = require('it-pipe')
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
 
-const message = require('./message')
+const { RPC } = require('./message/rpc')
 const PeerStreams = require('./peer-streams')
 const { SignaturePolicy } = require('./signature-policy')
 const utils = require('./utils')
@@ -27,10 +27,10 @@ const {
  * @typedef {import('bl')} BufferList
  * @typedef {import('../stream-muxer/types').MuxedStream} MuxedStream
  * @typedef {import('../connection/connection')} Connection
- * @typedef {import('./message/types').RPC} RPC
- * @typedef {import('./message/types').SubOpts} RPCSubOpts
- * @typedef {import('./message/types').Message} RPCMessage
  * @typedef {import('./signature-policy').SignaturePolicyType} SignaturePolicyType
+ * @typedef {import('./message/rpc').IRPC} IRPC
+ * @typedef {import('./message/rpc').RPC.SubOpts} RPCSubOpts
+ * @typedef {import('./message/rpc').RPC.Message} RPCMessage
  */
 
 /**
@@ -382,7 +382,7 @@ class PubsubBaseProtocol extends EventEmitter {
 
     if (subs.length) {
       // update peer subscriptions
-      subs.forEach((/** @type {RPCSubOpts} */ subOpt) => {
+      subs.forEach((subOpt) => {
         this._processRpcSubOpt(idB58Str, subOpt)
       })
       this.emit('pubsub:subscription-change', peerStreams.id, subs)
@@ -396,7 +396,7 @@ class PubsubBaseProtocol extends EventEmitter {
     if (msgs.length) {
       // @ts-ignore RPC message is modified
       msgs.forEach((message) => {
-        if (!(this.canRelayMessage || message.topicIDs.some((/** @type {string} */ topic) => this.subscriptions.has(topic)))) {
+        if (!(this.canRelayMessage || (message.topicIDs && message.topicIDs.some((topic) => this.subscriptions.has(topic))))) {
           this.log('received message we didn\'t subscribe to. Dropping.')
           return
         }
@@ -411,10 +411,14 @@ class PubsubBaseProtocol extends EventEmitter {
    * Handles a subscription change from a peer
    *
    * @param {string} id
-   * @param {RPCSubOpts} subOpt
+   * @param {RPC.ISubOpts} subOpt
    */
   _processRpcSubOpt (id, subOpt) {
     const t = subOpt.topicID
+
+    if (!t) {
+      return
+    }
 
     let topicSet = this.topics.get(t)
     if (!topicSet) {
@@ -473,13 +477,14 @@ class PubsubBaseProtocol extends EventEmitter {
    * The default msgID implementation
    * Child class can override this.
    *
-   * @param {RPCMessage} msg - the message object
+   * @param {InMessage} msg - the message object
    * @returns {Uint8Array} message id as bytes
    */
   getMsgId (msg) {
     const signaturePolicy = this.globalSignaturePolicy
     switch (signaturePolicy) {
       case SignaturePolicy.StrictSign:
+        // @ts-ignore seqno is optional in protobuf definition but it will exist
         return utils.msgId(msg.from, msg.seqno)
       case SignaturePolicy.StrictNoSign:
         return utils.noSignMsgId(msg.data)
@@ -508,25 +513,25 @@ class PubsubBaseProtocol extends EventEmitter {
    * @returns {RPC}
    */
   _decodeRpc (bytes) {
-    return message.rpc.RPC.decode(bytes)
+    return RPC.decode(bytes)
   }
 
   /**
    * Encode RPC object into a Uint8Array.
    * This can be override to use a custom router protobuf.
    *
-   * @param {RPC} rpc
+   * @param {IRPC} rpc
    * @returns {Uint8Array}
    */
   _encodeRpc (rpc) {
-    return message.rpc.RPC.encode(rpc)
+    return RPC.encode(rpc).finish()
   }
 
   /**
    * Send an rpc object to a peer
    *
    * @param {string} id - peer id
-   * @param {RPC} rpc
+   * @param {IRPC} rpc
    * @returns {void}
    */
   _sendRpc (id, rpc) {
@@ -592,12 +597,12 @@ class PubsubBaseProtocol extends EventEmitter {
       default:
         throw errcode(new Error('Cannot validate message: unhandled signature policy: ' + signaturePolicy), codes.ERR_UNHANDLED_SIGNATURE_POLICY)
     }
+
     for (const topic of message.topicIDs) {
       const validatorFn = this.topicValidators.get(topic)
-      if (!validatorFn) {
-        continue // eslint-disable-line 
+      if (validatorFn) {
+        await validatorFn(topic, message)
       }
-      await validatorFn(topic, message)
     }
   }
 
@@ -606,8 +611,8 @@ class PubsubBaseProtocol extends EventEmitter {
    * Should be used by the routers to create the message to send.
    *
    * @protected
-   * @param {RPCMessage} message
-   * @returns {Promise<RPCMessage>}
+   * @param {InMessage} message
+   * @returns {Promise<InMessage>}
    */
   _buildMessage (message) {
     const signaturePolicy = this.globalSignaturePolicy
@@ -617,7 +622,7 @@ class PubsubBaseProtocol extends EventEmitter {
         message.seqno = utils.randomSeqno()
         return signMessage(this.peerId, utils.normalizeOutRpcMessage(message))
       case SignaturePolicy.StrictNoSign:
-        return message
+        return Promise.resolve(message)
       default:
         throw errcode(new Error('Cannot build message: unhandled signature policy: ' + signaturePolicy), codes.ERR_UNHANDLED_SIGNATURE_POLICY)
     }
@@ -663,7 +668,7 @@ class PubsubBaseProtocol extends EventEmitter {
     this.log('publish', topic, message)
 
     const from = this.peerId.toB58String()
-    let msgObject = {
+    const msgObject = {
       receivedFrom: from,
       data: message,
       topicIDs: [topic]
@@ -671,13 +676,14 @@ class PubsubBaseProtocol extends EventEmitter {
 
     // ensure that the message follows the signature policy
     const outMsg = await this._buildMessage(msgObject)
-    msgObject = utils.normalizeInRpcMessage(outMsg)
+    // @ts-ignore different type as from is converted
+    const msg = utils.normalizeInRpcMessage(outMsg)
 
     // Emit to self if I'm interested and emitSelf enabled
-    this.emitSelf && this._emitMessage(msgObject)
+    this.emitSelf && this._emitMessage(msg)
 
     // send to all the other peers
-    await this._publish(msgObject)
+    await this._publish(msg)
   }
 
   /**
@@ -685,7 +691,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * For example, a Floodsub implementation might simply publish each message to each topic for every peer
    *
    * @abstract
-   * @param {InMessage} message
+   * @param {InMessage|RPCMessage} message
    * @returns {Promise<void>}
    *
    */
@@ -744,7 +750,6 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 }
 
-PubsubBaseProtocol.message = message
 PubsubBaseProtocol.utils = utils
 PubsubBaseProtocol.SignaturePolicy = SignaturePolicy
 

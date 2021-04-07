@@ -1,10 +1,10 @@
-'use strict'
-module.exports = `
+syntax = "proto3";
+
 // topicCID = cid(merkledag_protobuf(topicDescriptor)); (not the topic.name)
 message TopicDescriptor {
   optional string name = 1;
   optional AuthOpts auth = 2;
-  optional EncOpts enc = 2;
+  optional EncOpts enc = 3;
 
   message AuthOpts {
     optional AuthMode mode = 1;
@@ -27,4 +27,4 @@ message TopicDescriptor {
       WOT = 2; // web of trust, certificates can allow publisher set to grow
     }
   }
-}`
+}

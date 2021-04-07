@@ -5,7 +5,7 @@ const DuplexPair = require('it-pair/duplex')
 const PeerId = require('peer-id')
 
 const PubsubBaseProtocol = require('../../../src/pubsub')
-const { message } = require('../../../src/pubsub')
+const { RPC } = require('../../../src/pubsub/message/rpc')
 
 exports.createPeerId = async () => {
   const peerId = await PeerId.create({ bits: 1024 })
@@ -28,11 +28,11 @@ class PubsubImplementation extends PubsubBaseProtocol {
   }
 
   _decodeRpc (bytes) {
-    return message.rpc.RPC.decode(bytes)
+    return RPC.decode(bytes)
   }
 
   _encodeRpc (rpc) {
-    return message.rpc.RPC.encode(rpc)
+    return RPC.encode(rpc).finish()
   }
 }
 
