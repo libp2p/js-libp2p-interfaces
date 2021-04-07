@@ -56,6 +56,9 @@ class MulticodecTopology extends Topology {
     return Boolean(other && other[multicodecTopologySymbol])
   }
 
+  /**
+   * @param {any} registrar
+   */
   set registrar (registrar) { // eslint-disable-line
     this._registrar = registrar
     this._registrar.peerStore.on('change:protocols', this._onProtocolChange)

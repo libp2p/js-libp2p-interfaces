@@ -1,11 +1,11 @@
 'use strict'
 
+// @ts-ignore libp2p crypto has no types
 const randomBytes = require('libp2p-crypto/src/random-bytes')
 const uint8ArrayToString = require('uint8arrays/to-string')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const PeerId = require('peer-id')
 const multihash = require('multihashes')
-exports = module.exports
 
 /**
  * Generatea random sequence number.
@@ -13,7 +13,7 @@ exports = module.exports
  * @returns {Uint8Array}
  * @private
  */
-exports.randomSeqno = () => {
+const randomSeqno = () => {
   return randomBytes(8)
 }
 
@@ -25,7 +25,7 @@ exports.randomSeqno = () => {
  * @returns {Uint8Array}
  * @private
  */
-exports.msgId = (from, seqno) => {
+const msgId = (from, seqno) => {
   const fromBytes = PeerId.createFromB58String(from).id
   const msgId = new Uint8Array(fromBytes.length + seqno.length)
   msgId.set(fromBytes, 0)
@@ -40,22 +40,28 @@ exports.msgId = (from, seqno) => {
  * @returns {Uint8Array}
  * @private
  */
-exports.noSignMsgId = (data) => multihash.encode(data, 'sha2-256')
+const noSignMsgId = (data) => multihash.encode(data, 'sha2-256')
 
 /**
  * Check if any member of the first set is also a member
  * of the second set.
  *
- * @param {Set|Array} a
- * @param {Set|Array} b
+ * @param {Set<number>|Array<number>} a
+ * @param {Set<number>|Array<number>} b
  * @returns {boolean}
  * @private
  */
-exports.anyMatch = (a, b) => {
+const anyMatch = (a, b) => {
   let bHas
   if (Array.isArray(b)) {
+    /**
+     * @param {number} val
+     */
     bHas = (val) => b.indexOf(val) > -1
   } else {
+    /**
+     * @param {number} val
+     */
     bHas = (val) => b.has(val)
   }
 
@@ -76,7 +82,7 @@ exports.anyMatch = (a, b) => {
  * @returns {T[]}
  * @private
  */
-exports.ensureArray = (maybeArray) => {
+const ensureArray = (maybeArray) => {
   if (!Array.isArray(maybeArray)) {
     return [maybeArray]
   }
@@ -92,7 +98,7 @@ exports.ensureArray = (maybeArray) => {
  * @param {string} [peerId]
  * @returns {T & {from?: string, peerId?: string }}
  */
-exports.normalizeInRpcMessage = (message, peerId) => {
+const normalizeInRpcMessage = (message, peerId) => {
   const m = Object.assign({}, message)
   if (message.from instanceof Uint8Array) {
     m.from = uint8ArrayToString(message.from, 'base58btc')
@@ -109,7 +115,7 @@ exports.normalizeInRpcMessage = (message, peerId) => {
  * @param {T} message
  * @returns {T & {from?: Uint8Array, data?: Uint8Array}}
  */
-exports.normalizeOutRpcMessage = (message) => {
+const normalizeOutRpcMessage = (message) => {
   const m = Object.assign({}, message)
   if (typeof message.from === 'string') {
     m.from = uint8ArrayFromString(message.from, 'base58btc')
@@ -118,4 +124,14 @@ exports.normalizeOutRpcMessage = (message) => {
     m.data = uint8ArrayFromString(message.data)
   }
   return m
+}
+
+module.exports = {
+  randomSeqno,
+  msgId,
+  noSignMsgId,
+  anyMatch,
+  ensureArray,
+  normalizeInRpcMessage,
+  normalizeOutRpcMessage
 }

@@ -1,3 +1,4 @@
+import BufferList from 'bl'
 import events from 'events'
 import Multiaddr from 'multiaddr'
 import Connection from '../connection/connection'
@@ -62,7 +63,7 @@ export type MultiaddrConnectionTimeline = {
 
 export type MultiaddrConnection = {
   sink: Sink;
-  source: () => AsyncIterable<Uint8Array>;
+  source: AsyncIterable<Uint8Array | BufferList>;
   close: (err?: Error) => Promise<void>;
   conn: unknown;
   remoteAddr: Multiaddr;

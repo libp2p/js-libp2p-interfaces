@@ -1,3 +1,4 @@
+// @ts-nocheck interface tests
 /* eslint max-nested-callbacks: ["error", 8] */
 /* eslint-env mocha */
 'use strict'
