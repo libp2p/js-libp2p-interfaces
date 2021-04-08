@@ -2,7 +2,7 @@
 
 const { EventEmitter } = require('events')
 
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 const PeerId = require('peer-id')
 
 /**
@@ -41,7 +41,7 @@ class MockDiscovery extends EventEmitter {
     this._timer = setTimeout(() => {
       this.emit('peer', {
         id: peerId,
-        multiaddrs: [multiaddr('/ip4/127.0.0.1/tcp/8000')]
+        multiaddrs: [new Multiaddr('/ip4/127.0.0.1/tcp/8000')]
       })
     }, this.options.discoveryDelay || 1000)
   }

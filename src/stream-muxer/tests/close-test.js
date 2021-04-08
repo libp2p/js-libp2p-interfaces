@@ -7,12 +7,12 @@ const pair = require('it-pair/duplex')
 const { pipe } = require('it-pipe')
 const { consume } = require('streaming-iterables')
 const Tcp = require('libp2p-tcp')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 const { source: abortable } = require('abortable-iterator')
 const AbortController = require('abort-controller').default
 const uint8arrayFromString = require('uint8arrays/from-string')
 
-const mh = multiaddr('/ip4/127.0.0.1/tcp/0')
+const mh = new Multiaddr('/ip4/127.0.0.1/tcp/0')
 
 function pause (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))

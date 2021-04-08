@@ -5,7 +5,7 @@ const tests = require('../../src/connection/tests')
 const { Connection } = require('../../src/connection')
 const peers = require('../../src/utils/peers')
 const PeerId = require('peer-id')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 const pair = require('it-pair')
 
 describe('compliance tests', () => {
@@ -17,8 +17,8 @@ describe('compliance tests', () => {
      * @param {*} properties
      */
     async setup (properties) {
-      const localAddr = multiaddr('/ip4/127.0.0.1/tcp/8080')
-      const remoteAddr = multiaddr('/ip4/127.0.0.1/tcp/8081')
+      const localAddr = new Multiaddr('/ip4/127.0.0.1/tcp/8080')
+      const remoteAddr = new Multiaddr('/ip4/127.0.0.1/tcp/8081')
       const [localPeer, remotePeer] = await Promise.all([
         PeerId.createFromJSON(peers[0]),
         PeerId.createFromJSON(peers[1])

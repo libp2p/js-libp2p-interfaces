@@ -1,7 +1,7 @@
 'use strict'
 
 const PeerId = require('peer-id')
-const multiaddr = require('multiaddr')
+const { Multiaddr } = require('multiaddr')
 const errCode = require('err-code')
 const { OPEN, CLOSING, CLOSED } = require('./status')
 
@@ -25,8 +25,8 @@ const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
  * @property {string} [encryption] - connection encryption method identifier.
  *
  * @typedef {Object} ConnectionOptions
- * @property {multiaddr} [localAddr] - local multiaddr of the connection if known.
- * @property {multiaddr} remoteAddr - remote multiaddr of the connection.
+ * @property {Multiaddr} [localAddr] - local multiaddr of the connection if known.
+ * @property {Multiaddr} remoteAddr - remote multiaddr of the connection.
  * @property {PeerId} localPeer - local peer-id.
  * @property {PeerId} remotePeer - remote peer-id.
  * @property {(protocols: string|string[]) => Promise<{stream: MuxedStream, protocol: string}>} newStream - new stream muxer function.
@@ -231,7 +231,7 @@ class Connection {
 module.exports = Connection
 
 /**
- * @param {multiaddr|undefined} localAddr
+ * @param {Multiaddr|undefined} localAddr
  * @param {PeerId} localPeer
  * @param {PeerId} remotePeer
  * @param {(protocols: string | string[]) => Promise<{ stream: import("../stream-muxer/types").MuxedStream; protocol: string; }>} newStream
@@ -240,7 +240,7 @@ module.exports = Connection
  * @param {{ direction: any; timeline: any; multiplexer?: string | undefined; encryption?: string | undefined; }} stat
  */
 function validateArgs (localAddr, localPeer, remotePeer, newStream, close, getStreams, stat) {
-  if (localAddr && !multiaddr.isMultiaddr(localAddr)) {
+  if (localAddr && !Multiaddr.isMultiaddr(localAddr)) {
     throw errCode(new Error('localAddr must be an instance of multiaddr'), 'ERR_INVALID_PARAMETERS')
   }
 
