@@ -9,9 +9,7 @@ const log = Object.assign(debug('libp2p-pubsub:peer-streams'), {
 /** @type Events */
 const EventEmitter = require('events')
 
-// @ts-ignore TODO: https://github.com/alanshaw/it-length-prefixed/pull/15
 const lp = require('it-length-prefixed')
-
 const pushable = require('it-pushable')
 const { pipe } = require('it-pipe')
 const { source: abortable } = require('abortable-iterator')
