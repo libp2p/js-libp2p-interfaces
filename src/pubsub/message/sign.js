@@ -1,23 +1,27 @@
 'use strict'
 
 const PeerId = require('peer-id')
-const { Message } = require('./index')
+const { RPC } = require('./rpc')
 const uint8ArrayConcat = require('uint8arrays/concat')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
 
 /**
+ * @typedef {import('..').InMessage}
+ */
+
+/**
  * Signs the provided message with the given `peerId`
  *
  * @param {PeerId} peerId
- * @param {Message} message
- * @returns {Promise<Message>}
+ * @param {RPC.Message} message
+ * @returns {Promise<any>}
  */
 async function signMessage (peerId, message) {
   // Get the message in bytes, and prepend with the pubsub prefix
   const bytes = uint8ArrayConcat([
     SignPrefix,
-    Message.encode(message)
+    RPC.Message.encode(message).finish()
   ])
 
   const signature = await peerId.privKey.sign(bytes)
@@ -43,12 +47,13 @@ async function verifySignature (message) {
   // Get message sans the signature
   const bytes = uint8ArrayConcat([
     SignPrefix,
-    Message.encode({
+    RPC.Message.encode({
       ...message,
-      from: message.from && PeerId.createFromCID(message.from).toBytes(),
+      // @ts-ignore message.from needs to exist
+      from: PeerId.createFromCID(message.from).toBytes(),
       signature: undefined,
       key: undefined
-    })
+    }).finish()
   ])
 
   // Get the public key

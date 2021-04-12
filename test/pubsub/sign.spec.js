@@ -6,7 +6,7 @@ const { expect } = require('aegir/utils/chai')
 const uint8ArrayConcat = require('uint8arrays/concat')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 
-const { Message } = require('../../src/pubsub/message')
+const { RPC } = require('../../src/pubsub/message/rpc')
 const {
   signMessage,
   SignPrefix,
@@ -31,7 +31,7 @@ describe('message signing', () => {
       topicIDs: ['test-topic']
     }
 
-    const bytesToSign = uint8ArrayConcat([SignPrefix, Message.encode(message)])
+    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(message).finish()])
     const expectedSignature = await peerId.privKey.sign(bytesToSign)
 
     const signedMessage = await signMessage(peerId, message)
@@ -55,7 +55,7 @@ describe('message signing', () => {
       topicIDs: ['test-topic']
     }
 
-    const bytesToSign = uint8ArrayConcat([SignPrefix, Message.encode(message)])
+    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(message).finish()])
     const expectedSignature = await secPeerId.privKey.sign(bytesToSign)
 
     const signedMessage = await signMessage(secPeerId, message)
@@ -77,7 +77,7 @@ describe('message signing', () => {
       topicIDs: ['test-topic']
     }
 
-    const bytesToSign = uint8ArrayConcat([SignPrefix, Message.encode(message)])
+    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(message).finish()])
     const expectedSignature = await peerId.privKey.sign(bytesToSign)
 
     const signedMessage = await signMessage(peerId, message)

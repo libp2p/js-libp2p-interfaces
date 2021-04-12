@@ -5,5 +5,9 @@
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "src/pubsub/message/rpc.js", // exclude generated file
+    "src/pubsub/message/topic-descriptor.js" // exclude generated file
   ]
 }

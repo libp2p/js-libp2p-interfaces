@@ -10,7 +10,6 @@ const log = Object.assign(debug('libp2p-pubsub:peer-streams'), {
 const EventEmitter = require('events')
 
 const lp = require('it-length-prefixed')
-
 const pushable = require('it-pushable')
 const { pipe } = require('it-pipe')
 const { source: abortable } = require('abortable-iterator')
