@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: yarn
-    - run: yarn lint
+    - run: npm install
+    - run: npx aegir lint
     - uses: gozala/typescript-error-reporter-action@v1.0.4
-    - run: yarn build
-    - run: yarn aegir dep-check
+    - run: npx aegir build
+    - run: npx aegir dep-check
     - uses: ipfs/aegir/actions/bundle-size@master
       name: size
       with:
@@ -34,7 +34,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - run: yarn
+      - run: npm install
       - run: npx nyc --reporter=lcov aegir test -t node -- --bail
       - uses: codecov/codecov-action@v1
   test-chrome:
@@ -42,12 +42,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn
+      - run: npm install
       - run: npx aegir test -t browser -t webworker --bail
   test-firefox:
     needs: check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn
+      - run: npm install
       - run: npx aegir test -t browser -t webworker --bail -- --browsers FirefoxHeadless
