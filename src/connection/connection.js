@@ -24,12 +24,14 @@ const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
  * @property {string} [multiplexer] - connection multiplexing identifier.
  * @property {string} [encryption] - connection encryption method identifier.
  *
+ * @typedef {(protocols: string|string[]) => Promise<{stream: MuxedStream, protocol: string}>} CreatedMuxedStream
+ *
  * @typedef {Object} ConnectionOptions
  * @property {Multiaddr} [localAddr] - local multiaddr of the connection if known.
  * @property {Multiaddr} remoteAddr - remote multiaddr of the connection.
  * @property {PeerId} localPeer - local peer-id.
  * @property {PeerId} remotePeer - remote peer-id.
- * @property {(protocols: string|string[]) => Promise<{stream: MuxedStream, protocol: string}>} newStream - new stream muxer function.
+ * @property {CreatedMuxedStream} newStream - new stream muxer function.
  * @property {() => Promise<void>} close - close raw connection function.
  * @property {() => MuxedStream[]} getStreams - get streams from muxer function.
  * @property {ConectionStat} stat - metadata of the connection.
