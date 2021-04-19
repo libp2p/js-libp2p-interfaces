@@ -29,13 +29,6 @@ const infiniteRandom = {
   }
 }
 
-const oneBufferAndWait = {
-  [Symbol.asyncIterator]: async function * () {
-    yield randomBuffer()
-    await new Promise(() => {})
-  }
-}
-
 module.exports = (common) => {
   describe('close', () => {
     let Muxer
@@ -198,10 +191,9 @@ module.exports = (common) => {
 
       const listener = new Muxer(async stream => {
         // Write some data before closing
-        stream.sink(oneBufferAndWait)
+        stream.sink(infiniteRandom)
 
         // Immediate close for write
-        await pause(10)
         await stream.closeWrite()
 
         const results = await pipe(stream, async (source) => {
