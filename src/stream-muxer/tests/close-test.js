@@ -29,6 +29,13 @@ const infiniteRandom = {
   }
 }
 
+const oneBufferAndWait = {
+  [Symbol.asyncIterator]: async function * () {
+    yield randomBuffer()
+    await new Promise(() => {})
+  }
+}
+
 module.exports = (common) => {
   describe('close', () => {
     let Muxer
@@ -113,7 +120,7 @@ module.exports = (common) => {
       await Promise.all(streamResults)
     })
 
-    it('can close an unopened stream for writing', (done) => {
+    it('can close a stream for writing before writing', (done) => {
       const p = pair()
       const dialer = new Muxer()
       const data = [randomBuffer(), randomBuffer()]
@@ -147,7 +154,7 @@ module.exports = (common) => {
       stream.sink(data)
     })
 
-    it('can close an opened stream for writing', (done) => {
+    it('can close a stream for writing after writing', (done) => {
       const p = pair()
       const dialer = new Muxer()
       const data = [randomBuffer(), randomBuffer()]
@@ -157,6 +164,44 @@ module.exports = (common) => {
         await stream.sink([randomBuffer()])
 
         // Immediate close for write
+        await stream.closeWrite()
+
+        const results = await pipe(stream, async (source) => {
+          const data = []
+          for await (const chunk of source) {
+            data.push(chunk.slice())
+          }
+          return data
+        })
+        expect(results).to.eql(data)
+
+        try {
+          await stream.sink([randomBuffer()])
+        } catch (err) {
+          expect(err).to.exist()
+          return done()
+        }
+        expect.fail('should not support writing to closed writer')
+      })
+
+      pipe(p[0], dialer, p[0])
+      pipe(p[1], listener, p[1])
+
+      const stream = dialer.newStream()
+      stream.sink(data)
+    })
+
+    it('can close a stream for writing during writing', (done) => {
+      const p = pair()
+      const dialer = new Muxer()
+      const data = [randomBuffer(), randomBuffer()]
+
+      const listener = new Muxer(async stream => {
+        // Write some data before closing
+        stream.sink(oneBufferAndWait)
+
+        // Immediate close for write
+        await pause(10)
         await stream.closeWrite()
 
         const results = await pipe(stream, async (source) => {
