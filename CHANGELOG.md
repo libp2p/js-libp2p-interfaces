@@ -1,3 +1,12 @@
+## [0.10.1](https://github.com/libp2p/js-interfaces/compare/v0.10.0...v0.10.1) (2021-04-19)
+
+
+### Features
+
+* export type for new stream muxer function ([#91](https://github.com/libp2p/js-interfaces/issues/91)) ([6467fdd](https://github.com/libp2p/js-interfaces/commit/6467fdd6ce1d13cfa3b34e3aaa73a64a669d2033))
+
+
+
 # [0.10.0](https://github.com/libp2p/js-interfaces/compare/v0.9.0...v0.10.0) (2021-04-12)
 
 
