@@ -1,3 +1,12 @@
+## [0.10.2](https://github.com/libp2p/js-interfaces/compare/v0.10.1...v0.10.2) (2021-04-20)
+
+
+### Bug Fixes
+
+* specify pbjs root ([#93](https://github.com/libp2p/js-interfaces/issues/93)) ([70ae573](https://github.com/libp2p/js-interfaces/commit/70ae573a4ea2ac074f7cda2a732ed5be283e48c4))
+
+
+
 ## [0.10.1](https://github.com/libp2p/js-interfaces/compare/v0.10.0...v0.10.1) (2021-04-19)
 
 
