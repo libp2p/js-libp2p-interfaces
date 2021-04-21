@@ -156,7 +156,7 @@ module.exports = (common) => {
         // Write some data before closing
         await stream.sink([randomBuffer()])
 
-Close after write
+        // Close after write
         await stream.closeWrite()
 
         const results = await pipe(stream, async (source) => {
