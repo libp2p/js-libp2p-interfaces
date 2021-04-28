@@ -1,6 +1,8 @@
 'use strict'
 
 const debug = require('debug')
+/** @typedef {import('../types').EventEmitterFactory} Events */
+/** @type Events */
 const EventEmitter = require('events')
 const errcode = require('err-code')
 

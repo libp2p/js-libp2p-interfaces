@@ -1,7 +1,7 @@
 export = PeerRouting;
 
 import PeerId from 'peer-id'
-import Multiaddr from 'multiaddr'
+import { Multiaddr } from 'multiaddr'
 
 declare class PeerRouting {
   constructor (options?: Object);
