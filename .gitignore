@@ -5,6 +5,7 @@
 .nyc_output
 
 build
+dist
 docs
 
 # Dependency directory
