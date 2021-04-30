@@ -4,7 +4,7 @@ const debug = require('debug')
 const log = Object.assign(debug('libp2p-pubsub:peer-streams'), {
   error: debug('libp2p-pubsub:peer-streams:err')
 })
-const EventEmitter = require('events')
+const { EventEmitter } = require('events')
 
 const lp = require('it-length-prefixed')
 const pushable = require('it-pushable')

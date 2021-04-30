@@ -1,10 +1,13 @@
-export = PeerDiscovery;
+import { EventEmitter } from 'events';
 
-import events from 'events';
-
-declare class PeerDiscovery extends events.EventEmitter {
-  constructor (options: Object);
-  start (): Promise<void>;
-  stop (): Promise<void>;
+export interface PeerDiscoveryFactory {
+  new (options?: any): PeerDiscovery;
   tag: string;
 }
+
+export interface PeerDiscovery extends EventEmitter {
+  start(): void|Promise<void>;
+  stop(): void|Promise<void>;
+}
+
+export default PeerDiscovery;

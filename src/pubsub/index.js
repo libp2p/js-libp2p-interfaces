@@ -1,7 +1,7 @@
 'use strict'
 
 const debug = require('debug')
-const EventEmitter = require('events')
+const { EventEmitter } = require('events')
 const errcode = require('err-code')
 
 const { pipe } = require('it-pipe')
