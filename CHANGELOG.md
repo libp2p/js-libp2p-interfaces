@@ -1,3 +1,12 @@
+## [0.10.4](https://github.com/libp2p/js-interfaces/compare/v0.10.3...v0.10.4) (2021-04-30)
+
+
+### Bug Fixes
+
+* event emitter and discovery and routing interfaces ([#95](https://github.com/libp2p/js-interfaces/issues/95)) ([93ddaa4](https://github.com/libp2p/js-interfaces/commit/93ddaa4860ff743b312268b6a859b5e6365fff74))
+
+
+
 ## [0.10.3](https://github.com/libp2p/js-interfaces/compare/v0.10.2...v0.10.3) (2021-04-22)
 
 
