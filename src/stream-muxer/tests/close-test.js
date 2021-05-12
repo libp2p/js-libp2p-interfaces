@@ -10,7 +10,6 @@ chai.use(require('dirty-chai'))
 const pair = require('it-pair/duplex')
 const { pipe } = require('it-pipe')
 const { consume } = require('streaming-iterables')
-const { Multiaddr } = require('multiaddr')
 const { source: abortable } = require('abortable-iterator')
 const AbortController = require('abort-controller').default
 const uint8arrayFromString = require('uint8arrays/from-string')
