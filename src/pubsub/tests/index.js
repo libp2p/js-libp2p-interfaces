@@ -5,6 +5,7 @@
 const apiTest = require('./api')
 const emitSelfTest = require('./emit-self')
 const messagesTest = require('./messages')
+const connectionHandlersTest = require('./connection-handlers')
 const twoNodesTest = require('./two-nodes')
 const multipleNodesTest = require('./multiple-nodes')
 
@@ -13,6 +14,7 @@ module.exports = (common) => {
     apiTest(common)
     emitSelfTest(common)
     messagesTest(common)
+    connectionHandlersTest(common)
     twoNodesTest(common)
     multipleNodesTest(common)
   })
