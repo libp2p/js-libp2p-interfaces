@@ -13,29 +13,10 @@
 
 [Jacob Heun](https://github.com/jacobheun).
 
-## Interfaces
+## Structure
 
-- [Connection](./src/connection)
-- [Content Routing](./src/content-routing)
-- [Crypto](./src/crypto)
-- [Peer Discovery](./src/peer-discovery)
-- [Peer Routing](./src/peer-routing)
-- [Pubsub](./src/pubsub)
-- [Record](./src/record)
-- [Stream Muxer](./src/stream-muxer)
-- [Topology](./src/topology)
-- [Transport](./src/transport)
-
-### Origin Repositories
-
-For posterity, here are links to the original repositories for each of the interfaces (if they had one).
-- [Connection](https://github.com/libp2p/interface-connection)
-- [Content Routing](https://github.com/libp2p/interface-content-routing)
-- [Peer Discovery](https://github.com/libp2p/interface-peer-discovery)
-- [Peer Routing](https://github.com/libp2p/interface-peer-routing)
-- [Pubsub](https://github.com/libp2p/js-libp2p-pubsub)
-- [Stream Muxer](https://github.com/libp2p/interface-stream-muxer)
-- [Transport](https://github.com/libp2p/interface-transport)
+* [`/packages/interfaces`](./packages/interfaces) The interface definitions of various libp2p components
+* [`/packages/compliance-tests`](./packages/compliance-tests) Tests to ensure adherence of an implementation to the spec
 
 ## Contribute
 
