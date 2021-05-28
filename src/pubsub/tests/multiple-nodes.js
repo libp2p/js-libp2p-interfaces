@@ -307,9 +307,71 @@ module.exports = (common) => {
         // line
         // ◉────◎────◉
         // a    b    c
+        // A subscribes and C publishes
 
-        before(() => { })
-        after(() => { })
+        let psA, psB, psC
+
+        // Create and start pubsub nodes
+        beforeEach(async () => {
+          [psA, psB, psC] = await common.setup(3)
+
+          // Start pubsub mpdes
+          ;[psA, psB, psC].map((p) => p.start())
+        })
+
+        // Connect nodes
+        beforeEach(async () => {
+          await psA._libp2p.dial(psB.peerId)
+          await psB._libp2p.dial(psC.peerId)
+
+          // Wait for peers to be ready in pubsub
+          await pWaitFor(() =>
+            psA.peers.size === 1 &&
+            psC.peers.size === 1 &&
+            psA.peers.size === 1
+          )
+        })
+
+        afterEach(async () => {
+          sinon.restore()
+
+          ;[psA, psB, psC].map((p) => p.stop())
+          await common.teardown()
+        })
+
+        it('exchange pubsub messages', async () => {
+          const defer = pDefer()
+          let counter = 0
+          const topic = 'Z'
+
+          function incMsg (msg) {
+            expect(uint8ArrayToString(msg.data)).to.equal('hey')
+            check()
+          }
+
+          function check () {
+            if (++counter === 1) {
+              psA.removeListener(topic, incMsg)
+              psB.removeListener(topic, incMsg)
+              psC.removeListener(topic, incMsg)
+              defer.resolve()
+            }
+          }
+
+          psA.on(topic, incMsg)
+          psA.subscribe(topic)
+
+          // await subscription change
+          await Promise.all([
+            new Promise(resolve => psB.once('pubsub:subscription-change', () => resolve(null)))
+          ])
+
+          // await a cycle
+          await delay(1000)
+          psC.publish(topic, uint8ArrayFromString('hey'))
+
+          return defer.promise
+        })
       })
 
       describe('1 level tree', () => {
