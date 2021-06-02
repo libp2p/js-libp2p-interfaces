@@ -1,6 +1,6 @@
 import PeerId from 'peer-id'
 import { Multiaddr } from 'multiaddr'
-import CID from 'cids'
+import { CID } from 'multiformats/cid'
 
 export interface ContentRoutingFactory {
   new (options?: any): ContentRouting;

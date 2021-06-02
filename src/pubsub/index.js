@@ -476,7 +476,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * Child class can override this.
    *
    * @param {InMessage} msg - the message object
-   * @returns {Uint8Array} message id as bytes
+   * @returns {Promise<Uint8Array> | Uint8Array} message id as bytes
    */
   getMsgId (msg) {
     const signaturePolicy = this.globalSignaturePolicy

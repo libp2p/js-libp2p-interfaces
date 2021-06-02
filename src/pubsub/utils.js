@@ -5,7 +5,7 @@ const randomBytes = require('libp2p-crypto/src/random-bytes')
 const uint8ArrayToString = require('uint8arrays/to-string')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const PeerId = require('peer-id')
-const multihash = require('multihashes')
+const { sha256 } = require('multiformats/hashes/sha2')
 
 /**
  * @typedef {import('./message/rpc').RPC.IMessage} IMessage
@@ -43,10 +43,9 @@ const msgId = (from, seqno) => {
  * Generate a message id, based on message `data`.
  *
  * @param {Uint8Array} data
- * @returns {Uint8Array}
  * @private
  */
-const noSignMsgId = (data) => multihash.encode(data, 'sha2-256')
+const noSignMsgId = (data) => sha256.encode(data)
 
 /**
  * Check if any member of the first set is also a member
