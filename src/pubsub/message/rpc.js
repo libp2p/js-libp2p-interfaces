@@ -216,19 +216,44 @@ $root.RPC = (function() {
 
         /**
          * SubOpts subscribe.
-         * @member {boolean} subscribe
+         * @member {boolean|null|undefined} subscribe
          * @memberof RPC.SubOpts
          * @instance
          */
-        SubOpts.prototype.subscribe = false;
+        SubOpts.prototype.subscribe = null;
 
         /**
          * SubOpts topicID.
-         * @member {string} topicID
+         * @member {string|null|undefined} topicID
          * @memberof RPC.SubOpts
          * @instance
          */
-        SubOpts.prototype.topicID = "";
+        SubOpts.prototype.topicID = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        /**
+         * SubOpts _subscribe.
+         * @member {"subscribe"|undefined} _subscribe
+         * @memberof RPC.SubOpts
+         * @instance
+         */
+        Object.defineProperty(SubOpts.prototype, "_subscribe", {
+            get: $util.oneOfGetter($oneOfFields = ["subscribe"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * SubOpts _topicID.
+         * @member {"topicID"|undefined} _topicID
+         * @memberof RPC.SubOpts
+         * @instance
+         */
+        Object.defineProperty(SubOpts.prototype, "_topicID", {
+            get: $util.oneOfGetter($oneOfFields = ["topicID"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
 
         /**
          * Encodes the specified SubOpts message. Does not implicitly {@link RPC.SubOpts.verify|verify} messages.
@@ -315,15 +340,15 @@ $root.RPC = (function() {
             if (!o)
                 o = {};
             var d = {};
-            if (o.defaults) {
-                d.subscribe = false;
-                d.topicID = "";
-            }
             if (m.subscribe != null && m.hasOwnProperty("subscribe")) {
                 d.subscribe = m.subscribe;
+                if (o.oneofs)
+                    d._subscribe = "subscribe";
             }
             if (m.topicID != null && m.hasOwnProperty("topicID")) {
                 d.topicID = m.topicID;
+                if (o.oneofs)
+                    d._topicID = "topicID";
             }
             return d;
         };
@@ -374,27 +399,27 @@ $root.RPC = (function() {
 
         /**
          * Message from.
-         * @member {Uint8Array} from
+         * @member {Uint8Array|null|undefined} from
          * @memberof RPC.Message
          * @instance
          */
-        Message.prototype.from = $util.newBuffer([]);
+        Message.prototype.from = null;
 
         /**
          * Message data.
-         * @member {Uint8Array} data
+         * @member {Uint8Array|null|undefined} data
          * @memberof RPC.Message
          * @instance
          */
-        Message.prototype.data = $util.newBuffer([]);
+        Message.prototype.data = null;
 
         /**
          * Message seqno.
-         * @member {Uint8Array} seqno
+         * @member {Uint8Array|null|undefined} seqno
          * @memberof RPC.Message
          * @instance
          */
-        Message.prototype.seqno = $util.newBuffer([]);
+        Message.prototype.seqno = null;
 
         /**
          * Message topicIDs.
@@ -406,19 +431,77 @@ $root.RPC = (function() {
 
         /**
          * Message signature.
-         * @member {Uint8Array} signature
+         * @member {Uint8Array|null|undefined} signature
          * @memberof RPC.Message
          * @instance
          */
-        Message.prototype.signature = $util.newBuffer([]);
+        Message.prototype.signature = null;
 
         /**
          * Message key.
-         * @member {Uint8Array} key
+         * @member {Uint8Array|null|undefined} key
          * @memberof RPC.Message
          * @instance
          */
-        Message.prototype.key = $util.newBuffer([]);
+        Message.prototype.key = null;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        /**
+         * Message _from.
+         * @member {"from"|undefined} _from
+         * @memberof RPC.Message
+         * @instance
+         */
+        Object.defineProperty(Message.prototype, "_from", {
+            get: $util.oneOfGetter($oneOfFields = ["from"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Message _data.
+         * @member {"data"|undefined} _data
+         * @memberof RPC.Message
+         * @instance
+         */
+        Object.defineProperty(Message.prototype, "_data", {
+            get: $util.oneOfGetter($oneOfFields = ["data"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Message _seqno.
+         * @member {"seqno"|undefined} _seqno
+         * @memberof RPC.Message
+         * @instance
+         */
+        Object.defineProperty(Message.prototype, "_seqno", {
+            get: $util.oneOfGetter($oneOfFields = ["seqno"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Message _signature.
+         * @member {"signature"|undefined} _signature
+         * @memberof RPC.Message
+         * @instance
+         */
+        Object.defineProperty(Message.prototype, "_signature", {
+            get: $util.oneOfGetter($oneOfFields = ["signature"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Message _key.
+         * @member {"key"|undefined} _key
+         * @memberof RPC.Message
+         * @instance
+         */
+        Object.defineProperty(Message.prototype, "_key", {
+            get: $util.oneOfGetter($oneOfFields = ["key"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
 
         /**
          * Encodes the specified Message message. Does not implicitly {@link RPC.Message.verify|verify} messages.
@@ -564,51 +647,20 @@ $root.RPC = (function() {
             if (o.arrays || o.defaults) {
                 d.topicIDs = [];
             }
-            if (o.defaults) {
-                if (o.bytes === String)
-                    d.from = "";
-                else {
-                    d.from = [];
-                    if (o.bytes !== Array)
-                        d.from = $util.newBuffer(d.from);
-                }
-                if (o.bytes === String)
-                    d.data = "";
-                else {
-                    d.data = [];
-                    if (o.bytes !== Array)
-                        d.data = $util.newBuffer(d.data);
-                }
-                if (o.bytes === String)
-                    d.seqno = "";
-                else {
-                    d.seqno = [];
-                    if (o.bytes !== Array)
-                        d.seqno = $util.newBuffer(d.seqno);
-                }
-                if (o.bytes === String)
-                    d.signature = "";
-                else {
-                    d.signature = [];
-                    if (o.bytes !== Array)
-                        d.signature = $util.newBuffer(d.signature);
-                }
-                if (o.bytes === String)
-                    d.key = "";
-                else {
-                    d.key = [];
-                    if (o.bytes !== Array)
-                        d.key = $util.newBuffer(d.key);
-                }
-            }
             if (m.from != null && m.hasOwnProperty("from")) {
                 d.from = o.bytes === String ? $util.base64.encode(m.from, 0, m.from.length) : o.bytes === Array ? Array.prototype.slice.call(m.from) : m.from;
+                if (o.oneofs)
+                    d._from = "from";
             }
             if (m.data != null && m.hasOwnProperty("data")) {
                 d.data = o.bytes === String ? $util.base64.encode(m.data, 0, m.data.length) : o.bytes === Array ? Array.prototype.slice.call(m.data) : m.data;
+                if (o.oneofs)
+                    d._data = "data";
             }
             if (m.seqno != null && m.hasOwnProperty("seqno")) {
                 d.seqno = o.bytes === String ? $util.base64.encode(m.seqno, 0, m.seqno.length) : o.bytes === Array ? Array.prototype.slice.call(m.seqno) : m.seqno;
+                if (o.oneofs)
+                    d._seqno = "seqno";
             }
             if (m.topicIDs && m.topicIDs.length) {
                 d.topicIDs = [];
@@ -618,9 +670,13 @@ $root.RPC = (function() {
             }
             if (m.signature != null && m.hasOwnProperty("signature")) {
                 d.signature = o.bytes === String ? $util.base64.encode(m.signature, 0, m.signature.length) : o.bytes === Array ? Array.prototype.slice.call(m.signature) : m.signature;
+                if (o.oneofs)
+                    d._signature = "signature";
             }
             if (m.key != null && m.hasOwnProperty("key")) {
                 d.key = o.bytes === String ? $util.base64.encode(m.key, 0, m.key.length) : o.bytes === Array ? Array.prototype.slice.call(m.key) : m.key;
+                if (o.oneofs)
+                    d._key = "key";
             }
             return d;
         };

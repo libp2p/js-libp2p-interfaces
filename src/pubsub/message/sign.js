@@ -2,6 +2,7 @@
 
 const PeerId = require('peer-id')
 const { RPC } = require('./rpc')
+const { CID } = require('multiformats/cid')
 const uint8ArrayConcat = require('uint8arrays/concat')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
@@ -44,13 +45,16 @@ async function verifySignature (message) {
     throw new Error('Message must contain a signature to be verified')
   }
 
+  if (!message.from) {
+    throw new Error('Message must contain a from to be verified')
+  }
+
   // Get message sans the signature
   const bytes = uint8ArrayConcat([
     SignPrefix,
     RPC.Message.encode({
       ...message,
-      // @ts-ignore message.from needs to exist
-      from: PeerId.createFromCID(message.from).toBytes(),
+      from: PeerId.createFromB58String(message.from).toBytes(),
       signature: undefined,
       key: undefined
     }).finish()
@@ -76,7 +80,7 @@ async function messagePublicKey (message) {
     throw new Error('Could not get the public key from the originator id')
   }
 
-  const from = PeerId.createFromCID(message.from)
+  const from = PeerId.createFromB58String(message.from)
 
   if (message.key) {
     const keyPeerId = await PeerId.createFromPubKey(message.key)

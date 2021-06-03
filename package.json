@@ -76,7 +76,7 @@
     "p-defer": "^3.0.0",
     "p-limit": "^3.1.0",
     "p-wait-for": "^3.2.0",
-    "peer-id": "^0.14.2",
+    "peer-id": "libp2p/js-peer-id#chore/update-to-new-multiformats",
     "protobufjs": "^6.10.2",
     "sinon": "^10.0.0",
     "streaming-iterables": "^5.0.4",
