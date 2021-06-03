@@ -2,7 +2,6 @@
 
 const PeerId = require('peer-id')
 const { RPC } = require('./rpc')
-const { CID } = require('multiformats/cid')
 const uint8ArrayConcat = require('uint8arrays/concat')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
