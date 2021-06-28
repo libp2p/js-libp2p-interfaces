@@ -24,7 +24,7 @@
   "scripts": {
     "prepare": "aegir build --no-bundle",
     "lint": "aegir lint",
-    "build": "npm run build:proto && npm run build:proto-types && npm run build:types",
+    "build": "npm run build:types",
     "build:types": "aegir build --no-bundle",
     "build:proto": "npm run build:proto:rpc && npm run build:proto:topic-descriptor",
     "build:proto:rpc": "pbjs -t static-module -w commonjs -r libp2p-pubsub-rpc --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/pubsub/message/rpc.js ./src/pubsub/message/rpc.proto",
