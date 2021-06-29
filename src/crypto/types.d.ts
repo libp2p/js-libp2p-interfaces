@@ -36,9 +36,11 @@ export interface Hasher {
    * @param {Uint8Array} input
    */
   digest: (data: Uint8Array) => Promise<Uint8Array>
+
+  length: number
 }
 
-export interface PublicKey<KeyType extends string = string> {
+export interface PublicKey<Algorithm extends string = string> {
   /**
    * Binary reprerestation of this public key which encodes key type and
    * the key itself.
@@ -46,9 +48,9 @@ export interface PublicKey<KeyType extends string = string> {
   readonly bytes: Uint8Array
 
   /**
-   * String identifier of this key type.
+   * Cryptographic algorithm
    */
-  type: () => KeyType
+  algorithm: Algorithm
 
   /**
    * Raw bytes of this key.
@@ -68,8 +70,13 @@ export interface PublicKey<KeyType extends string = string> {
   hash: () => Promise<Uint8Array>
 }
 
-export interface PrivateKey<KeyType extends string = string> {
-  readonly public: PublicKey<KeyType>
+export interface EncryptionKey {
+  encrypt: (data: Uint8Array) => Uint8Array
+}
+
+export interface PrivateKey<Algorithm extends string = string> {
+  readonly algorithm: Algorithm
+  readonly public: PublicKey<Algorithm>
   readonly bytes: Uint8Array
   sign: (data: Uint8Array) => Promise<Uint8Array>
   marshal: () => Uint8Array
@@ -80,4 +87,24 @@ export interface PrivateKey<KeyType extends string = string> {
    * Unique id of this key.
    */
   id: () => Promise<string>
+
+  /**
+   * @deprecated - See https://github.com/libp2p/js-libp2p-crypto/issues/190
+   */
+  export: (password: string, format?: 'pkcs-8'|'libp2p-key') => Promise<string>
+}
+
+export interface DecryptionKey {
+  decrypt: (bytes: Uint8Array) => Uint8Array
+}
+
+export interface Keystretcher {
+  iv: Uint8Array
+  cipherKey: Uint8Array
+  macKey: Uint8Array
+}
+
+export interface StretchPair {
+  k1: Keystretcher
+  k2: Keystretcher
 }
