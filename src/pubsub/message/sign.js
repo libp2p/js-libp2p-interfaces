@@ -45,7 +45,7 @@ async function verifySignature (message) {
   }
 
   if (!message.from) {
-    throw new Error('Message must contain a from to be verified')
+    throw new Error('Message must contain a from property to be verified')
   }
 
   // Get message sans the signature
