@@ -6,6 +6,7 @@ const uint8ArrayToString = require('uint8arrays/to-string')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const PeerId = require('peer-id')
 const { sha256 } = require('multiformats/hashes/sha2')
+const { CID } = require('multiformats/cid')
 
 /**
  * @typedef {import('./message/rpc').RPC.IMessage} IMessage
@@ -26,13 +27,20 @@ const randomSeqno = () => {
 /**
  * Generate a message id, based on the `from` and `seqno`.
  *
- * @param {string} from
+ * @param {Uint8Array|string} from
  * @param {Uint8Array} seqno
  * @returns {Uint8Array}
  * @private
  */
 const msgId = (from, seqno) => {
-  const fromBytes = PeerId.createFromB58String(from).id
+  let fromBytes
+
+  if (from instanceof Uint8Array) {
+    fromBytes = PeerId.createFromBytes(from).id
+  } else {
+    fromBytes = PeerId.createFromCID(CID.parse(from)).id
+  }
+
   const msgId = new Uint8Array(fromBytes.length + seqno.length)
   msgId.set(fromBytes, 0)
   msgId.set(seqno, fromBytes.length)
