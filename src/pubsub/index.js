@@ -618,7 +618,7 @@ class PubsubBaseProtocol extends EventEmitter {
       case SignaturePolicy.StrictSign:
         message.from = this.peerId.toB58String()
         message.seqno = utils.randomSeqno()
-        return signMessage(this.peerId, utils.normalizeOutRpcMessage(message))
+        return signMessage(this.peerId, message)
       case SignaturePolicy.StrictNoSign:
         return Promise.resolve(message)
       default:

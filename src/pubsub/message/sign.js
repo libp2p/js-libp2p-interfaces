@@ -5,6 +5,7 @@ const { RPC } = require('./rpc')
 const uint8ArrayConcat = require('uint8arrays/concat')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
+const { normalizeOutRpcMessage } = require('../utils')
 
 /**
  * @typedef {import('..').InMessage}
@@ -14,14 +15,14 @@ const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
  * Signs the provided message with the given `peerId`
  *
  * @param {PeerId} peerId
- * @param {RPC.Message} message
- * @returns {Promise<any>}
+ * @param {InMessage} message
+ * @returns {Promise<InMessage>}
  */
 async function signMessage (peerId, message) {
   // Get the message in bytes, and prepend with the pubsub prefix
   const bytes = uint8ArrayConcat([
     SignPrefix,
-    RPC.Message.encode(message).finish()
+    RPC.Message.encode(normalizeOutRpcMessage(message)).finish()
   ])
 
   const signature = await peerId.privKey.sign(bytes)

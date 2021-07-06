@@ -3,6 +3,7 @@
 
 const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
+const uint8arrayFromString = require('uint8arrays/from-string')
 
 const PubsubBaseImpl = require('../../src/pubsub')
 const { SignaturePolicy } = require('../../src/pubsub/signature-policy')
@@ -33,13 +34,14 @@ describe('pubsub base messages', () => {
 
   it('_buildMessage normalizes and signs messages', async () => {
     const message = {
-      receivedFrom: peerId.id,
-      data: 'hello',
+      receivedFrom: peerId.toB58String(),
+      data: uint8arrayFromString('hello'),
       topicIDs: ['test-topic']
     }
 
     const signedMessage = await pubsub._buildMessage(message)
-    expect(pubsub.validate(signedMessage)).to.not.be.rejected()
+
+    await expect(pubsub.validate(signedMessage)).to.eventually.not.be.rejected()
   })
 
   it('validate with StrictNoSign will reject a message with from, signature, key, seqno present', async () => {
@@ -54,15 +56,15 @@ describe('pubsub base messages', () => {
     const signedMessage = await pubsub._buildMessage(message)
 
     sinon.stub(pubsub, 'globalSignaturePolicy').value(SignaturePolicy.StrictNoSign)
-    await expect(pubsub.validate(signedMessage)).to.be.rejected()
+    await expect(pubsub.validate(signedMessage)).to.eventually.be.rejected()
     delete signedMessage.from
-    await expect(pubsub.validate(signedMessage)).to.be.rejected()
+    await expect(pubsub.validate(signedMessage)).to.eventually.be.rejected()
     delete signedMessage.signature
-    await expect(pubsub.validate(signedMessage)).to.be.rejected()
+    await expect(pubsub.validate(signedMessage)).to.eventually.be.rejected()
     delete signedMessage.key
-    await expect(pubsub.validate(signedMessage)).to.be.rejected()
+    await expect(pubsub.validate(signedMessage)).to.eventually.be.rejected()
     delete signedMessage.seqno
-    await expect(pubsub.validate(signedMessage)).to.not.be.rejected()
+    await expect(pubsub.validate(signedMessage)).to.eventually.not.be.rejected()
   })
 
   it('validate with StrictNoSign will validate a message without a signature, key, and seqno', async () => {
@@ -75,7 +77,7 @@ describe('pubsub base messages', () => {
     sinon.stub(pubsub, 'globalSignaturePolicy').value(SignaturePolicy.StrictNoSign)
 
     const signedMessage = await pubsub._buildMessage(message)
-    expect(pubsub.validate(signedMessage)).to.not.be.rejected()
+    await expect(pubsub.validate(signedMessage)).to.eventually.not.be.rejected()
   })
 
   it('validate with StrictSign requires a signature', async () => {
