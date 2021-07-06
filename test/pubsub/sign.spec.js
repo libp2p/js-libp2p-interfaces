@@ -16,6 +16,7 @@ const PeerId = require('peer-id')
 const { randomSeqno } = require('../../src/pubsub/utils')
 
 describe('message signing', () => {
+  /** @type {PeerId} */
   let peerId
   before(async () => {
     peerId = await PeerId.create({
@@ -25,7 +26,7 @@ describe('message signing', () => {
 
   it('should be able to sign and verify a message', async () => {
     const message = {
-      from: peerId.id,
+      from: peerId.toBytes(),
       data: uint8ArrayFromString('hello'),
       seqno: randomSeqno(),
       topicIDs: ['test-topic']
@@ -41,7 +42,10 @@ describe('message signing', () => {
     expect(signedMessage.key).to.eql(peerId.pubKey.bytes)
 
     // Verify the signature
-    const verified = await verifySignature(signedMessage)
+    const verified = await verifySignature({
+      ...signedMessage,
+      from: peerId.toB58String()
+    })
     expect(verified).to.eql(true)
   })
 
@@ -49,7 +53,7 @@ describe('message signing', () => {
     const secPeerId = await PeerId.create({ keyType: 'secp256k1' })
 
     const message = {
-      from: secPeerId.id,
+      from: secPeerId.toBytes(),
       data: uint8ArrayFromString('hello'),
       seqno: randomSeqno(),
       topicIDs: ['test-topic']
@@ -65,13 +69,16 @@ describe('message signing', () => {
     signedMessage.key = undefined
 
     // Verify the signature
-    const verified = await verifySignature(signedMessage)
+    const verified = await verifySignature({
+      ...signedMessage,
+      from: secPeerId.toB58String()
+    })
     expect(verified).to.eql(true)
   })
 
   it('should be able to extract the public key from the message', async () => {
     const message = {
-      from: peerId.id,
+      from: peerId.toBytes(),
       data: uint8ArrayFromString('hello'),
       seqno: randomSeqno(),
       topicIDs: ['test-topic']
@@ -87,7 +94,10 @@ describe('message signing', () => {
     expect(signedMessage.key).to.eql(peerId.pubKey.bytes)
 
     // Verify the signature
-    const verified = await verifySignature(signedMessage)
+    const verified = await verifySignature({
+      ...signedMessage,
+      from: peerId.toB58String()
+    })
     expect(verified).to.eql(true)
   })
 })

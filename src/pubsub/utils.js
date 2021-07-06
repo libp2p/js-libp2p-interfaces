@@ -5,7 +5,7 @@ const randomBytes = require('libp2p-crypto/src/random-bytes')
 const uint8ArrayToString = require('uint8arrays/to-string')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const PeerId = require('peer-id')
-const multihash = require('multihashes')
+const { sha256 } = require('multiformats/hashes/sha2')
 
 /**
  * @typedef {import('./message/rpc').RPC.IMessage} IMessage
@@ -26,13 +26,20 @@ const randomSeqno = () => {
 /**
  * Generate a message id, based on the `from` and `seqno`.
  *
- * @param {string} from
+ * @param {Uint8Array|string} from
  * @param {Uint8Array} seqno
  * @returns {Uint8Array}
  * @private
  */
 const msgId = (from, seqno) => {
-  const fromBytes = PeerId.createFromB58String(from).id
+  let fromBytes
+
+  if (from instanceof Uint8Array) {
+    fromBytes = PeerId.createFromBytes(from).id
+  } else {
+    fromBytes = PeerId.parse(from).id
+  }
+
   const msgId = new Uint8Array(fromBytes.length + seqno.length)
   msgId.set(fromBytes, 0)
   msgId.set(seqno, fromBytes.length)
@@ -43,10 +50,9 @@ const msgId = (from, seqno) => {
  * Generate a message id, based on message `data`.
  *
  * @param {Uint8Array} data
- * @returns {Uint8Array}
  * @private
  */
-const noSignMsgId = (data) => multihash.encode(data, 'sha2-256')
+const noSignMsgId = (data) => sha256.encode(data)
 
 /**
  * Check if any member of the first set is also a member

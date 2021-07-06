@@ -476,7 +476,7 @@ class PubsubBaseProtocol extends EventEmitter {
    * Child class can override this.
    *
    * @param {InMessage} msg - the message object
-   * @returns {Uint8Array} message id as bytes
+   * @returns {Promise<Uint8Array> | Uint8Array} message id as bytes
    */
   getMsgId (msg) {
     const signaturePolicy = this.globalSignaturePolicy
@@ -618,7 +618,7 @@ class PubsubBaseProtocol extends EventEmitter {
       case SignaturePolicy.StrictSign:
         message.from = this.peerId.toB58String()
         message.seqno = utils.randomSeqno()
-        return signMessage(this.peerId, utils.normalizeOutRpcMessage(message))
+        return signMessage(this.peerId, message)
       case SignaturePolicy.StrictNoSign:
         return Promise.resolve(message)
       default:

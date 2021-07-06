@@ -37,11 +37,11 @@ $root.TopicDescriptor = (function() {
 
     /**
      * TopicDescriptor name.
-     * @member {string} name
+     * @member {string|null|undefined} name
      * @memberof TopicDescriptor
      * @instance
      */
-    TopicDescriptor.prototype.name = "";
+    TopicDescriptor.prototype.name = null;
 
     /**
      * TopicDescriptor auth.
@@ -58,6 +58,42 @@ $root.TopicDescriptor = (function() {
      * @instance
      */
     TopicDescriptor.prototype.enc = null;
+
+    // OneOf field names bound to virtual getters and setters
+    var $oneOfFields;
+
+    /**
+     * TopicDescriptor _name.
+     * @member {"name"|undefined} _name
+     * @memberof TopicDescriptor
+     * @instance
+     */
+    Object.defineProperty(TopicDescriptor.prototype, "_name", {
+        get: $util.oneOfGetter($oneOfFields = ["name"]),
+        set: $util.oneOfSetter($oneOfFields)
+    });
+
+    /**
+     * TopicDescriptor _auth.
+     * @member {"auth"|undefined} _auth
+     * @memberof TopicDescriptor
+     * @instance
+     */
+    Object.defineProperty(TopicDescriptor.prototype, "_auth", {
+        get: $util.oneOfGetter($oneOfFields = ["auth"]),
+        set: $util.oneOfSetter($oneOfFields)
+    });
+
+    /**
+     * TopicDescriptor _enc.
+     * @member {"enc"|undefined} _enc
+     * @memberof TopicDescriptor
+     * @instance
+     */
+    Object.defineProperty(TopicDescriptor.prototype, "_enc", {
+        get: $util.oneOfGetter($oneOfFields = ["enc"]),
+        set: $util.oneOfSetter($oneOfFields)
+    });
 
     /**
      * Encodes the specified TopicDescriptor message. Does not implicitly {@link TopicDescriptor.verify|verify} messages.
@@ -156,19 +192,20 @@ $root.TopicDescriptor = (function() {
         if (!o)
             o = {};
         var d = {};
-        if (o.defaults) {
-            d.name = "";
-            d.auth = null;
-            d.enc = null;
-        }
         if (m.name != null && m.hasOwnProperty("name")) {
             d.name = m.name;
+            if (o.oneofs)
+                d._name = "name";
         }
         if (m.auth != null && m.hasOwnProperty("auth")) {
             d.auth = $root.TopicDescriptor.AuthOpts.toObject(m.auth, o);
+            if (o.oneofs)
+                d._auth = "auth";
         }
         if (m.enc != null && m.hasOwnProperty("enc")) {
             d.enc = $root.TopicDescriptor.EncOpts.toObject(m.enc, o);
+            if (o.oneofs)
+                d._enc = "enc";
         }
         return d;
     };
@@ -212,11 +249,11 @@ $root.TopicDescriptor = (function() {
 
         /**
          * AuthOpts mode.
-         * @member {TopicDescriptor.AuthOpts.AuthMode} mode
+         * @member {TopicDescriptor.AuthOpts.AuthMode|null|undefined} mode
          * @memberof TopicDescriptor.AuthOpts
          * @instance
          */
-        AuthOpts.prototype.mode = 0;
+        AuthOpts.prototype.mode = null;
 
         /**
          * AuthOpts keys.
@@ -225,6 +262,20 @@ $root.TopicDescriptor = (function() {
          * @instance
          */
         AuthOpts.prototype.keys = $util.emptyArray;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        /**
+         * AuthOpts _mode.
+         * @member {"mode"|undefined} _mode
+         * @memberof TopicDescriptor.AuthOpts
+         * @instance
+         */
+        Object.defineProperty(AuthOpts.prototype, "_mode", {
+            get: $util.oneOfGetter($oneOfFields = ["mode"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
 
         /**
          * Encodes the specified AuthOpts message. Does not implicitly {@link TopicDescriptor.AuthOpts.verify|verify} messages.
@@ -337,11 +388,10 @@ $root.TopicDescriptor = (function() {
             if (o.arrays || o.defaults) {
                 d.keys = [];
             }
-            if (o.defaults) {
-                d.mode = o.enums === String ? "NONE" : 0;
-            }
             if (m.mode != null && m.hasOwnProperty("mode")) {
                 d.mode = o.enums === String ? $root.TopicDescriptor.AuthOpts.AuthMode[m.mode] : m.mode;
+                if (o.oneofs)
+                    d._mode = "mode";
             }
             if (m.keys && m.keys.length) {
                 d.keys = [];
@@ -410,11 +460,11 @@ $root.TopicDescriptor = (function() {
 
         /**
          * EncOpts mode.
-         * @member {TopicDescriptor.EncOpts.EncMode} mode
+         * @member {TopicDescriptor.EncOpts.EncMode|null|undefined} mode
          * @memberof TopicDescriptor.EncOpts
          * @instance
          */
-        EncOpts.prototype.mode = 0;
+        EncOpts.prototype.mode = null;
 
         /**
          * EncOpts keyHashes.
@@ -423,6 +473,20 @@ $root.TopicDescriptor = (function() {
          * @instance
          */
         EncOpts.prototype.keyHashes = $util.emptyArray;
+
+        // OneOf field names bound to virtual getters and setters
+        var $oneOfFields;
+
+        /**
+         * EncOpts _mode.
+         * @member {"mode"|undefined} _mode
+         * @memberof TopicDescriptor.EncOpts
+         * @instance
+         */
+        Object.defineProperty(EncOpts.prototype, "_mode", {
+            get: $util.oneOfGetter($oneOfFields = ["mode"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
 
         /**
          * Encodes the specified EncOpts message. Does not implicitly {@link TopicDescriptor.EncOpts.verify|verify} messages.
@@ -535,11 +599,10 @@ $root.TopicDescriptor = (function() {
             if (o.arrays || o.defaults) {
                 d.keyHashes = [];
             }
-            if (o.defaults) {
-                d.mode = o.enums === String ? "NONE" : 0;
-            }
             if (m.mode != null && m.hasOwnProperty("mode")) {
                 d.mode = o.enums === String ? $root.TopicDescriptor.EncOpts.EncMode[m.mode] : m.mode;
+                if (o.oneofs)
+                    d._mode = "mode";
             }
             if (m.keyHashes && m.keyHashes.length) {
                 d.keyHashes = [];

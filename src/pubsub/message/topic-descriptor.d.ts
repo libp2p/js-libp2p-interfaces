@@ -22,13 +22,22 @@ export class TopicDescriptor implements ITopicDescriptor {
     constructor(p?: ITopicDescriptor);
 
     /** TopicDescriptor name. */
-    public name: string;
+    public name?: (string|null);
 
     /** TopicDescriptor auth. */
     public auth?: (TopicDescriptor.IAuthOpts|null);
 
     /** TopicDescriptor enc. */
     public enc?: (TopicDescriptor.IEncOpts|null);
+
+    /** TopicDescriptor _name. */
+    public _name?: "name";
+
+    /** TopicDescriptor _auth. */
+    public _auth?: "auth";
+
+    /** TopicDescriptor _enc. */
+    public _enc?: "enc";
 
     /**
      * Encodes the specified TopicDescriptor message. Does not implicitly {@link TopicDescriptor.verify|verify} messages.
@@ -92,10 +101,13 @@ export namespace TopicDescriptor {
         constructor(p?: TopicDescriptor.IAuthOpts);
 
         /** AuthOpts mode. */
-        public mode: TopicDescriptor.AuthOpts.AuthMode;
+        public mode?: (TopicDescriptor.AuthOpts.AuthMode|null);
 
         /** AuthOpts keys. */
         public keys: Uint8Array[];
+
+        /** AuthOpts _mode. */
+        public _mode?: "mode";
 
         /**
          * Encodes the specified AuthOpts message. Does not implicitly {@link TopicDescriptor.AuthOpts.verify|verify} messages.
@@ -167,10 +179,13 @@ export namespace TopicDescriptor {
         constructor(p?: TopicDescriptor.IEncOpts);
 
         /** EncOpts mode. */
-        public mode: TopicDescriptor.EncOpts.EncMode;
+        public mode?: (TopicDescriptor.EncOpts.EncMode|null);
 
         /** EncOpts keyHashes. */
         public keyHashes: Uint8Array[];
+
+        /** EncOpts _mode. */
+        public _mode?: "mode";
 
         /**
          * Encodes the specified EncOpts message. Does not implicitly {@link TopicDescriptor.EncOpts.verify|verify} messages.

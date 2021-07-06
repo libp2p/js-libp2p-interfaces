@@ -86,10 +86,16 @@ export namespace RPC {
         constructor(p?: RPC.ISubOpts);
 
         /** SubOpts subscribe. */
-        public subscribe: boolean;
+        public subscribe?: (boolean|null);
 
         /** SubOpts topicID. */
-        public topicID: string;
+        public topicID?: (string|null);
+
+        /** SubOpts _subscribe. */
+        public _subscribe?: "subscribe";
+
+        /** SubOpts _topicID. */
+        public _topicID?: "topicID";
 
         /**
          * Encodes the specified SubOpts message. Does not implicitly {@link RPC.SubOpts.verify|verify} messages.
@@ -163,22 +169,37 @@ export namespace RPC {
         constructor(p?: RPC.IMessage);
 
         /** Message from. */
-        public from: Uint8Array;
+        public from?: (Uint8Array|null);
 
         /** Message data. */
-        public data: Uint8Array;
+        public data?: (Uint8Array|null);
 
         /** Message seqno. */
-        public seqno: Uint8Array;
+        public seqno?: (Uint8Array|null);
 
         /** Message topicIDs. */
         public topicIDs: string[];
 
         /** Message signature. */
-        public signature: Uint8Array;
+        public signature?: (Uint8Array|null);
 
         /** Message key. */
-        public key: Uint8Array;
+        public key?: (Uint8Array|null);
+
+        /** Message _from. */
+        public _from?: "from";
+
+        /** Message _data. */
+        public _data?: "data";
+
+        /** Message _seqno. */
+        public _seqno?: "seqno";
+
+        /** Message _signature. */
+        public _signature?: "signature";
+
+        /** Message _key. */
+        public _key?: "key";
 
         /**
          * Encodes the specified Message message. Does not implicitly {@link RPC.Message.verify|verify} messages.
