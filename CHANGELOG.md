@@ -1,3 +1,19 @@
+# [0.12.0](https://github.com/libp2p/js-interfaces/compare/v0.11.0...v0.12.0) (2021-07-06)
+
+
+### chore
+
+* update to new multiformats ([#98](https://github.com/libp2p/js-interfaces/issues/98)) ([242027c](https://github.com/libp2p/js-interfaces/commit/242027cdfd08004f20d0148f4905381d34942dc6))
+
+
+### BREAKING CHANGES
+
+* uses the CID class from the new multiformats module and pubsub.getMsgId became async
+
+Co-authored-by: Vasco Santos <vasco.santos@moxy.studio>
+
+
+
 # [0.11.0](https://github.com/libp2p/js-interfaces/compare/v0.10.4...v0.11.0) (2021-05-27)
 
 
