@@ -356,7 +356,7 @@ class PubsubBaseProtocol extends EventEmitter {
             const rpcBytes = data instanceof Uint8Array ? data : data.slice()
             const rpcMsg = this._decodeRpc(rpcBytes)
 
-            this._processRpc(idB58Str, peerStreams, rpcMsg)
+            await this._processRpc(idB58Str, peerStreams, rpcMsg)
           }
         }
       )
@@ -371,9 +371,9 @@ class PubsubBaseProtocol extends EventEmitter {
    * @param {string} idB58Str
    * @param {PeerStreams} peerStreams
    * @param {RPC} rpc
-   * @returns {boolean}
+   * @returns {Promise<boolean>}
    */
-  _processRpc (idB58Str, peerStreams, rpc) {
+  async _processRpc (idB58Str, peerStreams, rpc) {
     this.log('rpc from', idB58Str)
     const subs = rpc.subscriptions
     const msgs = rpc.msgs
@@ -393,14 +393,14 @@ class PubsubBaseProtocol extends EventEmitter {
 
     if (msgs.length) {
       // @ts-ignore RPC message is modified
-      msgs.forEach((message) => {
+      for (const message of msgs) {
         if (!(this.canRelayMessage || (message.topicIDs && message.topicIDs.some((topic) => this.subscriptions.has(topic))))) {
           this.log('received message we didn\'t subscribe to. Dropping.')
-          return
+          continue
         }
         const msg = utils.normalizeInRpcMessage(message, idB58Str)
-        this._processRpcMessage(msg)
-      })
+        await this._processRpcMessage(msg)
+      }
     }
     return true
   }
@@ -455,7 +455,7 @@ class PubsubBaseProtocol extends EventEmitter {
     // Emit to self
     this._emitMessage(msg)
 
-    this._publish(utils.normalizeOutRpcMessage(msg))
+    return this._publish(utils.normalizeOutRpcMessage(msg))
   }
 
   /**
