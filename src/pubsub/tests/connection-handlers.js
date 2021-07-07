@@ -7,6 +7,7 @@ const sinon = require('sinon')
 const pDefer = require('p-defer')
 const pWaitFor = require('p-wait-for')
 const uint8ArrayToString = require('uint8arrays/to-string')
+const uint8ArrayFromString = require('uint8arrays/from-string')
 
 const { expectSet } = require('./utils')
 
@@ -91,7 +92,7 @@ module.exports = (common) => {
       it('should receive pubsub messages', async () => {
         const defer = pDefer()
         const topic = 'test-topic'
-        const data = 'hey!'
+        const data = uint8ArrayFromString('hey!')
 
         await psA._libp2p.dial(psB.peerId)
 
@@ -99,7 +100,7 @@ module.exports = (common) => {
         expect(subscribedTopics).to.not.include(topic)
 
         psA.on(topic, (msg) => {
-          expect(uint8ArrayToString(msg.data)).to.equal(data)
+          expect(msg.data).to.equalBytes(data)
           defer.resolve()
         })
         psA.subscribe(topic)
@@ -151,7 +152,7 @@ module.exports = (common) => {
       it('should receive pubsub messages', async () => {
         const defer = pDefer()
         const topic = 'test-topic'
-        const data = 'hey!'
+        const data = uint8ArrayFromString('hey!')
 
         await psA._libp2p.dial(psB.peerId)
 
@@ -167,7 +168,7 @@ module.exports = (common) => {
         expect(subscribedTopics).to.not.include(topic)
 
         psA.on(topic, (msg) => {
-          expect(uint8ArrayToString(msg.data)).to.equal(data)
+          expect(msg.data).to.equalBytes(data)
           defer.resolve()
         })
         psA.subscribe(topic)
@@ -207,7 +208,7 @@ module.exports = (common) => {
       it('should receive pubsub messages after a node restart', async function () {
         this.timeout(10e3)
         const topic = 'test-topic'
-        const data = 'hey!'
+        const data = uint8ArrayFromString('hey!')
         const psAid = psA.peerId.toB58String()
 
         let counter = 0
@@ -220,7 +221,7 @@ module.exports = (common) => {
         expect(subscribedTopics).to.not.include(topic)
 
         psA.on(topic, (msg) => {
-          expect(uint8ArrayToString(msg.data)).to.equal(data)
+          expect(msg.data).to.equalBytes(data)
           counter++
           counter === 1 ? defer1.resolve() : defer2.resolve()
         })
@@ -283,8 +284,8 @@ module.exports = (common) => {
         })
 
         // Verify messages go both ways
-        psA.publish(topic, 'message1')
-        psB.publish(topic, 'message2')
+        psA.publish(topic, uint8ArrayFromString('message1'))
+        psB.publish(topic, uint8ArrayFromString('message2'))
         await pWaitFor(() => handlerSpy.callCount >= 2)
         expect(handlerSpy.args.map(([message]) => uint8ArrayToString(message.data))).to.include.members(['message1', 'message2'])
 
@@ -296,8 +297,8 @@ module.exports = (common) => {
 
         // Verify messages go both ways after the disconnect
         handlerSpy.resetHistory()
-        psA.publish(topic, 'message3')
-        psB.publish(topic, 'message4')
+        psA.publish(topic, uint8ArrayFromString('message3'))
+        psB.publish(topic, uint8ArrayFromString('message4'))
         await pWaitFor(() => handlerSpy.callCount >= 2)
         expect(handlerSpy.args.map(([message]) => uint8ArrayToString(message.data))).to.include.members(['message3', 'message4'])
       })
