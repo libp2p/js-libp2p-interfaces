@@ -1,3 +1,24 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# 1.0.0 (2021-07-07)
+
+
+### chore
+
+* monorepo separating interfaces and compliance tests ([#97](https://github.com/libp2p/js-interfaces/issues/97)) ([946348f](https://github.com/libp2p/js-interfaces/commit/946348f7f8acc1ff7bc9cd0ab4c2602d41106f76))
+
+
+### BREAKING CHANGES
+
+* the tests now live in the libp2p-interfaces-compliance-tests module
+
+
+
+
+
 ## [0.12.1](https://github.com/libp2p/js-interfaces/compare/v0.12.0...v0.12.1) (2021-07-07)
 
 
@@ -527,6 +548,3 @@ return type.
 * test: add tests for canceling dials
 
 * feat: Adapter class
-
-
-
