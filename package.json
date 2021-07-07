@@ -1,6 +1,6 @@
 {
   "name": "libp2p-interfaces",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "Interfaces for JS Libp2p",
   "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "main": "src/index.js",
