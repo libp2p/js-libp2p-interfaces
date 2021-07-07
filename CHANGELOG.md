@@ -1,3 +1,7 @@
+## [0.12.1](https://github.com/libp2p/js-interfaces/compare/v0.12.0...v0.12.1) (2021-07-07)
+
+
+
 # [0.12.0](https://github.com/libp2p/js-interfaces/compare/v0.11.0...v0.12.0) (2021-07-06)
 
 
