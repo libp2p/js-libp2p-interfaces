@@ -16,7 +16,6 @@ const { expectSet } = require('./utils')
 
 module.exports = (common) => {
   describe('pubsub with multiple nodes', function () {
-    this.timeout(10e3)
     describe('every peer subscribes to the topic', () => {
       describe('line', () => {
         // line
@@ -253,7 +252,6 @@ module.exports = (common) => {
         })
 
         it('publishes from c', async function () {
-          this.timeout(30 * 1000)
           const defer = pDefer()
           let counter = 0
 

@@ -45,8 +45,6 @@ module.exports = (common) => {
       })
 
       it('existing subscriptions are sent upon peer connection', async function () {
-        this.timeout(10e3)
-
         await Promise.all([
           psA._libp2p.dial(psB.peerId),
           new Promise((resolve) => psA.once('pubsub:subscription-change', resolve)),
@@ -206,7 +204,6 @@ module.exports = (common) => {
       })
 
       it('should receive pubsub messages after a node restart', async function () {
-        this.timeout(10e3)
         const topic = 'test-topic'
         const data = uint8ArrayFromString('hey!')
         const psAid = psA.peerId.toB58String()
@@ -266,10 +263,8 @@ module.exports = (common) => {
 
         psA.on(topic, handlerSpy)
         psB.on(topic, handlerSpy)
-        await Promise.all([
-          psA.subscribe(topic),
-          psB.subscribe(topic)
-        ])
+        psA.subscribe(topic),
+        psB.subscribe(topic)
 
         // Create two connections to the remote peer
         const originalConnection = await psA._libp2p.dialer.connectToPeer(psB.peerId)
