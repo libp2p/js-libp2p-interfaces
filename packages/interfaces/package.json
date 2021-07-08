@@ -24,7 +24,6 @@
   "scripts": {
     "lint": "aegir lint",
     "dep-check": "aegir dep-check",
-    "prepare": "npm run build",
     "build": "npm run build:proto && npm run build:proto-types && npm run build:types",
     "build:types": "aegir build --no-bundle",
     "build:proto": "npm run build:proto:rpc && npm run build:proto:topic-descriptor",
