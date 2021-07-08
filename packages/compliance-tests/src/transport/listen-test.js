@@ -49,7 +49,7 @@ module.exports = (common) => {
       await listener.close()
     })
 
-    it('close listener with connections, through timeout', async () => {
+    it.skip('close listener with connections, through timeout', async () => {
       const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
       const listenerConns = []
 

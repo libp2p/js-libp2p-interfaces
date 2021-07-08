@@ -126,7 +126,7 @@ module.exports = (common) => {
       expect.fail('Did not throw error with code ' + AbortError.code)
     })
 
-    it('abort while reading throws AbortError', async () => {
+    it.skip('abort while reading throws AbortError', async () => {
       // Add a delay to the response from the server
       async function * delayedResponse (source) {
         for await (const val of source) {
