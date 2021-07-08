@@ -290,7 +290,7 @@ module.exports = (common) => {
 
         psA.on(topic, handlerSpyA)
         psB.on(topic, handlerSpyB)
-        psA.subscribe(topic),
+        psA.subscribe(topic)
         psB.subscribe(topic)
 
         // Create two connections to the remote peer
@@ -322,7 +322,7 @@ module.exports = (common) => {
         psA.publish(topic, uint8ArrayFromString('message-from-a-2'))
         psB.publish(topic, uint8ArrayFromString('message-from-b-2'))
         await pWaitFor(() => {
-          return bReceivedFirstMessageFromA && bReceivedSecondMessageFromA
+          return aReceivedSecondMessageFromB && bReceivedSecondMessageFromA
         })
       })
     })
