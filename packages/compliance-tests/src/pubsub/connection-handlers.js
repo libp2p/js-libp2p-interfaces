@@ -45,8 +45,6 @@ module.exports = (common) => {
       })
 
       it('existing subscriptions are sent upon peer connection', async function () {
-        this.timeout(10e3)
-
         await Promise.all([
           psA._libp2p.dial(psB.peerId),
           new Promise((resolve) => psA.once('pubsub:subscription-change', resolve)),
@@ -206,7 +204,6 @@ module.exports = (common) => {
       })
 
       it('should receive pubsub messages after a node restart', async function () {
-        this.timeout(10e3)
         const topic = 'test-topic'
         const data = uint8ArrayFromString('hey!')
         const psAid = psA.peerId.toB58String()
@@ -261,15 +258,40 @@ module.exports = (common) => {
 
       it('should handle quick reconnects with a delayed disconnect', async () => {
         // Subscribe on both
-        const handlerSpy = sinon.spy()
+        let aReceivedFirstMessageFromB = false
+        let aReceivedSecondMessageFromB = false
+        let bReceivedFirstMessageFromA = false
+        let bReceivedSecondMessageFromA = false
+
+        const handlerSpyA = (message) => {
+          const data = uint8ArrayToString(message.data)
+
+          if (data === 'message-from-b-1') {
+            aReceivedFirstMessageFromB = true
+          }
+
+          if (data === 'message-from-b-2') {
+            aReceivedSecondMessageFromB = true
+          }
+        }
+        const handlerSpyB = (message) => {
+          const data = uint8ArrayToString(message.data)
+
+          if (data === 'message-from-a-1') {
+            bReceivedFirstMessageFromA = true
+          }
+
+          if (data === 'message-from-a-2') {
+            bReceivedSecondMessageFromA = true
+          }
+        }
+
         const topic = 'reconnect-channel'
 
-        psA.on(topic, handlerSpy)
-        psB.on(topic, handlerSpy)
-        await Promise.all([
-          psA.subscribe(topic),
-          psB.subscribe(topic)
-        ])
+        psA.on(topic, handlerSpyA)
+        psB.on(topic, handlerSpyB)
+        psA.subscribe(topic)
+        psB.subscribe(topic)
 
         // Create two connections to the remote peer
         const originalConnection = await psA._libp2p.dialer.connectToPeer(psB.peerId)
@@ -284,10 +306,11 @@ module.exports = (common) => {
         })
 
         // Verify messages go both ways
-        psA.publish(topic, uint8ArrayFromString('message1'))
-        psB.publish(topic, uint8ArrayFromString('message2'))
-        await pWaitFor(() => handlerSpy.callCount >= 2)
-        expect(handlerSpy.args.map(([message]) => uint8ArrayToString(message.data))).to.include.members(['message1', 'message2'])
+        psA.publish(topic, uint8ArrayFromString('message-from-a-1'))
+        psB.publish(topic, uint8ArrayFromString('message-from-b-1'))
+        await pWaitFor(() => {
+          return aReceivedFirstMessageFromB && bReceivedFirstMessageFromA
+        })
 
         // Disconnect the first connection (this acts as a delayed reconnect)
         const psAConnUpdateSpy = sinon.spy(psA._libp2p.connectionManager.connections, 'set')
@@ -296,11 +319,11 @@ module.exports = (common) => {
         await pWaitFor(() => psAConnUpdateSpy.callCount === 1)
 
         // Verify messages go both ways after the disconnect
-        handlerSpy.resetHistory()
-        psA.publish(topic, uint8ArrayFromString('message3'))
-        psB.publish(topic, uint8ArrayFromString('message4'))
-        await pWaitFor(() => handlerSpy.callCount >= 2)
-        expect(handlerSpy.args.map(([message]) => uint8ArrayToString(message.data))).to.include.members(['message3', 'message4'])
+        psA.publish(topic, uint8ArrayFromString('message-from-a-2'))
+        psB.publish(topic, uint8ArrayFromString('message-from-b-2'))
+        await pWaitFor(() => {
+          return aReceivedSecondMessageFromB && bReceivedSecondMessageFromA
+        })
       })
     })
   })

@@ -6,7 +6,6 @@ const spawn = require('./spawner')
 
 module.exports = (common) => {
   describe.skip('mega stress test', function () {
-    this.timeout(100 * 200 * 1000)
     let Muxer
 
     beforeEach(async () => {

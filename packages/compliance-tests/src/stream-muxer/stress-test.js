@@ -24,7 +24,6 @@ module.exports = (common) => {
     it('1000 streams with 1 msg', () => spawn(Muxer, 1000, 1))
     it('1000 streams with 10 msg', () => spawn(Muxer, 1000, 10))
     it('1000 streams with 100 msg', function () {
-      this.timeout(30 * 1000)
       return spawn(Muxer, 1000, 100)
     })
   })

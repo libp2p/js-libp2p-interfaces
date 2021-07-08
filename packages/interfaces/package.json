@@ -52,7 +52,7 @@
   "bugs": {
     "url": "https://github.com/libp2p/js-interfaces/issues"
   },
-  "homepage": "https://github.com/libp2p/js-interfaces#readme",
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interfaces#readme",
   "dependencies": {
     "abort-controller": "^3.0.0",
     "abortable-iterator": "^3.0.0",
