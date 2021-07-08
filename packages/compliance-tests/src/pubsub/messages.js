@@ -66,17 +66,11 @@ module.exports = (common) => {
       }
 
       pubsub.subscribe(topic)
-      pubsub._processRpc(peerStream.id.toB58String(), peerStream, rpc)
+      await pubsub._processRpc(peerStream.id.toB58String(), peerStream, rpc)
 
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          expect(pubsub.validate.callCount).to.eql(1)
-          expect(pubsub._emitMessage.called).to.eql(false)
-          expect(pubsub._publish.called).to.eql(false)
-
-          resolve()
-        }, 50)
-      })
+      expect(pubsub.validate.callCount).to.eql(1)
+      expect(pubsub._emitMessage.called).to.eql(false)
+      expect(pubsub._publish.called).to.eql(false)
     })
 
     it('should not drop unsigned messages if strict signing is disabled', async () => {
@@ -99,17 +93,11 @@ module.exports = (common) => {
       }
 
       pubsub.subscribe(topic)
-      pubsub._processRpc(peerStream.id.toB58String(), peerStream, rpc)
+      await pubsub._processRpc(peerStream.id.toB58String(), peerStream, rpc)
 
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          expect(pubsub.validate.callCount).to.eql(1)
-          expect(pubsub._emitMessage.called).to.eql(true)
-          expect(pubsub._publish.called).to.eql(true)
-
-          resolve()
-        }, 50)
-      })
+      expect(pubsub.validate.callCount).to.eql(1)
+      expect(pubsub._emitMessage.called).to.eql(true)
+      expect(pubsub._publish.called).to.eql(true)
     })
   })
 }
