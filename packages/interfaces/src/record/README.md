@@ -30,7 +30,7 @@ describe('your record', () => {
 ```js
 const multicodec = require('multicodec')
 const Record = require('libp2p-interfaces/src/record')
-const fromString = require('uint8arrays/from-string')
+const { fromString } = require('uint8arrays/from-string')
 // const Protobuf = require('./record.proto')
 
 const ENVELOPE_DOMAIN_PEER_RECORD = 'libp2p-peer-record'

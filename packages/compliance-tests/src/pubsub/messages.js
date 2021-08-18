@@ -6,7 +6,7 @@ const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
 
 const PeerId = require('peer-id')
-const uint8ArrayFromString = require('uint8arrays/from-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 const { utils } = require('libp2p-interfaces/src/pubsub')
 const PeerStreams = require('libp2p-interfaces/src/pubsub/peer-streams')

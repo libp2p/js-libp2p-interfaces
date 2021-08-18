@@ -6,8 +6,8 @@ const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
 const pDefer = require('p-defer')
 const pWaitFor = require('p-wait-for')
-const uint8ArrayToString = require('uint8arrays/to-string')
-const uint8ArrayFromString = require('uint8arrays/from-string')
+const { toString: uint8ArrayToString } = require('uint8arrays/to-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 const { expectSet } = require('./utils')
 

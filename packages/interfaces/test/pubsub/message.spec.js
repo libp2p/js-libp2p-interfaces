@@ -3,7 +3,7 @@
 
 const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
-const uint8arrayFromString = require('uint8arrays/from-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 const PubsubBaseImpl = require('../../src/pubsub')
 const { SignaturePolicy } = require('../../src/pubsub/signature-policy')
@@ -35,7 +35,7 @@ describe('pubsub base messages', () => {
   it('_buildMessage normalizes and signs messages', async () => {
     const message = {
       receivedFrom: peerId.toB58String(),
-      data: uint8arrayFromString('hello'),
+      data: uint8ArrayFromString('hello'),
       topicIDs: ['test-topic']
     }
 

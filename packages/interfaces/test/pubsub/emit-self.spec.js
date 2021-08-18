@@ -9,7 +9,7 @@ const {
   PubsubImplementation
 } = require('./utils')
 
-const uint8ArrayFromString = require('uint8arrays/from-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 const protocol = '/pubsub/1.0.0'
 const topic = 'foo'

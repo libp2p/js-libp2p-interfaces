@@ -8,7 +8,7 @@ const sinon = require('sinon')
 
 const pWaitFor = require('p-wait-for')
 const { pipe } = require('it-pipe')
-const uint8arrayFromString = require('uint8arrays/from-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 const { isValidTick } = require('./utils')
 
 module.exports = (common) => {
@@ -74,7 +74,7 @@ module.exports = (common) => {
       // Wait for the data send and close to finish
       await Promise.all([
         pipe(
-          [uint8arrayFromString('Some data that is never handled')],
+          [uint8ArrayFromString('Some data that is never handled')],
           socket1
         ),
         // Closer the listener (will take a couple of seconds to time out)

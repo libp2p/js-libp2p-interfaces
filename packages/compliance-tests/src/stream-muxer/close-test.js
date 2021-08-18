@@ -8,14 +8,14 @@ const { pipe } = require('it-pipe')
 const { consume } = require('streaming-iterables')
 const { source: abortable } = require('abortable-iterator')
 const AbortController = require('abort-controller').default
-const uint8arrayFromString = require('uint8arrays/from-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 function pause (ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 function randomBuffer () {
-  return uint8arrayFromString(Math.random().toString())
+  return uint8ArrayFromString(Math.random().toString())
 }
 
 const infiniteRandom = {

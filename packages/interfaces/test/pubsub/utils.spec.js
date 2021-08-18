@@ -3,7 +3,7 @@
 
 const { expect } = require('aegir/utils/chai')
 const utils = require('../../src/pubsub/utils')
-const uint8ArrayFromString = require('uint8arrays/from-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 describe('utils', () => {
   it('randomSeqno', () => {

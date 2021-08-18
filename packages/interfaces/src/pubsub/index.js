@@ -495,7 +495,6 @@ class PubsubBaseProtocol extends EventEmitter {
    * Whether to accept a message from a peer
    * Override to create a graylist
    *
-   * @override
    * @param {string} id
    * @returns {boolean}
    */
@@ -653,7 +652,6 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Publishes messages to all subscribed peers
    *
-   * @override
    * @param {string} topic
    * @param {Uint8Array} message
    * @returns {Promise<void>}
@@ -718,7 +716,6 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Unsubscribe from the given topic.
    *
-   * @override
    * @param {string} topic
    * @returns {void}
    */
@@ -736,7 +733,6 @@ class PubsubBaseProtocol extends EventEmitter {
   /**
    * Get the list of topics which the peer is subscribed to.
    *
-   * @override
    * @returns {Array<string>}
    */
   getTopics () {

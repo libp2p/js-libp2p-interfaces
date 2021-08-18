@@ -9,8 +9,8 @@ const sinon = require('sinon')
 const delay = require('delay')
 const pDefer = require('p-defer')
 const pWaitFor = require('p-wait-for')
-const uint8ArrayFromString = require('uint8arrays/from-string')
-const uint8ArrayToString = require('uint8arrays/to-string')
+const { toString: uint8ArrayToString } = require('uint8arrays/to-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 const { expectSet } = require('./utils')
 
