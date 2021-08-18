@@ -7,7 +7,7 @@ const sinon = require('sinon')
 
 const pDefer = require('p-defer')
 const pWaitFor = require('p-wait-for')
-const uint8ArrayFromString = require('uint8arrays/from-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')

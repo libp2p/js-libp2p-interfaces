@@ -7,7 +7,7 @@ const duplexPair = require('it-pair/duplex')
 const { pipe } = require('it-pipe')
 const PeerId = require('peer-id')
 const { collect } = require('streaming-iterables')
-const uint8arrayFromString = require('uint8arrays/from-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 const peers = require('../utils/peers')
 const { UnexpectedPeerError } = require('libp2p-interfaces/src/crypto/errors')
@@ -55,7 +55,7 @@ module.exports = (common) => {
       pipe(inboundResult.conn, inboundResult.conn)
 
       // Send some data and collect the result
-      const input = uint8arrayFromString('data to encrypt')
+      const input = uint8ArrayFromString('data to encrypt')
       const result = await pipe(
         [input],
         outboundResult.conn,

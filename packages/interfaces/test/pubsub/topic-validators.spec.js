@@ -7,8 +7,8 @@ const pWaitFor = require('p-wait-for')
 const errCode = require('err-code')
 
 const PeerId = require('peer-id')
-const uint8ArrayEquals = require('uint8arrays/equals')
-const uint8ArrayFromString = require('uint8arrays/from-string')
+const { equals: uint8ArrayEquals } = require('uint8arrays/equals')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 const PeerStreams = require('../../src/pubsub/peer-streams')
 const { SignaturePolicy } = require('../../src/pubsub/signature-policy')

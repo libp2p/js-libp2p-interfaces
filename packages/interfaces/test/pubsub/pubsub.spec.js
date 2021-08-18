@@ -6,7 +6,7 @@ const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
 const pWaitFor = require('p-wait-for')
 
-const uint8ArrayFromString = require('uint8arrays/from-string')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 const PeerStreams = require('../../src/pubsub/peer-streams')
 const {
