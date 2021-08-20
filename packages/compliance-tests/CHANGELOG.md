@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@1.0.1...libp2p-interfaces-compliance-tests@1.1.0) (2021-08-20)
+
+
+### Features
+
+* update uint8arrays ([#105](https://github.com/libp2p/js-libp2p-interfaces/issues/105)) ([9297a9c](https://github.com/libp2p/js-libp2p-interfaces/commit/9297a9c379276d03c8da849af6108b38e581b4a6))
+
+
+
+
+
 ## [1.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@1.0.0...libp2p-interfaces-compliance-tests@1.0.1) (2021-07-08)
 
 
