@@ -356,11 +356,15 @@ class PubsubBaseProtocol extends EventEmitter {
             const rpcBytes = data instanceof Uint8Array ? data : data.slice()
             const rpcMsg = this._decodeRpc(rpcBytes)
 
-            void (async () => {
+            // Since _processRpc may be overridden entirely in unsafe ways,
+            // the simplest/safest option here is to wrap in a function and capture all errors
+            // to prevent a top-level unhandled exception
+            // This processing of rpc messages should happen without awaiting full validation/execution of prior messages
+            ;(async () => {
               try {
                 await this._processRpc(idB58Str, peerStreams, rpcMsg)
-              } catch (e) {
-                this.log.err(e.message)
+              } catch (err) {
+                this.log.err(err)
               }
             })()
           }
