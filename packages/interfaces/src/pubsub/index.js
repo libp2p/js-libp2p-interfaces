@@ -356,7 +356,13 @@ class PubsubBaseProtocol extends EventEmitter {
             const rpcBytes = data instanceof Uint8Array ? data : data.slice()
             const rpcMsg = this._decodeRpc(rpcBytes)
 
-            await this._processRpc(idB58Str, peerStreams, rpcMsg)
+            void (async () => {
+              try {
+                await this._processRpc(idB58Str, peerStreams, rpcMsg)
+              } catch (e) {
+                this.log.err(e.message)
+              }
+            })()
           }
         }
       )
@@ -393,14 +399,14 @@ class PubsubBaseProtocol extends EventEmitter {
 
     if (msgs.length) {
       // @ts-ignore RPC message is modified
-      for (const message of msgs) {
+      await Promise.all(msgs.map(async (message) => {
         if (!(this.canRelayMessage || (message.topicIDs && message.topicIDs.some((topic) => this.subscriptions.has(topic))))) {
           this.log('received message we didn\'t subscribe to. Dropping.')
           continue
         }
         const msg = utils.normalizeInRpcMessage(message, idB58Str)
         await this._processRpcMessage(msg)
-      }
+      }))
     }
     return true
   }
