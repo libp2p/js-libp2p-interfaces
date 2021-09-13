@@ -402,7 +402,7 @@ class PubsubBaseProtocol extends EventEmitter {
       await Promise.all(msgs.map(async (message) => {
         if (!(this.canRelayMessage || (message.topicIDs && message.topicIDs.some((topic) => this.subscriptions.has(topic))))) {
           this.log('received message we didn\'t subscribe to. Dropping.')
-          continue
+          return
         }
         const msg = utils.normalizeInRpcMessage(message, idB58Str)
         await this._processRpcMessage(msg)
