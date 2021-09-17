@@ -166,7 +166,7 @@ class PubsubBaseProtocol extends EventEmitter {
     this.topicValidators = new Map()
 
     /**
-     * @type {number}
+     * @type {Queue}
      */
     this.queue = new Queue({ concurrency: messageProcessingConcurrency })
 
