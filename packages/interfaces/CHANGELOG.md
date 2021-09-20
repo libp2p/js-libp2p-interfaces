@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@1.1.0...libp2p-interfaces@1.1.1) (2021-09-20)
+
+
+### Bug Fixes
+
+* allow pubsub rpc to be processed concurrently ([#106](https://github.com/libp2p/js-interfaces/issues/106)) ([52f96b3](https://github.com/libp2p/js-interfaces/commit/52f96b3eb867b844a9c4a0d1fd632baa300052a2))
+
+
+
+
+
 # [1.1.0](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@1.0.1...libp2p-interfaces@1.1.0) (2021-08-20)
 
 
