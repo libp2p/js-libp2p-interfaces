@@ -5,6 +5,7 @@ const { EventEmitter } = require('events')
 const errcode = require('err-code')
 
 const { pipe } = require('it-pipe')
+const { default: Queue } = require('p-queue')
 
 const MulticodecTopology = require('../topology/multicodec-topology')
 const { codes } = require('./errors')
@@ -50,6 +51,7 @@ const {
  * @property {SignaturePolicyType} [globalSignaturePolicy = SignaturePolicy.StrictSign] - defines how signatures should be handled
  * @property {boolean} [canRelayMessage = false] - if can relay messages not subscribed
  * @property {boolean} [emitSelf = false] - if publish should emit to self, if subscribed
+ * @property {number} [messageProcessingConcurrency = 10] - handle this many incoming pubsub messages concurrently
  */
 
 /**
@@ -67,7 +69,8 @@ class PubsubBaseProtocol extends EventEmitter {
     libp2p,
     globalSignaturePolicy = SignaturePolicy.StrictSign,
     canRelayMessage = false,
-    emitSelf = false
+    emitSelf = false,
+    messageProcessingConcurrency = 10
   }) {
     if (typeof debugName !== 'string') {
       throw new Error('a debugname `string` is required')
@@ -161,6 +164,11 @@ class PubsubBaseProtocol extends EventEmitter {
      * @type {Map<string, validator>}
      */
     this.topicValidators = new Map()
+
+    /**
+     * @type {Queue}
+     */
+    this.queue = new Queue({ concurrency: messageProcessingConcurrency })
 
     this._registrarId = undefined
     this._onIncomingStream = this._onIncomingStream.bind(this)
@@ -356,7 +364,17 @@ class PubsubBaseProtocol extends EventEmitter {
             const rpcBytes = data instanceof Uint8Array ? data : data.slice()
             const rpcMsg = this._decodeRpc(rpcBytes)
 
-            await this._processRpc(idB58Str, peerStreams, rpcMsg)
+            // Since _processRpc may be overridden entirely in unsafe ways,
+            // the simplest/safest option here is to wrap in a function and capture all errors
+            // to prevent a top-level unhandled exception
+            // This processing of rpc messages should happen without awaiting full validation/execution of prior messages
+            ;(async () => {
+              try {
+                await this._processRpc(idB58Str, peerStreams, rpcMsg)
+              } catch (err) {
+                this.log.err(err)
+              }
+            })()
           }
         }
       )
@@ -392,15 +410,20 @@ class PubsubBaseProtocol extends EventEmitter {
     }
 
     if (msgs.length) {
-      // @ts-ignore RPC message is modified
-      for (const message of msgs) {
+      this.queue.addAll(msgs.map(message => async () => {
         if (!(this.canRelayMessage || (message.topicIDs && message.topicIDs.some((topic) => this.subscriptions.has(topic))))) {
           this.log('received message we didn\'t subscribe to. Dropping.')
-          continue
+          return
         }
-        const msg = utils.normalizeInRpcMessage(message, idB58Str)
-        await this._processRpcMessage(msg)
-      }
+
+        try {
+          const msg = utils.normalizeInRpcMessage(message, idB58Str)
+
+          await this._processRpcMessage(msg)
+        } catch (err) {
+          this.log.err(err)
+        }
+      }))
     }
     return true
   }
