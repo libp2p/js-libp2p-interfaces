@@ -59,6 +59,7 @@
   "dependencies": {
     "abort-controller": "^3.0.0",
     "abortable-iterator": "^3.0.0",
+    "cids": "^1.1.9",
     "debug": "^4.3.1",
     "err-code": "^3.0.1",
     "it-length-prefixed": "^5.0.2",
