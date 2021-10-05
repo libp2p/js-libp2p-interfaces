@@ -11,4 +11,9 @@ export interface ContentRouting {
   findProviders (cid: CID, options: Object): AsyncIterable<{ id: PeerId, multiaddrs: Multiaddr[] }>;
 }
 
+export interface ContentRoutingStorage {
+  put (key: Uint8Array, value: Uint8Array, options?: Object): Promise<void>
+  get (key: Uint8Array, options?: Object): Promise<Uint8Array>
+}
+
 export default ContentRouting;
