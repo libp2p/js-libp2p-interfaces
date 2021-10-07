@@ -60,4 +60,11 @@ Note that implementations may specify additional options, and must ignore unknow
 
 **Returns**
 
-A `Promise<Uint8Array>` that resolves with the binary value associated with the given key, or fails with an `Error` if the value is not found or something goes wrong while fetching.
+A `Promise<GetValueResult>` that resolves with an object of the following shape on success:
+
+```js
+{
+  from: PeerId,
+  val: Uint8Array,
+}
+```
