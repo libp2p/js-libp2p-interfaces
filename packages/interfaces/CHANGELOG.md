@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@1.1.1...libp2p-interfaces@1.2.0) (2021-10-18)
+
+
+### Features
+
+* add ValueStore interface ([#108](https://github.com/libp2p/js-interfaces/issues/108)) ([09c6e10](https://github.com/libp2p/js-interfaces/commit/09c6e10353c1d8842a5522d28d5cd38ae47d892f))
+
+
+
+
+
 ## [1.1.1](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@1.1.0...libp2p-interfaces@1.1.1) (2021-09-20)
 
 
