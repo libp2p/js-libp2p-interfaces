@@ -4,7 +4,7 @@
 
 const { expect } = require('aegir/utils/chai')
 const multihashes = require('multihashes')
-const CID = require('cids')
+const { CID } = require('multiformats/cid')
 const uint8ArrayFromString = require('uint8arrays/from-string')
 const uint8ArrayToString = require('uint8arrays/to-string')
 const util = require('util')

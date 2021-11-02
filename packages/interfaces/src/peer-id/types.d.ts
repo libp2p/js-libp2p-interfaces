@@ -2,7 +2,7 @@
  * @typedef {import('libp2p-crypto').PrivateKey} PrivateKey
  * @typedef {import('libp2p-crypto').PublicKey} PublicKey
  * @typedef {import('libp2p-crypto').KeyType} KeyType
- * @typedef {import('cids').CIDVersion} CIDVersion
+ * @typedef {import('multiformats/cid').CIDVersion} CIDVersion
  */
 
 interface PeerIdJSON {
