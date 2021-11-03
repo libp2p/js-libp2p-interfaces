@@ -25,7 +25,7 @@ Include this badge in your readme if you make a new module that uses interface-p
 
 ### Node.js
 
-Install `interface-peer-id` as one of the dependencies of your project and as a test file. Then, using `mocha` (for JavaScript) or a test runner with compatible API, do:
+Install `libp2p-interfaces-compliance-tests` as one of the development dependencies of your project and as a test file. Then, using `mocha` (for JavaScript) or a test runner with compatible API, do:
 
 ```js
 const tests = require('libp2p-interfaces-compliance-tests/src/peer-id')
@@ -34,7 +34,7 @@ describe('your peer id', () => {
   // use all of the test suits
   tests({
     setup () {
-      return YourPeerId
+      return YourPeerIdFactory
     },
     teardown () {
       // Clean up any resources created by setup()
