@@ -1,9 +1,5 @@
-/**
- * @typedef {import('libp2p-crypto').PrivateKey} PrivateKey
- * @typedef {import('libp2p-crypto').PublicKey} PublicKey
- * @typedef {import('libp2p-crypto').KeyType} KeyType
- * @typedef {import('multiformats/cid').CIDVersion} CIDVersion
- */
+import type { CID } from 'multiformats/cid'
+import type { PublicKey, PrivateKey, KeyType } from '../keys/types'
 
 interface PeerIdJSON {
   readonly id: string;
@@ -12,8 +8,8 @@ interface PeerIdJSON {
 }
 
 interface CreateOptions {
-  readonly bits?: number; 
-  readonly keyType?: KeyType; 
+  bits?: number;
+  keyType?: KeyType;
 }
 
 export interface PeerId {
@@ -84,11 +80,10 @@ export interface PeerId {
 }
 
 export interface PeerIdFactory {
-  new(id: Uint8Array, privKey?: PrivateKey, pubKey?: PublicKey): PeerId;
   /**
    * Create a new PeerId.
    **/
-  async create ({ bits = 2048, keyType = 'RSA' } = {}): Promise<PeerId>;
+  create (args: CreateOptions): Promise<PeerId>;
 
   /**
    * Create PeerId from raw bytes.
@@ -108,27 +103,32 @@ export interface PeerIdFactory {
   /**
    * Create PeerId from CID.
    */
-  createFromCID (cid: CID | CIDVersion | Uint8Array | string): PeerId
+  createFromCID (cid: CID | Uint8Array | string): PeerId
 
   /**
    * Create PeerId from public key.
    */
-  async createFromPubKey (key: Uint8Array | string): Promise<PeerId>;
+  createFromPubKey (key: Uint8Array | string): Promise<PeerId>;
 
   /**
    * Create PeerId from private key.
    */
-  async createFromPrivKey (key: Uint8Array | string): Promise<PeerId>;
+  createFromPrivKey (key: Uint8Array | string): Promise<PeerId>;
 
   /**
    * Create PeerId from PeerId JSON formatted object.
    */
-  async createFromJSON (obj: PeerIdJSON): Promise<PeerId>;
+  createFromJSON (obj: PeerIdJSON): Promise<PeerId>;
 
   /**
    * Create PeerId from Protobuf bytes.
    */
-  async createFromProtobuf (buf: Uint8Array | string): Promise<PeerId>;
+  createFromProtobuf (buf: Uint8Array | string): Promise<PeerId>;
+
+  /**
+   * Parse PeerId from string, maybe base58btc encoded without multibase prefix
+   */
+  parse (str: string): PeerId
 
   /**
    * Checks if a value is an instance of PeerId.

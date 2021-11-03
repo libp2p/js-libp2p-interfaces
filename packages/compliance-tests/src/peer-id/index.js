@@ -3,11 +3,19 @@
 'use strict'
 
 const { expect } = require('aegir/utils/chai')
-const multihashes = require('multihashes')
+const crypto = require('libp2p-crypto')
 const { CID } = require('multiformats/cid')
-const uint8ArrayFromString = require('uint8arrays/from-string')
-const uint8ArrayToString = require('uint8arrays/to-string')
-const util = require('util')
+const Digest = require('multiformats/hashes/digest')
+const { base16 } = require('multiformats/bases/base16')
+const { base36 } = require('multiformats/bases/base36')
+const { base58btc } = require('multiformats/bases/base58')
+const { identity } = require('multiformats/hashes/identity')
+const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
+const { toString: uint8ArrayToString } = require('uint8arrays/to-string')
+
+const DAG_PB_CODE = 0x70
+const LIBP2P_KEY_CODE = 0x72
+const RAW_CODE = 0x55
 
 const testOpts = {
   bits: 512
@@ -26,10 +34,12 @@ const testId = {
 }
 
 const testIdHex = testId.id
-const testIdBytes = multihashes.fromHexString(testId.id)
-const testIdB58String = multihashes.toB58String(testIdBytes)
-const testIdCID = new CID(1, 'libp2p-key', testIdBytes)
-const testIdCIDString = testIdCID.toBaseEncodedString('base32')
+const testIdBytes = base16.decode(`f${testId.id}`)
+const testIdDigest = Digest.decode(testIdBytes)
+const testIdB58String = base58btc.encode(testIdBytes).substring(1)
+const testIdB36String = base36.encode(testIdBytes)
+const testIdCID = CID.createV1(LIBP2P_KEY_CODE, testIdDigest)
+const testIdCIDString = testIdCID.toString()
 
 module.exports = (common) => {
   describe('interface-peer-id compliance tests', () => {
@@ -56,8 +66,14 @@ module.exports = (common) => {
 
     it('can be created for a Secp256k1 key', async () => {
       const id = await PeerId.create({ keyType: 'secp256k1', bits: 256 })
-      const expB58 = multihashes.toB58String(multihashes.encode(id.pubKey.bytes, 'identity'))
+      const expB58 = base58btc.encode((await identity.digest(id.pubKey.bytes)).bytes).slice(1)
       expect(id.toB58String()).to.equal(expB58)
+    })
+
+    it('can get the public key from a Secp256k1 key', async () => {
+      const original = await PeerId.create({ keyType: 'secp256k1', bits: 256 })
+      const newId = PeerId.createFromB58String(original.toB58String())
+      expect(original.pubKey.bytes).to.eql(newId.pubKey.bytes)
     })
 
     it('isPeerId', async () => {
@@ -99,64 +115,62 @@ module.exports = (common) => {
       expect(testIdBytes).to.deep.equal(id.toBytes())
     })
 
-    it('recreate from Base58 String (CIDv0))', () => {
-      const id = PeerId.createFromCID(testIdB58String)
+    it('recreate from Base58 String (CIDv0)', () => {
+      const id = PeerId.createFromCID(CID.parse(testIdB58String))
+      expect(testIdCIDString).to.equal(id.toString())
+      expect(testIdBytes).to.deep.equal(id.toBytes())
+    })
+
+    it('recreate from Base36 String', () => {
+      const id = PeerId.parse(testIdB36String)
       expect(testIdCIDString).to.equal(id.toString())
       expect(testIdBytes).to.deep.equal(id.toBytes())
     })
 
     it('recreate from CIDv1 Base32 (libp2p-key multicodec)', () => {
-      const cid = new CID(1, 'libp2p-key', testIdBytes)
-      const cidString = cid.toBaseEncodedString('base32')
-      const id = PeerId.createFromCID(cidString)
-      expect(cidString).to.equal(id.toString())
+      const cid = CID.createV1(LIBP2P_KEY_CODE, testIdDigest)
+      const id = PeerId.createFromCID(cid)
+      expect(cid.toString()).to.equal(id.toString())
       expect(testIdBytes).to.deep.equal(id.toBytes())
     })
 
     it('recreate from CIDv1 Base32 (dag-pb multicodec)', () => {
-      const cid = new CID(1, 'dag-pb', testIdBytes)
-      const cidString = cid.toBaseEncodedString('base32')
-      const id = PeerId.createFromCID(cidString)
+      const cid = CID.createV1(DAG_PB_CODE, testIdDigest)
+      const id = PeerId.createFromCID(cid)
       // toString should return CID with multicodec set to libp2p-key
-      expect(new CID(id.toString()).codec).to.equal('libp2p-key')
+      expect(CID.parse(id.toString()).code).to.equal(LIBP2P_KEY_CODE)
       expect(testIdBytes).to.deep.equal(id.toBytes())
     })
 
     it('recreate from CID Uint8Array', () => {
-      const id = PeerId.createFromCID(testIdCID.bytes)
+      const id = PeerId.createFromBytes(testIdCID.bytes)
       expect(testIdCIDString).to.equal(id.toString())
       expect(testIdBytes).to.deep.equal(id.toBytes())
     })
 
     it('throws on invalid CID multicodec', () => {
       // only libp2p and dag-pb are supported
-      const invalidCID = new CID(1, 'raw', testIdBytes).toBaseEncodedString('base32')
+      const invalidCID = CID.createV1(RAW_CODE, testIdDigest)
       expect(() => {
         PeerId.createFromCID(invalidCID)
-      }).to.throw(/Supplied PeerID CID has invalid multicodec: raw/)
+      }).to.throw(/invalid/i)
     })
 
-    it('throws on invalid CID value', () => {
-      // using function code that does not represent valid hash function
+    it('throws on invalid multihash value', () => {
+      // using function code 0x50 that does not represent valid hash function
       // https://github.com/multiformats/js-multihash/blob/b85999d5768bf06f1b0f16b926ef2cb6d9c14265/src/constants.js#L345
-      const invalidCID = 'QmaozNR7DZHQK1ZcU9p7QdrshMvXqWK6gpu5rmrkPdT3L'
+      const invalidMultihash = uint8ArrayToString(Uint8Array.from([0x50, 0x1, 0x0]), 'base58btc')
       expect(() => {
-        PeerId.createFromCID(invalidCID)
-      }).to.throw(/multihash unknown function code: 0x50/)
+        PeerId.createFromB58String(invalidMultihash)
+      }).to.throw(/invalid/i)
     })
 
     it('throws on invalid CID object', () => {
       const invalidCID = {}
       expect(() => {
+        // @ts-expect-error invalid cid is invalid type
         PeerId.createFromCID(invalidCID)
-      }).to.throw(/Invalid version, must be a number equal to 1 or 0/)
-    })
-
-    it('throws on invalid CID object', () => {
-      const invalidCID = {}
-      expect(() => {
-        PeerId.createFromCID(invalidCID)
-      }).to.throw(/Invalid version, must be a number equal to 1 or 0/)
+      }).to.throw(/invalid/i)
     })
 
     it('recreate from a Public Key', async () => {
@@ -184,17 +198,39 @@ module.exports = (common) => {
       expect(uint8ArrayToString(id.marshal(), 'base16')).to.deep.equal(testId.marshaled)
     })
 
+    it('recreate from embedded ed25519 key', async () => {
+      const key = '12D3KooWRm8J3iL796zPFi2EtGGtUJn58AG67gcqzMFHZnnsTzqD'
+      const id = await PeerId.parse(key)
+      expect(id.toB58String()).to.equal(key)
+      const expB58 = base58btc.encode((await identity.digest(id.pubKey.bytes)).bytes).slice(1)
+      expect(id.toB58String()).to.equal(expB58)
+    })
+
+    it('recreate from embedded secp256k1 key', async () => {
+      const key = '16Uiu2HAm5qw8UyXP2RLxQUx5KvtSN8DsTKz8quRGqGNC3SYiaB8E'
+      const id = await PeerId.parse(key)
+      expect(id.toB58String()).to.equal(key)
+      const expB58 = base58btc.encode((await identity.digest(id.pubKey.bytes)).bytes).slice(1)
+      expect(id.toB58String()).to.equal(expB58)
+    })
+
+    it('recreate from string key', async () => {
+      const key = 'QmRsooYQasV5f5r834NSpdUtmejdQcpxXkK6qsozZWEihC'
+      const id = await PeerId.parse(key)
+      expect(id.toB58String()).to.equal(key)
+    })
+
     it('can be created from a Secp256k1 public key', async () => {
       const privKey = await crypto.keys.generateKeyPair('secp256k1', 256)
       const id = await PeerId.createFromPubKey(privKey.public.bytes)
-      const expB58 = multihashes.toB58String(multihashes.encode(id.pubKey.bytes, 'identity'))
+      const expB58 = base58btc.encode((await identity.digest(id.pubKey.bytes)).bytes).slice(1)
       expect(id.toB58String()).to.equal(expB58)
     })
 
     it('can be created from a Secp256k1 private key', async () => {
       const privKey = await crypto.keys.generateKeyPair('secp256k1', 256)
       const id = await PeerId.createFromPrivKey(privKey.bytes)
-      const expB58 = multihashes.toB58String(multihashes.encode(id.pubKey.bytes, 'identity'))
+      const expB58 = base58btc.encode((await identity.digest(id.pubKey.bytes)).bytes).slice(1)
       expect(id.toB58String()).to.equal(expB58)
     })
 
@@ -205,6 +241,7 @@ module.exports = (common) => {
     })
 
     it('Works with default options', async function () {
+      this.timeout(10000)
       const id = await PeerId.create()
       expect(id.toB58String().length).to.equal(46)
     })
@@ -218,7 +255,8 @@ module.exports = (common) => {
 
     it('Pretty printing', async () => {
       const id1 = await PeerId.create(testOpts)
-      const id2 = await PeerId.createFromPrivKey((id1.toJSON()).privKey)
+      const json = id1.toJSON()
+      const id2 = await PeerId.createFromPrivKey(json.privKey || 'invalid, should not happen')
       expect(id1.toPrint()).to.be.eql(id2.toPrint())
       expect(id1.toPrint()).to.equal('<peer.ID ' + id1.toB58String().substr(2, 6) + '>')
     })
@@ -286,7 +324,7 @@ module.exports = (common) => {
       it('go interop', async () => {
         const id = await PeerId.createFromJSON(goId)
         const digest = await id.privKey.public.hash()
-        expect(multihashes.toB58String(digest)).to.eql(goId.id)
+        expect(base58btc.encode(digest).slice(1)).to.eql(goId.id)
       })
     })
 
@@ -326,31 +364,8 @@ module.exports = (common) => {
       expect(peerId1).to.deep.equal(peerId2)
 
       peerId1.toString()
+
       expect(peerId1).to.deep.equal(peerId2)
-    })
-
-    describe('returns error via cb instead of crashing', () => {
-      const garbage = [
-        uint8ArrayFromString('00010203040506070809', 'base16'),
-        {}, null, false, undefined, true, 1, 0,
-        uint8ArrayFromString(''), 'aGVsbG93b3JsZA==', 'helloworld', ''
-      ]
-
-      const fncs = ['createFromPubKey', 'createFromPrivKey', 'createFromJSON', 'createFromProtobuf']
-
-      for (const gb of garbage) {
-        for (const fn of fncs) {
-          // Need to loop over each test case
-          // eslint-disable-next-line no-loop-func
-          it(`${fn} (${util.inspect(gb)})`, async () => {
-            try {
-              await PeerId[fn](gb)
-            } catch (err) {
-              expect(err).to.exist()
-            }
-          })
-        }
-      }
     })
 
     describe('throws on inconsistent data', () => {
@@ -385,6 +400,7 @@ module.exports = (common) => {
       })
 
       it('invalid id', () => {
+        // @ts-expect-error incorrect constructor arg type
         expect(() => new PeerId('hello world')).to.throw(/invalid id/)
       })
     })
