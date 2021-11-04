@@ -2,7 +2,6 @@
   "name": "js-libp2p-interfaces",
   "version": "1.0.0",
   "description": "Interfaces for JS Libp2p",
-  "leadMaintainer": "Jacob Heun <jacobheun@gmail.com>",
   "private": true,
   "scripts": {
     "reset": "lerna run clean && rimraf ./node_modules ./package-lock.json packages/*/node_modules packages/*/package-lock.json packages/*/dist",

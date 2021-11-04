@@ -16,8 +16,8 @@ jobs:
       with:
         node-version: 16
     - run: npm install
-    - run: npm run lint
     - run: npm run build
+    - run: npm run lint
     - run: npm run dep-check
   test-node:
     needs: check

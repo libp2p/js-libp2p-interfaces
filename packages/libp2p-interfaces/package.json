@@ -1,0 +1,114 @@
+{
+  "name": "libp2p-interfaces",
+  "version": "1.2.0",
+  "description": "Interfaces for JS Libp2p",
+  "type": "module",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "types": "dist/src/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/src/*",
+        "dist/src/*/index"
+      ]
+    }
+  },
+  "eslintConfig": {
+    "extends": "ipfs"
+  },
+  "scripts": {
+    "lint": "aegir lint",
+    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/libp2p/js-libp2p-interfaces.git"
+  },
+  "keywords": [
+    "libp2p",
+    "interface"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
+  },
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-interfaces#readme",
+  "dependencies": {
+    "multiaddr": "^10.0.0",
+    "multiformats": "^9.4.10"
+  },
+  "devDependencies": {
+    "aegir": "^36.0.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    },
+    "./connection": {
+      "import": "./dist/src/connection/index.js",
+      "types": "./dist/src/connection/index.d.ts"
+    },
+    "./connection/status": {
+      "import": "./dist/src/connection/status.js",
+      "types": "./dist/src/connection/status.d.ts"
+    },
+    "./content-routing": {
+      "import": "./dist/src/content-routing/index.js",
+      "types": "./dist/src/content-routing/index.d.ts"
+    },
+    "./crypto": {
+      "import": "./dist/src/crypto/index.js",
+      "types": "./dist/src/crypto/index.d.ts"
+    },
+    "./crypto/errors": {
+      "import": "./dist/src/crypto/errors.js",
+      "types": "./dist/src/crypto/errors.d.ts"
+    },
+    "./keys": {
+      "import": "./dist/src/keys/index.js",
+      "types": "./dist/src/keys/index.d.ts"
+    },
+    "./peer-discovery": {
+      "import": "./dist/src/peer-discovery/index.js",
+      "types": "./dist/src/peer-discovery/index.d.ts"
+    },
+    "./peer-id": {
+      "import": "./dist/src/peer-id/index.js",
+      "types": "./dist/src/peer-id/index.d.ts"
+    },
+    "./peer-routing": {
+      "import": "./dist/src/peer-routing/index.js",
+      "types": "./dist/src/peer-routing/index.d.ts"
+    },
+    "./pubsub": {
+      "import": "./dist/src/pubsub/index.js",
+      "types": "./dist/src/pubsub/index.d.ts"
+    },
+    "./record": {
+      "import": "./dist/src/record/index.js",
+      "types": "./dist/src/record/index.d.ts"
+    },
+    "./stream-muxer": {
+      "import": "./dist/src/stream-muxer/index.js",
+      "types": "./dist/src/stream-muxer/index.d.ts"
+    },
+    "./topology": {
+      "import": "./dist/src/topology/index.js",
+      "types": "./dist/src/topology/index.d.ts"
+    },
+    "./transport": {
+      "import": "./dist/src/transport/index.js",
+      "types": "./dist/src/transport/index.d.ts"
+    },
+    "./value-store": {
+      "import": "./dist/src/value-store/index.js",
+      "types": "./dist/src/value-store/index.d.ts"
+    }
+  }
+}

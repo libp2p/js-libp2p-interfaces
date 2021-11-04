@@ -1,0 +1,106 @@
+{
+  "name": "libp2p-pubsub",
+  "version": "0.6.0",
+  "description": "libp2p pubsub base class",
+  "type": "module",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "types": "dist/src/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/src/*",
+        "dist/src/*/index"
+      ]
+    }
+  },
+  "eslintConfig": {
+    "extends": "ipfs",
+    "ignorePatterns": [
+      "src/message/*.d.ts",
+      "src/message/*.js"
+    ]
+  },
+  "scripts": {
+    "lint": "aegir lint",
+    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "build": "npm run build:types && npm run build:copy-proto-files",
+    "build:types": "tsc",
+    "build:proto": "npm run build:proto:rpc && npm run build:proto:topic-descriptor",
+    "build:proto:rpc": "pbjs -t static-module -w es6 -r libp2p-pubsub-rpc --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/message/rpc.js ./src/message/rpc.proto",
+    "build:proto:topic-descriptor": "pbjs -t static-module -w es6 -r libp2p-pubsub-topic-descriptor --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/message/topic-descriptor.js ./src/message/topic-descriptor.proto",
+    "build:proto-types": "npm run build:proto-types:rpc && npm run build:proto-types:topic-descriptor",
+    "build:proto-types:rpc": "pbts -o src/message/rpc.d.ts src/message/rpc.js",
+    "build:proto-types:topic-descriptor": "pbts -o src/message/topic-descriptor.d.ts src/message/topic-descriptor.js",
+    "build:copy-proto-files": "cp src/message/*.js dist/src/message && cp src/message/*.d.ts dist/src/message",
+    "pretest": "npm run build",
+    "test": "aegir test -f ./dist/test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/libp2p/js-libp2p-interfaces.git"
+  },
+  "keywords": [
+    "libp2p",
+    "interface"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
+  },
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-pubsub#readme#readme",
+  "dependencies": {
+    "debug": "^4.3.2",
+    "err-code": "^3.0.1",
+    "iso-random-stream": "^2.0.0",
+    "it-length-prefixed": "^5.0.3",
+    "it-pipe": "^1.1.0",
+    "libp2p-interfaces": "^1.2.0",
+    "libp2p-topology": "^0.0.1",
+    "multiaddr": "^10.0.1",
+    "multiformats": "^9.4.10",
+    "p-queue": "^7.1.0",
+    "peer-id": "^0.15.3",
+    "uint8arrays": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.7",
+    "@types/bl": "^5.0.2",
+    "aegir": "^36.0.0",
+    "protobufjs": "^6.10.2",
+    "util": "^0.12.4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    },
+    "./errors": {
+      "import": "./dist/src/errors.js",
+      "types": "./dist/src/errors.d.ts"
+    },
+    "./peer-streams": {
+      "import": "./dist/src/peer-streams.js",
+      "types": "./dist/src/peer-streams.d.ts"
+    },
+    "./signature-policy": {
+      "import": "./dist/src/signature-policy.js",
+      "types": "./dist/src/signature-policy.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/src/utils.js",
+      "types": "./dist/src/utils.d.ts"
+    },
+    "./message/rpc": {
+      "import": "./dist/src/message/rpc.js",
+      "types": "./dist/src/message/rpc.d.ts"
+    },
+    "./message/topic-descriptor": {
+      "import": "./dist/src/message/topic-descriptor.js",
+      "types": "./dist/src/message/topic-descriptor.d.ts"
+    }
+  }
+}

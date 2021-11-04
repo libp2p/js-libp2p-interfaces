@@ -1,0 +1,145 @@
+/* eslint max-nested-callbacks: ["error", 8] */
+import { expect } from 'aegir/utils/chai.js'
+import sinon from 'sinon'
+import pWaitFor from 'p-wait-for'
+import { pipe } from 'it-pipe'
+import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import { isValidTick, mockUpgrader } from './utils/index.js'
+import type { TestSetup } from '../index.js'
+import type { Transport } from 'libp2p-interfaces/transport'
+import type { TransportTestFixtures, SetupArgs } from './index.js'
+import type { Multiaddr } from 'multiaddr'
+import type { Connection } from 'libp2p-interfaces/connection'
+
+export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
+  describe('listen', () => {
+    const upgrader = mockUpgrader()
+    let addrs: Multiaddr[]
+    let transport: Transport<any, any>
+
+    before(async () => {
+      ({ transport, addrs } = await common.setup({ upgrader }))
+    })
+
+    after(async () => {
+      await common.teardown()
+    })
+
+    afterEach(() => {
+      sinon.restore()
+    })
+
+    it('simple', async () => {
+      const listener = transport.createListener({}, (conn) => {})
+      await listener.listen(addrs[0])
+      await listener.close()
+    })
+
+    it('close listener with connections, through timeout', async () => {
+      const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
+      const listenerConns: Connection[] = []
+
+      const listener = transport.createListener({}, (conn) => {
+        listenerConns.push(conn)
+        // @ts-expect-error upgrader.upgradeOutbound returns a Connection, not Promise<Connection>
+        expect(upgradeSpy.returned(conn)).to.equal(true)
+        pipe(conn, conn)
+      })
+
+      // Listen
+      await listener.listen(addrs[0])
+
+      // Create two connections to the listener
+      const [socket1] = await Promise.all([
+        transport.dial(addrs[0]),
+        transport.dial(addrs[0])
+      ])
+
+      // Give the listener a chance to finish its upgrade
+      await pWaitFor(() => listenerConns.length === 2)
+
+      // Wait for the data send and close to finish
+      await Promise.all([
+        pipe(
+          [uint8ArrayFromString('Some data that is never handled')],
+          socket1
+        ),
+        // Closer the listener (will take a couple of seconds to time out)
+        listener.close()
+      ])
+
+      await socket1.close()
+
+      expect(isValidTick(socket1.stat.timeline.close)).to.equal(true)
+      listenerConns.forEach(conn => {
+        expect(isValidTick(conn.stat.timeline.close)).to.equal(true)
+      })
+
+      // 2 dials = 2 connections upgraded
+      expect(upgradeSpy.callCount).to.equal(2)
+    })
+
+    it('should not handle connection if upgradeInbound throws', async () => {
+      sinon.stub(upgrader, 'upgradeInbound').throws()
+
+      const listener = transport.createListener(() => {
+        throw new Error('should not handle the connection if upgradeInbound throws')
+      })
+
+      // Listen
+      await listener.listen(addrs[0])
+
+      // Create a connection to the listener
+      const socket = await transport.dial(addrs[0])
+
+      await pWaitFor(() => typeof socket.stat.timeline.close === 'number')
+      await listener.close()
+    })
+
+    describe('events', () => {
+      it('connection', (done) => {
+        const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
+        const listener = transport.createListener({})
+
+        listener.on('connection', (conn) => {
+          expect(upgradeSpy.returned(conn)).to.equal(true)
+          expect(upgradeSpy.callCount).to.equal(1)
+          expect(conn).to.exist()
+          listener.close().then(done, done)
+        })
+
+        void (async () => {
+          await listener.listen(addrs[0])
+          await transport.dial(addrs[0])
+        })()
+      })
+
+      it('listening', (done) => {
+        const listener = transport.createListener({})
+        listener.on('listening', () => {
+          listener.close().then(done, done)
+        })
+        void listener.listen(addrs[0])
+      })
+
+      it('error', (done) => {
+        const listener = transport.createListener({})
+        listener.on('error', (err) => {
+          expect(err).to.exist()
+          listener.close().then(done, done)
+        })
+        listener.emit('error', new Error('my err'))
+      })
+
+      it('close', (done) => {
+        const listener = transport.createListener({})
+        listener.on('close', done)
+
+        void (async () => {
+          await listener.listen(addrs[0])
+          await listener.close()
+        })()
+      })
+    })
+  })
+}

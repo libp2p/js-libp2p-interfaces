@@ -1,0 +1,59 @@
+{
+  "name": "libp2p-topology",
+  "version": "0.0.1",
+  "description": "libp2p network topology",
+  "type": "module",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/src/*",
+        "dist/src/*/index"
+      ]
+    }
+  },
+  "eslintConfig": {
+    "extends": "ipfs"
+  },
+  "scripts": {
+    "lint": "aegir lint",
+    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/libp2p/js-libp2p-interfaces.git"
+  },
+  "keywords": [
+    "libp2p",
+    "interface"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
+  },
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-topography#readme#readme",
+  "dependencies": {
+    "err-code": "^3.0.1",
+    "libp2p-interfaces": "^1.2.0",
+    "multiaddr": "^10.0.1",
+    "peer-id": "^0.15.3"
+  },
+  "devDependencies": {
+    "aegir": "^36.0.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    },
+    "./multicodec-topology": {
+      "import": "./dist/src/multicodec-topology.js",
+      "types": "./dist/src/multicodec-topology.d.ts"
+    }
+  }
+}
