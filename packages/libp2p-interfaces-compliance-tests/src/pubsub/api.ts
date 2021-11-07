@@ -4,14 +4,15 @@ import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
-import type { PubSub } from 'libp2p-interfaces/pubsub'
+import type { PubSub, Message } from 'libp2p-interfaces/pubsub'
+import type { Startable } from 'libp2p-interfaces'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 
-export default (common: TestSetup<PubSub>) => {
+export default (common: TestSetup<PubSub & Startable>) => {
   describe('pubsub api', () => {
-    let pubsub: PubSub
+    let pubsub: PubSub & Startable
 
     // Create pubsub router
     beforeEach(async () => {
@@ -20,24 +21,24 @@ export default (common: TestSetup<PubSub>) => {
 
     afterEach(async () => {
       sinon.restore()
-      pubsub.stop()
+      await pubsub.stop()
       await common.teardown()
     })
 
-    it('can start correctly', () => {
+    it('can start correctly', async () => {
       sinon.spy(pubsub.registrar, 'register')
 
-      pubsub.start()
+      await pubsub.start()
 
       expect(pubsub.started).to.eql(true)
       expect(pubsub.registrar.register).to.have.property('callCount', 1)
     })
 
-    it('can stop correctly', () => {
+    it('can stop correctly', async () => {
       sinon.spy(pubsub.registrar, 'unregister')
 
-      pubsub.start()
-      pubsub.stop()
+      await pubsub.start()
+      await pubsub.stop()
 
       expect(pubsub.started).to.eql(false)
       expect(pubsub.registrar.unregister).to.have.property('callCount', 1)
@@ -48,7 +49,7 @@ export default (common: TestSetup<PubSub>) => {
         throw new Error('a message should not be received')
       }
 
-      pubsub.start()
+      await pubsub.start()
       pubsub.subscribe(topic)
       pubsub.on('topic', handler)
 
@@ -64,25 +65,25 @@ export default (common: TestSetup<PubSub>) => {
       // Publish to guarantee the handler is not called
       await pubsub.publish(topic, data)
 
-      pubsub.stop()
+      await pubsub.stop()
     })
 
     it('can subscribe and publish correctly', async () => {
       const defer = pDefer()
 
-      const handler = (msg: Uint8Array) => {
+      const handler = (msg: Message) => {
         expect(msg).to.not.eql(undefined)
         defer.resolve()
       }
 
-      pubsub.start()
+      await pubsub.start()
 
       pubsub.subscribe(topic)
       pubsub.on(topic, handler)
       await pubsub.publish(topic, data)
       await defer.promise
 
-      pubsub.stop()
+      await pubsub.stop()
     })
   })
 }

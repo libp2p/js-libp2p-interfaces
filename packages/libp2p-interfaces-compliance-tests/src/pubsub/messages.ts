@@ -6,23 +6,24 @@ import * as utils from 'libp2p-pubsub/utils'
 import { PeerStreams } from 'libp2p-pubsub/peer-streams'
 import type { TestSetup } from '../index.js'
 import type { PubSub } from 'libp2p-interfaces/pubsub'
+import type { Startable } from 'libp2p-interfaces'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 
-export default (common: TestSetup<PubSub>) => {
+export default (common: TestSetup<PubSub & Startable>) => {
   describe('messages', () => {
-    let pubsub: PubSub
+    let pubsub: PubSub & Startable
 
     // Create pubsub router
     beforeEach(async () => {
       pubsub = await common.setup()
-      pubsub.start()
+      await pubsub.start()
     })
 
     afterEach(async () => {
       sinon.restore()
-      pubsub.stop()
+      await pubsub.stop()
       await common.teardown()
     })
 

@@ -29,7 +29,7 @@ describe('topic validators', () => {
       globalSignaturePolicy: 'StrictNoSign'
     })
 
-    pubsub.start()
+    await pubsub.start()
   })
 
   afterEach(() => {

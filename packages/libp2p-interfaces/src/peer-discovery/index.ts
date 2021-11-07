@@ -6,13 +6,19 @@ export interface PeerDiscoveryFactory {
   tag: string
 }
 
-export interface PeerDiscoveryHandler { (peerData: PeerData): void }
+export interface PeerDiscoveryListener { (peerData: PeerData): void }
+
+interface PeerDiscoveryEvents {
+  'peer': PeerDiscoveryListener
+}
 
 export interface PeerDiscovery extends EventEmitter {
-  start: () => void|Promise<void>
-  stop: () => void|Promise<void>
-
-  on: (event: 'peer', handler: PeerDiscoveryHandler) => this
+  on: <U extends keyof PeerDiscoveryEvents>(
+    event: U, listener: PeerDiscoveryEvents[U]
+  ) => this
+  once: <U extends keyof PeerDiscoveryEvents>(
+    event: U, listener: PeerDiscoveryEvents[U]
+  ) => this
 }
 
 export default PeerDiscovery

@@ -7,7 +7,6 @@
     "src",
     "dist"
   ],
-  "types": "dist/src/index.d.ts",
   "typesVersions": {
     "*": {
       "*": [
@@ -69,6 +68,10 @@
     "./crypto/errors": {
       "import": "./dist/src/crypto/errors.js",
       "types": "./dist/src/crypto/errors.d.ts"
+    },
+    "./dht": {
+      "import": "./dist/src/dht/index.js",
+      "types": "./dist/src/dht/index.d.ts"
     },
     "./keys": {
       "import": "./dist/src/keys/index.js",

@@ -1,7 +1,7 @@
-import type { EventEmitter } from 'events'
 import type { PeerId } from '../peer-id'
 import type { Pushable } from 'it-pushable'
 import type { Registrar } from '../registrar'
+import type { EventEmitter } from 'events'
 
 /**
  * On the producing side:
@@ -35,7 +35,7 @@ export interface Message {
   key?: Uint8Array
 }
 
-export interface PeerStreams extends EventEmitter {
+export interface PeerStreams {
   id: PeerId
   protocol: string
   outboundStream: Pushable<Uint8Array> | undefined
@@ -68,6 +68,18 @@ export interface PubsubOptions {
   messageProcessingConcurrency?: number
 }
 
+interface Subscription {
+  topicID: string
+  subscribe: boolean
+}
+
+export interface MessageListener { (message: Message): void }
+export interface SubscriptionChangeListener { (peerId: PeerId, topics: Subscription[]): void }
+
+interface PubSubEvents {
+  'pubsub:subscription-change': SubscriptionChangeListener
+}
+
 export interface PubSub extends EventEmitter {
   peerId: PeerId
   started: boolean
@@ -77,12 +89,17 @@ export interface PubSub extends EventEmitter {
   globalSignaturePolicy: StrictSign | StrictNoSign
   registrar: Registrar
 
-  start: () => void
-  stop: () => void
   getTopics: () => string[]
   subscribe: (topic: string) => void
   getSubscribers: (topic: string) => string[]
   unsubscribe: (topic: string) => void
   publish: (topic: string, data: Uint8Array) => Promise<void>
   validate: (message: Message) => Promise<void>
+
+  on: (<U extends keyof PubSubEvents>(
+    event: U, listener: PubSubEvents[U]
+  ) => this) & ((event: string, listener: MessageListener) => this)
+  once: (<U extends keyof PubSubEvents>(
+    event: U, listener: PubSubEvents[U]
+  ) => this) & ((event: string, listener: MessageListener) => this)
 }

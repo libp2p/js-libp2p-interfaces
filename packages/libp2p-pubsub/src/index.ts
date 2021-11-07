@@ -17,6 +17,7 @@ import {
   verifySignature
 } from './message/sign.js'
 import type { PubSub, Message, StrictNoSign, StrictSign, PubsubOptions } from 'libp2p-interfaces/pubsub'
+import type { Startable } from 'libp2p-interfaces'
 
 export interface TopicValidator { (topic: string, message: Message): Promise<void> }
 
@@ -24,7 +25,7 @@ export interface TopicValidator { (topic: string, message: Message): Promise<voi
  * PubsubBaseProtocol handles the peers and connections logic for pubsub routers
  * and specifies the API that pubsub routers should have.
  */
-export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub {
+export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub, Startable {
   public peerId: PeerId
   public started: boolean
   /**

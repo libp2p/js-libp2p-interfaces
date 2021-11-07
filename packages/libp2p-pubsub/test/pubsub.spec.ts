@@ -37,7 +37,7 @@ describe('pubsub base implementation', () => {
     it('calls _publish for router to forward messages', async () => {
       sinon.spy(pubsub, '_publish')
 
-      pubsub.start()
+      await pubsub.start()
       await pubsub.publish(topic, message)
 
       // @ts-expect-error .callCount is a added by sinon
@@ -47,7 +47,7 @@ describe('pubsub base implementation', () => {
     it('should sign messages on publish', async () => {
       sinon.spy(pubsub, '_publish')
 
-      pubsub.start()
+      await pubsub.start()
       await pubsub.publish(topic, message)
 
       // Get the first message sent to _publish, and validate it
@@ -71,7 +71,7 @@ describe('pubsub base implementation', () => {
             registrar: mockRegistrar
           }
         })
-        pubsub.start()
+        await pubsub.start()
       })
 
       afterEach(() => pubsub.stop())
@@ -172,7 +172,7 @@ describe('pubsub base implementation', () => {
             registrar: mockRegistrar
           }
         })
-        pubsub.start()
+        await pubsub.start()
       })
 
       afterEach(() => pubsub.stop())
@@ -305,7 +305,7 @@ describe('pubsub base implementation', () => {
           registrar: mockRegistrar
         }
       })
-      pubsub.start()
+      await pubsub.start()
     })
 
     afterEach(() => pubsub.stop())
@@ -352,9 +352,9 @@ describe('pubsub base implementation', () => {
       throw new Error('should fail if pubsub is not started')
     })
 
-    it('should fail if no topic is provided', () => {
+    it('should fail if no topic is provided', async () => {
       // start pubsub
-      pubsub.start()
+      await pubsub.start()
 
       try {
         // @ts-expect-error invalid params
@@ -367,11 +367,11 @@ describe('pubsub base implementation', () => {
       throw new Error('should fail if no topic is provided')
     })
 
-    it('should get peer subscribed to one topic', () => {
+    it('should get peer subscribed to one topic', async () => {
       const topic = 'topic-test'
 
       // start pubsub
-      pubsub.start()
+      await pubsub.start()
 
       let peersSubscribed = pubsub.getSubscribers(topic)
       expect(peersSubscribed).to.be.empty()

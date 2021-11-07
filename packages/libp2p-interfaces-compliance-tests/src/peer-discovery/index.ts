@@ -5,10 +5,11 @@ import delay from 'delay'
 import pDefer from 'p-defer'
 import type { TestSetup } from '../index.js'
 import type { PeerDiscovery } from 'libp2p-interfaces/peer-discovery'
+import type { Startable } from 'libp2p-interfaces'
 
-export default (common: TestSetup<PeerDiscovery>) => {
+export default (common: TestSetup<PeerDiscovery & Startable>) => {
   describe('interface-peer-discovery compliance tests', () => {
-    let discovery: PeerDiscovery
+    let discovery: PeerDiscovery & Startable
 
     beforeEach(async () => {
       discovery = await common.setup()

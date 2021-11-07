@@ -3,28 +3,29 @@ import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
 import type { PubSub, PubsubOptions } from 'libp2p-interfaces/pubsub'
+import type { Startable } from 'libp2p-interfaces'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 const shouldNotHappen = () => expect.fail()
 
-export default (common: TestSetup<PubSub, Partial<PubsubOptions>>) => {
+export default (common: TestSetup<PubSub & Startable, Partial<PubsubOptions>>) => {
   describe('emit self', () => {
-    let pubsub: PubSub
+    let pubsub: PubSub & Startable
 
     describe('enabled', () => {
       before(async () => {
         pubsub = await common.setup({ emitSelf: true })
       })
 
-      before(() => {
-        pubsub.start()
+      before(async () => {
+        await pubsub.start()
         pubsub.subscribe(topic)
       })
 
       after(async () => {
         sinon.restore()
-        pubsub.stop()
+        await pubsub.stop()
         await common.teardown()
       })
 
@@ -42,14 +43,14 @@ export default (common: TestSetup<PubSub, Partial<PubsubOptions>>) => {
         pubsub = await common.setup({ emitSelf: false })
       })
 
-      before(() => {
-        pubsub.start()
+      before(async () => {
+        await pubsub.start()
         pubsub.subscribe(topic)
       })
 
       after(async () => {
         sinon.restore()
-        pubsub.stop()
+        await pubsub.stop()
         await common.teardown()
       })
 

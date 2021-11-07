@@ -7,10 +7,12 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { expectSet } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { PubSub, Message } from 'libp2p-interfaces/pubsub'
+import type { Startable } from 'libp2p-interfaces'
 
-export default (common: TestSetup<PubSub>) => {
+export default (common: TestSetup<PubSub & Startable>) => {
   describe('pubsub connection handlers', () => {
-    let psA: PubSub, psB: PubSub
+    let psA: PubSub & Startable
+    let psB: PubSub & Startable
 
     describe('nodes send state on connection', () => {
       // Create pubsub nodes and connect them
@@ -22,8 +24,8 @@ export default (common: TestSetup<PubSub>) => {
         expect(psB.peers.size).to.be.eql(0)
 
         // Start pubsub
-        psA.start()
-        psB.start()
+        await psA.start()
+        await psB.start()
       })
 
       // Make subscriptions prior to nodes connected
@@ -69,8 +71,8 @@ export default (common: TestSetup<PubSub>) => {
         psA = await common.setup()
         psB = await common.setup()
 
-        psA.start()
-        psB.start()
+        await psA.start()
+        await psB.start()
       })
 
       afterEach(async () => {
@@ -131,8 +133,8 @@ export default (common: TestSetup<PubSub>) => {
       afterEach(async () => {
         sinon.restore()
 
-        psA.stop()
-        psB.stop()
+        await psA.stop()
+        await psB.stop()
 
         await common.teardown()
       })
@@ -144,8 +146,8 @@ export default (common: TestSetup<PubSub>) => {
         expect(psA.peers.size).to.be.eql(0)
         expect(psB.peers.size).to.be.eql(0)
 
-        psA.start()
-        psB.start()
+        await psA.start()
+        await psB.start()
 
         return await Promise.all([
           pWaitFor(() => psA.peers.size === 1),
@@ -161,8 +163,8 @@ export default (common: TestSetup<PubSub>) => {
         // @ts-expect-error protected fields
         await psA._libp2p.dial(psB.peerId)
 
-        psA.start()
-        psB.start()
+        await psA.start()
+        await psB.start()
 
         await Promise.all([
           pWaitFor(() => psA.peers.size === 1),
@@ -198,15 +200,15 @@ export default (common: TestSetup<PubSub>) => {
         psA = await common.setup()
         psB = await common.setup()
 
-        psA.start()
-        psB.start()
+        await psA.start()
+        await psB.start()
       })
 
       afterEach(async () => {
         sinon.restore()
 
-        psA.stop()
-        psB.stop()
+        await psA.stop()
+        await psB.stop()
 
         await common.teardown()
       })
@@ -245,7 +247,7 @@ export default (common: TestSetup<PubSub>) => {
 
         await defer1.promise
 
-        psB.stop()
+        await psB.stop()
         // @ts-expect-error protected fields
         await psB._libp2p.stop()
         await pWaitFor(() => {
@@ -258,7 +260,7 @@ export default (common: TestSetup<PubSub>) => {
         })
         // @ts-expect-error protected fields
         await psB._libp2p.start()
-        psB.start()
+        await psB.start()
 
         // @ts-expect-error protected fields
         psA._libp2p.peerStore.addressBook.set(psB.peerId, psB._libp2p.multiaddrs)

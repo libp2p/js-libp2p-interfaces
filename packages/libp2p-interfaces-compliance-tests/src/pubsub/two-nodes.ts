@@ -11,6 +11,7 @@ import {
   first,
   expectSet
 } from './utils.js'
+import type { Startable } from 'libp2p-interfaces'
 
 const topic = 'foo'
 
@@ -18,9 +19,10 @@ function shouldNotHappen () {
   expect.fail()
 }
 
-export default (common: TestSetup<PubSub>) => {
+export default (common: TestSetup<PubSub & Startable>) => {
   describe('pubsub with two nodes', () => {
-    let psA: PubSub, psB: PubSub
+    let psA: PubSub & Startable
+    let psB: PubSub & Startable
 
     // Create pubsub nodes and connect them
     before(async () => {
@@ -31,8 +33,8 @@ export default (common: TestSetup<PubSub>) => {
       expect(psB.peers.size).to.be.eql(0)
 
       // Start pubsub and connect nodes
-      psA.start()
-      psB.start()
+      await psA.start()
+      await psB.start()
 
       // @ts-expect-error protected property
       await psA._libp2p.dial(psB.peerId)
@@ -44,8 +46,8 @@ export default (common: TestSetup<PubSub>) => {
     after(async () => {
       sinon.restore()
 
-      psA.stop()
-      psB.stop()
+      await psA.stop()
+      await psB.stop()
 
       await common.teardown()
     })

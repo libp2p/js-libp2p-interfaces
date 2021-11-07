@@ -6,8 +6,9 @@ import twoNodesTest from './two-nodes.js'
 import multipleNodesTest from './multiple-nodes.js'
 import type { TestSetup } from '../index.js'
 import type { PubSub } from 'libp2p-interfaces/pubsub'
+import type { Startable } from 'libp2p-interfaces'
 
-export default (common: TestSetup<PubSub>) => {
+export default (common: TestSetup<PubSub & Startable>) => {
   describe('interface-pubsub compliance tests', () => {
     apiTest(common)
     emitSelfTest(common)

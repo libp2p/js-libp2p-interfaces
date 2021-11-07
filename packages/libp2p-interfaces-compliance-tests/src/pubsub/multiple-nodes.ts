@@ -9,15 +9,18 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { expectSet } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { PubSub, Message } from 'libp2p-interfaces/pubsub'
+import type { Startable } from 'libp2p-interfaces'
 
-export default (common: TestSetup<PubSub>) => {
+export default (common: TestSetup<PubSub & Startable>) => {
   describe('pubsub with multiple nodes', function () {
     describe('every peer subscribes to the topic', () => {
       describe('line', () => {
         // line
         // ◉────◉────◉
         // a    b    c
-        let psA: PubSub, psB: PubSub, psC: PubSub
+        let psA: PubSub & Startable
+        let psB: PubSub & Startable
+        let psC: PubSub & Startable
 
         // Create and start pubsub nodes
         beforeEach(async () => {
@@ -206,7 +209,11 @@ export default (common: TestSetup<PubSub>) => {
         //   │b     d│
         // ◉─┘       └─◉
         // a
-        let psA: PubSub, psB: PubSub, psC: PubSub, psD: PubSub, psE: PubSub
+        let psA: PubSub & Startable
+        let psB: PubSub & Startable
+        let psC: PubSub & Startable
+        let psD: PubSub & Startable
+        let psE: PubSub & Startable
 
         // Create and start pubsub nodes
         beforeEach(async () => {
