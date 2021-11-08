@@ -127,3 +127,9 @@ export interface DHT {
    */
   enableClientMode: () => void
 }
+
+export interface SelectFn { (key: Uint8Array, records: Uint8Array[]): number }
+export interface ValidateFn { (a: Uint8Array, b: Uint8Array): Promise<void> }
+
+export interface Selectors { [key: string]: SelectFn }
+export interface Validators { [key: string]: { func: ValidateFn } }
