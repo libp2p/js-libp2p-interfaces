@@ -35,11 +35,11 @@
     "interface"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "(Apache-2.0 OR MIT)",
   "bugs": {
     "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
   },
-  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-interfaces-compliance-tests#readme#readme",
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-interfaces-compliance-tests#readme",
   "dependencies": {
     "abort-controller": "^3.0.0",
     "abortable-iterator": "^3.0.0",

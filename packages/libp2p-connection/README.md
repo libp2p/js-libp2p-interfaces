@@ -1,6 +1,6 @@
-# libp2p-interfaces-compliance-tests <!-- omit in toc -->
+# libp2p-connection <!-- omit in toc -->
 
-> Contains test suites you should use to implement the various components of libp2p
+> Contains an implementation of the [Connection](https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/libp2p-interfaces/src/connection/index.ts) interface
 
 ## Table of contents <!-- omit in toc -->
 
@@ -10,7 +10,16 @@
 
 ## Usage
 
-Each [interface](../interfaces) has its documentation on how to use the compliance tests and should be used as the source of truth.
+```console
+npm i libp2p-connection
+```
+
+```javascript
+import { Connection } from 'libp2p-connection'
+
+const connection = new Connection({ ... })
+const stream = connection.newStream([ '/my-protocol/v1.0.0' ])
+```
 
 ## Contribute
 

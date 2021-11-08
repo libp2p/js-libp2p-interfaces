@@ -1,6 +1,13 @@
-# JS libp2p Interfaces
+# libp2p-interfaces <!-- omit in toc -->
 
-> Contains interfaces you can use to implement the various components of libp2p.
+> Contains interfaces you can use to implement the various components of libp2p
+
+## Table of contents <!-- omit in toc -->
+
+- [Interfaces](#interfaces)
+- [Origin Repositories](#origin-repositories)
+- [Contribute](#contribute)
+- [License](#license)
 
 ## Interfaces
 
@@ -15,7 +22,7 @@
 - [Topology](./src/topology)
 - [Transport](./src/transport)
 
-### Origin Repositories
+## Origin Repositories
 
 For posterity, here are links to the original repositories for each of the interfaces (if they had one).
 
@@ -26,3 +33,15 @@ For posterity, here are links to the original repositories for each of the inter
 - [Pubsub](https://github.com/libp2p/js-libp2p-pubsub)
 - [Stream Muxer](https://github.com/libp2p/interface-stream-muxer)
 - [Transport](https://github.com/libp2p/interface-transport)
+
+## Contribute
+
+The libp2p implementation in JavaScript is a work in progress. As such, there are a few things you can do right now to help out:
+
+ - Go through the modules and **check out existing issues**. This would be especially useful for modules in active development. Some knowledge of IPFS/libp2p may be required, as well as the infrastructure behind it - for instance, you may need to read up on p2p and more complex operations like muxing to be able to help technically.
+ - **Perform code reviews**. More eyes will help a) speed the project along b) ensure quality and c) reduce possible future bugs.
+ - **Add tests**. There can never be enough tests.
+
+## License
+
+[Apache-2.0](LICENSE-APACHE) or [MIT](LICENSE-MIT) © Protocol Labs

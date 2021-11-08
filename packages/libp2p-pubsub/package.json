@@ -47,11 +47,11 @@
     "interface"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "(Apache-2.0 OR MIT)",
   "bugs": {
     "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
   },
-  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-pubsub#readme#readme",
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-pubsub#readme",
   "dependencies": {
     "debug": "^4.3.2",
     "err-code": "^3.0.1",

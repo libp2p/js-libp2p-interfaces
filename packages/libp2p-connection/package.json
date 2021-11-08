@@ -37,11 +37,11 @@
     "interface"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "(Apache-2.0 OR MIT)",
   "bugs": {
     "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
   },
-  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-connection#readme#readme",
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-connection#readme",
   "dependencies": {
     "err-code": "^3.0.1",
     "libp2p-interfaces": "^1.2.0",

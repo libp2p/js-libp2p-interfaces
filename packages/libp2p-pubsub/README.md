@@ -1,6 +1,6 @@
-# libp2p-interfaces-compliance-tests <!-- omit in toc -->
+# libp2p-pubsub <!-- omit in toc -->
 
-> Contains test suites you should use to implement the various components of libp2p
+> Contains an implementation of the [Pubsub](https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/libp2p-interfaces/src/pubsub/index.ts) interface
 
 ## Table of contents <!-- omit in toc -->
 
@@ -10,7 +10,17 @@
 
 ## Usage
 
-Each [interface](../interfaces) has its documentation on how to use the compliance tests and should be used as the source of truth.
+```console
+npm i libp2p-pubsub
+```
+
+```javascript
+import { PubsubBaseProtocol } from 'libp2p-pubsub'
+
+class MyPubsubImplementation extends PubsubBaseProtocol {
+  // .. extra methods here
+}
+```
 
 ## Contribute
 

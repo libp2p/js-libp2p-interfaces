@@ -32,7 +32,7 @@
     "interface"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "(Apache-2.0 OR MIT)",
   "bugs": {
     "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
   },
