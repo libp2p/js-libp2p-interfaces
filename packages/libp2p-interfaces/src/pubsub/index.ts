@@ -73,11 +73,13 @@ interface Subscription {
   subscribe: boolean
 }
 
-export interface MessageListener { (message: Message): void }
-export interface SubscriptionChangeListener { (peerId: PeerId, topics: Subscription[]): void }
+interface SubscriptionChangeEvent {
+  peerId: PeerId
+  subscriptions: Subscription[]
+}
 
 interface PubSubEvents {
-  'pubsub:subscription-change': SubscriptionChangeListener
+  'pubsub:subscription-change': SubscriptionChangeEvent
 }
 
 export interface PubSub extends EventEmitter {
@@ -96,10 +98,12 @@ export interface PubSub extends EventEmitter {
   publish: (topic: string, data: Uint8Array) => Promise<void>
   validate: (message: Message) => Promise<void>
 
-  on: (<U extends keyof PubSubEvents>(
-    event: U, listener: PubSubEvents[U]
-  ) => this) & ((event: string, listener: MessageListener) => this)
-  once: (<U extends keyof PubSubEvents>(
-    event: U, listener: PubSubEvents[U]
-  ) => this) & ((event: string, listener: MessageListener) => this)
+  on: (<U extends keyof PubSubEvents> (event: U, listener: (event: PubSubEvents[U]) => void) => this) &
+  ((event: string, listener: (event: Message) => void) => this)
+
+  once: (<U extends keyof PubSubEvents> (event: U, listener: (event: PubSubEvents[U]) => void) => this) &
+  ((event: string, listener: (event: Message) => void) => this)
+
+  emit: (<U extends keyof PubSubEvents> (name: U, event: PubSubEvents[U]) => boolean) &
+  ((name: string, event: Message) => boolean)
 }

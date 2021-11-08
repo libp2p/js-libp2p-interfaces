@@ -293,7 +293,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
       subs.forEach((subOpt) => {
         this._processRpcSubOpt(idB58Str, subOpt)
       })
-      this.emit('pubsub:subscription-change', peerStreams.id, subs)
+      this.emit('pubsub:subscription-change', { peerId: peerStreams.id, subscriptions: subs })
     }
 
     if (!this._acceptFrom(idB58Str)) {
