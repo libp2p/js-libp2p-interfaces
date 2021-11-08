@@ -20,10 +20,6 @@ export interface DHTValue {
   from: PeerId
 }
 
-export interface QueryOptions extends AbortOptions {
-  queryFuncTimeout?: number
-}
-
 export interface SendingQueryEvent {
   to: PeerId
   type: MessageTypes.SendingQuery
@@ -85,37 +81,37 @@ export interface DHT {
   /**
    * Get a value from the DHT, the final ValueEvent will be the best value
    */
-  get: (key: Uint8Array, options?: QueryOptions) => AsyncIterable<QueryEvent>
+  get: (key: Uint8Array, options?: AbortOptions) => AsyncIterable<QueryEvent>
 
   /**
    * Find providers for a given CI
    */
-  findProviders: (key: CID, options?: QueryOptions) => AsyncIterable<QueryEvent>
+  findProviders: (key: CID, options?: AbortOptions) => AsyncIterable<QueryEvent>
 
   /**
    * Find a peer on the DHT
    */
-  findPeer: (id: PeerId, options?: QueryOptions) => AsyncIterable<QueryEvent>
+  findPeer: (id: PeerId, options?: AbortOptions) => AsyncIterable<QueryEvent>
 
   /**
    * Find the closest peers to the passed key
    */
-  getClosestPeers: (key: Uint8Array, options?: QueryOptions) => AsyncIterable<QueryEvent>
+  getClosestPeers: (key: Uint8Array, options?: AbortOptions) => AsyncIterable<QueryEvent>
 
   /**
    * Get the public key for a peer
    */
-  getPublicKey: (peer: PeerId, options?: QueryOptions) => Promise<PublicKey>
+  getPublicKey: (peer: PeerId, options?: AbortOptions) => Promise<PublicKey>
 
   /**
    * Store provider records for the passed CID on the DHT pointing to us
    */
-  provide: (key: CID, options?: QueryOptions) => AsyncIterable<QueryEvent>
+  provide: (key: CID, options?: AbortOptions) => AsyncIterable<QueryEvent>
 
   /**
    * Store the passed value under the passed key on the DHT
    */
-  put: (key: Uint8Array, value: Uint8Array, options?: QueryOptions) => AsyncIterable<QueryEvent>
+  put: (key: Uint8Array, value: Uint8Array, options?: AbortOptions) => AsyncIterable<QueryEvent>
 
   /**
    * Enable server mode (e.g. allow publishing provider records)
