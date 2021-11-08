@@ -6,4 +6,5 @@ export interface AbortOptions {
 export interface Startable {
   start: () => void | Promise<void>
   stop: () => void | Promise<void>
+  isStarted: () => boolean
 }

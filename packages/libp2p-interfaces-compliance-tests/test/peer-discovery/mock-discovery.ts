@@ -31,6 +31,10 @@ export class MockDiscovery extends EventEmitter {
     this._isRunning = false
   }
 
+  isStarted () {
+    return this._isRunning
+  }
+
   _discoverPeer () {
     if (!this._isRunning) return
 

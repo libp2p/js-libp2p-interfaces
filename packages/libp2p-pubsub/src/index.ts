@@ -160,6 +160,10 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
     this.log('stopped')
   }
 
+  isStarted () {
+    return this.started
+  }
+
   /**
    * On an inbound stream opened
    */
