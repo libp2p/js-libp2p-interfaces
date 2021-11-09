@@ -30,12 +30,12 @@ export enum MessageType {
   Ping
 }
 
+export type MessageName = 'putValue' | 'getValue' | 'addProvider' | 'getProviders' | 'findNode' | 'ping'
+
 export interface DHTRecord {
   key: Uint8Array
   value: Uint8Array
-  author?: Uint8Array
-  signature?: Uint8Array
-  timeReceived?: string
+  timeReceived?: Date
 }
 
 export interface QueryOptions extends AbortOptions {
@@ -62,6 +62,7 @@ export interface PeerResponseEvent {
   type: EventTypes.PeerResponse
   name: 'peerResponse'
   messageType: MessageType
+  messageName: MessageName
   closer: PeerData[]
   providers: PeerData[]
   record?: DHTRecord
