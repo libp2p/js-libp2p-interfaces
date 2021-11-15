@@ -8,29 +8,29 @@ import type { AbortOptions } from '../index'
  * The types of events emitted during DHT queries
  */
 export enum EventTypes {
-  SendingQuery = 0,
-  PeerResponse,
-  FinalPeer,
-  QueryError,
-  Provider,
-  Value,
-  AddingPeer,
-  DialingPeer
+  SENDING_QUERY = 0,
+  PEER_RESPONSE,
+  FINAL_PEER,
+  QUERY_ERROR,
+  PROVIDER,
+  VALUE,
+  ADDING_PEER,
+  DIALING_PEER
 }
 
 /**
- * The types of messages set/received during DHT queries
+ * The types of messages sent to peers during DHT queries
  */
 export enum MessageType {
-  PutValue = 0,
-  GetValue,
-  AddProvider,
-  GetProviders,
-  FindNode,
-  Ping
+  PUT_VALUE = 0,
+  GET_VALUE,
+  ADD_PROVIDER,
+  GET_PROVIDERS,
+  FIND_NODE,
+  PING
 }
 
-export type MessageName = 'putValue' | 'getValue' | 'addProvider' | 'getProviders' | 'findNode' | 'ping'
+export type MessageName = keyof typeof MessageType
 
 export interface DHTRecord {
   key: Uint8Array
@@ -47,10 +47,10 @@ export interface QueryOptions extends AbortOptions {
  */
 export interface SendingQueryEvent {
   to: PeerId
-  type: EventTypes.SendingQuery
-  name: 'sendingQuery'
-  message: string
-  messageType: number
+  type: EventTypes.SENDING_QUERY
+  name: 'SENDING_QUERY'
+  messageName: keyof typeof MessageType
+  messageType: MessageType
 }
 
 /**
@@ -59,10 +59,10 @@ export interface SendingQueryEvent {
  */
 export interface PeerResponseEvent {
   from: PeerId
-  type: EventTypes.PeerResponse
-  name: 'peerResponse'
+  type: EventTypes.PEER_RESPONSE
+  name: 'PEER_RESPONSE'
+  messageName: keyof typeof MessageType
   messageType: MessageType
-  messageName: MessageName
   closer: PeerData[]
   providers: PeerData[]
   record?: DHTRecord
@@ -74,8 +74,8 @@ export interface PeerResponseEvent {
 export interface FinalPeerEvent {
   from: PeerId
   peer: PeerData
-  type: EventTypes.FinalPeer
-  name: 'finalPeer'
+  type: EventTypes.FINAL_PEER
+  name: 'FINAL_PEER'
 }
 
 /**
@@ -83,8 +83,8 @@ export interface FinalPeerEvent {
  */
 export interface QueryErrorEvent {
   from: PeerId
-  type: EventTypes.QueryError
-  name: 'queryError'
+  type: EventTypes.QUERY_ERROR
+  name: 'QUERY_ERROR'
   error: Error
 }
 
@@ -93,8 +93,8 @@ export interface QueryErrorEvent {
  */
 export interface ProviderEvent {
   from: PeerId
-  type: EventTypes.Provider
-  name: 'provider'
+  type: EventTypes.PROVIDER
+  name: 'PROVIDER'
   providers: PeerData[]
 }
 
@@ -103,8 +103,8 @@ export interface ProviderEvent {
  */
 export interface ValueEvent {
   from: PeerId
-  type: EventTypes.Value
-  name: 'value'
+  type: EventTypes.VALUE
+  name: 'VALUE'
   value: Uint8Array
 }
 
@@ -112,8 +112,8 @@ export interface ValueEvent {
  * Emitted when peers are added to a query
  */
 export interface AddingPeerEvent {
-  type: EventTypes.AddingPeer
-  name: 'addingPeer'
+  type: EventTypes.ADDING_PEER
+  name: 'ADDING_PEER'
   peer: PeerId
 }
 
@@ -122,8 +122,8 @@ export interface AddingPeerEvent {
  */
 export interface DialingPeerEvent {
   peer: PeerId
-  type: EventTypes.DialingPeer
-  name: 'dialingPeer'
+  type: EventTypes.DIALING_PEER
+  name: 'DIALING_PEER'
 }
 
 export type QueryEvent = SendingQueryEvent | PeerResponseEvent | FinalPeerEvent | QueryErrorEvent | ProviderEvent | ValueEvent | AddingPeerEvent | DialingPeerEvent
