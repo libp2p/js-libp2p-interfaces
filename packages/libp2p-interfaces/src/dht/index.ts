@@ -173,6 +173,14 @@ export interface DHT {
    * Enable server mode (e.g. disallow publishing provider records)
    */
   enableClientMode: () => void
+
+  /**
+   * Force a routing table refresh
+   */
+  refreshRoutingTable: () => Promise<void>
+
+  // events
+  on: (event: 'peer', handler: (peerData: PeerData) => void) => this
 }
 
 export interface SelectFn { (key: Uint8Array, records: Uint8Array[]): number }
