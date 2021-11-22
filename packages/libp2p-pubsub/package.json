@@ -1,6 +1,6 @@
 {
   "name": "libp2p-pubsub",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "libp2p pubsub base class",
   "type": "module",
   "files": [
@@ -58,8 +58,8 @@
     "iso-random-stream": "^2.0.0",
     "it-length-prefixed": "^5.0.3",
     "it-pipe": "^1.1.0",
-    "libp2p-interfaces": "^1.2.0",
-    "libp2p-topology": "^0.0.1",
+    "libp2p-interfaces": "^2.0.0",
+    "libp2p-topology": "^0.1.0",
     "multiaddr": "^10.0.1",
     "multiformats": "^9.4.10",
     "p-queue": "^7.1.0",
@@ -67,8 +67,8 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.7",
     "@types/bl": "^5.0.2",
+    "@types/debug": "^4.1.7",
     "aegir": "^36.0.0",
     "protobufjs": "^6.10.2",
     "util": "^0.12.4"
