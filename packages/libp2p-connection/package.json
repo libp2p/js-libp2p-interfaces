@@ -1,0 +1,64 @@
+{
+  "name": "libp2p-connection",
+  "version": "0.0.1",
+  "description": "JS Libp2p connections",
+  "type": "module",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "types": "dist/src/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "*",
+        "*/index",
+        "dist/src/*",
+        "dist/src/*/index"
+      ]
+    }
+  },
+  "eslintConfig": {
+    "extends": "ipfs"
+  },
+  "scripts": {
+    "lint": "aegir lint",
+    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "pretest": "npm run build",
+    "build": "tsc",
+    "test": "aegir test -f ./dist/test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/libp2p/js-libp2p-interfaces.git"
+  },
+  "keywords": [
+    "libp2p",
+    "interface"
+  ],
+  "author": "",
+  "license": "(Apache-2.0 OR MIT)",
+  "bugs": {
+    "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
+  },
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-connection#readme",
+  "dependencies": {
+    "err-code": "^3.0.1",
+    "libp2p-interfaces": "^1.2.0",
+    "multiaddr": "^10.0.1",
+    "peer-id": "^0.15.3"
+  },
+  "devDependencies": {
+    "aegir": "^36.0.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    },
+    "./status": {
+      "import": "./dist/src/status.js",
+      "types": "./dist/src/status.d.ts"
+    }
+  }
+}
