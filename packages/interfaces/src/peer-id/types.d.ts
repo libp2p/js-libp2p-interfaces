@@ -14,18 +14,18 @@ interface CreateOptions {
 
 export interface PeerId {
   readonly id: Uint8Array;
-  privKey:  PrivateKey | undefined;
-  pubKey: PublicKey | undefined;
+  privKey:  PrivateKey;
+  pubKey: PublicKey;
 
   /**
    * Return the protobuf version of the public key, matching go ipfs formatting
    */
-  marshalPubKey ():Uint8Array | undefined;
+  marshalPubKey ():Uint8Array;
 
   /**
    * Return the protobuf version of the private key, matching go ipfs formatting
    */
-  marshalPrivKey (): Uint8Array | undefined;
+  marshalPrivKey (): Uint8Array;
 
   /**
    * Return the protobuf version of the peer-id
@@ -67,6 +67,11 @@ export interface PeerId {
    * Checks the equality of `this` peer against a given PeerId.
    */
   equals (id: Uint8Array|PeerId): boolean | never;
+
+  /**
+   * Checks the equality of `this` peer against a given value.
+   */
+  isEqual(other: any): boolean;
 
   /**
    * Check if this PeerId instance is valid (privKey -> pubKey -> Id)
