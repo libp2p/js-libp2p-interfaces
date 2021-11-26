@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@1.1.2...libp2p-interfaces-compliance-tests@1.2.0) (2021-11-26)
+
+
+### Features
+
+* add PeerId interface and compliance tests ([#107](https://github.com/libp2p/js-libp2p-interfaces/issues/107)) ([bc88106](https://github.com/libp2p/js-libp2p-interfaces/commit/bc8810684f438e21eb52dbc7491b4ba5eefd18c2)), closes [/github.com/libp2p/js-peer-id/pull/150#pullrequestreview-692633354](https://github.com//github.com/libp2p/js-peer-id/pull/150/issues/pullrequestreview-692633354)
+
+
+
+
+
 ## [1.1.2](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@1.1.1...libp2p-interfaces-compliance-tests@1.1.2) (2021-10-18)
 
 **Note:** Version bump only for package libp2p-interfaces-compliance-tests
