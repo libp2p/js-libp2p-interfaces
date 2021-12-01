@@ -1,6 +1,5 @@
 import type { PeerId } from '../peer-id'
 import type { CID } from 'multiformats/cid'
-import type { PublicKey } from '../keys'
 import type { PeerData } from '../peer-data'
 import type { AbortOptions } from '../index'
 
@@ -148,11 +147,6 @@ export interface DHT {
    * Find the closest peers to the passed key
    */
   getClosestPeers: (key: Uint8Array, options?: QueryOptions) => AsyncIterable<QueryEvent>
-
-  /**
-   * Get the public key for a peer
-   */
-  getPublicKey: (peer: PeerId, options?: QueryOptions) => Promise<PublicKey>
 
   /**
    * Store provider records for the passed CID on the DHT pointing to us
