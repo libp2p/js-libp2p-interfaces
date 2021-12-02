@@ -1,5 +1,5 @@
 import { Topology } from './index.js'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 import type { PeerData } from 'libp2p-interfaces/peer-data'
 import type { Connection } from 'libp2p-interfaces/connection'
 import type { Registrar } from 'libp2p-interfaces/registrar'
@@ -63,7 +63,7 @@ export class MulticodecTopology extends Topology {
     for (const { id, protocols } of peerDatas) {
       if (this.multicodecs.filter(multicodec => protocols.includes(multicodec)).length > 0) {
         // Add the peer regardless of whether or not there is currently a connection
-        this.peers.add(id.toB58String())
+        this.peers.add(id.toString())
         // If there is a connection, call _onConnect
         if (this._registrar != null) {
           const connection = this._registrar.getConnection(id)
@@ -71,7 +71,7 @@ export class MulticodecTopology extends Topology {
         }
       } else {
         // Remove any peers we might be tracking that are no longer of value to us
-        this.peers.delete(id.toB58String())
+        this.peers.delete(id.toString())
       }
     }
   }
@@ -85,7 +85,7 @@ export class MulticodecTopology extends Topology {
     }
 
     const { peerId, protocols } = event
-    const hadPeer = this.peers.has(peerId.toB58String())
+    const hadPeer = this.peers.has(peerId.toString())
     const hasProtocol = protocols.filter(protocol => this.multicodecs.includes(protocol))
 
     // Not supporting the protocol any more?
@@ -119,7 +119,7 @@ export class MulticodecTopology extends Topology {
     }
 
     if (this.multicodecs.find(multicodec => protocols.includes(multicodec)) != null) {
-      this.peers.add(peerId.toB58String())
+      this.peers.add(peerId.toString())
       this._onConnect(peerId, connection)
     }
   }

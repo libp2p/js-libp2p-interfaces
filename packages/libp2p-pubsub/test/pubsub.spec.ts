@@ -11,7 +11,7 @@ import {
   mockRegistrar,
   PubsubImplementation
 } from './utils/index.js'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 
 const protocol = '/pubsub/1.0.0'
 const topic = 'test-topic'
@@ -378,7 +378,7 @@ describe('pubsub base implementation', () => {
 
       // Set mock peer subscribed
       const peer = new PeerStreams({ id: peerId, protocol: 'a-protocol' })
-      const id = peer.id.toB58String()
+      const id = peer.id.toString()
 
       pubsub.topics.set(topic, new Set([id]))
       pubsub.peers.set(id, peer)

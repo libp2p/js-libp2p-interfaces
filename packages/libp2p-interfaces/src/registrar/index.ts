@@ -1,6 +1,6 @@
 import type { Connection } from '../connection'
 import type { MuxedStream } from '../stream-muxer'
-import type { PeerId } from '../peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 import type { PeerData } from '../peer-data'
 
 export interface IncomingStreamEvent {

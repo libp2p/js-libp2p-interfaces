@@ -1,4 +1,4 @@
-import type { PeerId } from '../peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 import type { Pushable } from 'it-pushable'
 import type { Registrar } from '../registrar'
 import type { EventEmitter } from 'events'

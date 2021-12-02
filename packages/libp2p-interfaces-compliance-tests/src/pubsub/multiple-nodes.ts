@@ -63,7 +63,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
           await new Promise((resolve) => psB.once('pubsub:subscription-change', resolve))
           expect(psB.peers.size).to.equal(2)
 
-          const aPeerId = psA.peerId.toB58String()
+          const aPeerId = psA.peerId.toString()
           expectSet(psB.topics.get(topic), [aPeerId])
 
           expect(psC.peers.size).to.equal(1)
@@ -81,10 +81,10 @@ export default (common: TestSetup<PubSub & Startable>) => {
           ])
 
           expect(psA.peers.size).to.equal(1)
-          expectSet(psA.topics.get(topic), [psB.peerId.toB58String()])
+          expectSet(psA.topics.get(topic), [psB.peerId.toString()])
 
           expect(psC.peers.size).to.equal(1)
-          expectSet(psC.topics.get(topic), [psB.peerId.toB58String()])
+          expectSet(psC.topics.get(topic), [psB.peerId.toString()])
         })
 
         it('subscribe to the topic on node c', async () => {
@@ -97,7 +97,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
           psB.once('pubsub:subscription-change', () => {
             expect(psA.peers.size).to.equal(1)
             expect(psB.peers.size).to.equal(2)
-            expectSet(psB.topics.get(topic), [psC.peerId.toB58String()])
+            expectSet(psB.topics.get(topic), [psC.peerId.toString()])
 
             defer.resolve()
           })

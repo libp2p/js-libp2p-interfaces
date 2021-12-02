@@ -1,4 +1,4 @@
-import type { PeerId } from '../peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 import type { Connection } from '../connection'
 
 export interface onConnectHandler { (peerId: PeerId, conn: Connection): void }

@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 import type { PeerData } from 'libp2p-interfaces/peer-data'
 import type { ProtoBook, PeerStore } from 'libp2p-interfaces/registrar'
 
@@ -16,7 +16,7 @@ export class MockPeerStore extends EventEmitter implements PeerStore {
   }
 
   get (peerId: PeerId) {
-    const peerData = this.peers.get(peerId.toB58String())
+    const peerData = this.peers.get(peerId.toString())
 
     if (peerData == null) {
       throw new Error('PeerData not found')

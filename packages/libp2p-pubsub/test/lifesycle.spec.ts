@@ -7,7 +7,7 @@ import {
   PubsubImplementation,
   ConnectionPair
 } from './utils/index.js'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 import type { Registrar } from 'libp2p-interfaces/registrar'
 import type { Message } from 'libp2p-interfaces/pubsub'
 

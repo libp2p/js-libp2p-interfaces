@@ -1,4 +1,4 @@
-import type { PeerId } from 'libp2p-interfaces/peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 import type { TopologyOptions, onConnectHandler, onDisconnectHandler } from 'libp2p-interfaces/topology'
 import type { Registrar } from 'libp2p-interfaces/registrar'
 

@@ -1,10 +1,10 @@
 import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
-import PeerIdFactory from 'peer-id'
+import * as PeerIdFactory from 'libp2p-peer-id-factory'
 import peers from '../utils/peers.js'
 import type { TestSetup } from '../index.js'
 import type { Topology } from 'libp2p-interfaces/topology'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 
 export default (test: TestSetup<Topology>) => {
   describe('topology', () => {

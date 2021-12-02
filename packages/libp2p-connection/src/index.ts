@@ -3,7 +3,7 @@ import errCode from 'err-code'
 import { OPEN, CLOSING, CLOSED } from 'libp2p-interfaces/connection/status'
 import type { MuxedStream } from 'libp2p-interfaces/stream-muxer'
 import type { ConnectionStat, StreamData } from 'libp2p-interfaces/connection'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 
 const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
 

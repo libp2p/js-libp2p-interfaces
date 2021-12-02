@@ -1,4 +1,4 @@
-import type { PeerId } from '../peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 import type { CID } from 'multiformats/cid'
 import type { PeerData } from '../peer-data'
 import type { AbortOptions } from '../index'

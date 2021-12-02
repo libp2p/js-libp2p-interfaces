@@ -1,5 +1,5 @@
 import { Connection } from '../src/index.js'
-import PeerIdFactory from 'peer-id'
+import * as PeerIdFactory from 'libp2p-peer-id-factory'
 // @ts-expect-error no types
 import pair from 'it-pair'
 import { Multiaddr } from 'multiaddr'

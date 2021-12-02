@@ -1,5 +1,5 @@
 import type { Multiaddr } from 'multiaddr'
-import type { PeerId } from '../peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 import type { MuxedStream } from '../stream-muxer'
 import type * as Status from './status.js'
 

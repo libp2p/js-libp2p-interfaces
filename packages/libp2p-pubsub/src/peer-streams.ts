@@ -5,7 +5,7 @@ import pushable from 'it-pushable'
 import { pipe } from 'it-pipe'
 import { source as abortable } from 'abortable-iterator'
 import AbortController from 'abort-controller'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
+import type { PeerId } from 'libp2p-peer-id'
 import type { MuxedStream } from 'libp2p-interfaces/stream-muxer'
 
 const log = Object.assign(debug('libp2p-pubsub:peer-streams'), {
@@ -77,7 +77,7 @@ export class PeerStreams extends EventEmitter {
    */
   write (data: Uint8Array) {
     if (this.outboundStream == null) {
-      const id = this.id.toB58String()
+      const id = this.id.toString()
       throw new Error('No writable connection to ' + id)
     }
 
