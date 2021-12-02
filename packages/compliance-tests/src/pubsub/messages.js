@@ -67,6 +67,7 @@ module.exports = (common) => {
 
       pubsub.subscribe(topic)
       await pubsub._processRpc(peerStream.id.toB58String(), peerStream, rpc)
+      await pubsub.queue.onIdle()
 
       expect(pubsub.validate.callCount).to.eql(1)
       expect(pubsub._emitMessage.called).to.eql(false)
@@ -94,6 +95,7 @@ module.exports = (common) => {
 
       pubsub.subscribe(topic)
       await pubsub._processRpc(peerStream.id.toB58String(), peerStream, rpc)
+      await pubsub.queue.onIdle()
 
       expect(pubsub.validate.callCount).to.eql(1)
       expect(pubsub._emitMessage.called).to.eql(true)
