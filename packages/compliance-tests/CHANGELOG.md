@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@2.0.2...libp2p-interfaces-compliance-tests@2.0.3) (2021-12-02)
+
+
+### Bug Fixes
+
+* wait for queue to become idle befoe continuing ([7343396](https://github.com/libp2p/js-libp2p-interfaces/commit/7343396e17cefeae60cd6aad106eead2da5f464c))
+
+
+
+
+
 ## [2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@2.0.1...libp2p-interfaces-compliance-tests@2.0.2) (2021-12-02)
 
 **Note:** Version bump only for package libp2p-interfaces-compliance-tests
