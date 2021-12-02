@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces@2.0.0...libp2p-interfaces@3.0.0) (2021-12-02)
+
+
+### Features
+
+* remove getPublicKey method from dht ([603c818](https://github.com/libp2p/js-libp2p-interfaces/commit/603c818d0694652346bc552525f2379b1dfa0107))
+
+
+### BREAKING CHANGES
+
+* the dht.getPublicKey method has been removed
+
+
+
+
+
 # [2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces@1.2.0...libp2p-interfaces@2.0.0) (2021-11-22)
 
 

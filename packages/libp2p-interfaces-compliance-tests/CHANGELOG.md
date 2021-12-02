@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@2.0.0...libp2p-interfaces-compliance-tests@3.0.0) (2021-12-02)
+
+
+### chore
+
+* update libp2p-crypto and peer-id ([c711e8b](https://github.com/libp2p/js-libp2p-interfaces/commit/c711e8bd4d606f6974b13fad2eeb723f93cebb87))
+
+
+### BREAKING CHANGES
+
+* requires node 15+
+
+
+
+
+
 # [2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@1.1.2...libp2p-interfaces-compliance-tests@2.0.0) (2021-11-22)
 
 
