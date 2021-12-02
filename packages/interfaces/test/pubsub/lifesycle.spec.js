@@ -159,7 +159,7 @@ describe('pubsub base lifecycle', () => {
       const { stream: firstStream } = await c0.newStream.returnValues[0]
       try {
         await firstStream.sink(['test'])
-      } catch (err) {
+      } catch (/** @type {any} */ err) {
         expect(err).to.exist()
         return
       }

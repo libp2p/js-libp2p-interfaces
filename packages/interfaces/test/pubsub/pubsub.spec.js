@@ -54,7 +54,7 @@ describe('pubsub base implementation', () => {
       const signedMessage = pubsub._publish.getCall(0).lastArg
       try {
         await pubsub.validate(signedMessage)
-      } catch (e) {
+      } catch (/** @type {any} */ e) {
         expect.fail('validation should not throw')
       }
     })
@@ -311,7 +311,7 @@ describe('pubsub base implementation', () => {
 
       try {
         pubsub.getSubscribers(topic)
-      } catch (err) {
+      } catch (/** @type {any} */ err) {
         expect(err).to.exist()
         expect(err.code).to.eql('ERR_NOT_STARTED_YET')
         return
@@ -325,7 +325,7 @@ describe('pubsub base implementation', () => {
 
       try {
         pubsub.getSubscribers()
-      } catch (err) {
+      } catch (/** @type {any} */ err) {
         expect(err).to.exist()
         expect(err.code).to.eql('ERR_NOT_VALID_TOPIC')
         return

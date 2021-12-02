@@ -94,7 +94,7 @@ module.exports = (common) => {
 
       try {
         await socket
-      } catch (err) {
+      } catch (/** @type {any} */ err) {
         expect(upgradeSpy.callCount).to.equal(0)
         expect(err.code).to.eql(AbortError.code)
         expect(err.type).to.eql(AbortError.type)
@@ -115,7 +115,7 @@ module.exports = (common) => {
 
       try {
         await socket
-      } catch (err) {
+      } catch (/** @type {any} */ err) {
         expect(upgradeSpy.callCount).to.equal(0)
         expect(err.code).to.eql(AbortError.code)
         expect(err.type).to.eql(AbortError.type)
@@ -150,7 +150,7 @@ module.exports = (common) => {
         // An AbortError should be thrown before the pipe completes
         const s = goodbye({ source: ['hey'], sink: collect })
         await pipe(s, socket, s)
-      } catch (err) {
+      } catch (/** @type {any} */ err) {
         expect(err.code).to.eql(AbortError.code)
         expect(err.type).to.eql(AbortError.type)
         return

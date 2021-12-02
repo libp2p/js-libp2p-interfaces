@@ -91,7 +91,7 @@ module.exports = (common) => {
         try {
           const abortableRand = abortable(infiniteRandom, controller.signal, { abortCode: 'ERR_TEST_ABORT' })
           await pipe(abortableRand, stream, consume)
-        } catch (err) {
+        } catch (/** @type {any} */ err) {
           if (err.code !== 'ERR_TEST_ABORT') throw err
         }
 

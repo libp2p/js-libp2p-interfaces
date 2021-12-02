@@ -154,7 +154,7 @@ module.exports = (test) => {
         try {
           const protocol = '/echo/0.0.1'
           await connection.newStream(protocol)
-        } catch (err) {
+        } catch (/** @type {any} */ err) {
           expect(err).to.exist()
           return
         }
@@ -169,7 +169,7 @@ module.exports = (test) => {
         try {
           const protocol = '/echo/0.0.1'
           await connection.newStream(protocol)
-        } catch (err) {
+        } catch (/** @type {any} */ err) {
           expect(err).to.exist()
           expect(err.code).to.equal('ERR_CONNECTION_CLOSED')
           return

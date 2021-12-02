@@ -263,7 +263,7 @@ class PubsubBaseProtocol extends EventEmitter {
       const { stream, protocol } = await conn.newStream(this.multicodecs)
       const peer = this._addPeer(peerId, protocol)
       await peer.attachOutboundStream(stream)
-    } catch (err) {
+    } catch (/** @type {any} */ err) {
       this.log.err(err)
     }
 
@@ -371,14 +371,14 @@ class PubsubBaseProtocol extends EventEmitter {
             ;(async () => {
               try {
                 await this._processRpc(idB58Str, peerStreams, rpcMsg)
-              } catch (err) {
+              } catch (/** @type {any} */ err) {
                 this.log.err(err)
               }
             })()
           }
         }
       )
-    } catch (err) {
+    } catch (/** @type {any} */ err) {
       this._onPeerDisconnected(peerStreams.id, err)
     }
   }
@@ -420,7 +420,7 @@ class PubsubBaseProtocol extends EventEmitter {
           const msg = utils.normalizeInRpcMessage(message, idB58Str)
 
           await this._processRpcMessage(msg)
-        } catch (err) {
+        } catch (/** @type {any} */ err) {
           this.log.err(err)
         }
       }))
@@ -470,7 +470,7 @@ class PubsubBaseProtocol extends EventEmitter {
     // Ensure the message is valid before processing it
     try {
       await this.validate(msg)
-    } catch (err) {
+    } catch (/** @type {any} */ err) {
       this.log('Message is invalid, dropping it. %O', err)
       return
     }
