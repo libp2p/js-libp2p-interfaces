@@ -81,7 +81,7 @@ async function createConnection (maConn: MultiaddrConnection, direction: 'inboun
     streams,
     newStream: async (protocols) => {
       if (protocols.length === 0) {
-        throw new Error('protocols must have a lenth')
+        throw new Error('protocols must have a length')
       }
 
       const echo = pair()
