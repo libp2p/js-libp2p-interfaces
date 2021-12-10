@@ -66,7 +66,7 @@ export interface MultiaddrConnectionTimeline {
 }
 
 export interface MultiaddrConnection<T = Uint8Array> {
-  sink: (source: AsyncIterable<T> | Iterable<T>) => Promise<void>
+  sink: (source: AsyncIterable<T>) => Promise<void>
   source: AsyncIterable<T>
   close: (err?: Error) => Promise<void>
   conn: unknown
