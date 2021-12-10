@@ -42,9 +42,6 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
 
       const listener = transport.createListener({}, (conn) => {
         listenerConns.push(conn)
-        // @ts-expect-error upgrader.upgradeOutbound returns a Connection, not Promise<Connection>
-        expect(upgradeSpy.returned(conn)).to.equal(true)
-        pipe(conn, conn)
       })
 
       // Listen
