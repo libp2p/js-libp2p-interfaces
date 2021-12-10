@@ -29,7 +29,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
     })
 
     beforeEach(async () => {
-      listener = transport.createListener({}, (conn) => pipe(conn, conn))
+      listener = transport.createListener({})
       return await listener.listen(addrs[0])
     })
 
