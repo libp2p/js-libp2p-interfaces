@@ -43,7 +43,7 @@ describe('compliance tests', () => {
           const stream: MuxedStream = {
             ...pair(),
             close: async () => {
-              await stream.sink([])
+              await stream.sink(async function * () {}())
               connection.removeStream(stream.id)
             },
             id,

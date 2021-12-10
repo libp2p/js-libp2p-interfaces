@@ -58,7 +58,7 @@ describe('connection tests', () => {
         const id = `${streamId++}`
         const stream: MuxedStream = {
           ...pair<Uint8Array>(),
-          close: async () => await stream.sink([]),
+          close: async () => await stream.sink(async function * () {}()),
           id,
           abort: () => {},
           reset: () => {},

@@ -5,6 +5,7 @@ import pWaitFor from 'p-wait-for'
 import { pipe } from 'it-pipe'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { isValidTick, mockUpgrader } from './utils/index.js'
+import defer from 'p-defer'
 import type { TestSetup } from '../index.js'
 import type { Transport } from 'libp2p-interfaces/transport'
 import type { TransportTestFixtures, SetupArgs } from './index.js'
@@ -50,7 +51,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       await listener.listen(addrs[0])
 
       // Create two connections to the listener
-      const [socket1] = await Promise.all([
+      const [conn1] = await Promise.all([
         transport.dial(addrs[0]),
         transport.dial(addrs[0])
       ])
@@ -58,19 +59,22 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       // Give the listener a chance to finish its upgrade
       await pWaitFor(() => listenerConns.length === 2)
 
+      const { stream: stream1 } = await conn1.newStream(['/test/protocol'])
+
       // Wait for the data send and close to finish
       await Promise.all([
         pipe(
           [uint8ArrayFromString('Some data that is never handled')],
-          socket1
+          stream1
         ),
         // Closer the listener (will take a couple of seconds to time out)
         listener.close()
       ])
 
-      await socket1.close()
+      await stream1.close()
+      await conn1.close()
 
-      expect(isValidTick(socket1.stat.timeline.close)).to.equal(true)
+      expect(isValidTick(conn1.stat.timeline.close)).to.equal(true)
       listenerConns.forEach(conn => {
         expect(isValidTick(conn.stat.timeline.close)).to.equal(true)
       })
@@ -90,28 +94,34 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       await listener.listen(addrs[0])
 
       // Create a connection to the listener
-      const socket = await transport.dial(addrs[0])
+      const conn = await transport.dial(addrs[0])
 
-      await pWaitFor(() => typeof socket.stat.timeline.close === 'number')
+      await pWaitFor(() => typeof conn.stat.timeline.close === 'number')
       await listener.close()
     })
 
     describe('events', () => {
-      it('connection', (done) => {
+      it('connection', async () => {
         const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
         const listener = transport.createListener({})
+        const deferred = defer()
+        let conn
 
-        listener.on('connection', (conn) => {
-          expect(upgradeSpy.returned(conn)).to.equal(true)
-          expect(upgradeSpy.callCount).to.equal(1)
-          expect(conn).to.exist()
-          listener.close().then(done, done)
+        listener.on('connection', (c) => {
+          conn = c
+          deferred.resolve()
         })
 
         void (async () => {
           await listener.listen(addrs[0])
           await transport.dial(addrs[0])
         })()
+
+        await deferred.promise
+
+        await expect(upgradeSpy.getCall(0).returnValue).to.eventually.equal(conn)
+        expect(upgradeSpy.callCount).to.equal(1)
+        await listener.close()
       })
 
       it('listening', (done) => {

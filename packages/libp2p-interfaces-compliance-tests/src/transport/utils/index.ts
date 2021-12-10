@@ -1,6 +1,10 @@
 import { expect } from 'aegir/utils/chai.js'
 import type { Upgrader, MultiaddrConnection } from 'libp2p-interfaces/transport'
-
+import type { Connection, StreamData } from 'libp2p-interfaces/connection'
+import type { MuxedStream } from 'libp2p-interfaces/stream-muxer'
+// @ts-expect-error no types
+import pair from 'it-pair'
+import PeerId from 'peer-id'
 /**
  * A tick is considered valid if it happened between now
  * and `ms` milliseconds ago
@@ -20,7 +24,7 @@ export function isValidTick (date?: number, ms: number = 5000) {
 }
 
 export function mockUpgrader () {
-  const _upgrade = async (multiaddrConnection: MultiaddrConnection) => {
+  const ensureProps = (multiaddrConnection: MultiaddrConnection) => {
     ['sink', 'source', 'remoteAddr', 'conn', 'timeline', 'close'].forEach(prop => {
       expect(multiaddrConnection).to.have.property(prop)
     })
@@ -28,15 +32,91 @@ export function mockUpgrader () {
     return multiaddrConnection
   }
   const upgrader: Upgrader = {
-    // @ts-expect-error we return a MultiaddrConnetion that is not a Connection
     async upgradeOutbound (multiaddrConnection) {
-      return await _upgrade(multiaddrConnection)
+      ensureProps(multiaddrConnection)
+      return await createConnection(multiaddrConnection, 'outbound')
     },
-    // @ts-expect-error we return a MultiaddrConnetion that is not a Connection
     async upgradeInbound (multiaddrConnection) {
-      return await _upgrade(multiaddrConnection)
+      ensureProps(multiaddrConnection)
+      return await createConnection(multiaddrConnection, 'inbound')
     }
   }
 
   return upgrader
+}
+
+async function createConnection (maConn: MultiaddrConnection, direction: 'inbound' | 'outbound'): Promise<Connection> {
+  const localAddr = maConn.localAddr
+  const remoteAddr = maConn.remoteAddr
+
+  if (localAddr == null) {
+    throw new Error('No localAddr found on MultiaddrConnection')
+  }
+
+  const localPeerIdStr = localAddr.getPeerId()
+  const remotePeerIdStr = remoteAddr.getPeerId()
+  const localPeer = localPeerIdStr != null ? PeerId.parse(localPeerIdStr) : await PeerId.create({ keyType: 'Ed25519' })
+  const remotePeer = remotePeerIdStr != null ? PeerId.parse(remotePeerIdStr) : await PeerId.create({ keyType: 'Ed25519' })
+
+  const streams: Array<MuxedStream<Uint8Array>> = []
+  let streamId = 0
+
+  const registry = new Map()
+
+  return {
+    id: 'mock-connection',
+    localAddr,
+    remoteAddr,
+    localPeer,
+    remotePeer,
+    stat: {
+      status: 'OPEN',
+      direction,
+      timeline: maConn.timeline,
+      multiplexer: 'test-multiplexer',
+      encryption: 'yes-yes-very-secure'
+    },
+    registry,
+    tags: [],
+    streams,
+    newStream: async (protocols) => {
+      if (protocols.length === 0) {
+        throw new Error('protocols must have a lenth')
+      }
+
+      const echo = pair()
+
+      const id = `${streamId++}`
+      const stream: MuxedStream = {
+        id,
+        sink: echo.sink,
+        source: echo.source,
+        close: () => {},
+        abort: () => {},
+        reset: () => {},
+        timeline: {
+          open: 0
+        },
+        [Symbol.asyncIterator]: echo.source
+      }
+
+      const streamData = {
+        protocol: protocols[0],
+        stream
+      }
+
+      registry.set(id, streamData)
+
+      return streamData
+    },
+    addStream: (muxedStream: MuxedStream, streamData: StreamData) => {
+
+    },
+    removeStream: (id: string) => {
+      registry.delete(id)
+    },
+    close: async () => {
+      await maConn.close()
+    }
+  }
 }
