@@ -7,13 +7,12 @@ import { equals as uint8ArrayEquals } from 'uint8arrays/equals'
 import type { MultibaseDecoder, MultibaseEncoder } from 'multiformats/types/bases/interface'
 import type { MultihashDigest } from 'multiformats/types/hashes/interface'
 import { sha256 } from 'multiformats/hashes/sha2'
-import { or } from 'multiformats/bases/base'
 
 const baseDecoder = Object
   .values(bases)
   .map(codec => codec.decoder)
-  // @ts-expect-error
-  .reduce(or, bases.identity.decoder)
+  // @ts-expect-error https://github.com/multiformats/js-multiformats/issues/141
+  .reduce((acc, curr) => acc.or(curr), bases.identity.decoder)
 
 // these values are from https://github.com/multiformats/multicodec/blob/master/table.csv
 const LIBP2P_KEY_CODE = 0x72
