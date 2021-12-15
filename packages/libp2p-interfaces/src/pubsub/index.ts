@@ -77,9 +77,18 @@ interface SubscriptionChangeEvent {
   peerId: PeerId
   subscriptions: Subscription[]
 }
+interface PeerConnectEvent {
+  peerId: PeerId
+}
+
+interface PeerDisconnectEvent {
+  peerId: PeerId
+}
 
 interface PubSubEvents {
-  'pubsub:subscription-change': SubscriptionChangeEvent
+  'pubsub:subscription-change': SubscriptionChangeEvent,
+  'pubsub:peer-connect': PeerConnectEvent,
+  'pubsub:peer-disconnect': PeerDisconnectEvent
 }
 
 export interface PubSub extends EventEmitter {

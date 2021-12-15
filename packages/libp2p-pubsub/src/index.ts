@@ -220,6 +220,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
 
     // else create a new peer streams
     this.log('new peer', id)
+    this.emit('pubsub:peer-connect', { peerId })
 
     const peerStreams = new PeerStreams({
       id: peerId,
@@ -246,6 +247,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
 
     // delete peer streams
     this.log('delete peer', id)
+    this.emit('pubsub:peer-disconnect', { peerId })
     this.peers.delete(id)
 
     // remove peer from topics map
