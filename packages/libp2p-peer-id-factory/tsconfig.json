@@ -12,6 +12,9 @@
   "references": [
     {
       "path": "../libp2p-peer-id"
+    },
+    {
+      "path": "../libp2p-interfaces"
     }
   ]
 }

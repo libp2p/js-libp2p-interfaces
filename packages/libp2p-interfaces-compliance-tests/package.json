@@ -53,6 +53,7 @@
     "libp2p-connection": "^0.2.0",
     "libp2p-crypto": "^0.21.0",
     "libp2p-interfaces": "^3.0.0",
+    "libp2p-peer-id": "^0.0.1",
     "libp2p-peer-id-factory": "^0.0.1",
     "libp2p-pubsub": "^0.8.0",
     "libp2p-topology": "^0.2.0",

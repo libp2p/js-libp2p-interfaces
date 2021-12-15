@@ -4,7 +4,8 @@ import type { Connection, StreamData } from 'libp2p-interfaces/connection'
 import type { MuxedStream } from 'libp2p-interfaces/stream-muxer'
 // @ts-expect-error no types
 import pair from 'it-pair'
-import PeerId from 'peer-id'
+import { PeerId } from 'libp2p-peer-id'
+import * as PeerIdFactory from 'libp2p-peer-id-factory'
 /**
  * A tick is considered valid if it happened between now
  * and `ms` milliseconds ago
@@ -55,8 +56,8 @@ async function createConnection (maConn: MultiaddrConnection, direction: 'inboun
 
   const localPeerIdStr = localAddr.getPeerId()
   const remotePeerIdStr = remoteAddr.getPeerId()
-  const localPeer = localPeerIdStr != null ? PeerId.parse(localPeerIdStr) : await PeerId.create({ keyType: 'Ed25519' })
-  const remotePeer = remotePeerIdStr != null ? PeerId.parse(remotePeerIdStr) : await PeerId.create({ keyType: 'Ed25519' })
+  const localPeer = localPeerIdStr != null ? PeerId.fromString(localPeerIdStr) : await PeerIdFactory.createEd25519PeerId()
+  const remotePeer = remotePeerIdStr != null ? PeerId.fromString(remotePeerIdStr) : await PeerIdFactory.createEd25519PeerId()
 
   const streams: Array<MuxedStream<Uint8Array>> = []
   let streamId = 0
