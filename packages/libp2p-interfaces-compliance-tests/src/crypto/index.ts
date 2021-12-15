@@ -9,7 +9,7 @@ import peers from '../utils/peers.js'
 import { UnexpectedPeerError } from 'libp2p-interfaces/crypto/errors'
 import type { TestSetup } from '../index.js'
 import type { Crypto } from 'libp2p-interfaces/crypto'
-import type { PeerId } from 'libp2p-peer-id'
+import type { PeerId } from 'libp2p-interfaces/peer-id'
 
 export default (common: TestSetup<Crypto>) => {
   describe('interface-crypto compliance tests', () => {

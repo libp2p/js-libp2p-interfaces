@@ -11,7 +11,7 @@ import {
   mockRegistrar,
   PubsubImplementation
 } from './utils/index.js'
-import type { PeerId } from 'libp2p-peer-id'
+import type { PeerId } from 'libp2p-interfaces/peer-id'
 
 const protocol = '/pubsub/1.0.0'
 const topic = 'test-topic'

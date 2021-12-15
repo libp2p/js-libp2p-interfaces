@@ -1,34 +1,19 @@
 import { CID } from 'multiformats/cid'
-import * as b16 from 'multiformats/bases/base16'
-import * as b32 from 'multiformats/bases/base32'
-import * as b36 from 'multiformats/bases/base36'
-import * as b58 from 'multiformats/bases/base58'
-import * as b64 from 'multiformats/bases/base64'
+import { bases } from 'multiformats/basics'
 import { base58btc } from 'multiformats/bases/base58'
 import * as Digest from 'multiformats/hashes/digest'
 import { identity } from 'multiformats/hashes/identity'
 import { equals as uint8ArrayEquals } from 'uint8arrays/equals'
-import type { MultibaseCodec, MultibaseDecoder, MultibaseEncoder } from 'multiformats/types/bases/interface'
+import type { MultibaseDecoder, MultibaseEncoder } from 'multiformats/types/bases/interface'
 import type { MultihashDigest } from 'multiformats/types/hashes/interface'
 import { sha256 } from 'multiformats/hashes/sha2'
-
-const bases: Record<string, MultibaseCodec<any>> = {
-  ...b16,
-  ...b32,
-  ...b36,
-  ...b58,
-  ...b64
-}
+import { or } from 'multiformats/bases/base'
 
 const baseDecoder = Object
-  .keys(bases)
-  .map(key => bases[key])
+  .values(bases)
   .map(codec => codec.decoder)
-  .reduce(
-    // @ts-expect-error .or is not in the interface
-    (acc, curr) => acc.or(curr),
-    base58btc.decoder
-  )
+  // @ts-expect-error
+  .reduce(or, bases.identity.decoder)
 
 // these values are from https://github.com/multiformats/multicodec/blob/master/table.csv
 const LIBP2P_KEY_CODE = 0x72
@@ -97,7 +82,7 @@ export class PeerId {
   equals (id: any) {
     if (id instanceof Uint8Array) {
       return uint8ArrayEquals(this.multihash.bytes, id)
-    } else if (id.multihash?.bytes != null) {
+    } else if (id?.multihash?.bytes != null) {
       return uint8ArrayEquals(this.multihash.bytes, id.multihash.bytes)
     } else {
       throw new Error('not valid Id')
@@ -110,7 +95,7 @@ export class PeerId {
     if (str.charAt(0) === '1' || str.charAt(0) === 'Q') {
       // identity hash ed25519/secp256k1 key or sha2-256 hash of
       // rsa public key - base58btc encoded either way
-      const multihash = Digest.decode(b58.base58btc.decode(`z${str}`))
+      const multihash = Digest.decode(base58btc.decode(`z${str}`))
 
       if (str.startsWith('12D')) {
         return new Ed25519PeerId({ multihash })

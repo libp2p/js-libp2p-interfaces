@@ -4,7 +4,7 @@ import * as PeerIdFactory from 'libp2p-peer-id-factory'
 import peers from '../utils/peers.js'
 import type { TestSetup } from '../index.js'
 import type { MulticodecTopology } from 'libp2p-interfaces/topology'
-import type { PeerId } from 'libp2p-peer-id'
+import type { PeerId } from 'libp2p-interfaces/peer-id'
 
 export default (test: TestSetup<MulticodecTopology>) => {
   describe('multicodec topology', () => {

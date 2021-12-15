@@ -32,7 +32,7 @@ const crypto: Crypto = {
     const remotePeer = PeerId.fromBytes(remoteId.slice())
     shake.rest()
 
-    if (expectedPeer?.equals(remotePeer) !== true) {
+    if (expectedPeer != null && !expectedPeer.equals(remotePeer)) {
       throw new UnexpectedPeerError()
     }
 

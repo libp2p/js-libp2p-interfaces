@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import type { PeerId } from 'libp2p-peer-id'
+import type { PeerId } from 'libp2p-interfaces/peer-id'
 import type { PeerData } from 'libp2p-interfaces/peer-data'
 import type { ProtoBook, PeerStore } from 'libp2p-interfaces/registrar'
 

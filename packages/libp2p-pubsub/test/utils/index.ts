@@ -4,7 +4,7 @@ import * as PeerIdFactory from 'libp2p-peer-id-factory'
 import { PubsubBaseProtocol } from '../../src/index.js'
 import { RPC, IRPC } from '../../src/message/rpc.js'
 import type { Registrar } from 'libp2p-interfaces/registrar'
-import type { PeerId } from 'libp2p-peer-id'
+import type { PeerId } from 'libp2p-interfaces/peer-id'
 
 export const createPeerId = async () => {
   const peerId = await PeerIdFactory.createEd25519PeerId()

@@ -11,7 +11,7 @@ import * as PeerIdFactory from 'libp2p-peer-id-factory'
 import { randomSeqno } from '../src/utils.js'
 import { keys } from 'libp2p-crypto'
 import type { Message } from 'libp2p-interfaces/pubsub'
-import type { PeerId } from 'libp2p-peer-id'
+import type { PeerId } from 'libp2p-interfaces/peer-id'
 
 describe('message signing', () => {
   let peerId: PeerId

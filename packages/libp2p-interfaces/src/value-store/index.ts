@@ -1,4 +1,4 @@
-import type { PeerId } from 'libp2p-peer-id'
+import type { PeerId } from '../peer-id'
 
 export interface GetValueResult {
   from: PeerId
