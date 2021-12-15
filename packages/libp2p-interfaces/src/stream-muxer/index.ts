@@ -41,8 +41,8 @@ export interface MuxedStream<T = Uint8Array> extends AsyncIterable<T> {
   close: () => void
   abort: () => void
   reset: () => void
-  sink: (source: AsyncIterable<T> | Iterable<T>) => Promise<void>
-  source: AsyncIterable<T> | Iterable<T>
+  sink: (source: AsyncIterable<T>) => Promise<void>
+  source: AsyncIterable<T>
   timeline: MuxedTimeline
   id: string
 }
