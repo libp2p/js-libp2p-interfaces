@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@2.0.3...libp2p-interfaces@2.0.4) (2021-12-21)
+
+
+### Bug Fixes
+
+* BufferList imports and MuxedStream sinks ([#122](https://github.com/libp2p/js-interfaces/issues/122)) ([f9732c0](https://github.com/libp2p/js-interfaces/commit/f9732c0532732f26f109481cd5b384f9a828fd0d))
+
+
+
+
+
 ## [2.0.3](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@2.0.2...libp2p-interfaces@2.0.3) (2021-12-21)
 
 
