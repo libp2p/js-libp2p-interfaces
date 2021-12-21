@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@2.0.3...libp2p-interfaces-compliance-tests@2.0.4) (2021-12-21)
+
+**Note:** Version bump only for package libp2p-interfaces-compliance-tests
+
+
+
+
+
 ## [2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@2.0.2...libp2p-interfaces-compliance-tests@2.0.3) (2021-12-02)
 
 
