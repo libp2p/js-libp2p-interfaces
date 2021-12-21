@@ -1,10 +1,7 @@
 import type events from 'events'
 import type { Multiaddr } from 'multiaddr'
 import type { Connection } from '../connection'
-
-export interface AbortOptions {
-  signal?: AbortSignal
-}
+import type { AbortOptions } from '../index'
 
 export interface TransportFactory<DialOptions extends { signal?: AbortSignal }, ListenerOptions> {
   new(upgrader: Upgrader): Transport<DialOptions, ListenerOptions>
@@ -51,12 +48,12 @@ export interface Upgrader {
   /**
    * Upgrades an outbound connection on `transport.dial`.
    */
-  upgradeOutbound: (maConn: MultiaddrConnection) => Promise<Connection>
+  upgradeOutbound: (maConn: MultiaddrConnection, options?: AbortOptions) => Promise<Connection>
 
   /**
    * Upgrades an inbound connection on transport listener.
    */
-  upgradeInbound: (maConn: MultiaddrConnection) => Promise<Connection>
+  upgradeInbound: (maConn: MultiaddrConnection, options?: AbortOptions) => Promise<Connection>
 }
 
 export interface MultiaddrConnectionTimeline {
