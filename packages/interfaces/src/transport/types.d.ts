@@ -1,4 +1,4 @@
-import BufferList from 'bl'
+import BufferList from 'bl/BufferList'
 import events from 'events'
 import { Multiaddr } from 'multiaddr'
 import Connection from '../connection/connection'

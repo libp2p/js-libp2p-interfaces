@@ -1,4 +1,4 @@
-import BufferList from 'bl'
+import BufferList from 'bl/BufferList'
 
 export interface MuxerFactory {
   new (options: MuxerOptions): Muxer;
@@ -48,4 +48,4 @@ export interface MuxedStream extends AsyncIterable<Uint8Array | BufferList> {
   id: string;
 }
 
-export type Sink = (source: Uint8Array) => Promise<void>;
+export type Sink = (source: AsyncIterable<Uint8Array | BufferList>) => Promise<void>;
