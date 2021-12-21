@@ -3,3 +3,7 @@ export type ValidateFn = (a: Uint8Array, b: Uint8Array) => Promise<void>
 
 export type DhtSelectors = { [key: string]: SelectFn }
 export type DhtValidators = { [key: string]: { func: ValidateFn } }
+
+export interface AbortOptions {
+  signal?: AbortSignal
+}

@@ -3,15 +3,16 @@ import events from 'events'
 import { Multiaddr } from 'multiaddr'
 import Connection from '../connection/connection'
 import { Sink } from '../stream-muxer/types'
+import { AbortOptions } from '../types'
 
-export interface TransportFactory<DialOptions extends { signal?: AbortSignal }, ListenerOptions> {
+export interface TransportFactory<DialOptions extends AbortOptions, ListenerOptions> {
   new(upgrader: Upgrader): Transport<DialOptions, ListenerOptions>;
 }
 
 /**
  * A libp2p transport is understood as something that offers a dial and listen interface to establish connections.
  */
-export interface Transport <DialOptions extends { signal?: AbortSignal }, ListenerOptions> {
+export interface Transport <DialOptions extends AbortOptions, ListenerOptions> {
   /**
    * Dial a given multiaddr.
    */
@@ -47,12 +48,12 @@ export interface Upgrader {
   /**
    * Upgrades an outbound connection on `transport.dial`.
    */
-  upgradeOutbound(maConn: MultiaddrConnection): Promise<Connection>;
+  upgradeOutbound(maConn: MultiaddrConnection, options?: AbortOptions): Promise<Connection>;
 
   /**
    * Upgrades an inbound connection on transport listener.
    */
-  upgradeInbound(maConn: MultiaddrConnection): Promise<Connection>;
+  upgradeInbound(maConn: MultiaddrConnection, options?: AbortOptions): Promise<Connection>;
 }
 
 export type MultiaddrConnectionTimeline = {
