@@ -95,7 +95,7 @@ export interface PubSub extends EventEmitter {
   subscribe: (topic: string) => void
   getSubscribers: (topic: string) => string[]
   unsubscribe: (topic: string) => void
-  publish: (topic: string, data: Uint8Array) => Promise<void>
+  publish: (topic: string, data: Uint8Array) => Promise<Set<string> | undefined>
   validate: (message: Message) => Promise<void>
 
   on: (<U extends keyof PubSubEvents> (event: U, listener: (event: PubSubEvents[U]) => void) => this) &
