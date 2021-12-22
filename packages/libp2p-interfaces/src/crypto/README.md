@@ -5,7 +5,7 @@ interface-crypto
 
 **Modules that implement the interface**
 
-- [js-libp2p-noise](https://github.com/libp2p/js-libp2p-noise)
+- [@chainSafe/js-libp2p-noise](https://github.com/ChainSafe/js-libp2p-noise)
 - [js-libp2p-secio](https://github.com/NodeFactoryIo/js-libp2p-secio)
 
 ## Table of Contents
