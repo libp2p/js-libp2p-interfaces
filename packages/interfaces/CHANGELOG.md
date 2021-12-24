@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.5](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@2.0.4...libp2p-interfaces@2.0.5) (2021-12-24)
+
+
+### Bug Fixes
+
+* revert upgrader/crypto options ([#124](https://github.com/libp2p/js-interfaces/issues/124)) ([2b0d14d](https://github.com/libp2p/js-interfaces/commit/2b0d14de91ce36d1044171705f95de15b1bc20ac))
+
+
+
+
+
 ## [2.0.4](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@2.0.3...libp2p-interfaces@2.0.4) (2021-12-21)
 
 
