@@ -1,6 +1,5 @@
 import { PeerId } from '../peer-id/types'
 import { MultiaddrConnection } from '../transport/types'
-import { AbortOptions } from '../types'
 
 /**
  * A libp2p crypto module must be compliant to this interface
@@ -11,11 +10,11 @@ export interface Crypto {
   /**
    * Encrypt outgoing data to the remote party.
    */
-  secureOutbound(localPeer: PeerId, connection: MultiaddrConnection, remotePeer: PeerId, options?: AbortOptions): Promise<SecureOutbound>;
+  secureOutbound(localPeer: PeerId, connection: MultiaddrConnection, remotePeer: PeerId): Promise<SecureOutbound>;
   /**
    * Decrypt incoming data.
    */
-  secureInbound(localPeer: PeerId, connection: MultiaddrConnection, remotePeer?: PeerId, options?: AbortOptions): Promise<SecureOutbound>;
+  secureInbound(localPeer: PeerId, connection: MultiaddrConnection, remotePeer?: PeerId): Promise<SecureOutbound>;
 }
 
 export type SecureOutbound = {
