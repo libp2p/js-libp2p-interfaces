@@ -88,6 +88,11 @@ export interface PeerIdFactory {
   /**
    * Create a new PeerId.
    **/
+  new (id: Uint8Array, privKey?: PrivateKey, pubKey?: PublicKey): PeerId;
+
+  /**
+   * Create a new PeerId.
+   **/
   create (args: CreateOptions): Promise<PeerId>;
 
   /**
