@@ -1,13 +1,13 @@
 import type { CID } from 'multiformats/cid'
 import type { PublicKey, PrivateKey, KeyType } from '../keys/types'
 
-interface PeerIdJSON {
+export interface PeerIdJSON {
   readonly id: string;
   readonly pubKey?: string;
   readonly privKey?: string;
 }
 
-interface CreateOptions {
+export interface CreateOptions {
   bits?: number;
   keyType?: KeyType;
 }
