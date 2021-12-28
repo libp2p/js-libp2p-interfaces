@@ -357,10 +357,6 @@ module.exports = (common) => {
       const peerId2 = factory.createFromB58String(peerId.toB58String())
 
       expect(peerId1).to.deep.equal(peerId2)
-
-      peerId1.toString()
-
-      expect(peerId1).to.deep.equal(peerId2)
     })
 
     describe('throws on inconsistent data', () => {
@@ -382,29 +378,24 @@ module.exports = (common) => {
 
       it('missmatch private - public key', async () => {
         const digest = await k1.public.hash()
-        expect(() => {
-          factory.createFromJSON({
-            id: digest,
-            pubKey: k1,
-            privKey: k2.public
-          }) // eslint-disable-line no-new
-        }).to.throw(/inconsistent arguments/)
+        expect(factory.createFromJSON({
+          id: digest,
+          pubKey: k1,
+          privKey: k2.public
+        })).eventually.be.rejectedWith(/inconsistent arguments/)
       })
 
       it('missmatch id - private - public key', async () => {
         const digest = await k1.public.hash()
-        expect(() => {
-          factory.createFromJSON({
-            id: digest,
-            pubKey: k1,
-            privKey: k3.public
-          }) // eslint-disable-line no-new
-        }).to.throw(/inconsistent arguments/)
+        expect(factory.createFromJSON({
+          id: digest,
+          pubKey: k1,
+          privKey: k3.public
+        })).eventually.be.rejectedWith(/inconsistent arguments/)
       })
 
       it('invalid id', () => {
-        // @ts-expect-error incorrect constructor arg type
-        expect(() => factory.createFromJSON('hello world')).to.throw(/invalid id/)
+        expect(factory.createFromJSON('hello world')).eventually.be.rejectedWith(/invalid id/)
       })
     })
   })
