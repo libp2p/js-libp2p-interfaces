@@ -5,9 +5,8 @@
 
 const { expect } = require('aegir/utils/chai')
 const sinon = require('sinon')
-
+const delay = require('delay')
 const PeerId = require('peer-id')
-
 const peers = require('../utils/peers')
 
 module.exports = (test) => {
@@ -48,7 +47,7 @@ module.exports = (test) => {
       const peerStore = topology._registrar.peerStore
 
       const id2 = await PeerId.createFromJSON(peers[1])
-      peerStore.peers.set(id2.toB58String(), {
+      await peerStore.peers.set(id2.toB58String(), {
         id: id2,
         protocols: Array.from(topology.multicodecs)
       })
@@ -57,6 +56,9 @@ module.exports = (test) => {
         peerId: id2,
         protocols: Array.from(topology.multicodecs)
       })
+
+      // 'change:protocols' event handler is async
+      await delay(10)
 
       expect(topology._updatePeers.callCount).to.equal(1)
       expect(topology.peers.size).to.eql(1)
@@ -69,7 +71,7 @@ module.exports = (test) => {
       const peerStore = topology._registrar.peerStore
 
       const id2 = await PeerId.createFromJSON(peers[1])
-      peerStore.peers.set(id2.toB58String(), {
+      await peerStore.peers.set(id2.toB58String(), {
         id: id2,
         protocols: Array.from(topology.multicodecs)
       })
@@ -79,9 +81,12 @@ module.exports = (test) => {
         protocols: Array.from(topology.multicodecs)
       })
 
+      // 'change:protocols' event handler is async
+      await delay(10)
+
       expect(topology.peers.size).to.eql(1)
 
-      peerStore.peers.set(id2.toB58String(), {
+      await peerStore.peers.set(id2.toB58String(), {
         id: id2,
         protocols: []
       })
@@ -91,40 +96,52 @@ module.exports = (test) => {
         protocols: []
       })
 
+      // 'change:protocols' event handler is async
+      await delay(10)
+
       expect(topology.peers.size).to.eql(1)
       expect(topology._onDisconnect.callCount).to.equal(1)
       expect(topology._onDisconnect.calledWith(id2)).to.equal(true)
     })
 
-    it('should trigger "onConnect" when a peer connects and has one of the topology multicodecs in its known protocols', () => {
+    it('should trigger "onConnect" when a peer connects and has one of the topology multicodecs in its known protocols', async () => {
       sinon.spy(topology, '_onConnect')
-      sinon.stub(topology._registrar.peerStore.protoBook, 'get').returns(topology.multicodecs)
+      sinon.stub(topology._registrar.peerStore.protoBook, 'get').resolves(topology.multicodecs)
 
       topology._registrar.connectionManager.emit('peer:connect', {
         remotePeer: id
       })
+
+      // 'peer:connect' event handler is async
+      await delay(10)
 
       expect(topology._onConnect.callCount).to.equal(1)
     })
 
-    it('should not trigger "onConnect" when a peer connects and has none of the topology multicodecs in its known protocols', () => {
+    it('should not trigger "onConnect" when a peer connects and has none of the topology multicodecs in its known protocols', async () => {
       sinon.spy(topology, '_onConnect')
-      sinon.stub(topology._registrar.peerStore.protoBook, 'get').returns([])
+      sinon.stub(topology._registrar.peerStore.protoBook, 'get').resolves([])
 
       topology._registrar.connectionManager.emit('peer:connect', {
         remotePeer: id
       })
+
+      // 'peer:connect' event handler is async
+      await delay(10)
 
       expect(topology._onConnect.callCount).to.equal(0)
     })
 
-    it('should not trigger "onConnect" when a peer connects and its protocols are not known', () => {
+    it('should not trigger "onConnect" when a peer connects and its protocols are not known', async () => {
       sinon.spy(topology, '_onConnect')
-      sinon.stub(topology._registrar.peerStore.protoBook, 'get').returns(undefined)
+      sinon.stub(topology._registrar.peerStore.protoBook, 'get').resolves(undefined)
 
       topology._registrar.connectionManager.emit('peer:connect', {
         remotePeer: id
       })
+
+      // 'peer:connect' event handler is async
+      await delay(10)
 
       expect(topology._onConnect.callCount).to.equal(0)
     })

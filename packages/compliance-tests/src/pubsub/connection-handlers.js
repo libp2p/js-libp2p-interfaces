@@ -242,7 +242,7 @@ module.exports = (common) => {
         await psB._libp2p.start()
         psB.start()
 
-        psA._libp2p.peerStore.addressBook.set(psB.peerId, psB._libp2p.multiaddrs)
+        await psA._libp2p.peerStore.addressBook.set(psB.peerId, psB._libp2p.multiaddrs)
         await psA._libp2p.dial(psB.peerId)
 
         // wait for remoteLibp2p to know about libp2p subscription

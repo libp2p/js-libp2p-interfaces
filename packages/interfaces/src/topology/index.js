@@ -65,7 +65,7 @@ class Topology {
   /**
    * @param {any} registrar
    */
-  set registrar (registrar) { // eslint-disable-line
+  async setRegistrar (registrar) {
     this._registrar = registrar
   }
 

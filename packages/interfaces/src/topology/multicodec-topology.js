@@ -2,6 +2,11 @@
 
 const Topology = require('./index')
 const multicodecTopologySymbol = Symbol.for('@libp2p/js-interfaces/topology/multicodec-topology')
+const debug = require('debug')
+
+const log = Object.assign(debug('libp2p:topology:multicodec-topology'), {
+  error: debug('libp2p:topology:multicodec-topology:error')
+})
 
 class MulticodecTopology extends Topology {
   /**
@@ -59,23 +64,22 @@ class MulticodecTopology extends Topology {
   /**
    * @param {any} registrar
    */
-  set registrar (registrar) { // eslint-disable-line
+  async setRegistrar (registrar) { // eslint-disable-line
     this._registrar = registrar
     this._registrar.peerStore.on('change:protocols', this._onProtocolChange)
     this._registrar.connectionManager.on('peer:connect', this._onPeerConnect)
 
     // Update topology peers
-    this._updatePeers(this._registrar.peerStore.peers.values())
+    await this._updatePeers(this._registrar.peerStore.getPeers())
   }
 
   /**
    * Update topology.
    *
-   * @param {Array<{id: PeerId, multiaddrs: Array<Multiaddr>, protocols: Array<string>}>} peerDataIterable
-   * @returns {void}
+   * @param {AsyncIterable<any> | Iterable<any>} peerDataIterable
    */
-  _updatePeers (peerDataIterable) {
-    for (const { id, protocols } of peerDataIterable) {
+  async _updatePeers (peerDataIterable) {
+    for await (const { id, protocols } of peerDataIterable) {
       if (this.multicodecs.filter(multicodec => protocols.includes(multicodec)).length) {
         // Add the peer regardless of whether or not there is currently a connection
         this.peers.add(id.toB58String())
@@ -96,22 +100,26 @@ class MulticodecTopology extends Topology {
    * @param {PeerId} props.peerId
    * @param {Array<string>} props.protocols
    */
-  _onProtocolChange ({ peerId, protocols }) {
-    const hadPeer = this.peers.has(peerId.toB58String())
-    const hasProtocol = protocols.filter(protocol => this.multicodecs.includes(protocol))
+  async _onProtocolChange ({ peerId, protocols }) {
+    try {
+      const hadPeer = this.peers.has(peerId.toB58String())
+      const hasProtocol = protocols.filter(protocol => this.multicodecs.includes(protocol))
 
-    // Not supporting the protocol anymore?
-    if (hadPeer && hasProtocol.length === 0) {
-      this._onDisconnect(peerId)
-    }
-
-    // New to protocol support
-    for (const protocol of protocols) {
-      if (this.multicodecs.includes(protocol)) {
-        const peerData = this._registrar.peerStore.get(peerId)
-        this._updatePeers([peerData])
-        return
+      // Not supporting the protocol anymore?
+      if (hadPeer && hasProtocol.length === 0) {
+        this._onDisconnect(peerId)
       }
+
+      // New to protocol support
+      for (const protocol of protocols) {
+        if (this.multicodecs.includes(protocol)) {
+          const peerData = await this._registrar.peerStore.get(peerId)
+          await this._updatePeers([peerData])
+          return
+        }
+      }
+    } catch (err) {
+      log.error(err)
     }
   }
 
@@ -119,20 +127,23 @@ class MulticodecTopology extends Topology {
    * Verify if a new connected peer has a topology multicodec and call _onConnect.
    *
    * @param {Connection} connection
-   * @returns {void}
    */
-  _onPeerConnect (connection) {
-    // @ts-ignore - remotePeer does not existist on Connection
-    const peerId = connection.remotePeer
-    const protocols = this._registrar.peerStore.protoBook.get(peerId)
+  async _onPeerConnect (connection) {
+    try {
+      // @ts-ignore - remotePeer does not existist on Connection
+      const peerId = connection.remotePeer
+      const protocols = await this._registrar.peerStore.protoBook.get(peerId)
 
-    if (!protocols) {
-      return
-    }
+      if (!protocols) {
+        return
+      }
 
-    if (this.multicodecs.find(multicodec => protocols.includes(multicodec))) {
-      this.peers.add(peerId.toB58String())
-      this._onConnect(peerId, connection)
+      if (this.multicodecs.find(multicodec => protocols.includes(multicodec))) {
+        this.peers.add(peerId.toB58String())
+        this._onConnect(peerId, connection)
+      }
+    } catch (err) {
+      log.error(err)
     }
   }
 }
