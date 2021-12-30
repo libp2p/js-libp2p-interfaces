@@ -9,7 +9,7 @@ const MockPeerStore = require('./mock-peer-store')
 
 describe('multicodec topology compliance tests', () => {
   tests({
-    setup (properties, registrar) {
+    async setup (properties, registrar) {
       const multicodecs = ['/echo/1.0.0']
       const handlers = {
         onConnect: () => { },
@@ -34,7 +34,7 @@ describe('multicodec topology compliance tests', () => {
         }
       }
 
-      topology.registrar = registrar
+      await topology.setRegistrar(registrar)
 
       return topology
     },
