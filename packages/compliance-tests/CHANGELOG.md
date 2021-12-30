@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@2.0.6...libp2p-interfaces-compliance-tests@4.0.0) (2021-12-30)
+
+
+### Features
+
+* async peer store ([#128](https://github.com/libp2p/js-libp2p-interfaces/issues/128)) ([d7a1975](https://github.com/libp2p/js-libp2p-interfaces/commit/d7a197542ba197f9fcfab876e9f7cfd8ab3ab15a))
+
+
+### BREAKING CHANGES
+
+* peerstore methods are now all async
+
+
+
+
+
 ## [2.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@2.0.5...libp2p-interfaces-compliance-tests@2.0.6) (2021-12-24)
 
 **Note:** Version bump only for package libp2p-interfaces-compliance-tests
