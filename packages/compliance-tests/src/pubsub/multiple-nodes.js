@@ -28,7 +28,7 @@ module.exports = (common) => {
           [psA, psB, psC] = await common.setup(3)
 
           // Start pubsub mpdes
-          ;[psA, psB, psC].map((p) => p.start())
+          await Promise.all([psA, psB, psC].map((p) => p.start()))
         })
 
         // Connect nodes
@@ -213,7 +213,7 @@ module.exports = (common) => {
           [psA, psB, psC, psD, psE] = await common.setup(5)
 
           // Start pubsub nodes
-          ;[psA, psB, psC, psD, psE].map((p) => p.start())
+          await Promise.all([psA, psB, psC, psD, psE].map((p) => p.start()))
         })
 
         // connect nodes

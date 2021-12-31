@@ -90,9 +90,9 @@ describe('pubsub base lifecycle', () => {
     })
 
     // start pubsub
-    beforeEach(() => {
-      pubsubA.start()
-      pubsubB.start()
+    beforeEach(async () => {
+      await pubsubA.start()
+      await pubsubB.start()
 
       expect(Object.keys(registrarRecordA)).to.have.lengthOf(1)
       expect(Object.keys(registrarRecordB)).to.have.lengthOf(1)

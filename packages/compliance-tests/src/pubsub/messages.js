@@ -22,12 +22,12 @@ module.exports = (common) => {
     // Create pubsub router
     beforeEach(async () => {
       [pubsub] = await common.setup(1)
-      pubsub.start()
+      await pubsub.start()
     })
 
     afterEach(async () => {
       sinon.restore()
-      pubsub && pubsub.stop()
+      pubsub && await pubsub.stop()
       await common.teardown()
     })
 
