@@ -53,7 +53,7 @@ exports.createMockRegistrar = (registrarRecord) => ({
       handler
     }
   },
-  register: ({ multicodecs, _onConnect, _onDisconnect }) => {
+  register: async ({ multicodecs, _onConnect, _onDisconnect }) => {
     const rec = registrarRecord[multicodecs[0]] || {}
 
     registrarRecord[multicodecs[0]] = {

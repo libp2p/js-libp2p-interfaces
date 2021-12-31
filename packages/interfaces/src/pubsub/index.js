@@ -179,11 +179,9 @@ class PubsubBaseProtocol extends EventEmitter {
   // LIFECYCLE METHODS
 
   /**
-   * Register the pubsub protocol onto the libp2p node.
-   *
-   * @returns {void}
+   * Register the pubsub protocol onto the libp2p node
    */
-  start () {
+  async start () {
     if (this.started) {
       return
     }
@@ -202,7 +200,7 @@ class PubsubBaseProtocol extends EventEmitter {
         onDisconnect: this._onPeerDisconnected
       }
     })
-    this._registrarId = this.registrar.register(topology)
+    this._registrarId = await this.registrar.register(topology)
 
     this.log('started')
     this.started = true
@@ -210,10 +208,8 @@ class PubsubBaseProtocol extends EventEmitter {
 
   /**
    * Unregister the pubsub protocol and the streams with other peers will be closed.
-   *
-   * @returns {void}
    */
-  stop () {
+  async stop () {
     if (!this.started) {
       return
     }

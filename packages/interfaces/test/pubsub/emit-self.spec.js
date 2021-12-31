@@ -29,13 +29,13 @@ describe('emitSelf', () => {
       }, { emitSelf: true })
     })
 
-    before(() => {
-      pubsub.start()
+    before(async () => {
+      await pubsub.start()
       pubsub.subscribe(topic)
     })
 
-    after(() => {
-      pubsub.stop()
+    after(async () => {
+      await pubsub.stop()
     })
 
     it('should emit to self on publish', () => {
@@ -57,13 +57,13 @@ describe('emitSelf', () => {
       }, { emitSelf: false })
     })
 
-    before(() => {
-      pubsub.start()
+    before(async () => {
+      await pubsub.start()
       pubsub.subscribe(topic)
     })
 
-    after(() => {
-      pubsub.stop()
+    after(async () => {
+      await pubsub.stop()
     })
 
     it('should not emit to self on publish', () => {

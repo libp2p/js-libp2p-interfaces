@@ -33,21 +33,25 @@ describe('pubsub base implementation', () => {
       })
     })
 
-    afterEach(() => pubsub.stop())
+    afterEach(async () => {
+      await pubsub.stop()
+    })
 
     it('calls _publish for router to forward messages', async () => {
       sinon.spy(pubsub, '_publish')
 
-      pubsub.start()
+      await pubsub.start()
       await pubsub.publish(topic, message)
 
       expect(pubsub._publish.callCount).to.eql(1)
+
+      await pubsub.stop()
     })
 
     it('should sign messages on publish', async () => {
       sinon.spy(pubsub, '_publish')
 
-      pubsub.start()
+      await pubsub.start()
       await pubsub.publish(topic, message)
 
       // Get the first message sent to _publish, and validate it
@@ -57,6 +61,8 @@ describe('pubsub base implementation', () => {
       } catch (/** @type {any} */ e) {
         expect.fail('validation should not throw')
       }
+
+      await pubsub.stop()
     })
   })
 
@@ -70,10 +76,12 @@ describe('pubsub base implementation', () => {
           peerId: peerId,
           registrar: mockRegistrar
         })
-        pubsub.start()
+        await pubsub.start()
       })
 
-      afterEach(() => pubsub.stop())
+      afterEach(async () => {
+        await pubsub.stop()
+      })
 
       it('should add subscription', () => {
         pubsub.subscribe(topic)
@@ -105,8 +113,8 @@ describe('pubsub base implementation', () => {
 
       // start pubsub and connect nodes
       beforeEach(async () => {
-        pubsubA.start()
-        pubsubB.start()
+        await pubsubA.start()
+        await pubsubB.start()
 
         const onConnectA = registrarRecordA[protocol].onConnect
         const handlerB = registrarRecordB[protocol].handler
@@ -124,9 +132,9 @@ describe('pubsub base implementation', () => {
         })
       })
 
-      afterEach(() => {
-        pubsubA.stop()
-        pubsubB.stop()
+      afterEach(async () => {
+        await pubsubA.stop()
+        await pubsubB.stop()
       })
 
       it('should send subscribe message to connected peers', async () => {
@@ -198,8 +206,8 @@ describe('pubsub base implementation', () => {
 
       // start pubsub and connect nodes
       beforeEach(async () => {
-        pubsubA.start()
-        pubsubB.start()
+        await pubsubA.start()
+        await pubsubB.start()
 
         const onConnectA = registrarRecordA[protocol].onConnect
         const handlerB = registrarRecordB[protocol].handler
@@ -217,9 +225,9 @@ describe('pubsub base implementation', () => {
         })
       })
 
-      afterEach(() => {
-        pubsubA.stop()
-        pubsubB.stop()
+      afterEach(async () => {
+        await pubsubA.stop()
+        await pubsubB.stop()
       })
 
       it('should send unsubscribe message to connected peers', async () => {
@@ -275,7 +283,7 @@ describe('pubsub base implementation', () => {
         peerId: peerId,
         registrar: mockRegistrar
       })
-      pubsub.start()
+      await pubsub.start()
     })
 
     afterEach(() => pubsub.stop())
@@ -319,9 +327,9 @@ describe('pubsub base implementation', () => {
       throw new Error('should fail if pubsub is not started')
     })
 
-    it('should fail if no topic is provided', () => {
+    it('should fail if no topic is provided', async () => {
       // start pubsub
-      pubsub.start()
+      await pubsub.start()
 
       try {
         pubsub.getSubscribers()
@@ -333,11 +341,11 @@ describe('pubsub base implementation', () => {
       throw new Error('should fail if no topic is provided')
     })
 
-    it('should get peer subscribed to one topic', () => {
+    it('should get peer subscribed to one topic', async () => {
       const topic = 'topic-test'
 
       // start pubsub
-      pubsub.start()
+      await pubsub.start()
 
       let peersSubscribed = pubsub.getSubscribers(topic)
       expect(peersSubscribed).to.be.empty()
@@ -353,6 +361,8 @@ describe('pubsub base implementation', () => {
 
       expect(peersSubscribed).to.not.be.empty()
       expect(peersSubscribed[0]).to.eql(id)
+
+      await pubsub.stop()
     })
   })
 })
