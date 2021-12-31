@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@4.0.0...libp2p-interfaces-compliance-tests@4.0.1) (2021-12-31)
+
+
+### Bug Fixes
+
+* registrar.register is now async ([#129](https://github.com/libp2p/js-libp2p-interfaces/issues/129)) ([d802ef4](https://github.com/libp2p/js-libp2p-interfaces/commit/d802ef4b98962e774d26cc3b4908a309686306ed))
+
+
+
+
+
 # [4.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@2.0.6...libp2p-interfaces-compliance-tests@4.0.0) (2021-12-30)
 
 
