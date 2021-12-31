@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@4.0.1...libp2p-interfaces-compliance-tests@4.0.2) (2021-12-31)
+
+
+### Bug Fixes
+
+* async pubsub startup ([#130](https://github.com/libp2p/js-libp2p-interfaces/issues/130)) ([7aec125](https://github.com/libp2p/js-libp2p-interfaces/commit/7aec12574d08881c4fe4ec513f38e680f48ee111))
+
+
+
+
+
 ## [4.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces-compliance-tests@4.0.0...libp2p-interfaces-compliance-tests@4.0.1) (2021-12-31)
 
 
