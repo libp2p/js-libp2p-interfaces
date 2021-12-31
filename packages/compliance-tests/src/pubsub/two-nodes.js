@@ -34,8 +34,8 @@ module.exports = (common) => {
       expect(psB.peers.size).to.be.eql(0)
 
       // Start pubsub and connect nodes
-      psA.start()
-      psB.start()
+      await psA.start()
+      await psB.start()
 
       await psA._libp2p.dial(psB.peerId)
 
@@ -46,8 +46,8 @@ module.exports = (common) => {
     after(async () => {
       sinon.restore()
 
-      psA && psA.stop()
-      psB && psB.stop()
+      psA && await psA.stop()
+      psB && await psB.stop()
 
       await common.teardown()
     })

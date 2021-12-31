@@ -34,10 +34,11 @@ describe('topic validators', () => {
       globalSignaturePolicy: SignaturePolicy.StrictNoSign
     })
 
-    pubsub.start()
+    await pubsub.start()
   })
 
-  afterEach(() => {
+  afterEach(async () => {
+    await pubsub.stop()
     sinon.restore()
   })
 

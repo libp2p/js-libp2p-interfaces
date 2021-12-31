@@ -24,8 +24,8 @@ module.exports = (common) => {
         expect(psB.peers.size).to.be.eql(0)
 
         // Start pubsub
-        psA.start()
-        psB.start()
+        await psA.start()
+        await psB.start()
       })
 
       // Make subscriptions prior to nodes connected
@@ -40,6 +40,10 @@ module.exports = (common) => {
       })
 
       after(async () => {
+        // Stop pubsub
+        await psA.stop()
+        await psB.stop()
+
         sinon.restore()
         await common.teardown()
       })
@@ -67,13 +71,15 @@ module.exports = (common) => {
       beforeEach(async () => {
         [psA, psB] = await common.setup(2)
 
-        psA.start()
-        psB.start()
+        await psA.start()
+        await psB.start()
       })
 
       afterEach(async () => {
-        sinon.restore()
+        await psA.stop()
+        await psB.stop()
 
+        sinon.restore()
         await common.teardown()
       })
 
@@ -126,8 +132,8 @@ module.exports = (common) => {
       afterEach(async () => {
         sinon.restore()
 
-        psA && psA.stop()
-        psB && psB.stop()
+        psA && await psA.stop()
+        psB && await psB.stop()
 
         await common.teardown()
       })
@@ -138,8 +144,8 @@ module.exports = (common) => {
         expect(psA.peers.size).to.be.eql(0)
         expect(psB.peers.size).to.be.eql(0)
 
-        psA.start()
-        psB.start()
+        await psA.start()
+        await psB.start()
 
         return Promise.all([
           pWaitFor(() => psA.peers.size === 1),
@@ -154,8 +160,8 @@ module.exports = (common) => {
 
         await psA._libp2p.dial(psB.peerId)
 
-        psA.start()
-        psB.start()
+        await psA.start()
+        await psB.start()
 
         await Promise.all([
           pWaitFor(() => psA.peers.size === 1),
@@ -190,15 +196,15 @@ module.exports = (common) => {
       beforeEach(async () => {
         [psA, psB] = await common.setup(2)
 
-        psA.start()
-        psB.start()
+        await psA.start()
+        await psB.start()
       })
 
       afterEach(async () => {
         sinon.restore()
 
-        psA && psA.stop()
-        psB && psB.stop()
+        psA && await psA.stop()
+        psB && await psB.stop()
 
         await common.teardown()
       })
@@ -236,11 +242,11 @@ module.exports = (common) => {
 
         await defer1.promise
 
-        psB.stop()
+        await psB.stop()
         await psB._libp2p.stop()
         await pWaitFor(() => !psA._libp2p.connectionManager.get(psB.peerId) && !psB._libp2p.connectionManager.get(psA.peerId))
         await psB._libp2p.start()
-        psB.start()
+        await psB.start()
 
         await psA._libp2p.peerStore.addressBook.set(psB.peerId, psB._libp2p.multiaddrs)
         await psA._libp2p.dial(psB.peerId)

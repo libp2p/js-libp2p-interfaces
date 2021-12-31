@@ -167,7 +167,7 @@ describe('pubsub base implementation', () => {
           peerId: peerId,
           registrar: mockRegistrar
         })
-        pubsub.start()
+        await pubsub.start()
       })
 
       afterEach(() => pubsub.stop())

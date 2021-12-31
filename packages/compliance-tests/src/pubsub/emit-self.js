@@ -20,14 +20,14 @@ module.exports = (common) => {
         [pubsub] = await common.setup(1, { emitSelf: true })
       })
 
-      before(() => {
-        pubsub.start()
+      before(async () => {
+        await pubsub.start()
         pubsub.subscribe(topic)
       })
 
       after(async () => {
         sinon.restore()
-        pubsub && pubsub.stop()
+        pubsub && await pubsub.stop()
         await common.teardown()
       })
 
@@ -45,14 +45,14 @@ module.exports = (common) => {
         [pubsub] = await common.setup(1, { emitSelf: false })
       })
 
-      before(() => {
-        pubsub.start()
+      before(async () => {
+        await pubsub.start()
         pubsub.subscribe(topic)
       })
 
       after(async () => {
         sinon.restore()
-        pubsub && pubsub.stop()
+        pubsub && await pubsub.stop()
         await common.teardown()
       })
 
