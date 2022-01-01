@@ -1,6 +1,5 @@
 import { expect } from 'aegir/utils/chai.js'
 import { Multiaddr } from 'multiaddr'
-import PeerIdFactory from 'peer-id'
 import delay from 'delay'
 import pDefer from 'p-defer'
 import type { TestSetup } from '../index.js'
@@ -47,7 +46,7 @@ export default (common: TestSetup<PeerDiscovery & Startable>) => {
 
       discovery.on('peer', ({ id, multiaddrs }) => {
         expect(id).to.exist()
-        expect(PeerIdFactory.isPeerId(id)).to.eql(true)
+        expect(id).to.have.property('type').that.is.oneOf(['RSA', 'Ed25519', 'secp256k1'])
         expect(multiaddrs).to.exist()
 
         multiaddrs.forEach((m) => expect(Multiaddr.isMultiaddr(m)).to.eql(true))

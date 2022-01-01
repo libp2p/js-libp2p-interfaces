@@ -1,4 +1,4 @@
-import PeerIdFactory from 'peer-id'
+import { PeerId } from 'libp2p-peer-id'
 // @ts-expect-error no types
 import handshake from 'it-handshake'
 // @ts-expect-error no types
@@ -22,17 +22,17 @@ const crypto: Crypto = {
   secureInbound: async (localPeer, duplex, expectedPeer) => {
     // 1. Perform a basic handshake.
     const shake = handshake(duplex)
-    shake.write(localPeer.id)
+    shake.write(localPeer.toBytes())
     const remoteId = await shake.read()
 
     if (remoteId == null) {
       throw new Error('Could not read remote ID')
     }
 
-    const remotePeer = PeerIdFactory.createFromBytes(remoteId.slice())
+    const remotePeer = PeerId.fromBytes(remoteId.slice())
     shake.rest()
 
-    if ((expectedPeer != null) && expectedPeer.id !== remotePeer.id) {
+    if (expectedPeer != null && !expectedPeer.equals(remotePeer)) {
       throw new UnexpectedPeerError()
     }
 
@@ -67,7 +67,7 @@ const crypto: Crypto = {
   secureOutbound: async (localPeer, duplex, remotePeer) => {
     // 1. Perform a basic handshake.
     const shake = handshake(duplex)
-    shake.write(localPeer.id)
+    shake.write(localPeer.toBytes())
     const remoteId = await shake.read()
 
     if (remoteId == null) {
@@ -100,7 +100,7 @@ const crypto: Crypto = {
         },
         conn: true
       },
-      remotePeer: PeerIdFactory.createFromBytes(remoteId.slice()),
+      remotePeer: PeerId.fromBytes(remoteId.slice()),
       remoteEarlyData: new Uint8Array(0)
     }
   }

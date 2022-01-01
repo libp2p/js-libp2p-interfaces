@@ -6,11 +6,7 @@
     "module": "ES2020"
   },
   "include": [
-    "src"
-  ],
-  "references": [
-    {
-      "path": "../libp2p-peer-id"
-    }
+    "src",
+    "test"
   ]
 }

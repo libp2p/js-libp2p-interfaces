@@ -57,11 +57,11 @@ export default (common: TestSetup<PubSub & Startable>) => {
 
         expectSet(psA.subscriptions, ['Za'])
 
-        expectSet(psB.topics.get('Za'), [psA.peerId.toB58String()])
+        expectSet(psB.topics.get('Za'), [psA.peerId.toString()])
 
         expectSet(psB.subscriptions, ['Zb'])
 
-        expectSet(psA.topics.get('Zb'), [psB.peerId.toB58String()])
+        expectSet(psA.topics.get('Zb'), [psB.peerId.toString()])
       })
     })
 
@@ -115,7 +115,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
         // wait for psB to know about psA subscription
         await pWaitFor(() => {
           const subscribedPeers = psB.getSubscribers(topic)
-          return subscribedPeers.includes(psA.peerId.toB58String())
+          return subscribedPeers.includes(psA.peerId.toString())
         })
         void psB.publish(topic, data)
 
@@ -186,7 +186,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
         // wait for psB to know about psA subscription
         await pWaitFor(() => {
           const subscribedPeers = psB.getSubscribers(topic)
-          return subscribedPeers.includes(psA.peerId.toB58String())
+          return subscribedPeers.includes(psA.peerId.toString())
         })
         void psB.publish(topic, data)
 
@@ -216,7 +216,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
       it('should receive pubsub messages after a node restart', async function () {
         const topic = 'test-topic'
         const data = uint8ArrayFromString('hey!')
-        const psAid = psA.peerId.toB58String()
+        const psAid = psA.peerId.toString()
 
         let counter = 0
         const defer1 = pDefer()
@@ -322,12 +322,12 @@ export default (common: TestSetup<PubSub & Startable>) => {
         // @ts-expect-error protected fields
         await psA._libp2p.dialer.connectToPeer(psB.peerId)
         // @ts-expect-error protected fields
-        expect(psA._libp2p.connections.get(psB.peerId.toB58String())).to.have.length(2)
+        expect(psA._libp2p.connections.get(psB.peerId.toString())).to.have.length(2)
 
         // Wait for subscriptions to occur
         await pWaitFor(() => {
-          return psA.getSubscribers(topic).includes(psB.peerId.toB58String()) &&
-            psB.getSubscribers(topic).includes(psA.peerId.toB58String())
+          return psA.getSubscribers(topic).includes(psB.peerId.toString()) &&
+            psB.getSubscribers(topic).includes(psA.peerId.toString())
         })
 
         // Verify messages go both ways

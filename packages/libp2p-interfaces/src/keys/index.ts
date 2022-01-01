@@ -31,4 +31,8 @@ export interface PrivateKey {
   export: (password: string, format?: 'pkcs-8' | string) => Promise<string>
 }
 
-export type KeyType = 'Ed25519' | 'RSA' | 'secp256k1'
+export const Ed25519 = 'Ed25519'
+export const RSA = 'RSA'
+export const secp256k1 = 'secp256k1'
+
+export type KeyType = typeof Ed25519 | typeof RSA | typeof secp256k1

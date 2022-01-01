@@ -42,8 +42,8 @@ describe('pubsub base messages', () => {
 
   it('_buildMessage normalizes and signs messages', async () => {
     const message = {
-      from: peerId.toBytes(),
-      receivedFrom: peerId.toB58String(),
+      from: peerId.multihash.bytes,
+      receivedFrom: peerId.toString(),
       data: uint8ArrayFromString('hello'),
       topicIDs: ['test-topic']
     }
@@ -55,8 +55,8 @@ describe('pubsub base messages', () => {
 
   it('validate with StrictNoSign will reject a message with from, signature, key, seqno present', async () => {
     const message = {
-      from: peerId.toBytes(),
-      receivedFrom: peerId.toB58String(),
+      from: peerId.multihash.bytes,
+      receivedFrom: peerId.toString(),
       data: uint8ArrayFromString('hello'),
       topicIDs: ['test-topic']
     }
@@ -79,8 +79,8 @@ describe('pubsub base messages', () => {
 
   it('validate with StrictNoSign will validate a message without a signature, key, and seqno', async () => {
     const message = {
-      from: peerId.toBytes(),
-      receivedFrom: peerId.toB58String(),
+      from: peerId.multihash.bytes,
+      receivedFrom: peerId.toString(),
       data: uint8ArrayFromString('hello'),
       topicIDs: ['test-topic']
     }
@@ -93,8 +93,8 @@ describe('pubsub base messages', () => {
 
   it('validate with StrictSign requires a signature', async () => {
     const message = {
-      from: peerId.toBytes(),
-      receivedFrom: peerId.toB58String(),
+      from: peerId.multihash.bytes,
+      receivedFrom: peerId.toString(),
       data: uint8ArrayFromString('hello'),
       topicIDs: ['test-topic']
     }

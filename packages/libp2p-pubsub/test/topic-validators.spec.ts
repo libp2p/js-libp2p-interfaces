@@ -2,7 +2,7 @@ import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
 import pWaitFor from 'p-wait-for'
 import errCode from 'err-code'
-import PeerIdFactory from 'peer-id'
+import * as PeerIdFactory from 'libp2p-peer-id-factory'
 import { equals as uint8ArrayEquals } from 'uint8arrays/equals'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { PeerStreams } from '../src/peer-streams.js'
@@ -42,7 +42,7 @@ describe('topic validators', () => {
     // @ts-expect-error not all fields are implemented in return value
     sinon.stub(pubsub.peers, 'get').returns({})
     const filteredTopic = 't'
-    const peer = new PeerStreams({ id: await PeerIdFactory.create(), protocol: 'a-protocol' })
+    const peer = new PeerStreams({ id: await PeerIdFactory.createEd25519PeerId(), protocol: 'a-protocol' })
 
     // Set a trivial topic validator
     pubsub.topicValidators.set(filteredTopic, async (topic, message) => {
@@ -63,7 +63,7 @@ describe('topic validators', () => {
 
     // process valid message
     pubsub.subscribe(filteredTopic)
-    void pubsub._processRpc(peer.id.toB58String(), peer, validRpc)
+    void pubsub._processRpc(peer.id.toString(), peer, validRpc)
 
     // @ts-expect-error .callCount is a property added by sinon
     await pWaitFor(() => pubsub._publish.callCount === 1)
@@ -79,7 +79,7 @@ describe('topic validators', () => {
     }
 
     // process invalid message
-    void pubsub._processRpc(peer.id.toB58String(), peer, invalidRpc)
+    void pubsub._processRpc(peer.id.toString(), peer, invalidRpc)
 
     // @ts-expect-error .callCount is a property added by sinon
     expect(pubsub._publish.callCount).to.eql(1)
@@ -98,7 +98,7 @@ describe('topic validators', () => {
     }
 
     // process previously invalid message, now is valid
-    void pubsub._processRpc(peer.id.toB58String(), peer, invalidRpc2)
+    void pubsub._processRpc(peer.id.toString(), peer, invalidRpc2)
     pubsub.unsubscribe(filteredTopic)
 
     // @ts-expect-error .callCount is a property added by sinon

@@ -1,10 +1,11 @@
-import PeerIdFactory from 'peer-id'
+import * as PeerIdFactory from 'libp2p-peer-id-factory'
 import { RPC } from './rpc.js'
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { normalizeOutRpcMessage } from '../utils.js'
+import { PeerId } from 'libp2p-peer-id'
+import { keys } from 'libp2p-crypto'
 import type { Message } from 'libp2p-interfaces/pubsub'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
 
 export const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
 
@@ -18,20 +19,21 @@ export async function signMessage (peerId: PeerId, message: Message) {
     RPC.Message.encode(normalizeOutRpcMessage(message)).finish()
   ])
 
-  if (peerId.privKey == null) {
+  if (peerId.privateKey == null) {
     throw new Error('Cannot sign message, no private key present')
   }
 
-  if (peerId.pubKey == null) {
+  if (peerId.publicKey == null) {
     throw new Error('Cannot sign message, no public key present')
   }
 
-  const signature = await peerId.privKey.sign(bytes)
+  const privateKey = await keys.unmarshalPrivateKey(peerId.privateKey)
+  const signature = await privateKey.sign(bytes)
 
   const outputMessage: Message = {
     ...message,
     signature: signature,
-    key: peerId.pubKey.bytes
+    key: peerId.publicKey
   }
 
   return outputMessage
@@ -54,14 +56,14 @@ export async function verifySignature (message: Message) {
     SignPrefix,
     RPC.Message.encode({
       ...message,
-      from: PeerIdFactory.createFromBytes(message.from).toBytes(),
       signature: undefined,
       key: undefined
     }).finish()
   ])
 
   // Get the public key
-  const pubKey = await messagePublicKey(message)
+  const pubKeyBytes = await messagePublicKey(message)
+  const pubKey = keys.unmarshalPublicKey(pubKeyBytes)
 
   // verify the base message
   return await pubKey.verify(bytes, message.signature)
@@ -77,18 +79,23 @@ export async function messagePublicKey (message: Message) {
     throw new Error('Could not get the public key from the originator id')
   }
 
-  const from = PeerIdFactory.createFromBytes(message.from)
+  const from = PeerId.fromBytes(message.from)
 
   if (message.key != null) {
-    const keyPeerId = await PeerIdFactory.createFromPubKey(message.key)
+    const keyPeerId = await PeerIdFactory.createFromPubKey(keys.unmarshalPublicKey(message.key))
 
     // the key belongs to the sender, return the key
-    if (keyPeerId.equals(from)) return keyPeerId.pubKey
-    // We couldn't validate pubkey is from the originator, error
-    throw new Error('Public Key does not match the originator')
-  } else if (from.pubKey != null) {
-    return from.pubKey
-  } else {
-    throw new Error('Could not get the public key from the originator id')
+    if (!keyPeerId.equals(from)) {
+      throw new Error('Public Key does not match the originator')
+    }
+
+    if (keyPeerId.publicKey != null) {
+      return keyPeerId.publicKey
+    }
+  } else if (from.publicKey != null) {
+    return from.publicKey
   }
+
+  // We couldn't validate pubkey is from the originator, error
+  throw new Error('Could not get the public key from the originator id')
 }

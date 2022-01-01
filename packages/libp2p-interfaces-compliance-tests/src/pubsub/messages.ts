@@ -1,6 +1,6 @@
 import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
-import PeerIdFactory from 'peer-id'
+import * as PeerIdFactory from 'libp2p-peer-id-factory'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import * as utils from 'libp2p-pubsub/utils'
 import { PeerStreams } from 'libp2p-pubsub/peer-streams'
@@ -51,13 +51,13 @@ export default (common: TestSetup<PubSub & Startable>) => {
       sinon.spy(pubsub, 'validate')
 
       const peerStream = new PeerStreams({
-        id: await PeerIdFactory.create(),
+        id: await PeerIdFactory.createEd25519PeerId(),
         protocol: 'test'
       })
       const rpc = {
         subscriptions: [],
         msgs: [{
-          receivedFrom: peerStream.id.toB58String(),
+          receivedFrom: peerStream.id.toString(),
           from: peerStream.id.toBytes(),
           data,
           seqno: utils.randomSeqno(),
@@ -67,7 +67,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
 
       pubsub.subscribe(topic)
       // @ts-expect-error protected field
-      await pubsub._processRpc(peerStream.id.toB58String(), peerStream, rpc)
+      await pubsub._processRpc(peerStream.id.toString(), peerStream, rpc)
 
       expect(pubsub.validate).to.have.property('callCount', 1)
       // @ts-expect-error protected field
@@ -85,7 +85,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
       sinon.spy(pubsub, 'validate')
 
       const peerStream = new PeerStreams({
-        id: await PeerIdFactory.create(),
+        id: await PeerIdFactory.createEd25519PeerId(),
         protocol: 'test'
       })
 
@@ -99,7 +99,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
 
       pubsub.subscribe(topic)
       // @ts-expect-error protected field
-      await pubsub._processRpc(peerStream.id.toB58String(), peerStream, rpc)
+      await pubsub._processRpc(peerStream.id.toString(), peerStream, rpc)
 
       expect(pubsub.validate).to.have.property('callCount', 1)
       // @ts-expect-error protected field

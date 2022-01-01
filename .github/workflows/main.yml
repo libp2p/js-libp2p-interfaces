@@ -33,6 +33,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm install
+      - run: npm run build
       - run: npm run test:node -- -- --bail
       - uses: codecov/codecov-action@v1
   test-chrome:
@@ -44,6 +45,7 @@ jobs:
         with:
           node-version: 16
       - run: npm install
+      - run: npm run build
       - run: npm run test:browser -- -- --bail
   test-firefox:
     needs: check
@@ -54,4 +56,5 @@ jobs:
         with:
           node-version: 16
       - run: npm install
+      - run: npm run build
       - run: npm run test:browser -- -- --bail --browser firefox

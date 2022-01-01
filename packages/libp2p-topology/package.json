@@ -40,8 +40,7 @@
   "dependencies": {
     "err-code": "^3.0.1",
     "libp2p-interfaces": "^3.0.0",
-    "multiaddr": "^10.0.1",
-    "peer-id": "^0.16.0"
+    "multiaddr": "^10.0.1"
   },
   "devDependencies": {
     "aegir": "^36.0.0"

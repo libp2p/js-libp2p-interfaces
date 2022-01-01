@@ -77,7 +77,7 @@ export class PeerStreams extends EventEmitter {
    */
   write (data: Uint8Array) {
     if (this.outboundStream == null) {
-      const id = this.id.toB58String()
+      const id = this.id.toString()
       throw new Error('No writable connection to ' + id)
     }
 

@@ -53,6 +53,8 @@
     "libp2p-connection": "^0.2.0",
     "libp2p-crypto": "^0.21.0",
     "libp2p-interfaces": "^3.0.0",
+    "libp2p-peer-id": "^0.0.1",
+    "libp2p-peer-id-factory": "^0.0.1",
     "libp2p-pubsub": "^0.8.0",
     "libp2p-topology": "^0.2.0",
     "multiaddr": "^10.0.0",
@@ -60,7 +62,6 @@
     "p-defer": "^3.0.0",
     "p-limit": "^3.1.0",
     "p-wait-for": "^4.1.0",
-    "peer-id": "^0.16.0",
     "sinon": "^11.1.1",
     "streaming-iterables": "^6.0.0",
     "uint8arrays": "^3.0.0",
@@ -85,10 +86,6 @@
     "./peer-discovery": {
       "import": "./dist/src/peer-discovery/index.js",
       "types": "./dist/src/peer-discovery/index.d.ts"
-    },
-    "./peer-id": {
-      "import": "./dist/src/peer-id/index.js",
-      "types": "./dist/src/peer-id/index.d.ts"
     },
     "./pubsub": {
       "import": "./dist/src/pubsub/index.js",

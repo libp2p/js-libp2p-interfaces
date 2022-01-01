@@ -378,7 +378,7 @@ describe('pubsub base implementation', () => {
 
       // Set mock peer subscribed
       const peer = new PeerStreams({ id: peerId, protocol: 'a-protocol' })
-      const id = peer.id.toB58String()
+      const id = peer.id.toString()
 
       pubsub.topics.set(topic, new Set([id]))
       pubsub.peers.set(id, peer)

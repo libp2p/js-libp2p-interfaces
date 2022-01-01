@@ -169,7 +169,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
    */
   protected _onIncomingStream ({ protocol, stream, connection }: IncomingStreamEvent) {
     const peerId = connection.remotePeer
-    const idB58Str = peerId.toB58String()
+    const idB58Str = peerId.toString()
     const peer = this._addPeer(peerId, protocol)
     const inboundStream = peer.attachInboundStream(stream)
 
@@ -181,7 +181,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
    * Registrar notifies an established connection with pubsub protocol
    */
   protected async _onPeerConnected (peerId: PeerId, conn: Connection) {
-    const idB58Str = peerId.toB58String()
+    const idB58Str = peerId.toString()
     this.log('connected', idB58Str)
 
     try {
@@ -200,7 +200,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
    * Registrar notifies a closing connection with pubsub protocol
    */
   protected _onPeerDisconnected (peerId: PeerId, conn?: Connection) {
-    const idB58Str = peerId.toB58String()
+    const idB58Str = peerId.toString()
 
     this.log('connection ended', idB58Str)
     this._removePeer(peerId)
@@ -210,7 +210,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
    * Notifies the router that a peer has been connected
    */
   protected _addPeer (peerId: PeerId, protocol: string) {
-    const id = peerId.toB58String()
+    const id = peerId.toString()
     const existing = this.peers.get(id)
 
     // If peer streams already exists, do nothing
@@ -236,7 +236,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
    * Notifies the router that a peer has been disconnected
    */
   protected _removePeer (peerId: PeerId) {
-    const id = peerId.toB58String()
+    const id = peerId.toString()
     const peerStreams = this.peers.get(id)
     if (peerStreams == null) return
 
@@ -502,7 +502,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
     const signaturePolicy = this.globalSignaturePolicy
     switch (signaturePolicy) {
       case 'StrictSign':
-        message.from = this.peerId.toBytes()
+        message.from = this.peerId.multihash.bytes
         message.seqno = utils.randomSeqno()
         return await signMessage(this.peerId, message)
       case 'StrictNoSign':
@@ -545,7 +545,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
 
     this.log('publish', topic, message)
 
-    const from = this.peerId.toB58String()
+    const from = this.peerId.toString()
     const msgObject = {
       receivedFrom: from,
       data: message,

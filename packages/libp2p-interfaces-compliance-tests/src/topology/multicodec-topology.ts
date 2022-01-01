@@ -1,6 +1,6 @@
 import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
-import PeerIdFactory from 'peer-id'
+import * as PeerIdFactory from 'libp2p-peer-id-factory'
 import peers from '../utils/peers.js'
 import type { TestSetup } from '../index.js'
 import type { MulticodecTopology } from 'libp2p-interfaces/topology'
@@ -43,7 +43,7 @@ export default (test: TestSetup<MulticodecTopology>) => {
       const peerStore = topology._registrar.peerStore
 
       const id2 = await PeerIdFactory.createFromJSON(peers[1])
-      peerStore.peers.set(id2.toB58String(), {
+      peerStore.peers.set(id2.toString(), {
         id: id2,
         protocols: Array.from(topology.multicodecs)
       })
@@ -66,7 +66,7 @@ export default (test: TestSetup<MulticodecTopology>) => {
       const peerStore = topology._registrar.peerStore
 
       const id2 = await PeerIdFactory.createFromJSON(peers[1])
-      peerStore.peers.set(id2.toB58String(), {
+      peerStore.peers.set(id2.toString(), {
         id: id2,
         protocols: Array.from(topology.multicodecs)
       })
@@ -78,7 +78,7 @@ export default (test: TestSetup<MulticodecTopology>) => {
 
       expect(topology.peers.size).to.eql(1)
 
-      peerStore.peers.set(id2.toB58String(), {
+      peerStore.peers.set(id2.toString(), {
         id: id2,
         protocols: []
       })

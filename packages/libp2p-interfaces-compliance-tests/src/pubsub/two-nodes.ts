@@ -58,8 +58,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
       psB.once('pubsub:subscription-change', ({ peerId: changedPeerId, subscriptions: changedSubs }) => {
         expectSet(psA.subscriptions, [topic])
         expect(psB.peers.size).to.equal(1)
-        expectSet(psB.topics.get(topic), [psA.peerId.toB58String()])
-        expect(changedPeerId.toB58String()).to.equal(first(psB.peers).id.toB58String())
+        expectSet(psB.topics.get(topic), [psA.peerId.toString()])
+        expect(changedPeerId.toString()).to.equal(first(psB.peers).id.toString())
         expect(changedSubs).to.have.lengthOf(1)
         expect(changedSubs[0].topicID).to.equal(topic)
         expect(changedSubs[0].subscribe).to.equal(true)
@@ -117,7 +117,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
 
       function receivedMsg (msg: Message) {
         expect(uint8ArrayToString(msg.data)).to.equal('banana')
-        expect(msg.from).to.be.eql(psB.peerId.toB58String())
+        expect(msg.from).to.be.eql(psB.peerId.toString())
         expect(msg.seqno).to.be.a('Uint8Array')
         expect(msg.topicIDs).to.be.eql([topic])
 
@@ -143,7 +143,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
       psB.once('pubsub:subscription-change', ({ peerId: changedPeerId, subscriptions: changedSubs }) => {
         expect(psB.peers.size).to.equal(1)
         expectSet(psB.topics.get(topic), [])
-        expect(changedPeerId.toB58String()).to.equal(first(psB.peers).id.toB58String())
+        expect(changedPeerId.toString()).to.equal(first(psB.peers).id.toString())
         expect(changedSubs).to.have.lengthOf(1)
         expect(changedSubs[0].topicID).to.equal(topic)
         expect(changedSubs[0].subscribe).to.equal(false)

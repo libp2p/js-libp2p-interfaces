@@ -1,0 +1,78 @@
+{
+  "name": "libp2p-peer-id-factory",
+  "version": "0.0.1",
+  "description": "IPFS Peer Id implementation in Node.js",
+  "type": "module",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "src/*": [
+        "dist/src/*",
+        "dist/src/*/index"
+      ]
+    }
+  },
+  "files": [
+    "src",
+    "dist/src",
+    "!**/*.tsbuildinfo"
+  ],
+  "eslintConfig": {
+    "extends": "ipfs",
+    "parserOptions": {
+      "sourceType": "module"
+    },
+    "ignorePatterns": [
+      "proto.d.ts"
+    ]
+  },
+  "scripts": {
+    "pretest": "npm run build",
+    "test": "aegir test -f ./dist/test/*.js",
+    "test:browser": "aegir test -t browser -f ./dist/test/*.js",
+    "test:node": "aegir test -t node -f ./dist/test/*.js",
+    "test:electron": "aegir test -t electron-main -f ./dist/test/*.js",
+    "lint": "aegir ts -p check && aegir lint",
+    "release": "aegir release --docs",
+    "release-minor": "aegir release --target node --type minor --docs",
+    "release-major": "aegir release --type major --docs",
+    "build": "tsc",
+    "build:proto": "npm run build:proto:js && npm run build:proto:types",
+    "build:proto:js": "pbjs -t static-module -w es6 --es6 -r libp2p-peer-id --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/proto.js ./src/proto.proto",
+    "build:proto:types": "pbts -o src/proto.d.ts src/proto.js",
+    "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js"
+  },
+  "keywords": [
+    "IPFS"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=15.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/libp2p/js-libp2p-interfaces.git"
+  },
+  "bugs": {
+    "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
+  },
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-peer-id-factory#readme",
+  "devDependencies": {
+    "aegir": "^36.0.1",
+    "util": "^0.12.3"
+  },
+  "dependencies": {
+    "libp2p-crypto": "^0.21.0",
+    "libp2p-interfaces": "^3.0.0",
+    "libp2p-peer-id": "^0.0.1",
+    "multiformats": "^9.4.5",
+    "protobufjs": "^6.10.2",
+    "uint8arrays": "^3.0.0"
+  }
+}
