@@ -73,6 +73,10 @@
       "import": "./dist/src/dht/index.js",
       "types": "./dist/src/dht/index.d.ts"
     },
+    "./errors": {
+      "import": "./dist/src/errors/index.js",
+      "types": "./dist/src/errors/index.d.ts"
+    },
     "./keys": {
       "import": "./dist/src/keys/index.js",
       "types": "./dist/src/keys/index.d.ts"

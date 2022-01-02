@@ -1,10 +1,7 @@
 import type events from 'events'
 import type { Multiaddr } from 'multiaddr'
 import type { Connection } from '../connection'
-
-export interface AbortOptions {
-  signal?: AbortSignal
-}
+import type { AbortOptions } from '../index.js'
 
 export interface TransportFactory<DialOptions extends { signal?: AbortSignal }, ListenerOptions> {
   new(upgrader: Upgrader): Transport<DialOptions, ListenerOptions>
