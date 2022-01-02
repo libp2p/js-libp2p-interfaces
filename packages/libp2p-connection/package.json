@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "aegir": "^36.0.0",
-    "libp2p-peer-id-factory": "^0.0.1"
+    "libp2p-peer-id-factory": "^0.1.0"
   },
   "exports": {
     ".": {

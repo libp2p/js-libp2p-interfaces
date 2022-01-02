@@ -1,6 +1,6 @@
 {
   "name": "libp2p-peer-id-factory",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "IPFS Peer Id implementation in Node.js",
   "type": "module",
   "types": "./dist/src/index.d.ts",
@@ -70,7 +70,7 @@
   "dependencies": {
     "libp2p-crypto": "^0.21.0",
     "libp2p-interfaces": "^3.0.0",
-    "libp2p-peer-id": "^0.0.1",
+    "libp2p-peer-id": "^0.1.0",
     "multiformats": "^9.4.5",
     "protobufjs": "^6.10.2",
     "uint8arrays": "^3.0.0"
