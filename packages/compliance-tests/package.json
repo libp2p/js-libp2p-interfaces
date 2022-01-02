@@ -1,6 +1,6 @@
 {
   "name": "libp2p-interfaces-compliance-tests",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Compliance tests for JS Libp2p interfaces",
   "files": [
     "src",
@@ -44,7 +44,7 @@
     "it-pair": "^1.0.0",
     "it-pipe": "^1.1.0",
     "libp2p-crypto": "^0.21.0",
-    "libp2p-interfaces": "^2.0.5",
+    "libp2p-interfaces": "^2.0.6",
     "multiaddr": "^10.0.0",
     "multiformats": "^9.4.9",
     "p-defer": "^3.0.0",
