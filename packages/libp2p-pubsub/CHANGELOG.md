@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.1](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-pubsub@0.9.0...libp2p-pubsub@0.9.1) (2022-01-02)
+
+**Note:** Version bump only for package libp2p-pubsub
+
+
+
+
+
 # [0.9.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-pubsub@0.8.0...libp2p-pubsub@0.9.0) (2022-01-02)
 
 

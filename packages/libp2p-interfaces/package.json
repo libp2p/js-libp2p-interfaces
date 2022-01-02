@@ -1,6 +1,6 @@
 {
   "name": "libp2p-interfaces",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Interfaces for JS Libp2p",
   "type": "module",
   "files": [

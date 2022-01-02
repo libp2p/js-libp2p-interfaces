@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces@3.1.0...libp2p-interfaces@3.1.1) (2022-01-02)
+
+
+### Bug Fixes
+
+* move errors ([#132](https://github.com/libp2p/js-libp2p-interfaces/issues/132)) ([21d282a](https://github.com/libp2p/js-libp2p-interfaces/commit/21d282a6d77bd7d1a12daa1cc8b3a3fed8635dad))
+
+
+
+
+
 # [3.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces@3.0.0...libp2p-interfaces@3.1.0) (2022-01-02)
 
 
