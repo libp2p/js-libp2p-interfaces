@@ -378,7 +378,7 @@ module.exports = (common) => {
 
       it('missmatch private - public key', async () => {
         const digest = await k1.public.hash()
-        expect(factory.createFromJSON({
+        await expect(factory.createFromJSON({
           id: digest,
           pubKey: k1,
           privKey: k2.public
@@ -387,7 +387,7 @@ module.exports = (common) => {
 
       it('missmatch id - private - public key', async () => {
         const digest = await k1.public.hash()
-        expect(factory.createFromJSON({
+        await expect(factory.createFromJSON({
           id: digest,
           pubKey: k1,
           privKey: k3.public
@@ -395,7 +395,7 @@ module.exports = (common) => {
       })
 
       it('invalid id', () => {
-        expect(factory.createFromJSON('hello world')).eventually.be.rejectedWith(/invalid id/)
+        await expect(factory.createFromJSON('hello world')).eventually.be.rejectedWith(/invalid id/)
       })
     })
   })
