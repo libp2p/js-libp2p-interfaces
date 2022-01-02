@@ -1,26 +1,26 @@
 import type { CID } from 'multiformats/cid'
 import type { PublicKey, PrivateKey, KeyType } from '../keys/types'
 
-interface PeerIdJSON {
+export interface PeerIdJSON {
   readonly id: string;
   readonly pubKey?: string;
   readonly privKey?: string;
 }
 
-interface CreateOptions {
+export interface CreateOptions {
   bits?: number;
   keyType?: KeyType;
 }
 
 export interface PeerId {
-  readonly id: Uint8Array;
-  privKey:  PrivateKey;
-  pubKey: PublicKey;
+  readonly id: Uint8Array
+  privKey: PrivateKey | undefined;
+  pubKey: PublicKey | undefined;
 
   /**
    * Return the protobuf version of the public key, matching go ipfs formatting
    */
-  marshalPubKey ():Uint8Array;
+  marshalPubKey: () => Uint8Array | undefined;
 
   /**
    * Return the protobuf version of the private key, matching go ipfs formatting
@@ -85,6 +85,11 @@ export interface PeerId {
 }
 
 export interface PeerIdFactory {
+  /**
+   * Create a new PeerId.
+   **/
+  new (id: Uint8Array, privKey?: PrivateKey, pubKey?: PublicKey): PeerId;
+
   /**
    * Create a new PeerId.
    **/
