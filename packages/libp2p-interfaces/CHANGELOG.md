@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces@3.0.0...libp2p-interfaces@3.1.0) (2022-01-02)
+
+
+### Bug Fixes
+
+* make connection upgrade and encryption abortable ([#121](https://github.com/libp2p/js-libp2p-interfaces/issues/121)) ([d31583d](https://github.com/libp2p/js-libp2p-interfaces/commit/d31583d204c5fa07df0479f37bd0d4a925cc812b))
+* update dialer tests ([#116](https://github.com/libp2p/js-libp2p-interfaces/issues/116)) ([c679729](https://github.com/libp2p/js-libp2p-interfaces/commit/c679729113feb963ff27815fcafd7af51f722df7))
+
+
+### Features
+
+* simpler peer id ([#117](https://github.com/libp2p/js-libp2p-interfaces/issues/117)) ([fa2c4f5](https://github.com/libp2p/js-libp2p-interfaces/commit/fa2c4f5be74a5cfc11489771881e57b4e53bf174))
+
+
+
+
+
 # [3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces@2.0.0...libp2p-interfaces@3.0.0) (2021-12-02)
 
 

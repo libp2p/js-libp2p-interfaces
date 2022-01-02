@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-connection@0.2.0...libp2p-connection@0.3.0) (2022-01-02)
+
+
+### Bug Fixes
+
+* update dialer tests ([#116](https://github.com/libp2p/js-libp2p-interfaces/issues/116)) ([c679729](https://github.com/libp2p/js-libp2p-interfaces/commit/c679729113feb963ff27815fcafd7af51f722df7))
+
+
+### Features
+
+* simpler peer id ([#117](https://github.com/libp2p/js-libp2p-interfaces/issues/117)) ([fa2c4f5](https://github.com/libp2p/js-libp2p-interfaces/commit/fa2c4f5be74a5cfc11489771881e57b4e53bf174))
+
+
+
+
+
 # [0.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-connection@0.1.0...libp2p-connection@0.2.0) (2021-12-02)
 
 

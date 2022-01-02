@@ -1,6 +1,6 @@
 {
   "name": "libp2p-pubsub",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "libp2p pubsub base class",
   "type": "module",
   "files": [
@@ -59,10 +59,10 @@
     "it-length-prefixed": "^5.0.3",
     "it-pipe": "^1.1.0",
     "libp2p-crypto": "^0.21.0",
-    "libp2p-interfaces": "^3.0.0",
-    "libp2p-topology": "^0.2.0",
-    "libp2p-peer-id": "^0.1.0",
-    "libp2p-peer-id-factory": "^0.1.0",
+    "libp2p-interfaces": "^3.1.0",
+    "libp2p-peer-id": "^0.2.0",
+    "libp2p-peer-id-factory": "^0.2.0",
+    "libp2p-topology": "^0.3.0",
     "multiaddr": "^10.0.1",
     "multiformats": "^9.4.10",
     "p-queue": "^7.1.0",
