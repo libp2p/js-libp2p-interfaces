@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@4.0.2...libp2p-interfaces@4.0.3) (2022-01-02)
+
+
+### Bug Fixes
+
+* peer-id privKey and pubKey can be undefined ([#126](https://github.com/libp2p/js-interfaces/issues/126)) ([e06658d](https://github.com/libp2p/js-interfaces/commit/e06658d375ab1c7b76a4f742835e2832cc2530e7))
+
+
+
+
+
 ## [4.0.2](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@4.0.1...libp2p-interfaces@4.0.2) (2021-12-31)
 
 
