@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/connection",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "JS Libp2p connections",
   "type": "module",
   "files": [
@@ -46,12 +46,12 @@
   },
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-connection#readme",
   "dependencies": {
-    "@libp2p/interfaces": "^0.1.0",
+    "@libp2p/interfaces": "^0.2.0",
     "@multiformats/multiaddr": "^10.1.1",
     "err-code": "^3.0.1"
   },
   "devDependencies": {
-    "@libp2p/peer-id-factory": "^0.1.0",
+    "@libp2p/peer-id-factory": "^0.2.0",
     "aegir": "^36.0.0"
   },
   "exports": {

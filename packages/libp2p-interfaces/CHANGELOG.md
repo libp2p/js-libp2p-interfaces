@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.2.0 (2022-01-04)
+
+
+### Bug Fixes
+
+* make connection upgrade and encryption abortable ([#121](https://github.com/libp2p/js-libp2p-interfaces/issues/121)) ([d31583d](https://github.com/libp2p/js-libp2p-interfaces/commit/d31583d204c5fa07df0479f37bd0d4a925cc812b))
+* move errors ([#132](https://github.com/libp2p/js-libp2p-interfaces/issues/132)) ([21d282a](https://github.com/libp2p/js-libp2p-interfaces/commit/21d282a6d77bd7d1a12daa1cc8b3a3fed8635dad))
+* update dialer tests ([#116](https://github.com/libp2p/js-libp2p-interfaces/issues/116)) ([c679729](https://github.com/libp2p/js-libp2p-interfaces/commit/c679729113feb963ff27815fcafd7af51f722df7))
+
+
+### Features
+
+* add auto-publish ([7aede5d](https://github.com/libp2p/js-libp2p-interfaces/commit/7aede5df39ea6b5f243348ec9a212b3e33c16a81))
+* remove getPublicKey method from dht ([603c818](https://github.com/libp2p/js-libp2p-interfaces/commit/603c818d0694652346bc552525f2379b1dfa0107))
+* simpler peer id ([#117](https://github.com/libp2p/js-libp2p-interfaces/issues/117)) ([fa2c4f5](https://github.com/libp2p/js-libp2p-interfaces/commit/fa2c4f5be74a5cfc11489771881e57b4e53bf174))
+* split out code, convert to typescript ([#111](https://github.com/libp2p/js-libp2p-interfaces/issues/111)) ([e174bba](https://github.com/libp2p/js-libp2p-interfaces/commit/e174bba889388269b806643c79a6b53c8d6a0f8c)), closes [#110](https://github.com/libp2p/js-libp2p-interfaces/issues/110) [#101](https://github.com/libp2p/js-libp2p-interfaces/issues/101)
+* update package names ([#133](https://github.com/libp2p/js-libp2p-interfaces/issues/133)) ([337adc9](https://github.com/libp2p/js-libp2p-interfaces/commit/337adc9a9bc0278bdae8cbce9c57d07a83c8b5c2))
+
+
+### BREAKING CHANGES
+
+* the dht.getPublicKey method has been removed
+* not all fields from concrete classes have been added to the interfaces, some adjustment may be necessary as this gets rolled out
+
+
+
+
+
 ## [3.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/libp2p-interfaces@3.1.0...libp2p-interfaces@3.1.1) (2022-01-02)
 
 

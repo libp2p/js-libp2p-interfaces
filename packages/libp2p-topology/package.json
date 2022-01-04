@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/topology",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "libp2p network topology",
   "type": "module",
   "files": [
@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-topography#readme",
   "dependencies": {
-    "@libp2p/interfaces": "^0.1.0",
+    "@libp2p/interfaces": "^0.2.0",
     "@multiformats/multiaddr": "^10.1.1",
     "err-code": "^3.0.1"
   },
