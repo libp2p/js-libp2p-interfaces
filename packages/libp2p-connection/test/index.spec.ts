@@ -1,9 +1,9 @@
 import { Connection } from '../src/index.js'
-import * as PeerIdFactory from 'libp2p-peer-id-factory'
+import * as PeerIdFactory from '@libp2p/peer-id-factory'
 // @ts-expect-error no types
 import pair from 'it-pair'
 import { Multiaddr } from 'multiaddr'
-import type { MuxedStream } from 'libp2p-interfaces/stream-muxer'
+import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
 
 const peers = [{
   id: 'QmNMMAqSxPetRS1cVMmutW5BCN1qQQyEr4u98kUvZjcfEw',

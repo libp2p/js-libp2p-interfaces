@@ -1,9 +1,9 @@
 import { randomBytes } from 'iso-random-stream'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { PeerId } from 'libp2p-peer-id'
+import { PeerId } from '@libp2p/peer-id'
 import { sha256 } from 'multiformats/hashes/sha2'
 import type * as RPC from './message/rpc.js'
-import type { Message } from 'libp2p-interfaces/pubsub'
+import type { Message } from '@libp2p/interfaces/pubsub'
 
 /**
  * Generate a random sequence number

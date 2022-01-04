@@ -5,8 +5,8 @@ import pushable from 'it-pushable'
 import { pipe } from 'it-pipe'
 import { source as abortable } from 'abortable-iterator'
 import AbortController from 'abort-controller'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
-import type { MuxedStream } from 'libp2p-interfaces/stream-muxer'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
 
 const log = Object.assign(debug('libp2p-pubsub:peer-streams'), {
   error: debug('libp2p-pubsub:peer-streams:err')

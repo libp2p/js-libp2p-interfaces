@@ -15,8 +15,8 @@ npm i libp2p-connection
 ```
 
 ```javascript
-import { Topology } from 'libp2p-topology'
-import { MulticodecTopology } from 'libp2p-topology/multicodec-topology'
+import { Topology } from '@libp2p/topology'
+import { MulticodecTopology } from '@libp2p/topology/multicodec-topology'
 
 const topology = new Topology({ ... })
 const multicodecTopology = new MulticodecTopology({ ... })

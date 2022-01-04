@@ -1,9 +1,9 @@
 import { keys } from 'libp2p-crypto'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { PeerId } from 'libp2p-peer-id'
+import { PeerId } from '@libp2p/peer-id'
 import { PeerIdProto } from './proto.js'
-import type { PublicKey, PrivateKey } from 'libp2p-interfaces/keys'
-import type { RSAPeerId, Ed25519PeerId, Secp256k1PeerId } from 'libp2p-peer-id'
+import type { PublicKey, PrivateKey } from '@libp2p/interfaces/keys'
+import type { RSAPeerId, Ed25519PeerId, Secp256k1PeerId } from '@libp2p/peer-id'
 
 export const createEd25519PeerId = async (): Promise<Ed25519PeerId> => {
   const key = await keys.generateKeyPair('Ed25519')

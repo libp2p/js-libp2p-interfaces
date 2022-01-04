@@ -15,7 +15,7 @@ npm i libp2p-connection
 ```
 
 ```javascript
-import { Connection } from 'libp2p-connection'
+import { Connection } from '@libp2p/connection'
 
 const connection = new Connection({ ... })
 const stream = connection.newStream([ '/my-protocol/v1.0.0' ])
