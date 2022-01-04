@@ -61,7 +61,7 @@
     "@libp2p/peer-id": "^0.1.0",
     "@libp2p/peer-id-factory": "^0.1.0",
     "@libp2p/topology": "^0.1.0",
-    "@multiformats/multiaddr": "^10.1.0",
+    "@multiformats/multiaddr": "^10.1.1",
     "debug": "^4.3.2",
     "err-code": "^3.0.1",
     "iso-random-stream": "^2.0.0",

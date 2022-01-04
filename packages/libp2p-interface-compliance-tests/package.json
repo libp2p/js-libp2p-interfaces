@@ -51,7 +51,7 @@
     "@libp2p/peer-id-factory": "^0.1.0",
     "@libp2p/pubsub": "^0.1.0",
     "@libp2p/topology": "^0.1.0",
-    "@multiformats/multiaddr": "^10.1.0",
+    "@multiformats/multiaddr": "^10.1.1",
     "abort-controller": "^3.0.0",
     "abortable-iterator": "^3.0.0",
     "aegir": "^36.0.0",
