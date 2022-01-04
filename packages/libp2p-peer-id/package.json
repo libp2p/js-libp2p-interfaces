@@ -1,6 +1,6 @@
 {
-  "name": "libp2p-peer-id",
-  "version": "0.2.0",
+  "name": "@libp2p/peer-id",
+  "version": "0.1.0",
   "description": "IPFS Peer Id implementation in Node.js",
   "type": "module",
   "types": "./dist/src/index.d.ts",
@@ -52,7 +52,7 @@
     "aegir": "^36.0.1"
   },
   "dependencies": {
-    "libp2p-interfaces": "^2.0.2",
+    "@libp2p/interfaces": "^0.1.0",
     "multiformats": "^9.4.5",
     "uint8arrays": "^3.0.0"
   }
