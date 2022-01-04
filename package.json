@@ -12,7 +12,7 @@
     "build": "lerna run build",
     "lint": "lerna run lint",
     "dep-check": "lerna run dep-check",
-    "release": "lerna run build && lerna publish --force-publish --yes"
+    "release": "lerna publish --yes --loglevel silly 2>&1"
   },
   "bugs": "https://github.com/libp2p/js-libp2p-interfaces/issues",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces#readme",
