@@ -9,7 +9,7 @@ import defer from 'p-defer'
 import type { TestSetup } from '../index.js'
 import type { Transport } from '@libp2p/interfaces/transport'
 import type { TransportTestFixtures, SetupArgs } from './index.js'
-import type { Multiaddr } from 'multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Connection } from '@libp2p/interfaces/connection'
 
 export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {

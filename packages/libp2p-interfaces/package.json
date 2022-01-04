@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-interfaces#readme",
   "dependencies": {
-    "multiaddr": "^10.0.0",
+    "@multiformats/multiaddr": "^10.1.0",
     "multiformats": "^9.4.10"
   },
   "devDependencies": {

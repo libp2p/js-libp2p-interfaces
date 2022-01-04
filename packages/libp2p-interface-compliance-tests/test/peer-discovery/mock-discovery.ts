@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import { Multiaddr } from 'multiaddr'
+import { Multiaddr } from '@multiformats/multiaddr'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 
 interface MockDiscoveryOptions {

@@ -6,7 +6,7 @@ import duplexPair from 'it-pair/duplex.js'
 import pipe from 'it-pipe'
 import { UnexpectedPeerError } from '@libp2p/interfaces/crypto/errors'
 import type { Crypto } from '@libp2p/interfaces/crypto'
-import { Multiaddr } from 'multiaddr'
+import { Multiaddr } from '@multiformats/multiaddr'
 
 // A basic transform that does nothing to the data
 const transform = () => {

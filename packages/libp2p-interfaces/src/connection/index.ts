@@ -1,4 +1,4 @@
-import type { Multiaddr } from 'multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 import type { PeerId } from '../peer-id'
 import type { MuxedStream } from '../stream-muxer'
 import type * as Status from './status.js'

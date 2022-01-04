@@ -8,10 +8,11 @@
     "test": "lerna run test",
     "test:node": "lerna run test:node",
     "test:browser": "lerna run test:browser",
+    "test:electron-main": "lerna run test:electron-main",
     "build": "lerna run build",
     "lint": "lerna run lint",
     "dep-check": "lerna run dep-check",
-    "release": "lerna run build && lerna publish"
+    "release": "lerna run build && lerna publish --force-publish --yes"
   },
   "bugs": "https://github.com/libp2p/js-libp2p-interfaces/issues",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces#readme",
@@ -32,7 +33,7 @@
     "rimraf": "^3.0.2"
   },
   "engines": {
-    "node": ">=14.0.0",
+    "node": ">=15.0.0",
     "npm": ">=7.0.0"
   }
 }

@@ -1,5 +1,5 @@
 import type events from 'events'
-import type { Multiaddr } from 'multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Connection } from '../connection'
 import type { AbortOptions } from '../index.js'
 

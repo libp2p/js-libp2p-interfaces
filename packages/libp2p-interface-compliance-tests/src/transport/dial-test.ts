@@ -10,7 +10,7 @@ import sinon from 'sinon'
 import type { TestSetup } from '../index.js'
 import type { Transport, Listener } from '@libp2p/interfaces/transport'
 import type { TransportTestFixtures, SetupArgs, Connector } from './index.js'
-import type { Multiaddr } from 'multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 
 export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
   describe('dial', () => {

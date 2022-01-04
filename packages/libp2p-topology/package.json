@@ -39,8 +39,8 @@
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-topography#readme",
   "dependencies": {
     "@libp2p/interfaces": "^0.1.0",
-    "err-code": "^3.0.1",
-    "multiaddr": "^10.0.1"
+    "@multiformats/multiaddr": "^10.1.0",
+    "err-code": "^3.0.1"
   },
   "devDependencies": {
     "aegir": "^36.0.0"

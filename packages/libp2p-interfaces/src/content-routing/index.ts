@@ -1,5 +1,5 @@
 import type { PeerId } from '../peer-id'
-import type { Multiaddr } from 'multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 import type { CID } from 'multiformats/cid'
 import type { AbortOptions } from '../index'
 

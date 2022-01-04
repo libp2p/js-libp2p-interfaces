@@ -24,7 +24,10 @@
     "dep-check": "aegir dep-check dist/src/**/*.js",
     "build": "tsc",
     "pretest": "npm run build",
-    "test": "aegir test -f ./dist/test/**/*.js"
+    "test": "aegir test -f ./dist/test/**/*.js",
+    "test:browser": "aegir test -t browser -f ./dist/test/**/*.js",
+    "test:node": "aegir test -t node -f ./dist/test/**/*.js",
+    "test:electron-main": "aegir test -t electron-main -f ./dist/test/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -42,11 +45,13 @@
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-interfaces-compliance-tests#readme",
   "dependencies": {
     "@libp2p/connection": "^0.1.0",
+    "@libp2p/crypto": "^0.22.2",
     "@libp2p/interfaces": "^0.1.0",
     "@libp2p/peer-id": "^0.1.0",
     "@libp2p/peer-id-factory": "^0.1.0",
     "@libp2p/pubsub": "^0.1.0",
     "@libp2p/topology": "^0.1.0",
+    "@multiformats/multiaddr": "^10.1.0",
     "abort-controller": "^3.0.0",
     "abortable-iterator": "^3.0.0",
     "aegir": "^36.0.0",
@@ -56,8 +61,6 @@
     "it-goodbye": "^3.0.0",
     "it-pair": "^1.0.0",
     "it-pipe": "^1.1.0",
-    "libp2p-crypto": "^0.21.0",
-    "multiaddr": "^10.0.0",
     "multiformats": "^9.4.10",
     "p-defer": "^3.0.0",
     "p-limit": "^3.1.0",

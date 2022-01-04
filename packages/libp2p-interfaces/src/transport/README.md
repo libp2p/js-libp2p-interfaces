@@ -34,7 +34,7 @@ Include this badge in your readme if you make a module that is compatible with t
 'use strict'
 
 const tests = require('libp2p-interfaces-compliance-tests/transport')
-const multiaddr = require('multiaddr')
+const multiaddr = require('@multiformats/multiaddr')
 const YourTransport = require('../src')
 
 describe('compliance', () => {
