@@ -1,4 +1,4 @@
-import type { Multiaddr } from 'multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 import errCode from 'err-code'
 import { OPEN, CLOSING, CLOSED } from '@libp2p/interfaces/connection/status'
 import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'

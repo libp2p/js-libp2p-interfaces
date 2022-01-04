@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 
 import { expect } from 'aegir/utils/chai.js'
-import { keys } from 'libp2p-crypto'
+import { keys } from '@libp2p/crypto'
 import { CID } from 'multiformats/cid'
 import * as Digest from 'multiformats/hashes/digest'
 import { base16 } from 'multiformats/bases/base16'

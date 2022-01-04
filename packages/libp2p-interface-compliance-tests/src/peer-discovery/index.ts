@@ -1,5 +1,5 @@
 import { expect } from 'aegir/utils/chai.js'
-import { Multiaddr } from 'multiaddr'
+import { Multiaddr } from '@multiformats/multiaddr'
 import delay from 'delay'
 import pDefer from 'p-defer'
 import type { TestSetup } from '../index.js'

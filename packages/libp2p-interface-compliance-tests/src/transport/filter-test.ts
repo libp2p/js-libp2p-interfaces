@@ -3,7 +3,7 @@ import { mockUpgrader } from './utils/index.js'
 import type { TestSetup } from '../index.js'
 import type { Transport } from '@libp2p/interfaces/transport'
 import type { TransportTestFixtures, SetupArgs } from './index.js'
-import type { Multiaddr } from 'multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 
 export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
   describe('filter', () => {

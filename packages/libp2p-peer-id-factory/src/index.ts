@@ -1,4 +1,4 @@
-import { keys } from 'libp2p-crypto'
+import { keys } from '@libp2p/crypto'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { PeerId } from '@libp2p/peer-id'
 import { PeerIdProto } from './proto.js'
