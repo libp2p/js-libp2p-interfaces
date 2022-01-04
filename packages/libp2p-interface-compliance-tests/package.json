@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-compliance-tests",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Compliance tests for JS libp2p interfaces",
   "type": "module",
   "files": [
@@ -44,13 +44,13 @@
   },
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-interfaces-compliance-tests#readme",
   "dependencies": {
-    "@libp2p/connection": "^0.1.0",
+    "@libp2p/connection": "^0.2.0",
     "@libp2p/crypto": "^0.22.2",
-    "@libp2p/interfaces": "^0.1.0",
-    "@libp2p/peer-id": "^0.1.0",
-    "@libp2p/peer-id-factory": "^0.1.0",
-    "@libp2p/pubsub": "^0.1.0",
-    "@libp2p/topology": "^0.1.0",
+    "@libp2p/interfaces": "^0.2.0",
+    "@libp2p/peer-id": "^0.2.0",
+    "@libp2p/peer-id-factory": "^0.2.0",
+    "@libp2p/pubsub": "^0.2.0",
+    "@libp2p/topology": "^0.2.0",
     "@multiformats/multiaddr": "^10.1.1",
     "abort-controller": "^3.0.0",
     "abortable-iterator": "^3.0.0",
