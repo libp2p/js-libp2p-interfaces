@@ -1,7 +1,7 @@
 import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
 import type { TestSetup } from '../index.js'
-import type { Connection } from 'libp2p-interfaces/connection'
+import type { Connection } from '@libp2p/interfaces/connection'
 
 export default (test: TestSetup<Connection>) => {
   describe('connection', () => {

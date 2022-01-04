@@ -21,7 +21,7 @@ The public key is a base64 encoded string of a protobuf containing an RSA DER bu
 # Example
 
 ```JavaScript
-import { createEd25519PeerId } from 'libp2p-peer-id-factory'
+import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 
 const peerId = await createEd25519PeerId()
 console.log(id.toString())

@@ -3,21 +3,21 @@ import { EventEmitter } from 'events'
 import errcode from 'err-code'
 import { pipe } from 'it-pipe'
 import Queue from 'p-queue'
-import { MulticodecTopology } from 'libp2p-topology/multicodec-topology'
+import { MulticodecTopology } from '@libp2p/topology/multicodec-topology'
 import { codes } from './errors.js'
 import { RPC, IRPC } from './message/rpc.js'
 import { PeerStreams } from './peer-streams.js'
 import * as utils from './utils.js'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
-import type { Registrar, IncomingStreamEvent } from 'libp2p-interfaces/registrar'
-import type { Connection } from 'libp2p-interfaces/connection'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { Registrar, IncomingStreamEvent } from '@libp2p/interfaces/registrar'
+import type { Connection } from '@libp2p/interfaces/connection'
 import type BufferList from 'bl'
 import {
   signMessage,
   verifySignature
 } from './message/sign.js'
-import type { PubSub, Message, StrictNoSign, StrictSign, PubsubOptions } from 'libp2p-interfaces/pubsub'
-import type { Startable } from 'libp2p-interfaces'
+import type { PubSub, Message, StrictNoSign, StrictSign, PubsubOptions } from '@libp2p/interfaces/pubsub'
+import type { Startable } from '@libp2p/interfaces'
 
 export interface TopicValidator { (topic: string, message: Message): Promise<void> }
 

@@ -3,8 +3,8 @@ import { Multiaddr } from 'multiaddr'
 import delay from 'delay'
 import pDefer from 'p-defer'
 import type { TestSetup } from '../index.js'
-import type { PeerDiscovery } from 'libp2p-interfaces/peer-discovery'
-import type { Startable } from 'libp2p-interfaces'
+import type { PeerDiscovery } from '@libp2p/interfaces/peer-discovery'
+import type { Startable } from '@libp2p/interfaces'
 
 export default (common: TestSetup<PeerDiscovery & Startable>) => {
   describe('interface-peer-discovery compliance tests', () => {

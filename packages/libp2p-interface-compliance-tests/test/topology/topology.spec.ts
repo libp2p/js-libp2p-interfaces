@@ -1,5 +1,5 @@
 import tests from '../../src/topology/topology.js'
-import { Topology } from 'libp2p-topology'
+import { Topology } from '@libp2p/topology'
 
 describe('topology compliance tests', () => {
   tests({

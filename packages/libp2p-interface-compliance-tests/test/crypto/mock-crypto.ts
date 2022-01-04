@@ -1,11 +1,11 @@
-import { PeerId } from 'libp2p-peer-id'
+import { PeerId } from '@libp2p/peer-id'
 // @ts-expect-error no types
 import handshake from 'it-handshake'
 // @ts-expect-error no types
 import duplexPair from 'it-pair/duplex.js'
 import pipe from 'it-pipe'
-import { UnexpectedPeerError } from 'libp2p-interfaces/crypto/errors'
-import type { Crypto } from 'libp2p-interfaces/crypto'
+import { UnexpectedPeerError } from '@libp2p/interfaces/crypto/errors'
+import type { Crypto } from '@libp2p/interfaces/crypto'
 import { Multiaddr } from 'multiaddr'
 
 // A basic transform that does nothing to the data

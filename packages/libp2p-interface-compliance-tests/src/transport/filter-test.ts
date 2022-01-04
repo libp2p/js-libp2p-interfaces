@@ -1,7 +1,7 @@
 import { expect } from 'aegir/utils/chai.js'
 import { mockUpgrader } from './utils/index.js'
 import type { TestSetup } from '../index.js'
-import type { Transport } from 'libp2p-interfaces/transport'
+import type { Transport } from '@libp2p/interfaces/transport'
 import type { TransportTestFixtures, SetupArgs } from './index.js'
 import type { Multiaddr } from 'multiaddr'
 

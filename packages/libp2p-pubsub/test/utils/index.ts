@@ -1,10 +1,10 @@
 // @ts-expect-error no types
 import DuplexPair from 'it-pair/duplex.js'
-import * as PeerIdFactory from 'libp2p-peer-id-factory'
+import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { PubsubBaseProtocol } from '../../src/index.js'
 import { RPC, IRPC } from '../../src/message/rpc.js'
-import type { Registrar } from 'libp2p-interfaces/registrar'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
+import type { Registrar } from '@libp2p/interfaces/registrar'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 export const createPeerId = async () => {
   const peerId = await PeerIdFactory.createEd25519PeerId()

@@ -1,11 +1,11 @@
 import tests from '../../src/connection/index.js'
-import { Connection } from 'libp2p-connection'
+import { Connection } from '@libp2p/connection'
 import peers from '../../src/utils/peers.js'
-import * as PeerIdFactory from 'libp2p-peer-id-factory'
+import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { Multiaddr } from 'multiaddr'
 // @ts-expect-error no types
 import pair from 'it-pair'
-import type { MuxedStream } from 'libp2p-interfaces/stream-muxer'
+import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
 
 describe('compliance tests', () => {
   tests({

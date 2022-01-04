@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events'
 import { Multiaddr } from 'multiaddr'
-import * as PeerIdFactory from 'libp2p-peer-id-factory'
+import * as PeerIdFactory from '@libp2p/peer-id-factory'
 
 interface MockDiscoveryOptions {
   discoveryDelay?: number

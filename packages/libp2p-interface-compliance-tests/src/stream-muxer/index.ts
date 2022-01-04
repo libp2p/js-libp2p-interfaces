@@ -3,7 +3,7 @@ import closeTest from './close-test.js'
 import stressTest from './stress-test.js'
 import megaStressTest from './mega-stress-test.js'
 import type { TestSetup } from '../index.js'
-import type { Muxer } from 'libp2p-interfaces/stream-muxer'
+import type { Muxer } from '@libp2p/interfaces/stream-muxer'
 
 export default (common: TestSetup<Muxer>) => {
   describe('interface-stream-muxer', () => {

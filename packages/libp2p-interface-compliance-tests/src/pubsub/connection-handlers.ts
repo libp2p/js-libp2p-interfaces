@@ -6,8 +6,8 @@ import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { expectSet } from './utils.js'
 import type { TestSetup } from '../index.js'
-import type { PubSub, Message } from 'libp2p-interfaces/pubsub'
-import type { Startable } from 'libp2p-interfaces'
+import type { PubSub, Message } from '@libp2p/interfaces/pubsub'
+import type { Startable } from '@libp2p/interfaces'
 
 export default (common: TestSetup<PubSub & Startable>) => {
   describe('pubsub connection handlers', () => {

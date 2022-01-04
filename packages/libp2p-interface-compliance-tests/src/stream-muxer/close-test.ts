@@ -7,8 +7,8 @@ import { source, duplex } from 'abortable-iterator'
 import AbortController from 'abort-controller'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
-import type { Muxer, MuxerOptions } from 'libp2p-interfaces/stream-muxer'
-import type { Connection } from 'libp2p-interfaces/connection'
+import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
+import type { Connection } from '@libp2p/interfaces/connection'
 
 async function pause (ms: number) {
   return await new Promise(resolve => setTimeout(resolve, ms))

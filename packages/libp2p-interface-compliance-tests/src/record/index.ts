@@ -1,6 +1,6 @@
 import { expect } from 'aegir/utils/chai.js'
 import type { TestSetup } from '../index.js'
-import type { Record } from 'libp2p-interfaces/record'
+import type { Record } from '@libp2p/interfaces/record'
 
 export default (test: TestSetup<Record>) => {
   describe('record', () => {

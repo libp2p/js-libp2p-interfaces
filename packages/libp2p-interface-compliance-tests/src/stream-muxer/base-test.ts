@@ -5,7 +5,7 @@ import { pipe } from 'it-pipe'
 import { collect, map, consume } from 'streaming-iterables'
 import defer from 'p-defer'
 import type { TestSetup } from '../index.js'
-import type { Muxer, MuxerOptions, MuxedStream } from 'libp2p-interfaces/stream-muxer'
+import type { Muxer, MuxerOptions, MuxedStream } from '@libp2p/interfaces/stream-muxer'
 import { isValidTick } from '../transport/utils/index.js'
 
 function close (stream: MuxedStream) {

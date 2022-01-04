@@ -1,11 +1,11 @@
 import { expect } from 'aegir/utils/chai.js'
-import type { Upgrader, MultiaddrConnection } from 'libp2p-interfaces/transport'
-import type { Connection, StreamData } from 'libp2p-interfaces/connection'
-import type { MuxedStream } from 'libp2p-interfaces/stream-muxer'
+import type { Upgrader, MultiaddrConnection } from '@libp2p/interfaces/transport'
+import type { Connection, StreamData } from '@libp2p/interfaces/connection'
+import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
 // @ts-expect-error no types
 import pair from 'it-pair'
-import { PeerId } from 'libp2p-peer-id'
-import * as PeerIdFactory from 'libp2p-peer-id-factory'
+import { PeerId } from '@libp2p/peer-id'
+import * as PeerIdFactory from '@libp2p/peer-id-factory'
 /**
  * A tick is considered valid if it happened between now
  * and `ms` milliseconds ago

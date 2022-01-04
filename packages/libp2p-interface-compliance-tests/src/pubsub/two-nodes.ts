@@ -6,12 +6,12 @@ import pWaitFor from 'p-wait-for'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
-import type { PubSub, Message } from 'libp2p-interfaces/pubsub'
+import type { PubSub, Message } from '@libp2p/interfaces/pubsub'
 import {
   first,
   expectSet
 } from './utils.js'
-import type { Startable } from 'libp2p-interfaces'
+import type { Startable } from '@libp2p/interfaces'
 
 const topic = 'foo'
 

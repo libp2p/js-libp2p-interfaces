@@ -17,7 +17,7 @@ A basic implementation of a peer id
 # Example
 
 ```JavaScript
-import { PeerId } from 'libp2p-peer-id'
+import { PeerId } from '@libp2p/peer-id'
 
 const id = new PeerId(...)
 

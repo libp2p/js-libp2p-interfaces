@@ -2,14 +2,14 @@ import { expect } from 'aegir/utils/chai.js'
 // @ts-expect-error no types
 import duplexPair from 'it-pair/duplex.js'
 import { pipe } from 'it-pipe'
-import * as PeerIdFactory from 'libp2p-peer-id-factory'
+import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { collect } from 'streaming-iterables'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import peers from '../utils/peers.js'
-import { UnexpectedPeerError } from 'libp2p-interfaces/crypto/errors'
+import { UnexpectedPeerError } from '@libp2p/interfaces/crypto/errors'
 import type { TestSetup } from '../index.js'
-import type { Crypto } from 'libp2p-interfaces/crypto'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
+import type { Crypto } from '@libp2p/interfaces/crypto'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 export default (common: TestSetup<Crypto>) => {
   describe('interface-crypto compliance tests', () => {

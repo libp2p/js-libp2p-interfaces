@@ -4,7 +4,7 @@ import pair from 'it-pair/duplex.js'
 import { pipe } from 'it-pipe'
 import pLimit from 'p-limit'
 import { collect, consume } from 'streaming-iterables'
-import type { Muxer, MuxerOptions } from 'libp2p-interfaces/stream-muxer'
+import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
 
 export default async (createMuxer: (options?: MuxerOptions) => Promise<Muxer>, nStreams: number, nMsg: number, limit?: number) => {
   const [dialerSocket, listenerSocket] = pair()

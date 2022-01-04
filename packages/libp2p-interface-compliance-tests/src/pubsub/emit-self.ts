@@ -2,8 +2,8 @@ import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
-import type { PubSub, PubsubOptions } from 'libp2p-interfaces/pubsub'
-import type { Startable } from 'libp2p-interfaces'
+import type { PubSub, PubsubOptions } from '@libp2p/interfaces/pubsub'
+import type { Startable } from '@libp2p/interfaces'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')

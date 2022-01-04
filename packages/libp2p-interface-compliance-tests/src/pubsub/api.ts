@@ -4,8 +4,8 @@ import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
-import type { PubSub, Message } from 'libp2p-interfaces/pubsub'
-import type { Startable } from 'libp2p-interfaces'
+import type { PubSub, Message } from '@libp2p/interfaces/pubsub'
+import type { Startable } from '@libp2p/interfaces'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')

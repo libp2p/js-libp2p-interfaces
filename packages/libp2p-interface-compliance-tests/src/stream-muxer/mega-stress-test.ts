@@ -1,6 +1,6 @@
 import spawn from './spawner'
 import type { TestSetup } from '../index.js'
-import type { Muxer, MuxerOptions } from 'libp2p-interfaces/stream-muxer'
+import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
 
 export default (common: TestSetup<Muxer, MuxerOptions>) => {
   const createMuxer = async (opts?: MuxerOptions) => await common.setup(opts)

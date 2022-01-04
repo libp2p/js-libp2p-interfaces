@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events'
 import tests from '../../src/topology/multicodec-topology.js'
-import { MulticodecTopology } from 'libp2p-topology/multicodec-topology'
+import { MulticodecTopology } from '@libp2p/topology/multicodec-topology'
 import { MockPeerStore } from './mock-peer-store.js'
 
 describe('multicodec topology compliance tests', () => {

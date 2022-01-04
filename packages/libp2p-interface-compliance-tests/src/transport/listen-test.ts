@@ -7,10 +7,10 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { isValidTick, mockUpgrader } from './utils/index.js'
 import defer from 'p-defer'
 import type { TestSetup } from '../index.js'
-import type { Transport } from 'libp2p-interfaces/transport'
+import type { Transport } from '@libp2p/interfaces/transport'
 import type { TransportTestFixtures, SetupArgs } from './index.js'
 import type { Multiaddr } from 'multiaddr'
-import type { Connection } from 'libp2p-interfaces/connection'
+import type { Connection } from '@libp2p/interfaces/connection'
 
 export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
   describe('listen', () => {

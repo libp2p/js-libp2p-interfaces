@@ -1,9 +1,9 @@
 import { Topology } from './index.js'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
-import type { PeerData } from 'libp2p-interfaces/peer-data'
-import type { Connection } from 'libp2p-interfaces/connection'
-import type { Registrar } from 'libp2p-interfaces/registrar'
-import type { MulticodecTopologyOptions } from 'libp2p-interfaces/topology'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { PeerData } from '@libp2p/interfaces/peer-data'
+import type { Connection } from '@libp2p/interfaces/connection'
+import type { Registrar } from '@libp2p/interfaces/registrar'
+import type { MulticodecTopologyOptions } from '@libp2p/interfaces/topology'
 
 interface ChangeProtocolsEvent {
   peerId: PeerId

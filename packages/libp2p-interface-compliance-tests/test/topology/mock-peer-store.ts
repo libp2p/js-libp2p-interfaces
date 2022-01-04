@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
-import type { PeerId } from 'libp2p-interfaces/peer-id'
-import type { PeerData } from 'libp2p-interfaces/peer-data'
-import type { ProtoBook, PeerStore } from 'libp2p-interfaces/registrar'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { PeerData } from '@libp2p/interfaces/peer-data'
+import type { ProtoBook, PeerStore } from '@libp2p/interfaces/registrar'
 
 export class MockPeerStore extends EventEmitter implements PeerStore {
   public readonly peers: Map<string, PeerData>
