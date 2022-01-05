@@ -43,7 +43,7 @@
     "err-code": "^3.0.1"
   },
   "devDependencies": {
-    "aegir": "^36.0.0"
+    "aegir": "^36.1.3"
   },
   "exports": {
     ".": {

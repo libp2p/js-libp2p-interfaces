@@ -66,7 +66,7 @@ jobs:
         run: |
             npm install
             npm run --if-present build
-      - run: npm run --if-present test:node -- --bail --cov
+      - run: npm run --if-present test:node
       - uses: codecov/codecov-action@v1
 
   test-chrome:
@@ -94,7 +94,34 @@ jobs:
         run: |
             npm install
             npm run --if-present build
-      - run: npm run --if-present test:browser -- -t browser -t webworker --bail
+      - run: npm run --if-present test:chrome
+
+  test-chrome-webworker:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: lts/*
+      - uses: actions/cache@v2
+        id: cache
+        env:
+          CACHE_NAME: cache-node-modules
+        with:
+          path: |
+            ~/.npm
+            ./dist
+            ./node_modules
+            ./packages/*/dist
+            ./packages/*/node_modules
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ github.sha }}
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+            npm install
+            npm run --if-present build
+      - run: npm run --if-present test:chrome-webworker
 
   test-firefox:
     needs: check
@@ -121,7 +148,34 @@ jobs:
         run: |
             npm install
             npm run --if-present build
-      - run: npm run --if-present test:browser -- -t browser -t webworker --bail -- --browser firefox
+      - run: npm run --if-present test:firefox
+
+  test-firefox-webworker:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: lts/*
+      - uses: actions/cache@v2
+        id: cache
+        env:
+          CACHE_NAME: cache-node-modules
+        with:
+          path: |
+            ~/.npm
+            ./dist
+            ./node_modules
+            ./packages/*/dist
+            ./packages/*/node_modules
+          key: ${{ runner.os }}-build-${{ env.CACHE_NAME }}-${{ github.sha }}
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+            npm install
+            npm run --if-present build
+      - run: npm run --if-present test:firefox-webworker
 
   test-electron-main:
     needs: check
@@ -148,7 +202,7 @@ jobs:
         run: |
             npm install
             npm run --if-present build
-      - run: npx xvfb-maybe npm run --if-present test:electron-main -- --bail
+      - run: npx xvfb-maybe npm run --if-present test:electron-main
 
   test-electron-renderer:
     needs: check
@@ -175,12 +229,12 @@ jobs:
         run: |
             npm install
             npm run --if-present build
-      - run: npx xvfb-maybe npm run --if-present test:electron-renderer -- --bail
+      - run: npx xvfb-maybe npm run --if-present test:electron-renderer
 
   release:
-    needs: [test-node, test-chrome, test-firefox, test-electron-main]
+    needs: [test-node, test-chrome, test-chrome-webworker, test-firefox, test-firefox-webworker, test-electron-main, test-electron-renderer]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && !contains(github.event.head_commit.author.name, 'Github Actions')
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2.4.0
         with:
@@ -206,11 +260,6 @@ jobs:
             npm install
             npm run --if-present build
       - run: |
-            git config --global user.email "actions@github.com"
-            git config --global user.name "Github Actions"
-            if [[ -n "${NPM_TOKEN}" ]]; then
-              echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-            fi
             if [[ -n "${DOCKER_TOKEN}" ]] && [[ -n "${DOCKER_USERNAME}" ]]; then
               echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
             fi
