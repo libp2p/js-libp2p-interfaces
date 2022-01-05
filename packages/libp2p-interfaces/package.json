@@ -74,8 +74,8 @@
       "types": "./dist/src/dht/index.d.ts"
     },
     "./errors": {
-      "import": "./dist/src/errors/index.js",
-      "types": "./dist/src/errors/index.d.ts"
+      "import": "./dist/src/errors.js",
+      "types": "./dist/src/errors.d.ts"
     },
     "./keys": {
       "import": "./dist/src/keys/index.js",
