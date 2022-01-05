@@ -16,7 +16,7 @@
     "build": "lerna run build",
     "lint": "lerna run lint",
     "dep-check": "lerna run dep-check",
-    "release": "semantic-release -e semantic-release-monorepo"
+    "release": "lerna exec --concurrency 1 -- semantic-release -e semantic-release-monorepo"
   },
   "bugs": "https://github.com/libp2p/js-libp2p-interfaces/issues",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces#readme",
