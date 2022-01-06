@@ -9,6 +9,8 @@ export interface TransportFactory<DialOptions extends { signal?: AbortSignal }, 
 
 export interface ConnectionHandler { (connection: Connection): void }
 
+export interface MultiaddrFilter { (multiaddrs: Multiaddr[]): Multiaddr[] }
+
 /**
  * A libp2p transport is understood as something that offers a dial and listen interface to establish connections.
  */
@@ -24,7 +26,7 @@ export interface Transport <DialOptions extends AbortOptions = AbortOptions, Lis
   /**
    * Takes a list of `Multiaddr`s and returns only valid addresses for the transport
    */
-  filter: (multiaddrs: Multiaddr[]) => Multiaddr[]
+  filter: MultiaddrFilter
 }
 
 export interface Listener extends events.EventEmitter {
