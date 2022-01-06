@@ -14,13 +14,13 @@ export interface CreateOptions {
 
 export interface PeerId {
   readonly id: Uint8Array
-  privKey: PrivateKey | undefined;
-  pubKey: PublicKey | undefined;
+  privKey: PrivateKey;
+  pubKey: PublicKey;
 
   /**
    * Return the protobuf version of the public key, matching go ipfs formatting
    */
-  marshalPubKey: () => Uint8Array | undefined;
+  marshalPubKey: () => Uint8Array;
 
   /**
    * Return the protobuf version of the private key, matching go ipfs formatting
