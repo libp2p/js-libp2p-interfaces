@@ -52,7 +52,7 @@
     "aegir": "^36.1.3"
   },
   "dependencies": {
-    "@libp2p/interfaces": "^0.2.0",
+    "@libp2p/interfaces": "^1.0.0",
     "multiformats": "^9.4.5",
     "uint8arrays": "^3.0.0"
   }
