@@ -4,6 +4,7 @@ import pair from 'it-pair/duplex.js'
 import { pipe } from 'it-pipe'
 import { collect, map, consume } from 'streaming-iterables'
 import defer from 'p-defer'
+import type { DeferredPromise } from 'p-defer'
 import type { TestSetup } from '../index.js'
 import type { Muxer, MuxerOptions, MuxedStream } from '@libp2p/interfaces/stream-muxer'
 import { isValidTick } from '../transport/utils/index.js'
@@ -17,8 +18,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
     it('Open a stream from the dialer', async () => {
       const p = pair()
       const dialer = await common.setup()
-      const onStreamPromise: defer.DeferredPromise<MuxedStream> = defer()
-      const onStreamEndPromise: defer.DeferredPromise<MuxedStream> = defer()
+      const onStreamPromise: DeferredPromise<MuxedStream> = defer()
+      const onStreamEndPromise: DeferredPromise<MuxedStream> = defer()
 
       const listener = await common.setup({
         onStream: stream => {
@@ -62,7 +63,7 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
 
     it('Open a stream from the listener', async () => {
       const p = pair()
-      const onStreamPromise: defer.DeferredPromise<MuxedStream> = defer()
+      const onStreamPromise: DeferredPromise<MuxedStream> = defer()
       const dialer = await common.setup({
         onStream: stream => {
           onStreamPromise.resolve(stream)
@@ -87,8 +88,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
 
     it('Open a stream on both sides', async () => {
       const p = pair()
-      const onDialerStreamPromise: defer.DeferredPromise<MuxedStream> = defer()
-      const onListenerStreamPromise: defer.DeferredPromise<MuxedStream> = defer()
+      const onDialerStreamPromise: DeferredPromise<MuxedStream> = defer()
+      const onListenerStreamPromise: DeferredPromise<MuxedStream> = defer()
       const dialer = await common.setup({
         onStream: stream => {
           onDialerStreamPromise.resolve(stream)
@@ -119,8 +120,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
     it('Open a stream on one side, write, open a stream on the other side', async () => {
       const toString = map((c: string) => c.slice().toString())
       const p = pair()
-      const onDialerStreamPromise: defer.DeferredPromise<MuxedStream> = defer()
-      const onListenerStreamPromise: defer.DeferredPromise<MuxedStream> = defer()
+      const onDialerStreamPromise: DeferredPromise<MuxedStream> = defer()
+      const onListenerStreamPromise: DeferredPromise<MuxedStream> = defer()
       const dialer = await common.setup({
         onStream: stream => {
           onDialerStreamPromise.resolve(stream)

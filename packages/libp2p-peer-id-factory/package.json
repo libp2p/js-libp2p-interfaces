@@ -69,8 +69,8 @@
   },
   "dependencies": {
     "@libp2p/crypto": "^0.22.2",
-    "@libp2p/interfaces": "^0.2.0",
-    "@libp2p/peer-id": "^0.2.0",
+    "@libp2p/interfaces": "^1.0.0",
+    "@libp2p/peer-id": "^1.0.0",
     "multiformats": "^9.4.5",
     "protobufjs": "^6.10.2",
     "uint8arrays": "^3.0.0"
