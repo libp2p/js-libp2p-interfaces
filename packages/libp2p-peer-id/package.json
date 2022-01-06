@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/peer-id",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "IPFS Peer Id implementation in Node.js",
   "type": "module",
   "types": "./dist/src/index.d.ts",
