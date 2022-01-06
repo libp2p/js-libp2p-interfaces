@@ -5,8 +5,9 @@ import { PubsubBaseProtocol } from '../../src/index.js'
 import { RPC, IRPC } from '../../src/message/rpc.js'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { Ed25519PeerId } from '@libp2p/peer-id'
 
-export const createPeerId = async () => {
+export const createPeerId = async (): Promise<Ed25519PeerId> => {
   const peerId = await PeerIdFactory.createEd25519PeerId()
 
   return peerId
