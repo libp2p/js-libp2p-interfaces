@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.4](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@4.0.3...libp2p-interfaces@4.0.4) (2022-01-08)
+
+
+### Bug Fixes
+
+* partial revert of 131 for v4.x.x ([#143](https://github.com/libp2p/js-interfaces/issues/143)) ([280c5c6](https://github.com/libp2p/js-interfaces/commit/280c5c6987907561454c49568dbae5c2f27a3057)), closes [#138](https://github.com/libp2p/js-interfaces/issues/138) [#131](https://github.com/libp2p/js-interfaces/issues/131)
+
+
+
+
+
 ## [4.0.3](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@4.0.2...libp2p-interfaces@4.0.3) (2022-01-02)
 
 
