@@ -1,3 +1,11 @@
+## [@libp2p/interfaces-v1.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.0.0...@libp2p/interfaces-v1.0.1) (2022-01-08)
+
+
+### Trivial Changes
+
+* add semantic release config ([#141](https://github.com/libp2p/js-libp2p-interfaces/issues/141)) ([5f0de59](https://github.com/libp2p/js-libp2p-interfaces/commit/5f0de59136b6343d2411abb2d6a4dd2cd0b7efe4))
+* update package versions ([#140](https://github.com/libp2p/js-libp2p-interfaces/issues/140)) ([cd844f6](https://github.com/libp2p/js-libp2p-interfaces/commit/cd844f6e39f4ee50d006e86eac8dadf696900eb5))
+
 # Change Log
 
 All notable changes to this project will be documented in this file.
