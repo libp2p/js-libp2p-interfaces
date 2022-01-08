@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@4.0.4...libp2p-interfaces@5.0.1) (2022-01-08)
+
+
+### Bug Fixes
+
+* PeerId.marshalPrivKey can return undefined ([#142](https://github.com/libp2p/js-interfaces/issues/142)) ([47e3d17](https://github.com/libp2p/js-interfaces/commit/47e3d1781e3d693053c76ef1a4db6828159a2724)), closes [#131](https://github.com/libp2p/js-interfaces/issues/131) [#138](https://github.com/libp2p/js-interfaces/issues/138)
+
+
+### BREAKING CHANGES
+
+* `.privKey` and `.pubKey` properties can be undefined, so can the return type from `.marshalXXKey`
+
+
+
+
+
 ## [4.0.4](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@4.0.3...libp2p-interfaces@4.0.4) (2022-01-08)
 
 
