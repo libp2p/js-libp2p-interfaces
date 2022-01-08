@@ -394,7 +394,7 @@ module.exports = (common) => {
         })).eventually.be.rejectedWith(/inconsistent arguments/)
       })
 
-      it('invalid id', () => {
+      it('invalid id', async () => {
         await expect(factory.createFromJSON('hello world')).eventually.be.rejectedWith(/invalid id/)
       })
     })
