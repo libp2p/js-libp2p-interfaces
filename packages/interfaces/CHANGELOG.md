@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.2](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@5.0.1...libp2p-interfaces@5.0.2) (2022-01-13)
+
+
+### Bug Fixes
+
+* update remote early data type ([#146](https://github.com/libp2p/js-interfaces/issues/146)) ([ebf3de4](https://github.com/libp2p/js-interfaces/commit/ebf3de4e3981e37e3277c897c1b356ffcfbc2a6a))
+
+
+
+
+
 ## [5.0.1](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@4.0.4...libp2p-interfaces@5.0.1) (2022-01-08)
 
 
