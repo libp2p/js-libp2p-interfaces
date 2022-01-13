@@ -19,6 +19,6 @@ export interface Crypto {
 
 export type SecureOutbound = {
   conn: MultiaddrConnection;
-  remoteEarlyData: Buffer;
+  remoteEarlyData: Uint8Array;
   remotePeer: PeerId;
 }
