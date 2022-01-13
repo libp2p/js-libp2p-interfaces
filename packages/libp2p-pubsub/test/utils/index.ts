@@ -13,7 +13,7 @@ export const createPeerId = async () => {
 }
 
 export class PubsubImplementation extends PubsubBaseProtocol {
-  async _publish (): Promise<Set<string> | undefined> {
+  async _publish (): Promise<Set<string>> {
     // ...
     return new Set()
   }
