@@ -569,7 +569,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
    * For example, a Floodsub implementation might simply publish each message to each topic for every peer
    * Return a set of peers that this message sent to
    */
-  abstract _publish (message: Message): Promise<Set<string> | undefined>
+  abstract _publish (message: Message): Promise<Set<string>>
 
   /**
    * Subscribes to a given topic.
