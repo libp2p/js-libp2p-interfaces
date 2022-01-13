@@ -1,5 +1,4 @@
-// @ts-expect-error no types
-import DuplexPair from 'it-pair/duplex.js'
+import { duplexPair } from 'it-pair/duplex'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { PubsubBaseProtocol } from '../../src/index.js'
 import { RPC, IRPC } from '../../src/message/rpc.js'
@@ -89,7 +88,7 @@ export const createMockRegistrar = (registrarRecord: Map<string, Record<string, 
 }
 
 export const ConnectionPair = () => {
-  const [d0, d1] = DuplexPair()
+  const [d0, d1] = duplexPair<Uint8Array>()
 
   return [
     {

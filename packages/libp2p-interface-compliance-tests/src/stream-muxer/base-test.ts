@@ -1,22 +1,26 @@
 import { expect } from 'aegir/utils/chai.js'
-// @ts-expect-error no types
-import pair from 'it-pair/duplex.js'
+import { duplexPair } from 'it-pair/duplex'
 import { pipe } from 'it-pipe'
-import { collect, map, consume } from 'streaming-iterables'
+import drain from 'it-drain'
+import map from 'it-map'
+import all from 'it-all'
 import defer from 'p-defer'
+import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
+import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import { isValidTick } from '../transport/utils/index.js'
 import type { DeferredPromise } from 'p-defer'
 import type { TestSetup } from '../index.js'
 import type { Muxer, MuxerOptions, MuxedStream } from '@libp2p/interfaces/stream-muxer'
-import { isValidTick } from '../transport/utils/index.js'
+import type { Source } from 'it-stream-types'
 
-function close (stream: MuxedStream) {
-  return pipe([], stream, consume)
+async function close (stream: MuxedStream) {
+  return await pipe([], stream, drain)
 }
 
 export default (common: TestSetup<Muxer, MuxerOptions>) => {
   describe('base', () => {
     it('Open a stream from the dialer', async () => {
-      const p = pair()
+      const p = duplexPair<Uint8Array>()
       const dialer = await common.setup()
       const onStreamPromise: DeferredPromise<MuxedStream> = defer()
       const onStreamEndPromise: DeferredPromise<MuxedStream> = defer()
@@ -30,8 +34,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
         }
       })
 
-      pipe(p[0], dialer, p[0])
-      pipe(p[1], listener, p[1])
+      void pipe(p[0], dialer.newStream('/test/stream'), p[0])
+      void pipe(p[1], listener.newStream('/test/stream'), p[1])
 
       const conn = dialer.newStream()
       expect(dialer.streams).to.include(conn)
@@ -41,7 +45,7 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       expect(isValidTick(stream.timeline.open)).to.equal(true)
       // Make sure the stream is being tracked
       expect(listener.streams).to.include(stream)
-      close(stream)
+      void close(stream)
 
       // Make sure stream is closed properly
       const endedStream = await onStreamEndPromise.promise
@@ -62,7 +66,7 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
     })
 
     it('Open a stream from the listener', async () => {
-      const p = pair()
+      const p = duplexPair<Uint8Array>()
       const onStreamPromise: DeferredPromise<MuxedStream> = defer()
       const dialer = await common.setup({
         onStream: stream => {
@@ -72,8 +76,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
 
       const listener = await common.setup()
 
-      pipe(p[0], dialer, p[0])
-      pipe(p[1], listener, p[1])
+      void pipe(p[0], dialer.newStream('/test/stream'), p[0])
+      void pipe(p[1], listener.newStream('/test/stream'), p[1])
 
       const conn = listener.newStream()
 
@@ -87,7 +91,7 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
     })
 
     it('Open a stream on both sides', async () => {
-      const p = pair()
+      const p = duplexPair<Uint8Array>()
       const onDialerStreamPromise: DeferredPromise<MuxedStream> = defer()
       const onListenerStreamPromise: DeferredPromise<MuxedStream> = defer()
       const dialer = await common.setup({
@@ -101,8 +105,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
         }
       })
 
-      pipe(p[0], dialer, p[0])
-      pipe(p[1], listener, p[1])
+      void pipe(p[0], dialer.newStream('/test/stream'), p[0])
+      void pipe(p[1], listener.newStream('/test/stream'), p[1])
 
       const listenerConn = listener.newStream()
       const dialerConn = dialer.newStream()
@@ -118,8 +122,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
     })
 
     it('Open a stream on one side, write, open a stream on the other side', async () => {
-      const toString = map((c: string) => c.slice().toString())
-      const p = pair()
+      const toString = (source: Source<Uint8Array>) => map(source, (u) => uint8ArrayToString(u))
+      const p = duplexPair<Uint8Array>()
       const onDialerStreamPromise: DeferredPromise<MuxedStream> = defer()
       const onListenerStreamPromise: DeferredPromise<MuxedStream> = defer()
       const dialer = await common.setup({
@@ -133,22 +137,22 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
         }
       })
 
-      pipe(p[0], dialer, p[0])
-      pipe(p[1], listener, p[1])
+      void pipe(p[0], dialer.newStream('/test/stream'), p[0])
+      void pipe(p[1], listener.newStream('/test/stream'), p[1])
 
       const dialerConn = dialer.newStream()
       const listenerConn = listener.newStream()
 
-      pipe(['hey'], dialerConn)
-      pipe(['hello'], listenerConn)
+      void pipe([uint8ArrayFromString('hey')], dialerConn)
+      void pipe([uint8ArrayFromString('hello')], listenerConn)
 
       const listenerStream = await onListenerStreamPromise.promise
       const dialerStream = await onDialerStreamPromise.promise
 
-      const listenerChunks = await pipe(listenerStream, toString, collect)
+      const listenerChunks = await pipe(listenerStream, toString, async (source) => await all(source))
       expect(listenerChunks).to.be.eql(['hey'])
 
-      const dialerChunks = await pipe(dialerStream, toString, collect)
+      const dialerChunks = await pipe(dialerStream, toString, async (source) => await all(source))
       expect(dialerChunks).to.be.eql(['hello'])
     })
   })

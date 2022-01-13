@@ -1,16 +1,15 @@
 import { PeerId } from '@libp2p/peer-id'
-// @ts-expect-error no types
-import handshake from 'it-handshake'
-// @ts-expect-error no types
-import duplexPair from 'it-pair/duplex.js'
-import pipe from 'it-pipe'
+import { handshake } from 'it-handshake'
+import { duplexPair } from 'it-pair/duplex'
+import { pipe } from 'it-pipe'
 import { UnexpectedPeerError } from '@libp2p/interfaces/crypto/errors'
-import type { Crypto } from '@libp2p/interfaces/crypto'
 import { Multiaddr } from '@multiformats/multiaddr'
+import type { Crypto } from '@libp2p/interfaces/crypto'
+import type { Transform, Source } from 'it-stream-types'
 
 // A basic transform that does nothing to the data
-const transform = () => {
-  return (source: AsyncIterable<Uint8Array>) => (async function * () {
+const transform = (): Transform<Uint8Array, Uint8Array> => {
+  return (source: Source<Uint8Array>) => (async function * () {
     for await (const chunk of source) {
       yield chunk
     }
@@ -41,7 +40,7 @@ const crypto: Crypto = {
     const encrypt = transform() // Use transform iterables to modify data
     const decrypt = transform()
 
-    pipe(
+    void pipe(
       wrapper[0], // We write to wrapper
       encrypt, // The data is encrypted
       shake.stream, // It goes to the remote peer
@@ -81,7 +80,7 @@ const crypto: Crypto = {
     const encrypt = transform()
     const decrypt = transform()
 
-    pipe(
+    void pipe(
       wrapper[0], // We write to wrapper
       encrypt, // The data is encrypted
       shake.stream, // It goes to the remote peer

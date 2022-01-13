@@ -1,12 +1,13 @@
 import debug from 'debug'
 import { EventEmitter } from 'events'
-import lp from 'it-length-prefixed'
-import pushable from 'it-pushable'
+import * as lp from 'it-length-prefixed'
+import { pushable } from 'it-pushable'
 import { pipe } from 'it-pipe'
-import { source as abortable } from 'abortable-iterator'
+import { abortableSource } from 'abortable-iterator'
 import AbortController from 'abort-controller'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
+import type { Pushable } from 'it-pushable'
 
 const log = Object.assign(debug('libp2p-pubsub:peer-streams'), {
   error: debug('libp2p-pubsub:peer-streams:err')
@@ -26,7 +27,7 @@ export class PeerStreams extends EventEmitter {
   /**
    * Write stream - it's preferable to use the write method
    */
-  public outboundStream: pushable.Pushable<Uint8Array> | undefined
+  public outboundStream: Pushable<Uint8Array> | undefined
   /**
    * Read stream
    */
@@ -55,8 +56,6 @@ export class PeerStreams extends EventEmitter {
 
   /**
    * Do we have a connection to read from?
-   *
-   * @type {boolean}
    */
   get isReadable () {
     return Boolean(this.inboundStream)
@@ -64,8 +63,6 @@ export class PeerStreams extends EventEmitter {
 
   /**
    * Do we have a connection to write on?
-   *
-   * @type {boolean}
    */
   get isWritable () {
     return Boolean(this.outboundStream)
@@ -93,7 +90,7 @@ export class PeerStreams extends EventEmitter {
     // - abortable, set to only return on abort, rather than throw
     // - transformed with length-prefix transform
     this._rawInboundStream = stream
-    this.inboundStream = abortable(
+    this.inboundStream = abortableSource(
       pipe(
         this._rawInboundStream,
         lp.decode()

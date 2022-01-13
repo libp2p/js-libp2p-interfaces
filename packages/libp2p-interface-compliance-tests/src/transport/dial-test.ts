@@ -1,12 +1,12 @@
 import { expect } from 'aegir/utils/chai.js'
 import { isValidTick, mockUpgrader } from './utils/index.js'
-// @ts-expect-error no types
-import goodbye from 'it-goodbye'
-import { collect } from 'streaming-iterables'
+import { goodbye } from 'it-goodbye'
+import all from 'it-all'
 import { pipe } from 'it-pipe'
 import AbortController from 'abort-controller'
 import { AbortError } from '@libp2p/interfaces/errors'
 import sinon from 'sinon'
+import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
 import type { Transport, Listener } from '@libp2p/interfaces/transport'
 import type { TransportTestFixtures, SetupArgs, Connector } from './index.js'
@@ -43,7 +43,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
       const conn = await transport.dial(addrs[0])
       const { stream } = await conn.newStream(['/hello'])
-      const s = goodbye({ source: ['hey'], sink: collect })
+      const s = goodbye({ source: [uint8ArrayFromString('hey')], sink: async (source) => await all(source) })
 
       const result = await pipe(s, stream, s)
 

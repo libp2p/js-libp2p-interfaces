@@ -16,7 +16,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
   describe('listen', () => {
     const upgrader = mockUpgrader()
     let addrs: Multiaddr[]
-    let transport: Transport<any, any>
+    let transport: Transport
 
     before(async () => {
       ({ transport, addrs } = await common.setup({ upgrader }))
@@ -31,7 +31,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
     })
 
     it('simple', async () => {
-      const listener = transport.createListener({}, (conn) => {})
+      const listener = transport.createListener()
       await listener.listen(addrs[0])
       await listener.close()
     })
@@ -40,8 +40,10 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
       const listenerConns: Connection[] = []
 
-      const listener = transport.createListener({}, (conn) => {
-        listenerConns.push(conn)
+      const listener = transport.createListener({
+        handler: (conn) => {
+          listenerConns.push(conn)
+        }
       })
 
       // Listen
@@ -83,8 +85,10 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
     it('should not handle connection if upgradeInbound throws', async () => {
       sinon.stub(upgrader, 'upgradeInbound').throws()
 
-      const listener = transport.createListener(() => {
-        throw new Error('should not handle the connection if upgradeInbound throws')
+      const listener = transport.createListener({
+        handler: () => {
+          throw new Error('should not handle the connection if upgradeInbound throws')
+        }
       })
 
       // Listen
@@ -100,7 +104,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
     describe('events', () => {
       it('connection', async () => {
         const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
-        const listener = transport.createListener({})
+        const listener = transport.createListener()
         const deferred = defer()
         let conn
 
@@ -122,7 +126,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       })
 
       it('listening', (done) => {
-        const listener = transport.createListener({})
+        const listener = transport.createListener()
         listener.on('listening', () => {
           listener.close().then(done, done)
         })
@@ -130,7 +134,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       })
 
       it('error', (done) => {
-        const listener = transport.createListener({})
+        const listener = transport.createListener()
         listener.on('error', (err) => {
           expect(err).to.exist()
           listener.close().then(done, done)
@@ -139,7 +143,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       })
 
       it('close', (done) => {
-        const listener = transport.createListener({})
+        const listener = transport.createListener()
         listener.on('close', done)
 
         void (async () => {

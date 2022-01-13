@@ -1,3 +1,4 @@
+import type { Duplex } from 'it-stream-types'
 
 export interface MuxerFactory {
   new (options: MuxerOptions): Muxer
@@ -37,12 +38,10 @@ export interface MuxedTimeline {
   close?: number
 }
 
-export interface MuxedStream<T = Uint8Array> extends AsyncIterable<T> {
+export interface MuxedStream extends Duplex<Uint8Array> {
   close: () => void
   abort: () => void
   reset: () => void
-  sink: (source: AsyncIterable<T>) => Promise<void>
-  source: AsyncIterable<T>
   timeline: MuxedTimeline
   id: string
 }

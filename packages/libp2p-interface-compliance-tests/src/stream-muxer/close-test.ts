@@ -1,11 +1,10 @@
 /* eslint max-nested-callbacks: ["error", 8] */
-// @ts-expect-error no types
-import pair from 'it-pair/duplex.js'
 import { pipe } from 'it-pipe'
-import { consume } from 'streaming-iterables'
-import { source, duplex } from 'abortable-iterator'
+import { duplexPair } from 'it-pair/duplex'
+import { abortableSource, abortableDuplex } from 'abortable-iterator'
 import AbortController from 'abort-controller'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import drain from 'it-drain'
 import type { TestSetup } from '../index.js'
 import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
 import type { Connection } from '@libp2p/interfaces/connection'
@@ -47,16 +46,16 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       const mockUpgrade = async (maConn: any) => {
         const muxer = await common.setup({
           onStream: (stream) => {
-            pipe(stream, stream)
+            void pipe(stream, stream)
           }
         })
-        pipe(maConn, muxer, maConn)
+        pipe(maConn, muxer.newStream('/test/stream'), maConn)
         return mockConn(muxer)
       }
 
-      const [local, remote] = pair()
+      const [local, remote] = duplexPair<Uint8Array>()
       const controller = new AbortController()
-      const abortableRemote = duplex(remote, controller.signal, {
+      const abortableRemote = abortableDuplex(remote, controller.signal, {
         returnOnAbort: true
       })
 
@@ -69,8 +68,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       // close the remote in a bit
       setTimeout(() => controller.abort(), 50)
 
-      const s1Result = pipe(infiniteRandom, s1, consume)
-      const s2Result = pipe(infiniteRandom, s2, consume)
+      const s1Result = pipe(infiniteRandom, s1.stream, drain)
+      const s2Result = pipe(infiniteRandom, s2.stream, drain)
 
       // test is complete when all muxed streams have closed
       await s1Result
@@ -78,16 +77,16 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
     })
 
     it('closing one of the muxed streams doesn\'t close others', async () => {
-      const p = pair()
+      const p = duplexPair<Uint8Array>()
       const dialer = await common.setup()
 
       // Listener is echo server :)
       const listener = await common.setup({
-        onStream: (stream) => pipe(stream, stream)
+        onStream: async (stream) => await pipe(stream, stream)
       })
 
-      pipe(p[0], dialer, p[0])
-      pipe(p[1], listener, p[1])
+      void pipe(p[0], dialer.newStream('/test/stream'), p[0])
+      void pipe(p[1], listener.newStream('/test/stream'), p[1])
 
       const stream = dialer.newStream()
       const streams = Array.from(Array(5), () => dialer.newStream())
@@ -99,8 +98,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
         controllers.push(controller)
 
         try {
-          const abortableRand = source(infiniteRandom, controller.signal, { abortCode: 'ERR_TEST_ABORT' })
-          await pipe(abortableRand, stream, consume)
+          const abortableRand = abortableSource(infiniteRandom, controller.signal, { abortCode: 'ERR_TEST_ABORT' })
+          await pipe(abortableRand, stream, drain)
         } catch (err: any) {
           if (err.code !== 'ERR_TEST_ABORT') throw err
         }
@@ -110,7 +109,7 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
 
       // Pause, and then send some data and close the first stream
       await pause(50)
-      await pipe([randomBuffer()], stream, consume)
+      await pipe([randomBuffer()], stream, drain)
       closed = true
 
       // Abort all the other streams later
