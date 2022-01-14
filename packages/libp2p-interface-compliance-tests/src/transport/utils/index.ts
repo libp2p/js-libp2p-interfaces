@@ -2,8 +2,7 @@ import { expect } from 'aegir/utils/chai.js'
 import type { Upgrader, MultiaddrConnection } from '@libp2p/interfaces/transport'
 import type { Connection, StreamData } from '@libp2p/interfaces/connection'
 import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
-// @ts-expect-error no types
-import pair from 'it-pair'
+import { pair } from 'it-pair'
 import { PeerId } from '@libp2p/peer-id'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 /**
@@ -59,7 +58,7 @@ async function createConnection (maConn: MultiaddrConnection, direction: 'inboun
   const localPeer = localPeerIdStr != null ? PeerId.fromString(localPeerIdStr) : await PeerIdFactory.createEd25519PeerId()
   const remotePeer = remotePeerIdStr != null ? PeerId.fromString(remotePeerIdStr) : await PeerIdFactory.createEd25519PeerId()
 
-  const streams: Array<MuxedStream<Uint8Array>> = []
+  const streams: MuxedStream[] = []
   let streamId = 0
 
   const registry = new Map()
@@ -85,7 +84,7 @@ async function createConnection (maConn: MultiaddrConnection, direction: 'inboun
         throw new Error('protocols must have a length')
       }
 
-      const echo = pair()
+      const echo = pair<Uint8Array>()
 
       const id = `${streamId++}`
       const stream: MuxedStream = {
@@ -97,8 +96,7 @@ async function createConnection (maConn: MultiaddrConnection, direction: 'inboun
         reset: () => {},
         timeline: {
           open: 0
-        },
-        [Symbol.asyncIterator]: echo.source
+        }
       }
 
       const streamData = {

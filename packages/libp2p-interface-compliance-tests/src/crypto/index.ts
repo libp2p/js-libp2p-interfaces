@@ -1,15 +1,15 @@
 import { expect } from 'aegir/utils/chai.js'
-// @ts-expect-error no types
-import duplexPair from 'it-pair/duplex.js'
 import { pipe } from 'it-pipe'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
-import { collect } from 'streaming-iterables'
+import all from 'it-all'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import peers from '../utils/peers.js'
 import { UnexpectedPeerError } from '@libp2p/interfaces/crypto/errors'
+import { createMaConnPair } from './utils/index.js'
 import type { TestSetup } from '../index.js'
 import type { Crypto } from '@libp2p/interfaces/crypto'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { Source } from 'it-stream-types'
 
 export default (common: TestSetup<Crypto>) => {
   describe('interface-crypto compliance tests', () => {
@@ -42,7 +42,7 @@ export default (common: TestSetup<Crypto>) => {
     })
 
     it('it wraps the provided duplex connection', async () => {
-      const [localConn, remoteConn] = duplexPair()
+      const [localConn, remoteConn] = createMaConnPair()
 
       const [
         inboundResult,
@@ -53,7 +53,7 @@ export default (common: TestSetup<Crypto>) => {
       ])
 
       // Echo server
-      pipe(inboundResult.conn, inboundResult.conn)
+      void pipe(inboundResult.conn, inboundResult.conn)
 
       // Send some data and collect the result
       const input = uint8ArrayFromString('data to encrypt')
@@ -61,19 +61,19 @@ export default (common: TestSetup<Crypto>) => {
         [input],
         outboundResult.conn,
         // Convert BufferList to Buffer via slice
-        (source: AsyncIterable<Uint8Array>) => (async function * toBuffer () {
+        (source: Source<Uint8Array>) => (async function * toBuffer () {
           for await (const chunk of source) {
             yield chunk.slice()
           }
         })(),
-        collect
+        async (source) => await all(source)
       )
 
       expect(result).to.eql([input])
     })
 
     it('should return the remote peer id', async () => {
-      const [localConn, remoteConn] = duplexPair()
+      const [localConn, remoteConn] = createMaConnPair()
 
       const [
         inboundResult,
@@ -90,7 +90,7 @@ export default (common: TestSetup<Crypto>) => {
     })
 
     it('inbound connections should verify peer integrity if known', async () => {
-      const [localConn, remoteConn] = duplexPair()
+      const [localConn, remoteConn] = createMaConnPair()
 
       await Promise.all([
         crypto.secureInbound(remotePeer, localConn, mitmPeer),

@@ -53,7 +53,7 @@ e.g.
 
 ```js
 const Muxer = require('your-muxer-module')
-import pipe from 'it-pipe'
+import { pipe } from 'it-pipe'
 
 // Create a duplex muxer
 const muxer = new Muxer()

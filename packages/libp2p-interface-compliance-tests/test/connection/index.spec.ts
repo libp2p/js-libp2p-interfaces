@@ -3,8 +3,7 @@ import { Connection } from '@libp2p/connection'
 import peers from '../../src/utils/peers.js'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { Multiaddr } from '@multiformats/multiaddr'
-// @ts-expect-error no types
-import pair from 'it-pair'
+import { pair } from 'it-pair'
 import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
 
 describe('compliance tests', () => {
@@ -51,8 +50,7 @@ describe('compliance tests', () => {
             reset: () => {},
             timeline: {
               open: 0
-            },
-            [Symbol.asyncIterator]: () => stream.source
+            }
           }
 
           openStreams.push(stream)

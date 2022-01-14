@@ -1,7 +1,6 @@
 import { Connection } from '../src/index.js'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
-// @ts-expect-error no types
-import pair from 'it-pair'
+import { pair } from 'it-pair'
 import { Multiaddr } from '@multiformats/multiaddr'
 import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
 
@@ -64,8 +63,7 @@ describe('connection tests', () => {
           reset: () => {},
           timeline: {
             open: 0
-          },
-          [Symbol.asyncIterator]: () => stream.source
+          }
         }
 
         openStreams.push(stream)
