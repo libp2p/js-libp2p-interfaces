@@ -1,3 +1,10 @@
+## [@libp2p/connection-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/connection-v1.0.2...@libp2p/connection-v1.0.3) (2022-01-14)
+
+
+### Bug Fixes
+
+* update it-* deps to ts versions ([#148](https://github.com/libp2p/js-libp2p-interfaces/issues/148)) ([7a6fdd7](https://github.com/libp2p/js-libp2p-interfaces/commit/7a6fdd7622ce2870b89dbb849ab421d0dd714b43))
+
 ## [@libp2p/connection-v1.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/connection-v1.0.1...@libp2p/connection-v1.0.2) (2022-01-08)
 
 

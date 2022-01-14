@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/connection",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "JS Libp2p connections",
   "type": "module",
   "files": [
