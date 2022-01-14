@@ -2,44 +2,8 @@
   "name": "@libp2p/peer-id",
   "version": "1.0.2",
   "description": "IPFS Peer Id implementation in Node.js",
-  "type": "module",
-  "types": "./dist/src/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/src/index.js"
-    }
-  },
-  "files": [
-    "src",
-    "dist/src",
-    "!**/*.tsbuildinfo"
-  ],
-  "eslintConfig": {
-    "extends": "ipfs",
-    "parserOptions": {
-      "sourceType": "module"
-    }
-  },
-  "scripts": {
-    "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js",
-    "build": "tsc",
-    "pretest": "npm run build",
-    "test": "aegir test -f ./dist/test/**/*.js",
-    "test:chrome": "npm run test -- -t browser",
-    "test:chrome-webworker": "npm run test -- -t webworker",
-    "test:firefox": "npm run test -- -t browser -- --browser firefox",
-    "test:firefox-webworker": "npm run test -- -t webworker -- --browser firefox",
-    "test:node": "npm run test -- -t node --cov",
-    "test:electron-main": "npm run test -- -t electron-main"
-  },
-  "keywords": [
-    "IPFS"
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">=15.0.0"
-  },
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-peer-id#readme",
+  "license": "Apache-2.0 OR MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/libp2p/js-libp2p-interfaces.git"
@@ -47,14 +11,24 @@
   "bugs": {
     "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
   },
-  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-peer-id#readme",
-  "devDependencies": {
-    "aegir": "^36.1.3"
+  "type": "module",
+  "types": "./dist/src/index.d.ts",
+  "files": [
+    "src",
+    "dist/src",
+    "!dist/test",
+    "!**/*.tsbuildinfo"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js"
+    }
   },
-  "dependencies": {
-    "@libp2p/interfaces": "^1.0.0",
-    "multiformats": "^9.4.5",
-    "uint8arrays": "^3.0.0"
+  "eslintConfig": {
+    "extends": "ipfs",
+    "parserOptions": {
+      "sourceType": "module"
+    }
   },
   "release": {
     "branches": [
@@ -136,5 +110,32 @@
       "@semantic-release/github",
       "@semantic-release/git"
     ]
-  }
+  },
+  "scripts": {
+    "lint": "aegir lint",
+    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "build": "tsc",
+    "pretest": "npm run build",
+    "test": "aegir test -f ./dist/test/**/*.js",
+    "test:chrome": "npm run test -- -t browser",
+    "test:chrome-webworker": "npm run test -- -t webworker",
+    "test:firefox": "npm run test -- -t browser -- --browser firefox",
+    "test:firefox-webworker": "npm run test -- -t webworker -- --browser firefox",
+    "test:node": "npm run test -- -t node --cov",
+    "test:electron-main": "npm run test -- -t electron-main"
+  },
+  "dependencies": {
+    "@libp2p/interfaces": "^1.0.0",
+    "multiformats": "^9.4.5",
+    "uint8arrays": "^3.0.0"
+  },
+  "devDependencies": {
+    "aegir": "^36.1.3"
+  },
+  "engines": {
+    "node": ">=15.0.0"
+  },
+  "keywords": [
+    "IPFS"
+  ]
 }
