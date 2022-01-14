@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-compliance-tests",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Compliance tests for JS libp2p interfaces",
   "type": "module",
   "files": [
