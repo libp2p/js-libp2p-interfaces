@@ -11,6 +11,14 @@
   "bugs": {
     "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
   },
+  "keywords": [
+    "interface",
+    "libp2p"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
   "type": "module",
   "types": "./dist/src/index.d.ts",
   "typesVersions": {
@@ -210,10 +218,5 @@
   },
   "devDependencies": {
     "it-handshake": "^3.0.0"
-  },
-  "author": "",
-  "keywords": [
-    "libp2p",
-    "interface"
-  ]
+  }
 }
