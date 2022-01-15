@@ -2,8 +2,8 @@
   "name": "js-libp2p-interfaces",
   "version": "1.0.0",
   "description": "Interfaces for JS Libp2p",
-  "homepage": "https://github.com/libp2p/js-libp2p-interfaces#readme",
   "license": "Apache-2.0 OR MIT",
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/libp2p/js-libp2p-interfaces.git"
