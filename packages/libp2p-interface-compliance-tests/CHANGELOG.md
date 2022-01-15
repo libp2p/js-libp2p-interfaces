@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.0.4...@libp2p/interface-compliance-tests-v1.0.5) (2022-01-15)
+
+
+### Bug Fixes
+
+* remove abort controller dep ([#151](https://github.com/libp2p/js-libp2p-interfaces/issues/151)) ([518bce1](https://github.com/libp2p/js-libp2p-interfaces/commit/518bce1f9bd1f8b2922338e0c65c9934af7da3af))
+
 ## [@libp2p/interface-compliance-tests-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.0.3...@libp2p/interface-compliance-tests-v1.0.4) (2022-01-15)
 
 
