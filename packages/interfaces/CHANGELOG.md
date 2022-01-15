@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.3](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@5.0.2...libp2p-interfaces@5.0.3) (2022-01-15)
+
+
+### Bug Fixes
+
+* remove abort controller polyfill ([bb0d2bf](https://github.com/libp2p/js-interfaces/commit/bb0d2bf296168ad38db0a76eed27ba87cfe1f1ad))
+
+
+
+
+
 ## [5.0.2](https://github.com/libp2p/js-interfaces/compare/libp2p-interfaces@5.0.1...libp2p-interfaces@5.0.2) (2022-01-13)
 
 
