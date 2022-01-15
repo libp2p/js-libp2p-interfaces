@@ -144,7 +144,6 @@ The dial may throw an `Error` instance if there was a problem connecting to the 
 Dials may be cancelled using an `AbortController`:
 
 ```Javascript
-const AbortController = require('abort-controller')
 const { AbortError } = require('libp2p-interfaces/src/transport/errors')
 const controller = new AbortController()
 try {

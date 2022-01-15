@@ -2,7 +2,6 @@
 import { pipe } from 'it-pipe'
 import { duplexPair } from 'it-pair/duplex'
 import { abortableSource, abortableDuplex } from 'abortable-iterator'
-import AbortController from 'abort-controller'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import drain from 'it-drain'
 import type { TestSetup } from '../index.js'
