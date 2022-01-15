@@ -7,7 +7,6 @@ const { isValidTick } = require('./utils')
 const goodbye = require('it-goodbye')
 const { collect } = require('streaming-iterables')
 const { pipe } = require('it-pipe')
-const AbortController = require('abort-controller').default
 const { AbortError } = require('libp2p-interfaces/src/transport/errors')
 const sinon = require('sinon')
 
