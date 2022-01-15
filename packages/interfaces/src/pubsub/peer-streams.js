@@ -10,7 +10,6 @@ const lp = require('it-length-prefixed')
 const pushable = require('it-pushable')
 const { pipe } = require('it-pipe')
 const { source: abortable } = require('abortable-iterator')
-const AbortController = require('abort-controller').default
 
 /**
  * @typedef {import('../stream-muxer/types').MuxedStream} MuxedStream
