@@ -1,3 +1,10 @@
+## [@libp2p/topology-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/topology-v1.0.2...@libp2p/topology-v1.0.3) (2022-01-15)
+
+
+### Trivial Changes
+
+* update project config ([#149](https://github.com/libp2p/js-libp2p-interfaces/issues/149)) ([6eb8556](https://github.com/libp2p/js-libp2p-interfaces/commit/6eb85562c0da167d222808da10a7914daf12970b))
+
 ## [@libp2p/topology-v1.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/topology-v1.0.1...@libp2p/topology-v1.0.2) (2022-01-08)
 
 
