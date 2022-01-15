@@ -1,23 +1,12 @@
 {
-  "lerna": "3.22.0",
+  "lerna": "4.0.0",
   "packages": [
     "packages/*"
   ],
   "version": "independent",
   "command": {
-    "bootstrap": {
-      "hoist": true
-    },
     "run": {
       "stream": true
-    },
-    "publish": {
-      "message": "chore: publish",
-      "createRelease": "github",
-      "conventionalCommits": true
-    },
-    "version": {
-      "private": false
     }
   }
 }
