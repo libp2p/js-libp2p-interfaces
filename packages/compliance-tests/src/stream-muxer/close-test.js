@@ -7,7 +7,6 @@ const pair = require('it-pair/duplex')
 const { pipe } = require('it-pipe')
 const { consume } = require('streaming-iterables')
 const { source: abortable } = require('abortable-iterator')
-const AbortController = require('abort-controller').default
 const { fromString: uint8ArrayFromString } = require('uint8arrays/from-string')
 
 function pause (ms) {
