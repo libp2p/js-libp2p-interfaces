@@ -537,9 +537,9 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
 
   /**
    * Publishes messages to all subscribed peers
-   * Return a set of peers that this message sent to
+   * Return number of peers that this message sent to
    */
-  async publish (topic: string, message: Uint8Array): Promise<Set<string>> {
+  async publish (topic: string, message: Uint8Array): Promise<number> {
     if (!this.started) {
       throw new Error('Pubsub has not started')
     }
@@ -567,9 +567,9 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
   /**
    * Overriding the implementation of publish should handle the appropriate algorithms for the publish/subscriber implementation.
    * For example, a Floodsub implementation might simply publish each message to each topic for every peer
-   * Return a set of peers that this message sent to
+   * Return number of peers that this message sent to
    */
-  abstract _publish (message: Message): Promise<Set<string>>
+  abstract _publish (message: Message): Promise<number>
 
   /**
    * Subscribes to a given topic.

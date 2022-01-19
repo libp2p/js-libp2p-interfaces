@@ -8,7 +8,7 @@ import type { PeerId } from 'libp2p-interfaces/peer-id'
 import type { Message } from 'libp2p-interfaces/pubsub'
 
 class PubsubProtocol extends PubsubBaseProtocol {
-  async _publish (message: Message): Promise<Set<string>> {
+  async _publish (message: Message): Promise<number> {
     throw new Error('Method not implemented.')
   }
 }
