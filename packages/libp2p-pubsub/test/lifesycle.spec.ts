@@ -12,7 +12,7 @@ import type { Registrar } from 'libp2p-interfaces/registrar'
 import type { Message } from 'libp2p-interfaces/pubsub'
 
 class PubsubProtocol extends PubsubBaseProtocol {
-  async _publish (message: Message): Promise<number> {
+  async _publish (message: Message): Promise<{recipients: number}> {
     throw new Error('Method not implemented.')
   }
 }

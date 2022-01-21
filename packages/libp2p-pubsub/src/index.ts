@@ -539,7 +539,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
    * Publishes messages to all subscribed peers
    * Return number of peers that this message sent to
    */
-  async publish (topic: string, message: Uint8Array): Promise<number> {
+  async publish (topic: string, message: Uint8Array): Promise<{recipients: number}> {
     if (!this.started) {
       throw new Error('Pubsub has not started')
     }
@@ -569,7 +569,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
    * For example, a Floodsub implementation might simply publish each message to each topic for every peer
    * Return number of peers that this message sent to
    */
-  abstract _publish (message: Message): Promise<number>
+  abstract _publish (message: Message): Promise<{recipients: number}>
 
   /**
    * Subscribes to a given topic.

@@ -13,9 +13,9 @@ export const createPeerId = async () => {
 }
 
 export class PubsubImplementation extends PubsubBaseProtocol {
-  async _publish (): Promise<number> {
+  async _publish (): Promise<{recipients: number}> {
     // ...
-    return 0
+    return { recipients: 0 }
   }
 
   _decodeRpc (bytes: Uint8Array) {
