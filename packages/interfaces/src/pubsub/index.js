@@ -474,7 +474,7 @@ class PubsubBaseProtocol extends EventEmitter {
     // Emit to self
     this._emitMessage(msg)
 
-    return this._publish(utils.normalizeOutRpcMessage(msg))
+    await this._publish(utils.normalizeOutRpcMessage(msg))
   }
 
   /**
@@ -669,11 +669,11 @@ class PubsubBaseProtocol extends EventEmitter {
   }
 
   /**
-   * Publishes messages to all subscribed peers
+   * Publishes messages to all subscribed peers, return number of recipients.
    *
    * @param {string} topic
    * @param {Uint8Array} message
-   * @returns {Promise<void>}
+   * @returns {Promise<{recipients: number}>}
    */
   async publish (topic, message) {
     if (!this.started) {
@@ -698,7 +698,7 @@ class PubsubBaseProtocol extends EventEmitter {
     this.emitSelf && this._emitMessage(msg)
 
     // send to all the other peers
-    await this._publish(msg)
+    return await this._publish(msg)
   }
 
   /**
@@ -707,7 +707,7 @@ class PubsubBaseProtocol extends EventEmitter {
    *
    * @abstract
    * @param {InMessage|RPCMessage} message
-   * @returns {Promise<void>}
+   * @returns {Promise<{recipients: number}>}
    *
    */
   _publish (message) {
