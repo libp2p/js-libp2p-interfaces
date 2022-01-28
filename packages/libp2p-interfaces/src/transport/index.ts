@@ -1,4 +1,4 @@
-import type events from 'events'
+import type { EventEmitter } from 'events'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Connection } from '../connection/index.js'
 import type { AbortOptions } from '../index.js'
@@ -34,7 +34,7 @@ export interface Transport <DialOptions extends AbortOptions = AbortOptions, Cre
   filter: MultiaddrFilter
 }
 
-export interface Listener extends events.EventEmitter {
+export interface Listener extends EventEmitter {
   /**
    * Start a listener
    */
@@ -69,10 +69,8 @@ export interface MultiaddrConnectionTimeline {
   close?: number
 }
 
-export interface MultiaddrConnection extends Duplex<Uint8Array, Uint8Array, Promise<void>> {
+export interface MultiaddrConnection extends Duplex<Uint8Array> {
   close: (err?: Error) => Promise<void>
-  conn: unknown
   remoteAddr: Multiaddr
-  localAddr?: Multiaddr
   timeline: MultiaddrConnectionTimeline
 }

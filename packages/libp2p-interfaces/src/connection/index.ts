@@ -30,9 +30,7 @@ export interface Stream {
 export interface Connection {
   id: string
   stat: ConnectionStat
-  localAddr: Multiaddr
   remoteAddr: Multiaddr
-  localPeer: PeerId
   remotePeer: PeerId
   registry: Map<string, StreamData>
   tags: string[]

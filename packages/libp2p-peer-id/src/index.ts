@@ -4,8 +4,8 @@ import { base58btc } from 'multiformats/bases/base58'
 import * as Digest from 'multiformats/hashes/digest'
 import { identity } from 'multiformats/hashes/identity'
 import { equals as uint8ArrayEquals } from 'uint8arrays/equals'
-import type { MultibaseDecoder, MultibaseEncoder } from 'multiformats/types/bases/interface'
-import type { MultihashDigest } from 'multiformats/types/hashes/interface'
+import type { MultibaseDecoder, MultibaseEncoder } from 'multiformats/bases/interface'
+import type { MultihashDigest } from 'multiformats/hashes/interface'
 import { sha256 } from 'multiformats/hashes/sha2'
 
 const baseDecoder = Object
