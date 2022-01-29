@@ -69,6 +69,11 @@ export interface MultiaddrConnectionTimeline {
   close?: number
 }
 
+/**
+ * A MultiaddrConnection is returned by transports after dialing
+ * a peer. It is a low-level primitive and is the raw connection
+ * without encryption or stream multiplexing.
+ */
 export interface MultiaddrConnection extends Duplex<Uint8Array> {
   close: (err?: Error) => Promise<void>
   remoteAddr: Multiaddr

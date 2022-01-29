@@ -25,7 +25,7 @@ export function isValidTick (date?: number, ms: number = 5000) {
 
 export function mockUpgrader () {
   const ensureProps = (multiaddrConnection: MultiaddrConnection) => {
-    ['sink', 'source', 'remoteAddr', 'conn', 'timeline', 'close'].forEach(prop => {
+    ['sink', 'source', 'remoteAddr', 'timeline', 'close'].forEach(prop => {
       expect(multiaddrConnection).to.have.property(prop)
     })
     expect(isValidTick(multiaddrConnection.timeline.open)).to.equal(true)
