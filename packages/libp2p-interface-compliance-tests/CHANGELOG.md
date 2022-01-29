@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.0.5...@libp2p/interface-compliance-tests-v1.0.6) (2022-01-29)
+
+
+### Bug Fixes
+
+* remove extra fields ([#153](https://github.com/libp2p/js-libp2p-interfaces/issues/153)) ([ccd7cf3](https://github.com/libp2p/js-libp2p-interfaces/commit/ccd7cf3f5ac71337baf516d3b0f6fc724ee0d3b4))
+
 ## [@libp2p/interface-compliance-tests-v1.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.0.4...@libp2p/interface-compliance-tests-v1.0.5) (2022-01-15)
 
 
