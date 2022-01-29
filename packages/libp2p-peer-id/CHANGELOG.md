@@ -1,3 +1,10 @@
+## [@libp2p/peer-id-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-v1.0.3...@libp2p/peer-id-v1.0.4) (2022-01-29)
+
+
+### Bug Fixes
+
+* remove extra fields ([#153](https://github.com/libp2p/js-libp2p-interfaces/issues/153)) ([ccd7cf3](https://github.com/libp2p/js-libp2p-interfaces/commit/ccd7cf3f5ac71337baf516d3b0f6fc724ee0d3b4))
+
 ## [@libp2p/peer-id-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-v1.0.2...@libp2p/peer-id-v1.0.3) (2022-01-15)
 
 
