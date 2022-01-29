@@ -19,9 +19,7 @@ export default (test: TestSetup<Connection>) => {
 
       it('should have properties set', () => {
         expect(connection.id).to.exist()
-        expect(connection.localPeer).to.exist()
         expect(connection.remotePeer).to.exist()
-        expect(connection.localAddr).to.exist()
         expect(connection.remoteAddr).to.exist()
         expect(connection.stat.status).to.equal('OPEN')
         expect(connection.stat.timeline.open).to.exist()

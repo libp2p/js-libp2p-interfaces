@@ -27,12 +27,16 @@ export interface Stream {
   stream: MuxedStream
 }
 
+/**
+ * A Connection is a high-level representation of a connection
+ * to a remote peer that may have been secured by encryption and
+ * multiplexed, depending on the configuration of the nodes
+ * between which the connection is made.
+ */
 export interface Connection {
   id: string
   stat: ConnectionStat
-  localAddr: Multiaddr
   remoteAddr: Multiaddr
-  localPeer: PeerId
   remotePeer: PeerId
   registry: Map<string, StreamData>
   tags: string[]

@@ -1,6 +1,6 @@
 import type { CID } from 'multiformats/cid'
-import type { MultihashDigest } from 'multiformats/types/hashes/interface'
-import type { MultibaseEncoder } from 'multiformats/types/bases/interface'
+import type { MultihashDigest } from 'multiformats/hashes/interface'
+import type { MultibaseEncoder } from 'multiformats/bases/interface'
 
 export interface PeerId {
   readonly type: 'RSA' | 'Ed25519' | 'secp256k1'

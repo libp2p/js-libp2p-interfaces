@@ -25,7 +25,7 @@ export function isValidTick (date?: number, ms: number = 5000) {
 
 export function mockUpgrader () {
   const ensureProps = (multiaddrConnection: MultiaddrConnection) => {
-    ['sink', 'source', 'remoteAddr', 'conn', 'timeline', 'close'].forEach(prop => {
+    ['sink', 'source', 'remoteAddr', 'timeline', 'close'].forEach(prop => {
       expect(multiaddrConnection).to.have.property(prop)
     })
     expect(isValidTick(multiaddrConnection.timeline.open)).to.equal(true)
@@ -46,16 +46,8 @@ export function mockUpgrader () {
 }
 
 async function createConnection (maConn: MultiaddrConnection, direction: 'inbound' | 'outbound'): Promise<Connection> {
-  const localAddr = maConn.localAddr
   const remoteAddr = maConn.remoteAddr
-
-  if (localAddr == null) {
-    throw new Error('No localAddr found on MultiaddrConnection')
-  }
-
-  const localPeerIdStr = localAddr.getPeerId()
   const remotePeerIdStr = remoteAddr.getPeerId()
-  const localPeer = localPeerIdStr != null ? PeerId.fromString(localPeerIdStr) : await PeerIdFactory.createEd25519PeerId()
   const remotePeer = remotePeerIdStr != null ? PeerId.fromString(remotePeerIdStr) : await PeerIdFactory.createEd25519PeerId()
 
   const streams: MuxedStream[] = []
@@ -65,9 +57,7 @@ async function createConnection (maConn: MultiaddrConnection, direction: 'inboun
 
   return {
     id: 'mock-connection',
-    localAddr,
     remoteAddr,
-    localPeer,
     remotePeer,
     stat: {
       status: 'OPEN',

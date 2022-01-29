@@ -49,7 +49,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       expect(upgradeSpy.callCount).to.equal(1)
       await expect(upgradeSpy.getCall(0).returnValue).to.eventually.equal(conn)
       expect(result.length).to.equal(1)
-      expect(result[0].toString()).to.equal('hey')
+      expect(result[0]).to.equalBytes(uint8ArrayFromString('hey'))
       await conn.close()
     })
 
