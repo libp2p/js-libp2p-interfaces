@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.0.7](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.0.6...@libp2p/interface-compliance-tests-v1.0.7) (2022-01-31)
+
+
+### Trivial Changes
+
+* **deps:** bump sinon from 12.0.1 to 13.0.0 ([#154](https://github.com/libp2p/js-libp2p-interfaces/issues/154)) ([3fc8812](https://github.com/libp2p/js-libp2p-interfaces/commit/3fc8812897fa197e7b62f77614abaea4a5563404))
+
 ## [@libp2p/interface-compliance-tests-v1.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.0.5...@libp2p/interface-compliance-tests-v1.0.6) (2022-01-29)
 
 
