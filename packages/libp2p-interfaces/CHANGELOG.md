@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.0.5...@libp2p/interfaces-v1.0.6) (2022-02-02)
+
+
+### Bug Fixes
+
+* make discovery startable ([#155](https://github.com/libp2p/js-libp2p-interfaces/issues/155)) ([c7db291](https://github.com/libp2p/js-libp2p-interfaces/commit/c7db2918f5c4e00b45bcbd69541224403e5451e1))
+
 ## [@libp2p/interfaces-v1.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.0.4...@libp2p/interfaces-v1.0.5) (2022-01-29)
 
 
