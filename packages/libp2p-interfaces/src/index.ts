@@ -8,3 +8,8 @@ export interface Startable {
   stop: () => void | Promise<void>
   isStarted: () => boolean
 }
+
+export interface Logger {
+  (...opts: any[]): void
+  error: (...opts: any[]) => void
+}
