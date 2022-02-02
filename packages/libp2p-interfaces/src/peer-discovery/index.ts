@@ -1,5 +1,6 @@
 import type { EventEmitter } from 'events'
-import type { PeerData } from '../peer-data'
+import type { PeerData } from '../peer-data/index.js'
+import type { Startable } from '../index.js'
 
 export interface PeerDiscoveryFactory {
   new (options?: any): PeerDiscovery
@@ -10,7 +11,8 @@ interface PeerDiscoveryEvents {
   'peer': PeerData
 }
 
-export interface PeerDiscovery extends EventEmitter {
+export interface PeerDiscovery extends EventEmitter, Startable {
+
   on: (<U extends keyof PeerDiscoveryEvents> (event: U, listener: (event: PeerDiscoveryEvents[U]) => void) => this) &
   ((event: string, listener: (...args: any[]) => void) => this)
 
