@@ -4,9 +4,10 @@ import { duplexPair } from 'it-pair/duplex'
 import { abortableSource, abortableDuplex } from 'abortable-iterator'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import drain from 'it-drain'
+import { mockUpgrader, mockMultiaddrConnection } from '../transport/utils/index.js'
 import type { TestSetup } from '../index.js'
 import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
-import type { Connection } from '@libp2p/interfaces/connection'
+import { expect } from 'aegir/utils/chai.js'
 
 async function pause (ms: number) {
   return await new Promise(resolve => setTimeout(resolve, ms))
@@ -27,30 +28,13 @@ const infiniteRandom = {
 
 export default (common: TestSetup<Muxer, MuxerOptions>) => {
   describe('close', () => {
-    it('closing underlying socket closes streams (tcp)', async () => {
-      const mockConn = (muxer: Muxer): Connection => {
-        // @ts-expect-error not all Connection methods are implemented
-        const connection: Connection = {
-          newStream: async (multicodecs) => {
-            return {
-              protocol: multicodecs[0],
-              stream: muxer.newStream(`${multicodecs[0]}`)
-            }
-          }
+    it('closing underlying socket closes streams', async () => {
+      const muxer = await common.setup({
+        onStream: (stream) => {
+          void pipe(stream, stream)
         }
-
-        return connection
-      }
-
-      const mockUpgrade = async (maConn: any) => {
-        const muxer = await common.setup({
-          onStream: (stream) => {
-            void pipe(stream, stream)
-          }
-        })
-        pipe(maConn, muxer.newStream('/test/stream'), maConn)
-        return mockConn(muxer)
-      }
+      })
+      const upgrader = mockUpgrader({ muxer })
 
       const [local, remote] = duplexPair<Uint8Array>()
       const controller = new AbortController()
@@ -58,8 +42,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
         returnOnAbort: true
       })
 
-      await mockUpgrade(abortableRemote)
-      const dialerConn = await mockUpgrade(local)
+      await upgrader.upgradeInbound(mockMultiaddrConnection(abortableRemote))
+      const dialerConn = await upgrader.upgradeOutbound(mockMultiaddrConnection(local))
 
       const s1 = await dialerConn.newStream([''])
       const s2 = await dialerConn.newStream([''])
@@ -73,6 +57,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       // test is complete when all muxed streams have closed
       await s1Result
       await s2Result
+
+      expect(muxer.streams).to.be.empty()
     })
 
     it('closing one of the muxed streams doesn\'t close others', async () => {
@@ -84,8 +70,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
         onStream: async (stream) => await pipe(stream, stream)
       })
 
-      void pipe(p[0], dialer.newStream('/test/stream'), p[0])
-      void pipe(p[1], listener.newStream('/test/stream'), p[1])
+      void pipe(p[0], dialer, p[0])
+      void pipe(p[1], listener, p[1])
 
       const stream = dialer.newStream()
       const streams = Array.from(Array(5), () => dialer.newStream())

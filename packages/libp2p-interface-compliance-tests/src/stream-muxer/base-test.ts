@@ -11,9 +11,9 @@ import { isValidTick } from '../transport/utils/index.js'
 import type { DeferredPromise } from 'p-defer'
 import type { TestSetup } from '../index.js'
 import type { Muxer, MuxerOptions, MuxedStream } from '@libp2p/interfaces/stream-muxer'
-import type { Source } from 'it-stream-types'
+import type { Source, Duplex } from 'it-stream-types'
 
-async function close (stream: MuxedStream) {
+async function drainAndClose (stream: Duplex<Uint8Array>) {
   return await pipe([], stream, drain)
 }
 
@@ -34,18 +34,21 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
         }
       })
 
-      void pipe(p[0], dialer.newStream('/test/stream'), p[0])
-      void pipe(p[1], listener.newStream('/test/stream'), p[1])
+      void pipe(p[0], dialer, p[0])
+      void pipe(p[1], listener, p[1])
 
       const conn = dialer.newStream()
       expect(dialer.streams).to.include(conn)
       expect(isValidTick(conn.timeline.open)).to.equal(true)
 
+      void drainAndClose(conn)
+
       const stream = await onStreamPromise.promise
       expect(isValidTick(stream.timeline.open)).to.equal(true)
       // Make sure the stream is being tracked
       expect(listener.streams).to.include(stream)
-      void close(stream)
+
+      void drainAndClose(stream)
 
       // Make sure stream is closed properly
       const endedStream = await onStreamEndPromise.promise
@@ -58,7 +61,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       // Make sure the stream is removed from tracking
       expect(isValidTick(endedStream.timeline.close)).to.equal(true)
 
-      await close(conn)
+      await drainAndClose(dialer)
+      await drainAndClose(listener)
 
       // ensure we have no streams left
       expect(dialer.streams).to.have.length(0)
@@ -76,18 +80,21 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
 
       const listener = await common.setup()
 
-      void pipe(p[0], dialer.newStream('/test/stream'), p[0])
-      void pipe(p[1], listener.newStream('/test/stream'), p[1])
+      void pipe(p[0], dialer, p[0])
+      void pipe(p[1], listener, p[1])
 
       const conn = listener.newStream()
+
+      void drainAndClose(conn)
 
       const stream = await onStreamPromise.promise
       expect(isValidTick(stream.timeline.open)).to.equal(true)
       expect(listener.streams).to.include(conn)
       expect(isValidTick(conn.timeline.open)).to.equal(true)
-      await close(stream)
+      void drainAndClose(stream)
 
-      await close(conn)
+      await drainAndClose(dialer)
+      await drainAndClose(listener)
     })
 
     it('Open a stream on both sides', async () => {
@@ -105,20 +112,23 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
         }
       })
 
-      void pipe(p[0], dialer.newStream('/test/stream'), p[0])
-      void pipe(p[1], listener.newStream('/test/stream'), p[1])
+      void pipe(p[0], dialer, p[0])
+      void pipe(p[1], listener, p[1])
 
       const listenerConn = listener.newStream()
       const dialerConn = dialer.newStream()
 
+      void drainAndClose(dialerConn)
+      void drainAndClose(listenerConn)
+
       const dialerStream = await onDialerStreamPromise.promise
       const listenerStream = await onListenerStreamPromise.promise
 
-      await close(dialerStream)
-      await close(listenerStream)
+      await drainAndClose(dialerStream)
+      await drainAndClose(listenerStream)
 
-      await close(dialerConn)
-      await close(listenerConn)
+      await drainAndClose(dialer)
+      await drainAndClose(listener)
     })
 
     it('Open a stream on one side, write, open a stream on the other side', async () => {
@@ -137,8 +147,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
         }
       })
 
-      void pipe(p[0], dialer.newStream('/test/stream'), p[0])
-      void pipe(p[1], listener.newStream('/test/stream'), p[1])
+      void pipe(p[0], dialer, p[0])
+      void pipe(p[1], listener, p[1])
 
       const dialerConn = dialer.newStream()
       const listenerConn = listener.newStream()
