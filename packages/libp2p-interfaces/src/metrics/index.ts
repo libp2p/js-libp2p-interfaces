@@ -1,6 +1,6 @@
-import type { Startable } from ".."
-import type { PeerId } from "../peer-id"
-import type { MultiaddrConnection } from "../transport"
+import type { Startable } from '..'
+import type { PeerId } from '../peer-id'
+import type { MultiaddrConnection } from '../transport'
 
 export interface MovingAverage {
   variance: () => number
@@ -24,50 +24,49 @@ export interface StatsJSON {
 }
 
 export interface Stats extends Startable {
-    /**
-     * Returns a clone of the current stats.
-     */
-    getSnapshot: Record<string, any>
+  /**
+   * Returns a clone of the current stats.
+   */
+  getSnapshot: Record<string, any>
 
-    /**
-     * Returns a clone of the internal movingAverages
-     */
-    getMovingAverages (): MovingAverages
+  /**
+   * Returns a clone of the internal movingAverages
+   */
+  getMovingAverages: () => MovingAverages
 
-    /**
-     * Returns a plain JSON object of the stats
-     */
-    toJSON (): StatsJSON
+  /**
+   * Returns a plain JSON object of the stats
+   */
+  toJSON: () => StatsJSON
 
-    /**
-     * Pushes the given operation data to the queue, along with the
-     * current Timestamp, then resets the update timer.
-     */
-    push (counter: string, inc: number): void
+  /**
+   * Pushes the given operation data to the queue, along with the
+   * current Timestamp, then resets the update timer.
+   */
+  push: (counter: string, inc: number) => void
 }
-
 
 export interface Metrics extends Startable {
   /**
    * Returns the global `Stats` object
    */
-  getGlobal (): Stats
+  getGlobal: () => Stats
 
   /**
    * Returns a list of `PeerId` strings currently being tracked
    */
-  getPeers (): string[]
+  getPeers: () => string[]
 
   /**
    * Returns the `Stats` object for the given `PeerId` whether it
    * is a live peer, or in the disconnected peer LRU cache.
    */
-  forPeer (peerId: PeerId): Stats
+  forPeer: (peerId: PeerId) => Stats
 
   /**
    * Returns a list of all protocol strings currently being tracked.
    */
-  getProtocols (): string[]
+  getProtocols: () => string[]
 
   /**
    * Returns the `Stats` object for the given `protocol`.
@@ -75,21 +74,21 @@ export interface Metrics extends Startable {
    * @param {string} protocol
    * @returns {Stats}
    */
-  forProtocol (protocol: string): Stats
+  forProtocol: (protocol: string) => Stats
 
   /**
    * Should be called when all connections to a given peer
    * have closed. The `Stats` collection for the peer will
    * be stopped and moved to an LRU for temporary retention.
    */
-  onPeerDisconnected (peerId: PeerId): void
+  onPeerDisconnected: (peerId: PeerId) => void
 
   /**
    * Replaces the `PeerId` string with the given `peerId`.
    * If stats are already being tracked for the given `peerId`, the
    * placeholder stats will be merged with the existing stats.
    */
-  updatePlaceholder (placeholder: PeerId, peerId: PeerId): void
+  updatePlaceholder: (placeholder: PeerId, peerId: PeerId) => void
 
   /**
    * Tracks data running through a given Duplex Iterable `stream`. If
@@ -98,13 +97,13 @@ export interface Metrics extends Startable {
    * When the `PeerId` is known, `Metrics.updatePlaceholder` should be called
    * with the placeholder string returned from here, and the known `PeerId`.
    */
-  trackStream (data: { stream: MultiaddrConnection, remotePeer: PeerId, protocol: string }): MultiaddrConnection
+  trackStream: (data: { stream: MultiaddrConnection, remotePeer: PeerId, protocol: string }) => MultiaddrConnection
 }
 
 export interface ComponentMetricsUpdate {
-  system: string,
-  component: string,
-  metric: string,
+  system: string
+  component: string
+  metric: string
   value: number
 }
 
@@ -112,10 +111,10 @@ export interface ComponentMetricsTracker {
   /**
    * Returns tracked metrics key by system, component, metric, value
    */
-  getComponentMetrics (): Map<string, Map<string, Map<string, string>>>
+  getComponentMetrics: () => Map<string, Map<string, Map<string, string>>>
 
-   /**
-    * Update the stored metric value for the given system and component
-    */
-  updateComponentMetric (data: ComponentMetricsUpdate): void
+  /**
+   * Update the stored metric value for the given system and component
+   */
+  updateComponentMetric: (data: ComponentMetricsUpdate) => void
 }
