@@ -1,3 +1,10 @@
+## [@libp2p/pubsub-v1.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.0.5...@libp2p/pubsub-v1.0.6) (2022-02-05)
+
+
+### Bug Fixes
+
+* fix muxer tests ([#157](https://github.com/libp2p/js-libp2p-interfaces/issues/157)) ([7233c44](https://github.com/libp2p/js-libp2p-interfaces/commit/7233c4438479dff56a682f45209ef7a938d63857))
+
 ## [@libp2p/pubsub-v1.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.0.4...@libp2p/pubsub-v1.0.5) (2022-01-15)
 
 
