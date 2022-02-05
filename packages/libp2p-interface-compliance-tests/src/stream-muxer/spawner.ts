@@ -25,8 +25,8 @@ export default async (createMuxer: (options?: MuxerOptions) => Promise<Muxer>, n
 
   const dialer = await createMuxer()
 
-  void pipe(listenerSocket, listener.newStream('/test/stream'), listenerSocket)
-  void pipe(dialerSocket, dialer.newStream('/test/stream'), dialerSocket)
+  void pipe(listenerSocket, listener, listenerSocket)
+  void pipe(dialerSocket, dialer, dialerSocket)
 
   const spawnStream = async () => {
     const stream = dialer.newStream()

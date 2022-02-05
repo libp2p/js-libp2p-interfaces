@@ -52,6 +52,14 @@
       "import": "./dist/src/errors.js",
       "types": "./dist/src/errors.d.ts"
     },
+    "./message/rpc": {
+      "import": "./dist/src/message/rpc.js",
+      "types": "./dist/src/message/rpc.d.ts"
+    },
+    "./message/topic-descriptor": {
+      "import": "./dist/src/message/topic-descriptor.js",
+      "types": "./dist/src/message/topic-descriptor.d.ts"
+    },
     "./peer-streams": {
       "import": "./dist/src/peer-streams.js",
       "types": "./dist/src/peer-streams.d.ts"
@@ -63,14 +71,6 @@
     "./utils": {
       "import": "./dist/src/utils.js",
       "types": "./dist/src/utils.d.ts"
-    },
-    "./message/rpc": {
-      "import": "./dist/src/message/rpc.js",
-      "types": "./dist/src/message/rpc.d.ts"
-    },
-    "./message/topic-descriptor": {
-      "import": "./dist/src/message/topic-descriptor.js",
-      "types": "./dist/src/message/topic-descriptor.d.ts"
     }
   },
   "eslintConfig": {

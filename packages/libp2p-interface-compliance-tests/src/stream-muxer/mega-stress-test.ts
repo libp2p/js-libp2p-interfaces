@@ -1,4 +1,4 @@
-import spawn from './spawner'
+import spawn from './spawner.js'
 import type { TestSetup } from '../index.js'
 import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
 
