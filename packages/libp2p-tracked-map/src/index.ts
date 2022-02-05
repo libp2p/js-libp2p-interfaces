@@ -8,10 +8,10 @@ export interface TrackedMapOptions {
 }
 
 class TrackedMap<K, V> extends Map<K, V> {
-  private system: string
-  private component: string
-  private metric: string
-  private metrics: ComponentMetricsTracker
+  private readonly system: string
+  private readonly component: string
+  private readonly metric: string
+  private readonly metrics: ComponentMetricsTracker
 
   constructor (options: TrackedMapOptions) {
     super()
@@ -63,7 +63,7 @@ export function trackedMap <K, V> (config: CreateTrackedMapOptions): Map<K, V> {
   const { system, component, metric, metrics } = config
   let map: Map<K, V>
 
-  if (metrics) {
+  if (metrics != null) {
     map = new TrackedMap<K, V>({ system, component, metric, metrics })
   } else {
     map = new Map<K, V>()
