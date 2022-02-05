@@ -207,6 +207,7 @@
     "it-map": "^1.0.6",
     "it-pair": "^2.0.0",
     "it-pipe": "^2.0.2",
+    "it-pushable": "^2.0.1",
     "multiformats": "^9.4.10",
     "p-defer": "^4.0.0",
     "p-limit": "^4.0.0",
