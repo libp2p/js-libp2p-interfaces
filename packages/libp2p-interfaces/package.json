@@ -80,6 +80,10 @@
       "import": "./dist/src/keys/index.js",
       "types": "./dist/src/keys/index.d.ts"
     },
+    "./metrics": {
+      "import": "./dist/src/metrics/index.js",
+      "types": "./dist/src/metrics/index.d.ts"
+    },
     "./peer-discovery": {
       "import": "./dist/src/peer-discovery/index.js",
       "types": "./dist/src/peer-discovery/index.d.ts"
