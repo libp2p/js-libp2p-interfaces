@@ -1,3 +1,10 @@
+## [@libp2p/pubsub-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.0.6...@libp2p/pubsub-v1.1.0) (2022-02-07)
+
+
+### Features
+
+* add logger package ([#158](https://github.com/libp2p/js-libp2p-interfaces/issues/158)) ([f327cd2](https://github.com/libp2p/js-libp2p-interfaces/commit/f327cd24825d9ce2f45a02fdb9b47c9735c847e0))
+
 ## [@libp2p/pubsub-v1.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.0.5...@libp2p/pubsub-v1.0.6) (2022-02-05)
 
 
