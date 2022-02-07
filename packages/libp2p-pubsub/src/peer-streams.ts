@@ -1,4 +1,4 @@
-import debug from 'debug'
+import { logger } from '@libp2p/logger'
 import { EventEmitter } from 'events'
 import * as lp from 'it-length-prefixed'
 import { pushable } from 'it-pushable'
@@ -8,9 +8,7 @@ import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
 import type { Pushable } from 'it-pushable'
 
-const log = Object.assign(debug('libp2p-pubsub:peer-streams'), {
-  error: debug('libp2p-pubsub:peer-streams:err')
-})
+const log = logger('libp2p-pubsub:peer-streams')
 
 export interface Options {
   id: PeerId
