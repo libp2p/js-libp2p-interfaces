@@ -1,4 +1,4 @@
-import debug from 'debug'
+import { logger } from '@libp2p/logger'
 import { EventEmitter } from 'events'
 import errcode from 'err-code'
 import { pipe } from 'it-pipe'
@@ -18,6 +18,7 @@ import {
 } from './message/sign.js'
 import type { PubSub, Message, StrictNoSign, StrictSign, PubsubOptions } from '@libp2p/interfaces/pubsub'
 import type { Startable } from '@libp2p/interfaces'
+import type { Logger } from '@libp2p/logger'
 
 export interface TopicValidator { (topic: string, message: Message): Promise<void> }
 
@@ -62,7 +63,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
   public queue: Queue
   public registrar: Registrar
 
-  protected log: debug.Debugger & { err: debug.Debugger }
+  protected log: Logger
   protected multicodecs: string[]
   protected _libp2p: any
   private _registrarId: string | undefined
@@ -80,10 +81,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
       messageProcessingConcurrency = 10
     } = props
 
-    this.log = Object.assign(debug(debugName), {
-      err: debug(`${debugName}:error`)
-    })
-
+    this.log = logger(debugName)
     this.multicodecs = utils.ensureArray(multicodecs)
     this._libp2p = libp2p
     this.registrar = libp2p.registrar
@@ -189,7 +187,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
       const peer = this._addPeer(peerId, protocol)
       await peer.attachOutboundStream(stream)
     } catch (err: any) {
-      this.log.err(err)
+      this.log.error(err)
     }
 
     // Immediately send my own subscriptions to the newly established conn
@@ -320,7 +318,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
 
           await this._processRpcMessage(msg)
         } catch (err: any) {
-          this.log.err(err)
+          this.log.error(err)
         }
       }))
         .catch(err => this.log(err))
@@ -435,7 +433,7 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
     if ((peerStreams == null) || !peerStreams.isWritable) {
       const msg = `Cannot send RPC to ${id} as there is no open stream to it available`
 
-      this.log.err(msg)
+      this.log.error(msg)
       return
     }
     peerStreams.write(this._encodeRpc(rpc))
