@@ -133,7 +133,8 @@
   },
   "dependencies": {
     "@libp2p/interfaces": "^1.0.0",
-    "debug": "^4.3.3"
+    "debug": "^4.3.3",
+    "multiformats": "^9.6.3"
   },
   "devDependencies": {
     "@types/debug": "^4.1.7",

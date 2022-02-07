@@ -31,12 +31,19 @@ const log = logger('libp2p:my:component:name')
 
 log('something happened: %s', 'it was ok')
 log.error('something bad happened: %o', err)
+
+log('with this peer: %p', aPeerId)
+log('and this base58btc: %b', aUint8Array)
+log('and this base32: %t', aUint8Array)
 ```
 
 ```console
 $ DEBUG=libp2p:* node index.js
 something happened: it was ok
 something bad happened: <stack trace>
+with this peer: 12D3Foo
+with this base58btc: Qmfoo
+with this base32: bafyfoo
 ```
 
 ## License
