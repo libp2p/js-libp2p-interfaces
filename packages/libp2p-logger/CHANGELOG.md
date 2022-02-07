@@ -1,3 +1,10 @@
+## [@libp2p/logger-v1.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/logger-v1.0.0...@libp2p/logger-v1.0.1) (2022-02-07)
+
+
+### Bug Fixes
+
+* add logging formatters ([#159](https://github.com/libp2p/js-libp2p-interfaces/issues/159)) ([2fa518c](https://github.com/libp2p/js-libp2p-interfaces/commit/2fa518c7489dcd31d5b28f79114dfdc94133d784))
+
 ## @libp2p/logger-v1.0.0 (2022-02-07)
 
 
