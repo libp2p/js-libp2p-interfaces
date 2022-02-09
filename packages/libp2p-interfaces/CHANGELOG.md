@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.2.0...@libp2p/interfaces-v1.3.0) (2022-02-09)
+
+
+### Features
+
+* add peer store/records, and streams are just streams ([#160](https://github.com/libp2p/js-libp2p-interfaces/issues/160)) ([8860a0c](https://github.com/libp2p/js-libp2p-interfaces/commit/8860a0cd46b359a5648402d83870f7ff957222fe))
+
 ## [@libp2p/interfaces-v1.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.1.1...@libp2p/interfaces-v1.2.0) (2022-02-07)
 
 
