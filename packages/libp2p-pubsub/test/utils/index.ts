@@ -34,7 +34,11 @@ export const mockRegistrar = {
 
 export const createMockRegistrar = (registrarRecord: Map<string, Record<string, any>>) => {
   const registrar: Registrar = {
-    handle: (multicodecs: string[], handler) => {
+    handle: (multicodecs: string[] | string, handler) => {
+      if (!Array.isArray(multicodecs)) {
+        multicodecs = [multicodecs]
+      }
+
       const rec = registrarRecord.get(multicodecs[0]) ?? {}
 
       registrarRecord.set(multicodecs[0], {
@@ -66,6 +70,7 @@ export const createMockRegistrar = (registrarRecord: Map<string, Record<string, 
       on: () => {
         throw new Error('Not implemented')
       },
+      // @ts-expect-error use protobook type
       protoBook: {
         get: () => {
           throw new Error('Not implemented')

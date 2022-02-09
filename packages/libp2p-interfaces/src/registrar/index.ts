@@ -1,32 +1,17 @@
-import type { Connection } from '../connection'
-import type { MuxedStream } from '../stream-muxer'
+import type { Connection, Stream } from '../connection'
 import type { PeerId } from '../peer-id'
-import type { PeerData } from '../peer-data'
+import type { PeerStore } from '../peer-store'
 
 export interface IncomingStreamEvent {
   protocol: string
-  stream: MuxedStream
+  stream: Stream
   connection: Connection
 }
 
-export interface ChangeProtocolsEvent {
-  peerId: PeerId
-  protocols: string[]
-}
-
-export interface ProtoBook {
-  get: (peerId: PeerId) => string[]
-}
-
-export interface PeerStore {
-  on: (event: 'change:protocols', handler: (event: ChangeProtocolsEvent) => void) => void
-  protoBook: ProtoBook
-  peers: Map<string, PeerData>
-  get: (peerId: PeerId) => PeerData
-}
-
 export interface Registrar {
-  handle: (multicodecs: string[], handler: (event: IncomingStreamEvent) => void) => void
+  handle: (multicodec: string | string[], handler: (event: IncomingStreamEvent) => void) => void
+  unhandle: (multicodec: string) => void
+
   register: (topology: any) => string
   unregister: (id: string) => void
   getConnection: (peerId: PeerId) => Connection | undefined

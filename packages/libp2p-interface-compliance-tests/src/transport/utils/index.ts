@@ -7,8 +7,8 @@ import drain from 'it-drain'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { pipe } from 'it-pipe'
 import type { Upgrader, MultiaddrConnection } from '@libp2p/interfaces/transport'
-import type { Connection, StreamData } from '@libp2p/interfaces/connection'
-import type { MuxedStream, Muxer } from '@libp2p/interfaces/stream-muxer'
+import type { Connection, Stream, Metadata, ProtocolStream } from '@libp2p/interfaces/connection'
+import type { Muxer } from '@libp2p/interfaces/stream-muxer'
 import type { Duplex } from 'it-stream-types'
 
 /**
@@ -46,7 +46,7 @@ export function mockMultiaddrConnection (source: Duplex<Uint8Array>): MultiaddrC
 
 export function mockMuxer (): Muxer {
   let streamId = 0
-  let streams: MuxedStream[] = []
+  let streams: Stream[] = []
   const p = pushable<Uint8Array>()
 
   const muxer: Muxer = {
@@ -61,7 +61,7 @@ export function mockMuxer (): Muxer {
       const echo = pair<Uint8Array>()
 
       const id = `${streamId++}`
-      const stream: MuxedStream = {
+      const stream: Stream = {
         id,
         sink: echo.sink,
         source: echo.source,
@@ -116,7 +116,7 @@ async function createConnection (maConn: MultiaddrConnection, direction: 'inboun
   const remotePeerIdStr = remoteAddr.getPeerId()
   const remotePeer = remotePeerIdStr != null ? PeerId.fromString(remotePeerIdStr) : await PeerIdFactory.createEd25519PeerId()
 
-  const streams: MuxedStream[] = []
+  const streams: Stream[] = []
   let streamId = 0
 
   const registry = new Map()
@@ -140,13 +140,17 @@ async function createConnection (maConn: MultiaddrConnection, direction: 'inboun
     tags: [],
     streams,
     newStream: async (protocols) => {
+      if (!Array.isArray(protocols)) {
+        protocols = [protocols]
+      }
+
       if (protocols.length === 0) {
         throw new Error('protocols must have a length')
       }
 
       const id = `${streamId++}`
-      const stream: MuxedStream = muxer.newStream(id)
-      const streamData = {
+      const stream: Stream = muxer.newStream(id)
+      const streamData: ProtocolStream = {
         protocol: protocols[0],
         stream
       }
@@ -155,7 +159,7 @@ async function createConnection (maConn: MultiaddrConnection, direction: 'inboun
 
       return streamData
     },
-    addStream: (muxedStream: MuxedStream, streamData: StreamData) => {
+    addStream: (stream: Stream, metadata: Metadata) => {
 
     },
     removeStream: (id: string) => {

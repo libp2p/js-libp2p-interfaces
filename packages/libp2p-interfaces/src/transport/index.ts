@@ -79,3 +79,7 @@ export interface MultiaddrConnection extends Duplex<Uint8Array> {
   remoteAddr: Multiaddr
   timeline: MultiaddrConnectionTimeline
 }
+
+export interface ProtocolHandler {
+  (stream: Duplex<Uint8Array>, connection: Connection): void
+}

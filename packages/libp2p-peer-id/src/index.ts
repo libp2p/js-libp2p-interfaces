@@ -4,9 +4,10 @@ import { base58btc } from 'multiformats/bases/base58'
 import * as Digest from 'multiformats/hashes/digest'
 import { identity } from 'multiformats/hashes/identity'
 import { equals as uint8ArrayEquals } from 'uint8arrays/equals'
+import { sha256 } from 'multiformats/hashes/sha2'
+import errcode from 'err-code'
 import type { MultibaseDecoder, MultibaseEncoder } from 'multiformats/bases/interface'
 import type { MultihashDigest } from 'multiformats/hashes/interface'
-import { sha256 } from 'multiformats/hashes/sha2'
 
 const baseDecoder = Object
   .values(bases)
@@ -86,6 +87,24 @@ export class PeerId {
     } else {
       throw new Error('not valid Id')
     }
+  }
+
+  static fromPeerId (other: any) {
+    const err = errcode(new Error('Not a PeerId'), 'ERR_INVALID_PARAMETERS')
+
+    if (other.type === 'RSA') {
+      return new RSAPeerId(other)
+    }
+
+    if (other.type === 'Ed25519') {
+      return new Ed25519PeerId(other)
+    }
+
+    if (other.type === 'secp256k1') {
+      return new Secp256k1PeerId(other)
+    }
+
+    throw err
   }
 
   static fromString (str: string, decoder?: MultibaseDecoder<any>) {

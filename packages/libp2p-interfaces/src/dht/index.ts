@@ -39,6 +39,7 @@ export interface DHTRecord {
 
 export interface QueryOptions extends AbortOptions {
   queryFuncTimeout?: number
+  minPeers?: number
 }
 
 /**
@@ -134,7 +135,7 @@ export interface DHT {
   get: (key: Uint8Array, options?: QueryOptions) => AsyncIterable<QueryEvent>
 
   /**
-   * Find providers for a given CI
+   * Find providers of a given CID
    */
   findProviders: (key: CID, options?: QueryOptions) => AsyncIterable<QueryEvent>
 

@@ -11,9 +11,6 @@
   ],
   "references": [
     {
-      "path": "../libp2p-connection"
-    },
-    {
       "path": "../libp2p-interfaces"
     },
     {

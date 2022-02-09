@@ -188,7 +188,7 @@
   "dependencies": {
     "@libp2p/crypto": "^0.22.2",
     "@libp2p/interfaces": "^1.0.0",
-    "@libp2p/logger": "^0.0.0",
+    "@libp2p/logger": "^1.0.1",
     "@libp2p/peer-id": "^1.0.0",
     "@libp2p/peer-id-factory": "^1.0.0",
     "@libp2p/topology": "^1.0.0",

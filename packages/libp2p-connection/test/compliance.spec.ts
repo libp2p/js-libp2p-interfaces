@@ -1,10 +1,10 @@
-import tests from '../../src/connection/index.js'
-import { Connection } from '@libp2p/connection'
-import peers from '../../src/utils/peers.js'
+import tests from '@libp2p/interface-compliance-tests/connection'
+import { Connection } from '../src/index.js'
+import peers from '@libp2p/interface-compliance-tests/utils/peers'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { pair } from 'it-pair'
-import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
+import type { Stream } from '@libp2p/interfaces/connection'
 
 describe('compliance tests', () => {
   tests({
@@ -19,7 +19,7 @@ describe('compliance tests', () => {
         PeerIdFactory.createFromJSON(peers[0]),
         PeerIdFactory.createFromJSON(peers[1])
       ])
-      const openStreams: MuxedStream[] = []
+      const openStreams: Stream[] = []
       let streamId = 0
 
       const connection = new Connection({
@@ -39,7 +39,7 @@ describe('compliance tests', () => {
         },
         newStream: async (protocols) => {
           const id = `${streamId++}`
-          const stream: MuxedStream = {
+          const stream: Stream = {
             ...pair(),
             close: async () => {
               await stream.sink(async function * () {}())
