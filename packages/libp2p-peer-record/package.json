@@ -126,7 +126,7 @@
   },
   "scripts": {
     "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js test/src/**/*.js",
+    "dep-check": "aegir dep-check dist/src/**/*.js",
     "build": "tsc",
     "postbuild": "npm run build:copy-proto-files",
     "generate": "npm run generate:envelope && npm run generate:envelope-types && npm run generate:peer-record && npm run generate:peer-record-types",
@@ -148,8 +148,10 @@
     "@libp2p/crypto": "^0.22.7",
     "@libp2p/interfaces": "^1.2.0",
     "@libp2p/logger": "^1.0.1",
+    "@libp2p/peer-id": "^1.0.4",
     "@libp2p/utils": "^1.0.5",
     "@multiformats/multiaddr": "^10.1.5",
+    "err-code": "^3.0.1",
     "interface-datastore": "^6.1.0",
     "it-all": "^1.0.6",
     "it-filter": "^1.0.3",
@@ -158,6 +160,7 @@
     "it-pipe": "^2.0.3",
     "multiformats": "^9.6.3",
     "protobufjs": "^6.10.2",
+    "uint8arrays": "^3.0.0",
     "varint": "^6.0.0"
   },
   "devDependencies": {
