@@ -15,6 +15,7 @@ import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerStore, AddressBook } from '@libp2p/interfaces/peer-store'
 import { base58btc } from 'multiformats/bases/base58'
+import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 
 /**
  * @typedef {import('../../src/peer-store/types').PeerStore} PeerStore
@@ -679,7 +680,7 @@ describe('addressBook', () => {
 
       it('invalid peer record', async () => {
         const invalidEnvelope = {
-          payload: Buffer.from('invalid-peerRecord')
+          payload: uint8ArrayFromString('invalid-peerRecord')
         }
 
         // @ts-expect-error invalid input
