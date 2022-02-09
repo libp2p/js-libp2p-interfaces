@@ -88,13 +88,13 @@
       "import": "./dist/src/transport/utils/index.js",
       "types": "./dist/src/transport/utils/index.d.ts"
     },
-    "./utils/peers": {
-      "import": "./dist/src/utils/peers.js",
-      "types": "./dist/src/utils/peers.d.ts"
-    },
     "./utils/mock-connection": {
       "import": "./dist/src/utils/mock-connection.js",
       "types": "./dist/src/utils/mock-connection.d.ts"
+    },
+    "./utils/mock-connection-gater": {
+      "import": "./dist/src/utils/mock-connection-gater.js",
+      "types": "./dist/src/utils/mock-connection-gater.d.ts"
     },
     "./utils/mock-multiaddr-connection": {
       "import": "./dist/src/utils/mock-multiaddr-connection.js",
@@ -112,9 +112,9 @@
       "import": "./dist/src/utils/mock-upgrader.js",
       "types": "./dist/src/utils/mock-upgrader.d.ts"
     },
-    "./utils/mock-connection-gater": {
-      "import": "./dist/src/utils/mock-connection-gater.js",
-      "types": "./dist/src/utils/mock-connection-gater.d.ts"
+    "./utils/peers": {
+      "import": "./dist/src/utils/peers.js",
+      "types": "./dist/src/utils/peers.d.ts"
     }
   },
   "eslintConfig": {
