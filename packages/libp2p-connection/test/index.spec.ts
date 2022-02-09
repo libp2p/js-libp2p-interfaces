@@ -2,7 +2,7 @@ import { Connection } from '../src/index.js'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { pair } from 'it-pair'
 import { Multiaddr } from '@multiformats/multiaddr'
-import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
+import type { Stream } from '@libp2p/interfaces/connection'
 
 const peers = [{
   id: 'QmNMMAqSxPetRS1cVMmutW5BCN1qQQyEr4u98kUvZjcfEw',
@@ -55,7 +55,7 @@ describe('connection tests', () => {
       },
       newStream: async (protocols) => {
         const id = `${streamId++}`
-        const stream: MuxedStream = {
+        const stream: Stream = {
           ...pair<Uint8Array>(),
           close: async () => await stream.sink(async function * () {}()),
           id,

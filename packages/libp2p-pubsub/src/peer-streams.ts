@@ -5,7 +5,7 @@ import { pushable } from 'it-pushable'
 import { pipe } from 'it-pipe'
 import { abortableSource } from 'abortable-iterator'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
+import type { Stream } from '@libp2p/interfaces/connection'
 import type { Pushable } from 'it-pushable'
 
 const log = logger('libp2p-pubsub:peer-streams')
@@ -32,11 +32,11 @@ export class PeerStreams extends EventEmitter {
   /**
    * The raw outbound stream, as retrieved from conn.newStream
    */
-  private _rawOutboundStream: MuxedStream | undefined
+  private _rawOutboundStream: Stream | undefined
   /**
    * The raw inbound stream, as retrieved from the callback from libp2p.handle
    */
-  private _rawInboundStream: MuxedStream | undefined
+  private _rawInboundStream: Stream | undefined
   /**
    * An AbortController for controlled shutdown of the inbound stream
    */
@@ -81,7 +81,7 @@ export class PeerStreams extends EventEmitter {
   /**
    * Attach a raw inbound stream and setup a read stream
    */
-  attachInboundStream (stream: MuxedStream) {
+  attachInboundStream (stream: Stream) {
     // Create and attach a new inbound stream
     // The inbound stream is:
     // - abortable, set to only return on abort, rather than throw
@@ -103,7 +103,7 @@ export class PeerStreams extends EventEmitter {
   /**
    * Attach a raw outbound stream and setup a write stream
    */
-  async attachOutboundStream (stream: MuxedStream) {
+  async attachOutboundStream (stream: Stream) {
     // If an outbound stream already exists, gently close it
     const _prevStream = this.outboundStream
     if (this.outboundStream != null) {
@@ -115,7 +115,7 @@ export class PeerStreams extends EventEmitter {
     this.outboundStream = pushable({
       onEnd: (shouldEmit) => {
         // close writable side of the stream
-        if ((this._rawOutboundStream?.reset) != null) {
+        if (this._rawOutboundStream != null) {
           this._rawOutboundStream.reset()
         }
 

@@ -1,9 +1,13 @@
 import { Topology } from './index.js'
+import all from 'it-all'
+import { logger } from '@libp2p/logger'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { PeerData } from '@libp2p/interfaces/peer-data'
+import type { Peer } from '@libp2p/interfaces/peer-store'
 import type { Connection } from '@libp2p/interfaces/connection'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 import type { MulticodecTopologyOptions } from '@libp2p/interfaces/topology'
+
+const log = logger('libp2p:topology:multicodec-topology')
 
 interface ChangeProtocolsEvent {
   peerId: PeerId
@@ -36,7 +40,7 @@ export class MulticodecTopology extends Topology {
     return Boolean(multicodecTopologySymbol in other)
   }
 
-  set registrar (registrar: Registrar | undefined) {
+  async setRegistrar (registrar: Registrar | undefined) {
     if (registrar == null) {
       return
     }
@@ -47,7 +51,7 @@ export class MulticodecTopology extends Topology {
     registrar.connectionManager.on('peer:connect', this._onPeerConnect.bind(this))
 
     // Update topology peers
-    this._updatePeers(registrar.peerStore.peers.values())
+    await this._updatePeers(registrar.peerStore.getPeers())
   }
 
   get registrar () {
@@ -56,11 +60,11 @@ export class MulticodecTopology extends Topology {
 
   /**
    * Update topology
-   *
-   * @param peerDatas
    */
-  _updatePeers (peerDatas: Iterable<PeerData>) {
-    for (const { id, protocols } of peerDatas) {
+  async _updatePeers (peerDataIterable: Iterable<Peer> | AsyncIterable<Peer>) {
+    const peerDatas = await all(peerDataIterable)
+
+    for await (const { id, protocols } of peerDatas) {
       if (this.multicodecs.filter(multicodec => protocols.includes(multicodec)).length > 0) {
         // Add the peer regardless of whether or not there is currently a connection
         this.peers.add(id.toString())
@@ -93,13 +97,18 @@ export class MulticodecTopology extends Topology {
       this._onDisconnect(peerId)
     }
 
+    let p: Promise<void> | undefined
+
     // New to protocol support
     for (const protocol of protocols) {
       if (this.multicodecs.includes(protocol)) {
-        const peerData = this._registrar.peerStore.get(peerId)
-        this._updatePeers([peerData])
-        return
+        p = this._registrar.peerStore.get(peerId).then(async peerData => await this._updatePeers([peerData]))
+        break
       }
+    }
+
+    if (p != null) {
+      p.catch(err => log.error(err))
     }
   }
 
@@ -112,15 +121,13 @@ export class MulticodecTopology extends Topology {
     }
 
     const peerId = connection.remotePeer
-    const protocols = this._registrar.peerStore.protoBook.get(peerId)
-
-    if (protocols == null) {
-      return
-    }
-
-    if (this.multicodecs.find(multicodec => protocols.includes(multicodec)) != null) {
-      this.peers.add(peerId.toString())
-      this._onConnect(peerId, connection)
-    }
+    this._registrar.peerStore.protoBook.get(peerId)
+      .then(protocols => {
+        if (this.multicodecs.find(multicodec => protocols.includes(multicodec)) != null) {
+          this.peers.add(peerId.toString())
+          this._onConnect(peerId, connection)
+        }
+      })
+      .catch(err => log.error(err))
   }
 }

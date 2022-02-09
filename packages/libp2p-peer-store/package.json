@@ -1,0 +1,163 @@
+{
+  "name": "@libp2p/peer-store",
+  "version": "0.0.0",
+  "description": "Stores information about peers libp2p knows on the network",
+  "license": "Apache-2.0 OR MIT",
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-peer-store#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/libp2p/js-libp2p-interfaces.git"
+  },
+  "bugs": {
+    "url": "https://github.com/libp2p/js-libp2p-interfaces/issues"
+  },
+  "keywords": [
+    "IPFS"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "type": "module",
+  "types": "./dist/src/index.d.ts",
+  "files": [
+    "src",
+    "dist/src",
+    "!dist/test",
+    "!**/*.tsbuildinfo"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js"
+    }
+  },
+  "eslintConfig": {
+    "extends": "ipfs",
+    "parserOptions": {
+      "sourceType": "module"
+    },
+    "ignorePatterns": [
+      "src/pb/*.d.ts",
+      "src/pb/peer.js"
+    ]
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            {
+              "breaking": true,
+              "release": "major"
+            },
+            {
+              "revert": true,
+              "release": "patch"
+            },
+            {
+              "type": "feat",
+              "release": "minor"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "type": "chore",
+              "release": "patch"
+            },
+            {
+              "type": "docs",
+              "release": "patch"
+            },
+            {
+              "type": "test",
+              "release": "patch"
+            },
+            {
+              "scope": "no-release",
+              "release": false
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "chore",
+                "section": "Trivial Changes"
+              },
+              {
+                "type": "docs",
+                "section": "Trivial Changes"
+              },
+              {
+                "type": "test",
+                "section": "Tests"
+              }
+            ]
+          }
+        }
+      ],
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ]
+  },
+  "scripts": {
+    "lint": "aegir lint",
+    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "build": "tsc",
+    "postbuild": "npm run build:copy-proto-files",
+    "generate": "npm run generate:proto && npm run generate:proto-types && tsc",
+    "generate:proto": "pbjs -t static-module -w es6 -r libp2p-peer-store --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/pb/peer.js ./src/pb/peer.proto",
+    "generate:proto-types": "pbts -o src/pb/peer.d.ts src/pb/peer.js",
+    "build:copy-proto-files": "mkdir -p dist/src/pb && cp src/pb/*.js dist/src/pb && cp src/pb/*.d.ts dist/src/pb",
+    "pretest": "npm run build",
+    "test": "aegir test -f ./dist/test",
+    "test:chrome": "npm run test -- -t browser",
+    "test:chrome-webworker": "npm run test -- -t webworker",
+    "test:firefox": "npm run test -- -t browser -- --browser firefox",
+    "test:firefox-webworker": "npm run test -- -t webworker -- --browser firefox",
+    "test:node": "npm run test -- -t node --cov",
+    "test:electron-main": "npm run test -- -t electron-main"
+  },
+  "dependencies": {
+    "@libp2p/interfaces": "^1.0.0",
+    "protobufjs": "^6.10.2",
+    "@libp2p/logger": "^1.0.1",
+    "interface-datastore": "^6.1.0",
+    "@multiformats/multiaddr": "^10.1.5",
+    "it-all": "^1.0.6",
+    "it-filter": "^1.0.3",
+    "it-pipe": "^2.0.3",
+    "it-map": "^1.0.6",
+    "it-foreach": "^0.1.1",
+    "mortice": "^3.0.0",
+    "multiformats": "^9.6.3",
+    "@libp2p/peer-record": "^0.0.0"
+  },
+  "devDependencies": {
+    "aegir": "^36.1.3",
+    "sinon": "^13.0.1",
+    "datastore-core": "^7.0.1"
+  }
+}

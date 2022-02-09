@@ -96,6 +96,10 @@
       "import": "./dist/src/peer-routing/index.js",
       "types": "./dist/src/peer-routing/index.d.ts"
     },
+    "./peer-store": {
+      "import": "./dist/src/peer-store/index.js",
+      "types": "./dist/src/peer-store/index.d.ts"
+    },
     "./pubsub": {
       "import": "./dist/src/pubsub/index.js",
       "types": "./dist/src/pubsub/index.d.ts"

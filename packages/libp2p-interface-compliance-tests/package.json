@@ -73,8 +73,12 @@
       "types": "./dist/src/stream-muxer/index.d.ts"
     },
     "./topology": {
-      "import": "./dist/src/topology/index.js",
-      "types": "./dist/src/topology/index.d.ts"
+      "import": "./dist/src/topology/topology.js",
+      "types": "./dist/src/topology/topology.d.ts"
+    },
+    "./topology/multicodec-toplogy": {
+      "import": "./dist/src/topology/multicodec-toplogy.js",
+      "types": "./dist/src/topology/multicodec-toplogy.d.ts"
     },
     "./transport": {
       "import": "./dist/src/transport/index.js",
@@ -87,6 +91,30 @@
     "./utils/peers": {
       "import": "./dist/src/utils/peers.js",
       "types": "./dist/src/utils/peers.d.ts"
+    },
+    "./utils/mock-connection": {
+      "import": "./dist/src/utils/mock-connection.js",
+      "types": "./dist/src/utils/mock-connection.d.ts"
+    },
+    "./utils/mock-multiaddr-connection": {
+      "import": "./dist/src/utils/mock-multiaddr-connection.js",
+      "types": "./dist/src/utils/mock-multiaddr-connection.d.ts"
+    },
+    "./utils/mock-muxer": {
+      "import": "./dist/src/utils/mock-muxer.js",
+      "types": "./dist/src/utils/mock-muxer.d.ts"
+    },
+    "./utils/mock-peer-store": {
+      "import": "./dist/src/utils/mock-peer-store.js",
+      "types": "./dist/src/utils/mock-peer-store.d.ts"
+    },
+    "./utils/mock-upgrader": {
+      "import": "./dist/src/utils/mock-upgrader.js",
+      "types": "./dist/src/utils/mock-upgrader.d.ts"
+    },
+    "./utils/mock-connection-gater": {
+      "import": "./dist/src/utils/mock-connection-gater.js",
+      "types": "./dist/src/utils/mock-connection-gater.d.ts"
     }
   },
   "eslintConfig": {
@@ -190,13 +218,11 @@
     "test:electron-main": "npm run test -- -t electron-main"
   },
   "dependencies": {
-    "@libp2p/connection": "^1.0.0",
     "@libp2p/crypto": "^0.22.2",
     "@libp2p/interfaces": "^1.0.0",
     "@libp2p/peer-id": "^1.0.0",
     "@libp2p/peer-id-factory": "^1.0.0",
-    "@libp2p/pubsub": "^1.0.0",
-    "@libp2p/topology": "^1.0.0",
+    "@libp2p/pubsub": "^1.1.0",
     "@multiformats/multiaddr": "^10.1.1",
     "abortable-iterator": "^4.0.0",
     "aegir": "^36.1.3",

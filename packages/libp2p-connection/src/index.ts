@@ -1,16 +1,10 @@
 import type { Multiaddr } from '@multiformats/multiaddr'
 import errCode from 'err-code'
 import { OPEN, CLOSING, CLOSED } from '@libp2p/interfaces/connection/status'
-import type { MuxedStream } from '@libp2p/interfaces/stream-muxer'
-import type { ConnectionStat, StreamData } from '@libp2p/interfaces/connection'
+import type { ConnectionStat, Metadata, ProtocolStream, Stream } from '@libp2p/interfaces/connection'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
-
-export interface ProtocolStream {
-  protocol: string
-  stream: MuxedStream
-}
 
 interface ConnectionOptions {
   localAddr: Multiaddr
@@ -19,7 +13,7 @@ interface ConnectionOptions {
   remotePeer: PeerId
   newStream: (protocols: string[]) => Promise<ProtocolStream>
   close: () => Promise<void>
-  getStreams: () => MuxedStream[]
+  getStreams: () => Stream[]
   stat: ConnectionStat
 }
 
@@ -69,11 +63,11 @@ export class Connection {
   /**
    * Reference to the getStreams function of the muxer
    */
-  private readonly _getStreams: () => MuxedStream[]
+  private readonly _getStreams: () => Stream[]
   /**
    * Connection streams registry
    */
-  public readonly registry: Map<string, StreamData>
+  public readonly registry: Map<string, Metadata>
   private _closing: boolean
 
   /**
@@ -149,9 +143,9 @@ export class Connection {
   /**
    * Add a stream when it is opened to the registry
    */
-  addStream (muxedStream: MuxedStream, streamData: StreamData) {
+  addStream (stream: Stream, metadata: Metadata) {
     // Add metadata for the stream
-    this.registry.set(muxedStream.id, streamData)
+    this.registry.set(stream.id, metadata)
   }
 
   /**

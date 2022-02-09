@@ -1,7 +1,7 @@
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { PeerId } from '../peer-id'
-import type { MuxedStream } from '../stream-muxer'
 import type * as Status from './status.js'
+import type { Duplex } from 'it-stream-types'
 
 export interface Timeline {
   open: number
@@ -17,14 +17,29 @@ export interface ConnectionStat {
   status: keyof typeof Status
 }
 
-export interface StreamData {
+export interface Metadata {
   protocol: string
   metadata: Record<string, any>
 }
 
-export interface Stream {
+/**
+ * A Stream is a data channel between two peers that
+ * can be written to and read from at both ends.
+ *
+ * It may be encrypted and multiplexed depending on the
+ * configuration of the nodes.
+ */
+export interface Stream extends Duplex<Uint8Array> {
+  close: () => void
+  abort: (err?: Error) => void
+  reset: () => void
+  timeline: Timeline
+  id: string
+}
+
+export interface ProtocolStream {
   protocol: string
-  stream: MuxedStream
+  stream: Stream
 }
 
 /**
@@ -38,12 +53,12 @@ export interface Connection {
   stat: ConnectionStat
   remoteAddr: Multiaddr
   remotePeer: PeerId
-  registry: Map<string, StreamData>
+  registry: Map<string, Metadata>
   tags: string[]
-  streams: MuxedStream[]
+  streams: Stream[]
 
-  newStream: (multicodecs: string[]) => Promise<Stream>
-  addStream: (muxedStream: MuxedStream, streamData: StreamData) => void
+  newStream: (multicodecs: string[]) => Promise<ProtocolStream>
+  addStream: (stream: Stream, data: Metadata) => void
   removeStream: (id: string) => void
   close: () => Promise<void>
 }
