@@ -100,6 +100,14 @@
       "import": "./dist/src/utils/mock-multiaddr-connection.js",
       "types": "./dist/src/utils/mock-multiaddr-connection.d.ts"
     },
+    "./utils/mock-registrar": {
+      "import": "./dist/src/utils/mock-registrar.js",
+      "types": "./dist/src/utils/mock-registrar.d.ts"
+    },
+    "./utils/mock-connection-manager": {
+      "import": "./dist/src/utils/mock-connection-manager.js",
+      "types": "./dist/src/utils/mock-connection-manager.d.ts"
+    },
     "./utils/mock-muxer": {
       "import": "./dist/src/utils/mock-muxer.js",
       "types": "./dist/src/utils/mock-muxer.d.ts"

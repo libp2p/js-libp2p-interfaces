@@ -3,6 +3,7 @@ import errcode from 'err-code'
 import { codes } from './errors.js'
 import { PeerId } from '@libp2p/peer-id'
 import { equals as uint8ArrayEquals } from 'uint8arrays/equals'
+import { CustomEvent } from '@libp2p/interfaces'
 import type { Store } from './store.js'
 import type { PeerStore, MetadataBook } from '@libp2p/interfaces/src/peer-store'
 
@@ -11,15 +12,15 @@ const log = logger('libp2p:peer-store:metadata-book')
 const EVENT_NAME = 'change:metadata'
 
 export class PeerStoreMetadataBook implements MetadataBook {
-  private readonly emit: PeerStore['emit']
+  private readonly dispatchEvent: PeerStore['dispatchEvent']
   private readonly store: Store
 
   /**
    * The MetadataBook is responsible for keeping metadata
    * about known peers
    */
-  constructor (emit: PeerStore['emit'], store: Store) {
-    this.emit = emit
+  constructor (dispatchEvent: PeerStore['dispatchEvent'], store: Store) {
+    this.dispatchEvent = dispatchEvent
     this.store = store
   }
 
@@ -94,7 +95,9 @@ export class PeerStoreMetadataBook implements MetadataBook {
       release()
     }
 
-    this.emit(EVENT_NAME, { peerId, metadata })
+    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+      detail: { peerId, metadata }
+    }))
   }
 
   /**
@@ -136,7 +139,9 @@ export class PeerStoreMetadataBook implements MetadataBook {
       release()
     }
 
-    this.emit(EVENT_NAME, { peerId, metadata: updatedPeer.metadata })
+    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+      detail: { peerId, metadata: updatedPeer.metadata }
+    }))
   }
 
   async delete (peerId: PeerId) {
@@ -162,7 +167,9 @@ export class PeerStoreMetadataBook implements MetadataBook {
     }
 
     if (has) {
-      this.emit(EVENT_NAME, { peerId, metadata: new Map() })
+      this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+        detail: { peerId, metadata: new Map() }
+      }))
     }
   }
 
@@ -194,7 +201,9 @@ export class PeerStoreMetadataBook implements MetadataBook {
     }
 
     if (metadata != null) {
-      this.emit(EVENT_NAME, { peerId, metadata })
+      this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+        detail: { peerId, metadata }
+      }))
     }
   }
 }

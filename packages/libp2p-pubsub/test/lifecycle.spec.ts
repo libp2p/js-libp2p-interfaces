@@ -3,15 +3,15 @@ import sinon from 'sinon'
 import { PubsubBaseProtocol } from '../src/index.js'
 import {
   createPeerId,
-  createMockRegistrar,
   PubsubImplementation,
-  ConnectionPair
+  ConnectionPair,
+  mockRegistrar
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 import type { Message } from '@libp2p/interfaces/pubsub'
 
-class PubsubProtocol extends PubsubBaseProtocol {
+class PubsubProtocol extends PubsubBaseProtocol<{}> {
   async _publish (message: Message): Promise<void> {
     throw new Error('Method not implemented.')
   }
@@ -74,7 +74,7 @@ describe('pubsub base lifecycle', () => {
 
   describe('should be able to register two nodes', () => {
     const protocol = '/pubsub/1.0.0'
-    let pubsubA: PubsubImplementation, pubsubB: PubsubImplementation
+    let pubsubA: PubsubImplementation<{}>, pubsubB: PubsubImplementation<{}>
     let peerIdA: PeerId, peerIdB: PeerId
     const registrarRecordA = new Map()
     const registrarRecordB = new Map()
@@ -88,14 +88,14 @@ describe('pubsub base lifecycle', () => {
         multicodecs: [protocol],
         libp2p: {
           peerId: peerIdA,
-          registrar: createMockRegistrar(registrarRecordA)
+          registrar: mockRegistrar
         }
       })
       pubsubB = new PubsubImplementation({
         multicodecs: [protocol],
         libp2p: {
           peerId: peerIdB,
-          registrar: createMockRegistrar(registrarRecordB)
+          registrar: mockRegistrar
         }
       })
     })

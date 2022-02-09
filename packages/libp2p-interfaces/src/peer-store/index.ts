@@ -1,6 +1,6 @@
 import type { PeerId } from '../peer-id/index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { EventEmitter } from 'events'
+import type { EventEmitter } from '../index.js'
 import type { Envelope } from '../record/index.js'
 
 export interface Address {
@@ -182,22 +182,26 @@ export interface ProtoBook extends Book<string[]> {
   remove: (peerId: PeerId, protocols: string[]) => Promise<void>
 }
 
-export interface PeerProtocolsChangeEvent {
+export interface PeerData {
+  peerId: PeerId
+}
+
+export interface PeerProtocolsChangeData {
   peerId: PeerId
   protocols: string[]
 }
 
-export interface PeerMultiaddrsChangeEvent {
+export interface PeerMultiaddrsChangeData {
   peerId: PeerId
   multiaddrs: Multiaddr[]
 }
 
-export interface PeerPublicKeyChangeEvent {
+export interface PeerPublicKeyChangeData {
   peerId: PeerId
   pubKey?: Uint8Array
 }
 
-export interface PeerMetadataChangeEvent {
+export interface PeerMetadataChangeData {
   peerId: PeerId
   metadata: Map<string, Uint8Array>
 }
@@ -205,14 +209,14 @@ export interface PeerMetadataChangeEvent {
 export type EventName = 'peer' | 'change:protocols' | 'change:multiaddrs' | 'change:pubkey' | 'change:metadata'
 
 export interface PeerStoreEvents {
-  'peer': (event: PeerId) => void
-  'change:protocols': (event: PeerProtocolsChangeEvent) => void
-  'change:multiaddrs': (event: PeerMultiaddrsChangeEvent) => void
-  'change:pubkey': (event: PeerPublicKeyChangeEvent) => void
-  'change:metadata': (event: PeerMetadataChangeEvent) => void
+  'peer': CustomEvent<PeerData>
+  'change:protocols': CustomEvent<PeerProtocolsChangeData>
+  'change:multiaddrs': CustomEvent<PeerMultiaddrsChangeData>
+  'change:pubkey': CustomEvent<PeerPublicKeyChangeData>
+  'change:metadata': CustomEvent<PeerMetadataChangeData>
 }
 
-export interface PeerStore extends EventEmitter {
+export interface PeerStore extends EventEmitter<PeerStoreEvents> {
   addressBook: AddressBook
   keyBook: KeyBook
   metadataBook: MetadataBook
@@ -222,13 +226,4 @@ export interface PeerStore extends EventEmitter {
   delete: (peerId: PeerId) => Promise<void>
   has: (peerId: PeerId) => Promise<boolean>
   get: (peerId: PeerId) => Promise<Peer>
-  on: <U extends keyof PeerStoreEvents>(
-    event: U, listener: PeerStoreEvents[U]
-  ) => this
-  once: <U extends keyof PeerStoreEvents>(
-    event: U, listener: PeerStoreEvents[U]
-  ) => this
-  emit: <U extends keyof PeerStoreEvents>(
-    event: U, ...args: Parameters<PeerStoreEvents[U]>
-  ) => boolean
 }

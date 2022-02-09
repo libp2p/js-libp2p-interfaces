@@ -4,15 +4,15 @@ import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
-import type { PubSub, Message } from '@libp2p/interfaces/pubsub'
-import type { Startable } from '@libp2p/interfaces'
+import type { PubSub } from '@libp2p/interfaces/pubsub'
+import type { EventMap } from './index.js'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 
-export default (common: TestSetup<PubSub & Startable>) => {
+export default (common: TestSetup<PubSub<EventMap>>) => {
   describe('pubsub api', () => {
-    let pubsub: PubSub & Startable
+    let pubsub: PubSub<EventMap>
 
     // Create pubsub router
     beforeEach(async () => {
@@ -51,7 +51,7 @@ export default (common: TestSetup<PubSub & Startable>) => {
 
       await pubsub.start()
       pubsub.subscribe(topic)
-      pubsub.on('topic', handler)
+      pubsub.addEventListener('topic', handler)
 
       await pWaitFor(() => {
         const topics = pubsub.getTopics()
@@ -71,15 +71,14 @@ export default (common: TestSetup<PubSub & Startable>) => {
     it('can subscribe and publish correctly', async () => {
       const defer = pDefer()
 
-      const handler = (msg: Message) => {
-        expect(msg).to.not.eql(undefined)
-        defer.resolve()
-      }
-
       await pubsub.start()
 
       pubsub.subscribe(topic)
-      pubsub.on(topic, handler)
+      pubsub.addEventListener(topic, (evt) => {
+        const msg = evt.detail
+        expect(msg).to.not.eql(undefined)
+        defer.resolve()
+      })
       await pubsub.publish(topic, data)
       await defer.promise
 

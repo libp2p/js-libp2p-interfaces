@@ -6,6 +6,7 @@ import { pipe } from 'it-pipe'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { isValidTick, mockUpgrader } from './utils/index.js'
 import defer from 'p-defer'
+import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
 import type { Transport } from '@libp2p/interfaces/transport'
 import type { TransportTestFixtures, SetupArgs } from './index.js'
@@ -108,8 +109,8 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
         const deferred = defer()
         let conn
 
-        listener.on('connection', (c) => {
-          conn = c
+        listener.addEventListener('connection', (evt) => {
+          conn = evt.detail
           deferred.resolve()
         })
 
@@ -127,7 +128,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
 
       it('listening', (done) => {
         const listener = transport.createListener()
-        listener.on('listening', () => {
+        listener.addEventListener('listening', () => {
           listener.close().then(done, done)
         })
         void listener.listen(addrs[0])
@@ -135,16 +136,18 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
 
       it('error', (done) => {
         const listener = transport.createListener()
-        listener.on('error', (err) => {
-          expect(err).to.exist()
+        listener.addEventListener('error', (evt) => {
+          expect(evt.detail).to.be.an.instanceOf(Error)
           listener.close().then(done, done)
         })
-        listener.emit('error', new Error('my err'))
+        listener.dispatchEvent(new CustomEvent('error', {
+          detail: new Error('my err')
+        }))
       })
 
       it('close', (done) => {
         const listener = transport.createListener()
-        listener.on('close', done)
+        listener.addEventListener('close', done)
 
         void (async () => {
           await listener.listen(addrs[0])

@@ -1,5 +1,5 @@
 import { logger } from '@libp2p/logger'
-import { EventEmitter } from 'events'
+import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
 import * as lp from 'it-length-prefixed'
 import { pushable } from 'it-pushable'
 import { pipe } from 'it-pipe'
@@ -7,6 +7,7 @@ import { abortableSource } from 'abortable-iterator'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Stream } from '@libp2p/interfaces/connection'
 import type { Pushable } from 'it-pushable'
+import type { PeerStreamEvents } from '@libp2p/interfaces/pubsub'
 
 const log = logger('libp2p-pubsub:peer-streams')
 
@@ -18,7 +19,7 @@ export interface Options {
 /**
  * Thin wrapper around a peer's inbound / outbound pubsub streams
  */
-export class PeerStreams extends EventEmitter {
+export class PeerStreams extends EventEmitter<PeerStreamEvents> {
   public readonly id: PeerId
   public readonly protocol: string
   /**
@@ -96,7 +97,7 @@ export class PeerStreams extends EventEmitter {
       { returnOnAbort: true }
     )
 
-    this.emit('stream:inbound')
+    this.dispatchEvent(new CustomEvent('stream:inbound'))
     return this.inboundStream
   }
 
@@ -122,7 +123,7 @@ export class PeerStreams extends EventEmitter {
         this._rawOutboundStream = undefined
         this.outboundStream = undefined
         if (shouldEmit != null) {
-          this.emit('close')
+          this.dispatchEvent(new CustomEvent('close'))
         }
       }
     })
@@ -137,7 +138,7 @@ export class PeerStreams extends EventEmitter {
 
     // Only emit if the connection is new
     if (_prevStream == null) {
-      this.emit('stream:outbound')
+      this.dispatchEvent(new CustomEvent('stream:outbound'))
     }
   }
 
@@ -158,6 +159,6 @@ export class PeerStreams extends EventEmitter {
     this.outboundStream = undefined
     this._rawInboundStream = undefined
     this.inboundStream = undefined
-    this.emit('close')
+    this.dispatchEvent(new CustomEvent('close'))
   }
 }

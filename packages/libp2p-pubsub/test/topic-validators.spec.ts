@@ -15,7 +15,7 @@ import {
 const protocol = '/pubsub/1.0.0'
 
 describe('topic validators', () => {
-  let pubsub: PubsubImplementation
+  let pubsub: PubsubImplementation<{}>
 
   beforeEach(async () => {
     const peerId = await createPeerId()

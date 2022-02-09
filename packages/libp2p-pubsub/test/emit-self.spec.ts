@@ -1,8 +1,8 @@
 import { expect } from 'aegir/utils/chai.js'
 import {
   createPeerId,
-  mockRegistrar,
-  PubsubImplementation
+  PubsubImplementation,
+  mockRegistrar
 } from './utils/index.js'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import delay from 'delay'
@@ -12,14 +12,18 @@ const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 const shouldNotHappen = () => expect.fail()
 
+interface PubsubEvents {
+  'foo': CustomEvent<any>
+}
+
 describe('emitSelf', () => {
-  let pubsub: PubsubImplementation
+  let pubsub: PubsubImplementation<PubsubEvents>
 
   describe('enabled', () => {
     before(async () => {
       const peerId = await createPeerId()
 
-      pubsub = new PubsubImplementation({
+      pubsub = new PubsubImplementation<PubsubEvents>({
         multicodecs: [protocol],
         libp2p: {
           peerId,
@@ -39,7 +43,9 @@ describe('emitSelf', () => {
     })
 
     it('should emit to self on publish', async () => {
-      const promise = new Promise((resolve) => pubsub.once(topic, resolve))
+      const promise = new Promise((resolve) => pubsub.addEventListener(topic, resolve, {
+        once: true
+      }))
 
       await pubsub.publish(topic, data)
 
@@ -71,7 +77,9 @@ describe('emitSelf', () => {
     })
 
     it('should not emit to self on publish', async () => {
-      pubsub.once(topic, () => shouldNotHappen)
+      pubsub.addEventListener(topic, () => shouldNotHappen, {
+        once: true
+      })
 
       await pubsub.publish(topic, data)
 

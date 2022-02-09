@@ -30,10 +30,6 @@ describe('metadataBook', () => {
       mb = peerStore.metadataBook
     })
 
-    afterEach(() => {
-      peerStore.removeAllListeners()
-    })
-
     it('throws invalid parameters error if invalid PeerId is provided', async () => {
       try {
         // @ts-expect-error invalid input
@@ -83,10 +79,13 @@ describe('metadataBook', () => {
       const metadataKey = 'location'
       const metadataValue = uint8ArrayFromString('mars')
 
-      peerStore.once('change:metadata', ({ peerId, metadata }) => {
+      peerStore.addEventListener('change:metadata', (evt) => {
+        const { peerId, metadata } = evt.detail
         expect(peerId).to.exist()
         expect(metadata.get(metadataKey)).to.equalBytes(metadataValue)
         defer.resolve()
+      }, {
+        once: true
       })
 
       await mb.setValue(peerId, metadataKey, metadataValue)
@@ -108,7 +107,7 @@ describe('metadataBook', () => {
       const metadataValue2 = uint8ArrayFromString('saturn')
 
       let changeCounter = 0
-      peerStore.on('change:metadata', () => {
+      peerStore.addEventListener('change:metadata', () => {
         changeCounter++
         if (changeCounter > 1) {
           defer.resolve()
@@ -137,7 +136,7 @@ describe('metadataBook', () => {
       const metadataValue = uint8ArrayFromString('mars')
 
       let changeCounter = 0
-      peerStore.on('change:metadata', () => {
+      peerStore.addEventListener('change:metadata', () => {
         changeCounter++
         if (changeCounter > 1) {
           defer.reject()
@@ -281,7 +280,7 @@ describe('metadataBook', () => {
     it('should not emit event if no records exist for the peer', async () => {
       const defer = pDefer()
 
-      peerStore.on('change:metadata', () => {
+      peerStore.addEventListener('change:metadata', () => {
         defer.reject()
       })
 
@@ -303,7 +302,7 @@ describe('metadataBook', () => {
       await mb.setValue(peerId, metadataKey, metadataValue)
 
       // Listen after set
-      peerStore.on('change:metadata', () => {
+      peerStore.addEventListener('change:metadata', () => {
         defer.resolve()
       })
 
@@ -340,7 +339,7 @@ describe('metadataBook', () => {
       const defer = pDefer()
       const metadataKey = 'location'
 
-      peerStore.on('change:metadata', () => {
+      peerStore.addEventListener('change:metadata', () => {
         defer.reject()
       })
 
@@ -362,7 +361,7 @@ describe('metadataBook', () => {
       await mb.setValue(peerId, metadataKey, metadataValue)
 
       // Listen after set
-      peerStore.on('change:metadata', () => {
+      peerStore.addEventListener('change:metadata', () => {
         defer.resolve()
       })
 

@@ -11,7 +11,7 @@ import {
   first,
   expectSet
 } from './utils.js'
-import type { Startable } from '@libp2p/interfaces'
+import type { EventMap } from './index.js'
 
 const topic = 'foo'
 
@@ -19,10 +19,10 @@ function shouldNotHappen () {
   expect.fail()
 }
 
-export default (common: TestSetup<PubSub & Startable>) => {
+export default (common: TestSetup<PubSub<EventMap>>) => {
   describe('pubsub with two nodes', () => {
-    let psA: PubSub & Startable
-    let psB: PubSub & Startable
+    let psA: PubSub<EventMap>
+    let psB: PubSub<EventMap>
 
     // Create pubsub nodes and connect them
     before(async () => {
@@ -55,7 +55,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
     it('Subscribe to a topic in nodeA', async () => {
       const defer = pDefer()
 
-      psB.once('pubsub:subscription-change', ({ peerId: changedPeerId, subscriptions: changedSubs }) => {
+      psB.addEventListener('pubsub:subscription-change', (evt) => {
+        const { peerId: changedPeerId, subscriptions: changedSubs } = evt.detail
         expectSet(psA.subscriptions, [topic])
         expect(psB.peers.size).to.equal(1)
         expectSet(psB.topics.get(topic), [psA.peerId.toString()])
@@ -64,6 +65,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
         expect(changedSubs[0].topicID).to.equal(topic)
         expect(changedSubs[0].subscribe).to.equal(true)
         defer.resolve()
+      }, {
+        once: true
       })
       psA.subscribe(topic)
 
@@ -73,13 +76,18 @@ export default (common: TestSetup<PubSub & Startable>) => {
     it('Publish to a topic in nodeA', async () => {
       const defer = pDefer()
 
-      psA.once(topic, (msg) => {
+      psA.addEventListener(topic, (evt) => {
+        const msg = evt.detail
         expect(uint8ArrayToString(msg.data)).to.equal('hey')
-        psB.removeListener(topic, shouldNotHappen)
+        psB.removeEventListener(topic, shouldNotHappen)
         defer.resolve()
+      }, {
+        once: true
       })
 
-      psB.once(topic, shouldNotHappen)
+      psB.addEventListener(topic, shouldNotHappen, {
+        once: true
+      })
 
       void psA.publish(topic, uint8ArrayFromString('hey'))
 
@@ -89,19 +97,26 @@ export default (common: TestSetup<PubSub & Startable>) => {
     it('Publish to a topic in nodeB', async () => {
       const defer = pDefer()
 
-      psA.once(topic, (msg) => {
-        psA.once(topic, shouldNotHappen)
+      psA.addEventListener(topic, (evt) => {
+        const msg = evt.detail
+        psA.addEventListener(topic, shouldNotHappen, {
+          once: true
+        })
         expect(uint8ArrayToString(msg.data)).to.equal('banana')
 
         setTimeout(() => {
-          psA.removeListener(topic, shouldNotHappen)
-          psB.removeListener(topic, shouldNotHappen)
+          psA.removeEventListener(topic, shouldNotHappen)
+          psB.removeEventListener(topic, shouldNotHappen)
 
           defer.resolve()
         }, 100)
+      }, {
+        once: true
       })
 
-      psB.once(topic, shouldNotHappen)
+      psB.addEventListener(topic, shouldNotHappen, {
+        once: true
+      })
 
       void psB.publish(topic, uint8ArrayFromString('banana'))
 
@@ -112,18 +127,21 @@ export default (common: TestSetup<PubSub & Startable>) => {
       const defer = pDefer()
       let counter = 0
 
-      psB.once(topic, shouldNotHappen)
-      psA.on(topic, receivedMsg)
+      psB.addEventListener(topic, shouldNotHappen, {
+        once: true
+      })
+      psA.addEventListener(topic, receivedMsg)
 
-      function receivedMsg (msg: Message) {
+      function receivedMsg (evt: CustomEvent<Message>) {
+        const msg = evt.detail
         expect(uint8ArrayToString(msg.data)).to.equal('banana')
         expect(msg.from).to.be.eql(psB.peerId.toString())
         expect(msg.seqno).to.be.a('Uint8Array')
         expect(msg.topicIDs).to.be.eql([topic])
 
         if (++counter === 10) {
-          psA.removeListener(topic, receivedMsg)
-          psB.removeListener(topic, shouldNotHappen)
+          psA.removeEventListener(topic, receivedMsg)
+          psB.removeEventListener(topic, shouldNotHappen)
 
           defer.resolve()
         }
@@ -140,7 +158,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
       psA.unsubscribe(topic)
       expect(psA.subscriptions.size).to.equal(0)
 
-      psB.once('pubsub:subscription-change', ({ peerId: changedPeerId, subscriptions: changedSubs }) => {
+      psB.addEventListener('pubsub:subscription-change', (evt) => {
+        const { peerId: changedPeerId, subscriptions: changedSubs } = evt.detail
         expect(psB.peers.size).to.equal(1)
         expectSet(psB.topics.get(topic), [])
         expect(changedPeerId.toString()).to.equal(first(psB.peers).id.toString())
@@ -149,6 +168,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
         expect(changedSubs[0].subscribe).to.equal(false)
 
         defer.resolve()
+      }, {
+        once: true
       })
 
       return await defer.promise
@@ -157,12 +178,16 @@ export default (common: TestSetup<PubSub & Startable>) => {
     it('Publish to a topic:Z in nodeA nodeB', async () => {
       const defer = pDefer()
 
-      psA.once('Z', shouldNotHappen)
-      psB.once('Z', shouldNotHappen)
+      psA.addEventListener('Z', shouldNotHappen, {
+        once: true
+      })
+      psB.addEventListener('Z', shouldNotHappen, {
+        once: true
+      })
 
       setTimeout(() => {
-        psA.removeListener('Z', shouldNotHappen)
-        psB.removeListener('Z', shouldNotHappen)
+        psA.removeEventListener('Z', shouldNotHappen)
+        psB.removeEventListener('Z', shouldNotHappen)
         defer.resolve()
       }, 100)
 

@@ -1,11 +1,11 @@
 import { logger } from '@libp2p/logger'
-import { EventEmitter } from 'events'
+import { EventEmitter } from '@libp2p/interfaces'
 import { PeerStoreAddressBook } from './address-book.js'
 import { PeerStoreKeyBook } from './key-book.js'
 import { PeerStoreMetadataBook } from './metadata-book.js'
 import { PeerStoreProtoBook } from './proto-book.js'
 import { PersistentStore, Store } from './store.js'
-import type { PeerStore, Address, AddressBook, KeyBook, MetadataBook, ProtoBook } from '@libp2p/interfaces/peer-store'
+import type { PeerStore, Address, AddressBook, KeyBook, MetadataBook, ProtoBook, PeerStoreEvents } from '@libp2p/interfaces/peer-store'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Datastore } from 'interface-datastore'
@@ -30,7 +30,7 @@ export interface PeerStoreOptions {
 /**
  * An implementation of PeerStore that stores data in a Datastore
  */
-export class DefaultPeerStore extends EventEmitter implements PeerStore {
+export class DefaultPeerStore extends EventEmitter<PeerStoreEvents> implements PeerStore {
   public addressBook: AddressBook
   public keyBook: KeyBook
   public metadataBook: MetadataBook
@@ -47,10 +47,10 @@ export class DefaultPeerStore extends EventEmitter implements PeerStore {
     this.peerId = peerId
     this.store = new PersistentStore(datastore)
 
-    this.addressBook = new PeerStoreAddressBook(this.emit.bind(this), this.store, addressFilter)
-    this.keyBook = new PeerStoreKeyBook(this.emit.bind(this), this.store)
-    this.metadataBook = new PeerStoreMetadataBook(this.emit.bind(this), this.store)
-    this.protoBook = new PeerStoreProtoBook(this.emit.bind(this), this.store)
+    this.addressBook = new PeerStoreAddressBook(this.dispatchEvent.bind(this), this.store, addressFilter)
+    this.keyBook = new PeerStoreKeyBook(this.dispatchEvent.bind(this), this.store)
+    this.metadataBook = new PeerStoreMetadataBook(this.dispatchEvent.bind(this), this.store)
+    this.protoBook = new PeerStoreProtoBook(this.dispatchEvent.bind(this), this.store)
   }
 
   async * getPeers () {

@@ -1,5 +1,7 @@
-import type { PeerId } from '../peer-id'
-import type { Connection } from '../connection'
+import type { PeerId } from '../peer-id/index.js'
+import type { Connection } from '../connection/index.js'
+import type { ConnectionManager } from '../registrar/index.js'
+import type { PeerStore } from '../peer-store/index.js'
 
 export interface onConnectHandler { (peerId: PeerId, conn: Connection): void }
 export interface onDisconnectHandler { (peerId: PeerId, conn?: Connection): void }
@@ -32,6 +34,8 @@ export interface Topology {
 
 export interface MulticodecTopologyOptions extends TopologyOptions {
   multicodecs: string[]
+  peerStore: PeerStore
+  connectionManager: ConnectionManager
 }
 
 export interface MulticodecTopology extends Topology {

@@ -16,9 +16,6 @@ export default (common: TestSetup<PeerDiscovery & Startable>) => {
 
     afterEach('ensure discovery was stopped', async () => {
       await discovery.stop()
-
-      discovery.removeAllListeners()
-
       await common.teardown()
     })
 
@@ -44,7 +41,8 @@ export default (common: TestSetup<PeerDiscovery & Startable>) => {
       const defer = pDefer()
       await discovery.start()
 
-      discovery.on('peer', ({ id, multiaddrs }) => {
+      discovery.addEventListener('peer', (evt) => {
+        const { id, multiaddrs } = evt.detail
         expect(id).to.exist()
         expect(id).to.have.property('type').that.is.oneOf(['RSA', 'Ed25519', 'secp256k1'])
         expect(multiaddrs).to.exist()
@@ -58,7 +56,7 @@ export default (common: TestSetup<PeerDiscovery & Startable>) => {
     })
 
     it('should not receive a peer event before start', async () => {
-      discovery.on('peer', () => {
+      discovery.addEventListener('peer', () => {
         throw new Error('should not receive a peer event before start')
       })
 
@@ -70,14 +68,14 @@ export default (common: TestSetup<PeerDiscovery & Startable>) => {
 
       await discovery.start()
 
-      discovery.on('peer', () => {
+      discovery.addEventListener('peer', () => {
         deferStart.resolve()
       })
 
       await deferStart.promise
       await discovery.stop()
 
-      discovery.on('peer', () => {
+      discovery.addEventListener('peer', () => {
         throw new Error('should not receive a peer event after stop')
       })
 

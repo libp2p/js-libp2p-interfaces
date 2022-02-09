@@ -2,9 +2,9 @@ import { Topology } from './index.js'
 import all from 'it-all'
 import { logger } from '@libp2p/logger'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Peer } from '@libp2p/interfaces/peer-store'
+import type { Peer, PeerStore } from '@libp2p/interfaces/peer-store'
 import type { Connection } from '@libp2p/interfaces/connection'
-import type { Registrar } from '@libp2p/interfaces/registrar'
+import type { ConnectionManager, Registrar } from '@libp2p/interfaces/registrar'
 import type { MulticodecTopologyOptions } from '@libp2p/interfaces/topology'
 
 const log = logger('libp2p:topology:multicodec-topology')
@@ -18,11 +18,15 @@ const multicodecTopologySymbol = Symbol.for('@libp2p/js-interfaces/topology/mult
 
 export class MulticodecTopology extends Topology {
   public readonly multicodecs: string[]
+  private readonly peerStore: PeerStore
+  private readonly connectionManager: ConnectionManager
 
   constructor (options: MulticodecTopologyOptions) {
     super(options)
 
     this.multicodecs = options.multicodecs
+    this.peerStore = options.peerStore
+    this.connectionManager = options.connectionManager
   }
 
   get [Symbol.toStringTag] () {
@@ -46,12 +50,15 @@ export class MulticodecTopology extends Topology {
     }
 
     this._registrar = registrar
-
-    registrar.peerStore.on('change:protocols', this._onProtocolChange.bind(this))
-    registrar.connectionManager.on('peer:connect', this._onPeerConnect.bind(this))
+    this.peerStore.addEventListener('change:protocols', (evt) => {
+      this._onProtocolChange(evt.detail)
+    })
+    this.connectionManager.addEventListener('peer:connect', (evt) => {
+      this._onPeerConnect(evt.detail)
+    })
 
     // Update topology peers
-    await this._updatePeers(registrar.peerStore.getPeers())
+    await this._updatePeers(this.peerStore.getPeers())
   }
 
   get registrar () {
@@ -69,8 +76,8 @@ export class MulticodecTopology extends Topology {
         // Add the peer regardless of whether or not there is currently a connection
         this.peers.add(id.toString())
         // If there is a connection, call _onConnect
-        if (this._registrar != null) {
-          const connection = this._registrar.getConnection(id)
+        if (this.connectionManager != null) {
+          const connection = this.connectionManager.getConnection(id)
           ;(connection != null) && this._onConnect(id, connection)
         }
       } else {
@@ -102,7 +109,7 @@ export class MulticodecTopology extends Topology {
     // New to protocol support
     for (const protocol of protocols) {
       if (this.multicodecs.includes(protocol)) {
-        p = this._registrar.peerStore.get(peerId).then(async peerData => await this._updatePeers([peerData]))
+        p = this.peerStore.get(peerId).then(async peerData => await this._updatePeers([peerData]))
         break
       }
     }
@@ -121,7 +128,7 @@ export class MulticodecTopology extends Topology {
     }
 
     const peerId = connection.remotePeer
-    this._registrar.peerStore.protoBook.get(peerId)
+    this.peerStore.protoBook.get(peerId)
       .then(protocols => {
         if (this.multicodecs.find(multicodec => protocols.includes(multicodec)) != null) {
           this.peers.add(peerId.toString())

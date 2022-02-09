@@ -2,24 +2,25 @@ import { logger } from '@libp2p/logger'
 import errcode from 'err-code'
 import { codes } from './errors.js'
 import { PeerId } from '@libp2p/peer-id'
+import { base58btc } from 'multiformats/bases/base58'
+import { CustomEvent } from '@libp2p/interfaces'
 import type { Store } from './store.js'
 import type { PeerStore, ProtoBook } from '@libp2p/interfaces/src/peer-store'
-import { base58btc } from 'multiformats/bases/base58'
 
 const log = logger('libp2p:peer-store:proto-book')
 
 const EVENT_NAME = 'change:protocols'
 
 export class PeerStoreProtoBook implements ProtoBook {
-  private readonly emit: PeerStore['emit']
+  private readonly dispatchEvent: PeerStore['dispatchEvent']
   private readonly store: Store
 
   /**
    * The ProtoBook is responsible for keeping the known supported
    * protocols of a peer
    */
-  constructor (emit: PeerStore['emit'], store: Store) {
-    this.emit = emit
+  constructor (dispatchEvent: PeerStore['dispatchEvent'], store: Store) {
+    this.dispatchEvent = dispatchEvent
     this.store = store
   }
 
@@ -83,7 +84,9 @@ export class PeerStoreProtoBook implements ProtoBook {
       release()
     }
 
-    this.emit(EVENT_NAME, { peerId, protocols: updatedPeer.protocols })
+    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+      detail: { peerId, protocols: updatedPeer.protocols }
+    }))
   }
 
   async add (peerId: PeerId, protocols: string[]) {
@@ -126,7 +129,9 @@ export class PeerStoreProtoBook implements ProtoBook {
       release()
     }
 
-    this.emit(EVENT_NAME, { peerId, protocols: updatedPeer.protocols })
+    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+      detail: { peerId, protocols: updatedPeer.protocols }
+    }))
   }
 
   async remove (peerId: PeerId, protocols: string[]) {
@@ -171,7 +176,9 @@ export class PeerStoreProtoBook implements ProtoBook {
       release()
     }
 
-    this.emit(EVENT_NAME, { peerId, protocols: updatedPeer.protocols })
+    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+      detail: { peerId, protocols: updatedPeer.protocols }
+    }))
   }
 
   async delete (peerId: PeerId) {
@@ -198,7 +205,9 @@ export class PeerStoreProtoBook implements ProtoBook {
     }
 
     if (has === true) {
-      this.emit(EVENT_NAME, { peerId, protocols: [] })
+      this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+        detail: { peerId, protocols: [] }
+      }))
     }
   }
 }

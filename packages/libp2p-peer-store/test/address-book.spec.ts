@@ -47,10 +47,6 @@ describe('addressBook', () => {
       ab = peerStore.addressBook
     })
 
-    afterEach(() => {
-      peerStore.removeAllListeners()
-    })
-
     it('throws invalid parameters error if invalid PeerId is provided', async () => {
       try {
         // @ts-expect-error invalid input
@@ -88,10 +84,13 @@ describe('addressBook', () => {
       const defer = pDefer()
       const supportedMultiaddrs = [addr1, addr2]
 
-      peerStore.once('change:multiaddrs', ({ peerId, multiaddrs }) => {
+      peerStore.addEventListener('change:multiaddrs', (evt) => {
+        const { peerId, multiaddrs } = evt.detail
         expect(peerId).to.exist()
         expect(multiaddrs).to.eql(supportedMultiaddrs)
         defer.resolve()
+      }, {
+        once: true
       })
 
       await ab.set(peerId, supportedMultiaddrs)
@@ -109,7 +108,7 @@ describe('addressBook', () => {
       const supportedMultiaddrsB = [addr2]
 
       let changeCounter = 0
-      peerStore.on('change:multiaddrs', () => {
+      peerStore.addEventListener('change:multiaddrs', () => {
         changeCounter++
         if (changeCounter > 1) {
           defer.resolve()
@@ -134,7 +133,7 @@ describe('addressBook', () => {
       const supportedMultiaddrs = [addr1, addr2]
 
       let changeCounter = 0
-      peerStore.on('change:multiaddrs', () => {
+      peerStore.addEventListener('change:multiaddrs', () => {
         changeCounter++
         if (changeCounter > 1) {
           defer.reject()
@@ -167,10 +166,6 @@ describe('addressBook', () => {
         addressFilter: connectionGater.filterMultiaddrForPeer
       })
       ab = peerStore.addressBook
-    })
-
-    afterEach(() => {
-      peerStore.removeAllListeners()
     })
 
     it('throws invalid parameters error if invalid PeerId is provided', async () => {
@@ -209,7 +204,7 @@ describe('addressBook', () => {
     it('does not emit event if no addresses are added', async () => {
       const defer = pDefer()
 
-      peerStore.on('peer', () => {
+      peerStore.addEventListener('peer', () => {
         defer.reject()
       })
 
@@ -231,7 +226,8 @@ describe('addressBook', () => {
       const finalMultiaddrs = supportedMultiaddrsA.concat(supportedMultiaddrsB)
 
       let changeTrigger = 2
-      peerStore.on('change:multiaddrs', ({ multiaddrs }) => {
+      peerStore.addEventListener('change:multiaddrs', (evt) => {
+        const { multiaddrs } = evt.detail
         changeTrigger--
         if (changeTrigger === 0 && arrayEquals(multiaddrs, finalMultiaddrs)) {
           defer.resolve()
@@ -261,7 +257,7 @@ describe('addressBook', () => {
       const finalMultiaddrs = supportedMultiaddrsA.concat(supportedMultiaddrsB)
 
       let changeCounter = 0
-      peerStore.on('change:multiaddrs', () => {
+      peerStore.addEventListener('change:multiaddrs', () => {
         changeCounter++
         if (changeCounter > 1) {
           defer.resolve()
@@ -287,7 +283,7 @@ describe('addressBook', () => {
       const supportedMultiaddrsB = [addr2]
 
       let changeCounter = 0
-      peerStore.on('change:multiaddrs', () => {
+      peerStore.addEventListener('change:multiaddrs', () => {
         changeCounter++
         if (changeCounter > 1) {
           defer.reject()
@@ -439,7 +435,7 @@ describe('addressBook', () => {
     it('does not emit an event if no records exist for the peer', async () => {
       const defer = pDefer()
 
-      peerStore.on('change:multiaddrs', () => {
+      peerStore.addEventListener('change:multiaddrs', () => {
         defer.reject()
       })
 
@@ -460,7 +456,8 @@ describe('addressBook', () => {
       await ab.set(peerId, supportedMultiaddrs)
 
       // Listen after set
-      peerStore.on('change:multiaddrs', ({ multiaddrs }) => {
+      peerStore.addEventListener('change:multiaddrs', (evt) => {
+        const { multiaddrs } = evt.detail
         expect(multiaddrs.length).to.eql(0)
         defer.resolve()
       })
@@ -516,10 +513,13 @@ describe('addressBook', () => {
         })
         const envelope = await RecordEnvelope.seal(peerRecord, peerId)
 
-        peerStore.once('change:multiaddrs', ({ peerId, multiaddrs }) => {
+        peerStore.addEventListener('change:multiaddrs', (evt) => {
+          const { peerId, multiaddrs } = evt.detail
           expect(peerId).to.exist()
           expect(multiaddrs).to.eql(multiaddrs)
           defer.resolve()
+        }, {
+          once: true
         })
 
         // consume peer record
@@ -553,10 +553,13 @@ describe('addressBook', () => {
         })
         const envelope = await RecordEnvelope.seal(peerRecord, peerId)
 
-        peerStore.once('change:multiaddrs', ({ peerId, multiaddrs }) => {
+        peerStore.addEventListener('change:multiaddrs', (evt) => {
+          const { peerId, multiaddrs } = evt.detail
           expect(peerId).to.exist()
           expect(multiaddrs).to.eql(multiaddrs)
           defer.resolve()
+        }, {
+          once: true
         })
 
         // consume peer record
@@ -597,10 +600,13 @@ describe('addressBook', () => {
         })
         const envelope = await RecordEnvelope.seal(peerRecord, peerId)
 
-        peerStore.once('change:multiaddrs', ({ peerId, multiaddrs }) => {
+        peerStore.addEventListener('change:multiaddrs', (evt) => {
+          const { peerId, multiaddrs } = evt.detail
           expect(peerId).to.exist()
           expect(multiaddrs).to.eql(multiaddrs)
           defer.resolve()
+        }, {
+          once: true
         })
 
         // consume peer record
@@ -644,10 +650,13 @@ describe('addressBook', () => {
         })
         const envelope = await RecordEnvelope.seal(peerRecord, peerId)
 
-        peerStore.once('change:multiaddrs', ({ peerId, multiaddrs }) => {
+        peerStore.addEventListener('change:multiaddrs', (evt) => {
+          const { peerId, multiaddrs } = evt.detail
           expect(peerId).to.exist()
           expect(multiaddrs).to.eql(multiaddrs)
           defer.resolve()
+        }, {
+          once: true
         })
 
         // consume peer record

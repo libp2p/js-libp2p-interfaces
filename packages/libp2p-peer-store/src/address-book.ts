@@ -10,6 +10,7 @@ import map from 'it-map'
 import each from 'it-foreach'
 import { base58btc } from 'multiformats/bases/base58'
 import { PeerId } from '@libp2p/peer-id'
+import { CustomEvent } from '@libp2p/interfaces'
 import type { PeerStore } from '@libp2p/interfaces/peer-store'
 import type { Store } from './store.js'
 import type { AddressFilter, AddressSorter } from './index.js'
@@ -23,12 +24,12 @@ async function allowAll () {
 }
 
 export class PeerStoreAddressBook {
-  private readonly emit: PeerStore['emit']
+  private readonly dispatchEvent: PeerStore['dispatchEvent']
   private readonly store: Store
   private readonly addressFilter: AddressFilter
 
-  constructor (emit: PeerStore['emit'], store: Store, addressFilter?: AddressFilter) {
-    this.emit = emit
+  constructor (dispatchEvent: PeerStore['dispatchEvent'], store: Store, addressFilter?: AddressFilter) {
+    this.dispatchEvent = dispatchEvent
     this.store = store
     this.addressFilter = addressFilter ?? allowAll
   }
@@ -96,7 +97,9 @@ export class PeerStoreAddressBook {
       release()
     }
 
-    this.emit(EVENT_NAME, { peerId, multiaddrs: updatedPeer.addresses.map(({ multiaddr }) => multiaddr) })
+    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+      detail: { peerId, multiaddrs: updatedPeer.addresses.map(({ multiaddr }) => multiaddr) }
+    }))
 
     return true
   }
@@ -205,11 +208,17 @@ export class PeerStoreAddressBook {
       release()
     }
 
-    this.emit(EVENT_NAME, { peerId, multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr) })
+    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+      detail: { peerId, multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr) }
+    }))
 
     // Notify the existence of a new peer
     if (!hasPeer) {
-      this.emit('peer', peerId)
+      this.dispatchEvent(new CustomEvent('peer', {
+        detail: {
+          peerId
+        }
+      }))
     }
   }
 
@@ -260,11 +269,15 @@ export class PeerStoreAddressBook {
       release()
     }
 
-    this.emit(EVENT_NAME, { peerId, multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr) })
+    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+      detail: { peerId, multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr) }
+    }))
 
     // Notify the existence of a new peer
     if (hasPeer === true) {
-      this.emit('peer', peerId)
+      this.dispatchEvent(new CustomEvent('peer', {
+        detail: { peerId }
+      }))
     }
   }
 
@@ -289,7 +302,9 @@ export class PeerStoreAddressBook {
     }
 
     if (has) {
-      this.emit(EVENT_NAME, { peerId, multiaddrs: [] })
+      this.dispatchEvent(new CustomEvent(EVENT_NAME, {
+        detail: { peerId, multiaddrs: [] }
+      }))
     }
   }
 
