@@ -1,3 +1,10 @@
+## [@libp2p/peer-id-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-v1.0.4...@libp2p/peer-id-v1.1.0) (2022-02-09)
+
+
+### Features
+
+* add peer store/records, and streams are just streams ([#160](https://github.com/libp2p/js-libp2p-interfaces/issues/160)) ([8860a0c](https://github.com/libp2p/js-libp2p-interfaces/commit/8860a0cd46b359a5648402d83870f7ff957222fe))
+
 ## [@libp2p/peer-id-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-v1.0.3...@libp2p/peer-id-v1.0.4) (2022-01-29)
 
 
