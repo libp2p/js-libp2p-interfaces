@@ -115,6 +115,7 @@ export class PeerStreams extends EventEmitter {
     this.outboundStream = pushable({
       onEnd: (shouldEmit) => {
         // close writable side of the stream
+        // @ts-expect-error reset should not be null
         if (this._rawOutboundStream != null && this._rawOutboundStream.reset != null) {
           this._rawOutboundStream.reset()
         }
