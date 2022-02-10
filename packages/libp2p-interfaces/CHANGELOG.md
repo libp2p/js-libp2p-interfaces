@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.1...@libp2p/interfaces-v1.3.2) (2022-02-10)
+
+
+### Bug Fixes
+
+* remove args from listener events ([#162](https://github.com/libp2p/js-libp2p-interfaces/issues/162)) ([011ac89](https://github.com/libp2p/js-libp2p-interfaces/commit/011ac891ec7d44625cb4342f068bcd9f241a5b45))
+
 ## [@libp2p/interfaces-v1.3.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.0...@libp2p/interfaces-v1.3.1) (2022-02-10)
 
 
