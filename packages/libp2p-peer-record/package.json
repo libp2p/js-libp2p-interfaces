@@ -126,7 +126,7 @@
   },
   "scripts": {
     "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
     "build": "tsc",
     "postbuild": "npm run build:copy-proto-files",
     "generate": "npm run generate:envelope && npm run generate:envelope-types && npm run generate:peer-record && npm run generate:peer-record-types",

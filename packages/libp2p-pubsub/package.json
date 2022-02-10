@@ -166,7 +166,7 @@
   },
   "scripts": {
     "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
     "build": "tsc",
     "postbuild": "npm run build:copy-proto-files",
     "pretest": "npm run build",
@@ -203,7 +203,10 @@
   },
   "devDependencies": {
     "@types/bl": "^5.0.2",
+    "abortable-iterator": "^4.0.2",
     "aegir": "^36.1.3",
+    "it-pair": "^2.0.2",
+    "it-pushable": "^2.0.1",
     "protobufjs": "^6.10.2",
     "util": "^0.12.4"
   }
