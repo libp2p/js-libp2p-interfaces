@@ -1,3 +1,10 @@
+## [@libp2p/peer-id-factory-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-factory-v1.0.3...@libp2p/peer-id-factory-v1.0.4) (2022-02-10)
+
+
+### Bug Fixes
+
+* remove node event emitters ([#161](https://github.com/libp2p/js-libp2p-interfaces/issues/161)) ([221fb6a](https://github.com/libp2p/js-libp2p-interfaces/commit/221fb6a024430dc56288d73d8b8ce1aa88427701))
+
 ## [@libp2p/peer-id-factory-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-factory-v1.0.2...@libp2p/peer-id-factory-v1.0.3) (2022-01-15)
 
 
