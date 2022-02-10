@@ -38,10 +38,6 @@ describe('protoBook', () => {
       pb = peerStore.protoBook
     })
 
-    afterEach(() => {
-      peerStore.removeAllListeners()
-    })
-
     it('throws invalid parameters error if invalid PeerId is provided', async () => {
       // @ts-expect-error invalid input
       await expect(pb.set('invalid peerId')).to.eventually.be.rejected().with.property('code', codes.ERR_INVALID_PARAMETERS)
@@ -56,10 +52,13 @@ describe('protoBook', () => {
       const defer = pDefer()
       const supportedProtocols = ['protocol1', 'protocol2']
 
-      peerStore.once('change:protocols', ({ peerId, protocols }) => {
+      peerStore.addEventListener('change:protocols', (evt) => {
+        const { peerId, protocols } = evt.detail
         expect(peerId).to.exist()
         expect(protocols).to.have.deep.members(supportedProtocols)
         defer.resolve()
+      }, {
+        once: true
       })
 
       await pb.set(peerId, supportedProtocols)
@@ -76,7 +75,7 @@ describe('protoBook', () => {
       const supportedProtocolsB = ['protocol2']
 
       let changeCounter = 0
-      peerStore.on('change:protocols', () => {
+      peerStore.addEventListener('change:protocols', () => {
         changeCounter++
         if (changeCounter > 1) {
           defer.resolve()
@@ -100,7 +99,7 @@ describe('protoBook', () => {
       const supportedProtocols = ['protocol1', 'protocol2']
 
       let changeCounter = 0
-      peerStore.on('change:protocols', () => {
+      peerStore.addEventListener('change:protocols', () => {
         changeCounter++
         if (changeCounter > 1) {
           defer.reject()
@@ -134,10 +133,6 @@ describe('protoBook', () => {
       pb = peerStore.protoBook
     })
 
-    afterEach(() => {
-      peerStore.removeAllListeners()
-    })
-
     it('throws invalid parameters error if invalid PeerId is provided', async () => {
       // @ts-expect-error invalid input
       await expect(pb.add('invalid peerId')).to.eventually.be.rejected().with.property('code', codes.ERR_INVALID_PARAMETERS)
@@ -156,7 +151,8 @@ describe('protoBook', () => {
       const finalProtocols = supportedProtocolsA.concat(supportedProtocolsB)
 
       let changeTrigger = 2
-      peerStore.on('change:protocols', ({ protocols }) => {
+      peerStore.addEventListener('change:protocols', (evt) => {
+        const { protocols } = evt.detail
         changeTrigger--
         if (changeTrigger === 0 && arraysAreEqual(protocols, finalProtocols)) {
           defer.resolve()
@@ -184,7 +180,7 @@ describe('protoBook', () => {
       const finalProtocols = supportedProtocolsA.concat(supportedProtocolsB)
 
       let changeCounter = 0
-      peerStore.on('change:protocols', () => {
+      peerStore.addEventListener('change:protocols', () => {
         changeCounter++
         if (changeCounter > 1) {
           defer.resolve()
@@ -209,7 +205,7 @@ describe('protoBook', () => {
       const supportedProtocolsB = ['protocol2']
 
       let changeCounter = 0
-      peerStore.on('change:protocols', () => {
+      peerStore.addEventListener('change:protocols', () => {
         changeCounter++
         if (changeCounter > 1) {
           defer.reject()
@@ -243,10 +239,6 @@ describe('protoBook', () => {
       pb = peerStore.protoBook
     })
 
-    afterEach(() => {
-      peerStore.removeAllListeners()
-    })
-
     it('throws invalid parameters error if invalid PeerId is provided', async () => {
       // @ts-expect-error invalid input
       await expect(pb.remove('invalid peerId')).to.eventually.be.rejected().with.property('code', codes.ERR_INVALID_PARAMETERS)
@@ -264,7 +256,7 @@ describe('protoBook', () => {
       const removedProtocols = ['protocol1']
       const finalProtocols = supportedProtocols.filter(p => !removedProtocols.includes(p))
 
-      peerStore.on('change:protocols', spy)
+      peerStore.addEventListener('change:protocols', spy)
 
       // Replace
       await pb.set(peerId, supportedProtocols)
@@ -280,8 +272,8 @@ describe('protoBook', () => {
 
       const [firstCallArgs] = spy.firstCall.args
       const [secondCallArgs] = spy.secondCall.args
-      expect(arraysAreEqual(firstCallArgs.protocols, supportedProtocols))
-      expect(arraysAreEqual(secondCallArgs.protocols, finalProtocols))
+      expect(arraysAreEqual(firstCallArgs.detail.protocols, supportedProtocols))
+      expect(arraysAreEqual(secondCallArgs.detail.protocols, finalProtocols))
     })
 
     it('emits on remove if the content changes', async () => {
@@ -291,7 +283,7 @@ describe('protoBook', () => {
       const removedProtocols = ['protocol2']
       const finalProtocols = supportedProtocols.filter(p => !removedProtocols.includes(p))
 
-      peerStore.on('change:protocols', spy)
+      peerStore.addEventListener('change:protocols', spy)
 
       // set
       await pb.set(peerId, supportedProtocols)
@@ -310,7 +302,7 @@ describe('protoBook', () => {
       const supportedProtocols = ['protocol1', 'protocol2']
       const removedProtocols = ['protocol3']
 
-      peerStore.on('change:protocols', spy)
+      peerStore.addEventListener('change:protocols', spy)
 
       // set
       await pb.set(peerId, supportedProtocols)
@@ -376,7 +368,7 @@ describe('protoBook', () => {
     it('should not emit event if no records exist for the peer', async () => {
       const defer = pDefer()
 
-      peerStore.on('change:protocols', () => {
+      peerStore.addEventListener('change:protocols', () => {
         defer.reject()
       })
 
@@ -397,7 +389,8 @@ describe('protoBook', () => {
       await pb.set(peerId, supportedProtocols)
 
       // Listen after set
-      peerStore.on('change:protocols', ({ protocols }) => {
+      peerStore.addEventListener('change:protocols', (evt) => {
+        const { protocols } = evt.detail
         expect(protocols.length).to.eql(0)
         defer.resolve()
       })

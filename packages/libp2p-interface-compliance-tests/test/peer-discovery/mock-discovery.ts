@@ -1,6 +1,7 @@
-import { EventEmitter } from 'events'
 import { Multiaddr } from '@multiformats/multiaddr'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
+import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
+import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interfaces/peer-discovery'
 
 interface MockDiscoveryOptions {
   discoveryDelay?: number
@@ -9,7 +10,7 @@ interface MockDiscoveryOptions {
 /**
  * Emits 'peer' events on discovery.
  */
-export class MockDiscovery extends EventEmitter {
+export class MockDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery {
   public readonly options: MockDiscoveryOptions
   private _isRunning: boolean
   private _timer: any
@@ -41,10 +42,13 @@ export class MockDiscovery extends EventEmitter {
     PeerIdFactory.createEd25519PeerId()
       .then(peerId => {
         this._timer = setTimeout(() => {
-          this.emit('peer', {
-            id: peerId,
-            multiaddrs: [new Multiaddr('/ip4/127.0.0.1/tcp/8000')]
-          })
+          this.dispatchEvent(new CustomEvent('peer', {
+            detail: {
+              id: peerId,
+              multiaddrs: [new Multiaddr('/ip4/127.0.0.1/tcp/8000')],
+              protocols: []
+            }
+          }))
         }, this.options.discoveryDelay ?? 1000)
       })
       .catch(() => {})

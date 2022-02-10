@@ -6,14 +6,14 @@ import * as utils from '@libp2p/pubsub/utils'
 import { PeerStreams } from '@libp2p/pubsub/peer-streams'
 import type { TestSetup } from '../index.js'
 import type { PubSub } from '@libp2p/interfaces/pubsub'
-import type { Startable } from '@libp2p/interfaces'
+import type { EventMap } from './index.js'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 
-export default (common: TestSetup<PubSub & Startable>) => {
+export default (common: TestSetup<PubSub<EventMap>>) => {
   describe('messages', () => {
-    let pubsub: PubSub & Startable
+    let pubsub: PubSub<EventMap>
 
     // Create pubsub router
     beforeEach(async () => {

@@ -3,15 +3,15 @@ import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
 import type { PubSub, PubsubOptions } from '@libp2p/interfaces/pubsub'
-import type { Startable } from '@libp2p/interfaces'
+import type { EventMap } from './index.js'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 const shouldNotHappen = () => expect.fail()
 
-export default (common: TestSetup<PubSub & Startable, Partial<PubsubOptions>>) => {
+export default (common: TestSetup<PubSub<EventMap>, Partial<PubsubOptions>>) => {
   describe('emit self', () => {
-    let pubsub: PubSub & Startable
+    let pubsub: PubSub<EventMap>
 
     describe('enabled', () => {
       before(async () => {
@@ -30,7 +30,9 @@ export default (common: TestSetup<PubSub & Startable, Partial<PubsubOptions>>) =
       })
 
       it('should emit to self on publish', async () => {
-        const promise = new Promise((resolve) => pubsub.once(topic, resolve))
+        const promise = new Promise((resolve) => pubsub.addEventListener(topic, resolve, {
+          once: true
+        }))
 
         void pubsub.publish(topic, data)
 
@@ -55,7 +57,9 @@ export default (common: TestSetup<PubSub & Startable, Partial<PubsubOptions>>) =
       })
 
       it('should not emit to self on publish', async () => {
-        pubsub.once(topic, () => shouldNotHappen)
+        pubsub.addEventListener(topic, () => shouldNotHappen, {
+          once: true
+        })
 
         void pubsub.publish(topic, data)
 

@@ -96,6 +96,10 @@
       "import": "./dist/src/utils/mock-connection-gater.js",
       "types": "./dist/src/utils/mock-connection-gater.d.ts"
     },
+    "./utils/mock-connection-manager": {
+      "import": "./dist/src/utils/mock-connection-manager.js",
+      "types": "./dist/src/utils/mock-connection-manager.d.ts"
+    },
     "./utils/mock-multiaddr-connection": {
       "import": "./dist/src/utils/mock-multiaddr-connection.js",
       "types": "./dist/src/utils/mock-multiaddr-connection.d.ts"
@@ -107,6 +111,10 @@
     "./utils/mock-peer-store": {
       "import": "./dist/src/utils/mock-peer-store.js",
       "types": "./dist/src/utils/mock-peer-store.d.ts"
+    },
+    "./utils/mock-registrar": {
+      "import": "./dist/src/utils/mock-registrar.js",
+      "types": "./dist/src/utils/mock-registrar.d.ts"
     },
     "./utils/mock-upgrader": {
       "import": "./dist/src/utils/mock-upgrader.js",
@@ -206,10 +214,10 @@
   },
   "scripts": {
     "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
     "build": "tsc",
     "pretest": "npm run build",
-    "test": "aegir test -f ./dist/test/**/*.js",
+    "test": "aegir test -f ./dist/test/*.js -f ./dist/test/**/*.js",
     "test:chrome": "npm run test -- -t browser",
     "test:chrome-webworker": "npm run test -- -t webworker",
     "test:firefox": "npm run test -- -t browser -- --browser firefox",

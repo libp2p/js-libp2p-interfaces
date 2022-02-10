@@ -214,7 +214,7 @@
   },
   "scripts": {
     "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js",
+    "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
     "build": "tsc"
   },
   "dependencies": {

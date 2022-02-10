@@ -19,6 +19,12 @@
     },
     {
       "path": "../libp2p-topology"
+    },
+    {
+      "path": "../libp2p-peer-id"
+    },
+    {
+      "path": "../libp2p-peer-id-factory"
     }
   ]
 }

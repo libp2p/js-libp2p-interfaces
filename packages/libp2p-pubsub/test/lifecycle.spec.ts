@@ -11,7 +11,7 @@ import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 import type { Message } from '@libp2p/interfaces/pubsub'
 
-class PubsubProtocol extends PubsubBaseProtocol {
+class PubsubProtocol extends PubsubBaseProtocol<{}> {
   async _publish (message: Message): Promise<void> {
     throw new Error('Method not implemented.')
   }
@@ -112,7 +112,7 @@ describe('pubsub base lifecycle', () => {
     afterEach(async () => {
       sinon.restore()
 
-      return await Promise.all([
+      await Promise.all([
         pubsubA.stop(),
         pubsubB.stop()
       ])

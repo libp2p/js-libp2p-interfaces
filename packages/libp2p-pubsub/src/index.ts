@@ -1,5 +1,5 @@
 import { logger } from '@libp2p/logger'
-import { EventEmitter } from 'events'
+import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
 import errcode from 'err-code'
 import { pipe } from 'it-pipe'
 import Queue from 'p-queue'
@@ -8,15 +8,15 @@ import { codes } from './errors.js'
 import { RPC, IRPC } from './message/rpc.js'
 import { PeerStreams } from './peer-streams.js'
 import * as utils from './utils.js'
-import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Registrar, IncomingStreamEvent } from '@libp2p/interfaces/registrar'
-import type { Connection } from '@libp2p/interfaces/connection'
-import type BufferList from 'bl'
 import {
   signMessage,
   verifySignature
 } from './message/sign.js'
-import type { PubSub, Message, StrictNoSign, StrictSign, PubsubOptions } from '@libp2p/interfaces/pubsub'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { Registrar, IncomingStreamEvent } from '@libp2p/interfaces/registrar'
+import type { Connection } from '@libp2p/interfaces/connection'
+import type BufferList from 'bl'
+import type { PubSub, Message, StrictNoSign, StrictSign, PubsubOptions, PubsubEvents } from '@libp2p/interfaces/pubsub'
 import type { Startable } from '@libp2p/interfaces'
 import type { Logger } from '@libp2p/logger'
 
@@ -26,7 +26,7 @@ export interface TopicValidator { (topic: string, message: Message): Promise<voi
  * PubsubBaseProtocol handles the peers and connections logic for pubsub routers
  * and specifies the API that pubsub routers should have.
  */
-export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub, Startable {
+export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap & PubsubEvents> implements PubSub<EventMap & PubsubEvents>, Startable {
   public peerId: PeerId
   public started: boolean
   /**
@@ -122,6 +122,8 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
     // register protocol with topology
     // Topology callbacks called on connection manager changes
     const topology = new MulticodecTopology({
+      peerStore: this._libp2p.peerStore,
+      connectionManager: this._libp2p.connectionManager,
       multicodecs: this.multicodecs,
       handlers: {
         onConnect: this._onPeerConnected,
@@ -225,7 +227,9 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
     })
 
     this.peers.set(id, peerStreams)
-    peerStreams.once('close', () => this._removePeer(peerId))
+    peerStreams.addEventListener('close', () => this._removePeer(peerId), {
+      once: true
+    })
 
     return peerStreams
   }
@@ -236,10 +240,11 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
   protected _removePeer (peerId: PeerId) {
     const id = peerId.toString()
     const peerStreams = this.peers.get(id)
-    if (peerStreams == null) return
+    if (peerStreams == null) {
+      return
+    }
 
     // close peer streams
-    peerStreams.removeAllListeners()
     peerStreams.close()
 
     // delete peer streams
@@ -295,7 +300,9 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
       subs.forEach((subOpt) => {
         this._processRpcSubOpt(idB58Str, subOpt)
       })
-      this.emit('pubsub:subscription-change', { peerId: peerStreams.id, subscriptions: subs })
+      this.dispatchEvent(new CustomEvent('pubsub:subscription-change', {
+        detail: { peerId: peerStreams.id, subscriptions: subs }
+      }))
     }
 
     if (!this._acceptFrom(idB58Str)) {
@@ -379,7 +386,9 @@ export abstract class PubsubBaseProtocol extends EventEmitter implements PubSub,
   _emitMessage (message: Message) {
     message.topicIDs.forEach((topic) => {
       if (this.subscriptions.has(topic)) {
-        this.emit(topic, message)
+        this.dispatchEvent(new CustomEvent(topic, {
+          detail: message
+        }))
       }
     })
   }

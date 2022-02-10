@@ -1,7 +1,7 @@
 import type { PeerId } from '../peer-id'
 import type { Pushable } from 'it-pushable'
 import type { Registrar } from '../registrar'
-import type { EventEmitter } from 'events'
+import type { EventEmitter, Startable } from '../index.js'
 
 /**
  * On the producing side:
@@ -73,16 +73,16 @@ interface Subscription {
   subscribe: boolean
 }
 
-interface SubscriptionChangeEvent {
+interface SubscriptionChangeData {
   peerId: PeerId
   subscriptions: Subscription[]
 }
 
-interface PubSubEvents {
-  'pubsub:subscription-change': SubscriptionChangeEvent
+export interface PubsubEvents {
+  'pubsub:subscription-change': CustomEvent<SubscriptionChangeData>
 }
 
-export interface PubSub extends EventEmitter {
+export interface PubSub<EventMap extends PubsubEvents> extends EventEmitter<EventMap>, Startable {
   peerId: PeerId
   started: boolean
   peers: Map<string, PeerStreams>
@@ -97,13 +97,10 @@ export interface PubSub extends EventEmitter {
   unsubscribe: (topic: string) => void
   publish: (topic: string, data: Uint8Array) => Promise<void>
   validate: (message: Message) => Promise<void>
+}
 
-  on: (<U extends keyof PubSubEvents> (event: U, listener: (event: PubSubEvents[U]) => void) => this) &
-  ((event: string, listener: (event: Message) => void) => this)
-
-  once: (<U extends keyof PubSubEvents> (event: U, listener: (event: PubSubEvents[U]) => void) => this) &
-  ((event: string, listener: (event: Message) => void) => this)
-
-  emit: (<U extends keyof PubSubEvents> (name: U, event: PubSubEvents[U]) => boolean) &
-  ((name: string, event: Message) => boolean)
+export interface PeerStreamEvents {
+  'stream:inbound': CustomEvent<never>
+  'stream:outbound': CustomEvent<never>
+  'close': CustomEvent<never>
 }

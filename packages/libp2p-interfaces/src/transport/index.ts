@@ -1,7 +1,6 @@
-import type { EventEmitter } from 'events'
+import type { EventEmitter, AbortOptions } from '../index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Connection } from '../connection/index.js'
-import type { AbortOptions } from '../index.js'
 import type { Duplex } from 'it-stream-types'
 
 export interface TransportFactory<DialOptions extends { signal?: AbortSignal }, ListenerOptions> {
@@ -34,7 +33,14 @@ export interface Transport <DialOptions extends AbortOptions = AbortOptions, Cre
   filter: MultiaddrFilter
 }
 
-export interface Listener extends EventEmitter {
+export interface ListenerEvents {
+  'connection': CustomEvent<Connection>
+  'listening': CustomEvent<Connection>
+  'error': CustomEvent<Error>
+  'close': CustomEvent<Connection>
+}
+
+export interface Listener extends EventEmitter<ListenerEvents> {
   /**
    * Start a listener
    */

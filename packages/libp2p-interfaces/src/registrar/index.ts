@@ -1,6 +1,6 @@
-import type { Connection, Stream } from '../connection'
-import type { PeerId } from '../peer-id'
-import type { PeerStore } from '../peer-store'
+import type { EventEmitter } from '../index.js'
+import type { Connection, Stream } from '../connection/index.js'
+import type { PeerId } from '../peer-id/index.js'
 
 export interface IncomingStreamEvent {
   protocol: string
@@ -8,16 +8,17 @@ export interface IncomingStreamEvent {
   connection: Connection
 }
 
+export interface ConnectionManagerEvents {
+  'peer:connect': CustomEvent<Connection>
+}
+
+export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents> {
+  getConnection: (peerId: PeerId) => Connection | undefined
+}
+
 export interface Registrar {
   handle: (multicodec: string | string[], handler: (event: IncomingStreamEvent) => void) => void
   unhandle: (multicodec: string) => void
-
   register: (topology: any) => string
   unregister: (id: string) => void
-  getConnection: (peerId: PeerId) => Connection | undefined
-  peerStore: PeerStore
-
-  connectionManager: {
-    on: (event: 'peer:connect', handler: (connection: Connection) => void) => void
-  }
 }

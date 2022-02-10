@@ -39,7 +39,7 @@ describe('emitSelf', () => {
     })
 
     it('should emit to self on publish', async () => {
-      const promise = new Promise((resolve) => pubsub.once(topic, resolve))
+      const promise = new Promise((resolve) => pubsub.addEventListener(topic, resolve))
 
       await pubsub.publish(topic, data)
 
@@ -71,7 +71,9 @@ describe('emitSelf', () => {
     })
 
     it('should not emit to self on publish', async () => {
-      pubsub.once(topic, () => shouldNotHappen)
+      pubsub.addEventListener(topic, () => shouldNotHappen, {
+        once: true
+      })
 
       await pubsub.publish(topic, data)
 

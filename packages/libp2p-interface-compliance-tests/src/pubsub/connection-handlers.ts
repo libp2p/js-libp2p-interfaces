@@ -7,12 +7,12 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { expectSet } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { PubSub, Message } from '@libp2p/interfaces/pubsub'
-import type { Startable } from '@libp2p/interfaces'
+import type { EventMap } from './index.js'
 
-export default (common: TestSetup<PubSub & Startable>) => {
+export default (common: TestSetup<PubSub<EventMap>>) => {
   describe('pubsub connection handlers', () => {
-    let psA: PubSub & Startable
-    let psB: PubSub & Startable
+    let psA: PubSub<EventMap>
+    let psB: PubSub<EventMap>
 
     describe('nodes send state on connection', () => {
       // Create pubsub nodes and connect them
@@ -48,8 +48,12 @@ export default (common: TestSetup<PubSub & Startable>) => {
         await Promise.all([
           // @ts-expect-error protected fields
           psA._libp2p.dial(psB.peerId),
-          new Promise((resolve) => psA.once('pubsub:subscription-change', resolve)),
-          new Promise((resolve) => psB.once('pubsub:subscription-change', resolve))
+          new Promise((resolve) => psA.addEventListener('pubsub:subscription-change', resolve, {
+            once: true
+          })),
+          new Promise((resolve) => psB.addEventListener('pubsub:subscription-change', resolve, {
+            once: true
+          }))
         ])
 
         expect(psA.peers.size).to.equal(1)
@@ -103,7 +107,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
         let subscribedTopics = psA.getTopics()
         expect(subscribedTopics).to.not.include(topic)
 
-        psA.on(topic, (msg) => {
+        psA.addEventListener(topic, (evt) => {
+          const msg = evt.detail
           expect(msg.data).to.equalBytes(data)
           defer.resolve()
         })
@@ -174,7 +179,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
         let subscribedTopics = psA.getTopics()
         expect(subscribedTopics).to.not.include(topic)
 
-        psA.on(topic, (msg) => {
+        psA.addEventListener(topic, (evt) => {
+          const msg = evt.detail
           expect(msg.data).to.equalBytes(data)
           defer.resolve()
         })
@@ -228,7 +234,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
         let subscribedTopics = psA.getTopics()
         expect(subscribedTopics).to.not.include(topic)
 
-        psA.on(topic, (msg) => {
+        psA.addEventListener(topic, (evt) => {
+          const msg = evt.detail
           expect(msg.data).to.equalBytes(data)
           counter++
           counter === 1 ? defer1.resolve() : defer2.resolve()
@@ -285,7 +292,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
         let bReceivedFirstMessageFromA = false
         let bReceivedSecondMessageFromA = false
 
-        const handlerSpyA = (message: Message) => {
+        const handlerSpyA = (evt: CustomEvent<Message>) => {
+          const message = evt.detail
           const data = uint8ArrayToString(message.data)
 
           if (data === 'message-from-b-1') {
@@ -296,7 +304,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
             aReceivedSecondMessageFromB = true
           }
         }
-        const handlerSpyB = (message: Message) => {
+        const handlerSpyB = (evt: CustomEvent<Message>) => {
+          const message = evt.detail
           const data = uint8ArrayToString(message.data)
 
           if (data === 'message-from-a-1') {
@@ -310,8 +319,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
 
         const topic = 'reconnect-channel'
 
-        psA.on(topic, handlerSpyA)
-        psB.on(topic, handlerSpyB)
+        psA.addEventListener(topic, handlerSpyA)
+        psB.addEventListener(topic, handlerSpyB)
         psA.subscribe(topic)
         psB.subscribe(topic)
 

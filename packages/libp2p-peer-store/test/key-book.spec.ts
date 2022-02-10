@@ -85,7 +85,8 @@ describe('keyBook', () => {
   it('should emit an event when setting a key', async () => {
     const defer = pDefer()
 
-    peerStore.on('change:pubkey', ({ peerId: id, pubKey }) => {
+    peerStore.addEventListener('change:pubkey', (evt) => {
+      const { peerId: id, pubKey } = evt.detail
       if (peerId.publicKey == null) {
         throw new Error('Public key was missing')
       }
@@ -124,7 +125,8 @@ describe('keyBook', () => {
 
     await kb.set(peerId, peerId.publicKey)
 
-    peerStore.on('change:pubkey', ({ peerId: id, pubKey }) => {
+    peerStore.addEventListener('change:pubkey', (evt) => {
+      const { peerId: id, pubKey } = evt.detail
       expect(id.toString(base58btc)).to.equal(peerId.toString(base58btc))
       expect(pubKey).to.be.undefined()
       defer.resolve()

@@ -3,7 +3,6 @@ import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { PubsubBaseProtocol } from '../../src/index.js'
 import { RPC, IRPC } from '../../src/message/rpc.js'
 import type { Registrar } from '@libp2p/interfaces/registrar'
-import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Ed25519PeerId } from '@libp2p/peer-id'
 
 export const createPeerId = async (): Promise<Ed25519PeerId> => {
@@ -12,7 +11,11 @@ export const createPeerId = async (): Promise<Ed25519PeerId> => {
   return peerId
 }
 
-export class PubsubImplementation extends PubsubBaseProtocol {
+interface EventMap {
+  'foo': CustomEvent
+}
+
+export class PubsubImplementation extends PubsubBaseProtocol<EventMap> {
   async _publish () {
     // ...
   }
@@ -46,6 +49,9 @@ export const createMockRegistrar = (registrarRecord: Map<string, Record<string, 
         handler
       })
     },
+    unhandle (multicodec: string) {
+
+    },
     register: (topology) => {
       const { multicodecs } = topology
       const rec = registrarRecord.get(multicodecs[0]) ?? {}
@@ -60,32 +66,6 @@ export const createMockRegistrar = (registrarRecord: Map<string, Record<string, 
     },
     unregister: (id: string) => {
       registrarRecord.delete(id)
-    },
-
-    getConnection (peerId: PeerId) {
-      throw new Error('Not implemented')
-    },
-
-    peerStore: {
-      on: () => {
-        throw new Error('Not implemented')
-      },
-      // @ts-expect-error use protobook type
-      protoBook: {
-        get: () => {
-          throw new Error('Not implemented')
-        }
-      },
-      peers: new Map(),
-      get: (peerId) => {
-        throw new Error('Not implemented')
-      }
-    },
-
-    connectionManager: {
-      on: () => {
-        throw new Error('Not implemented')
-      }
     }
   }
 

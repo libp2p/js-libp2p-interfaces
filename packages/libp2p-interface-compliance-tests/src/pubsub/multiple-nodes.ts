@@ -9,18 +9,18 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { expectSet } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { PubSub, Message } from '@libp2p/interfaces/pubsub'
-import type { Startable } from '@libp2p/interfaces'
+import type { EventMap } from './index.js'
 
-export default (common: TestSetup<PubSub & Startable>) => {
+export default (common: TestSetup<PubSub<EventMap>>) => {
   describe('pubsub with multiple nodes', function () {
     describe('every peer subscribes to the topic', () => {
       describe('line', () => {
         // line
         // ◉────◉────◉
         // a    b    c
-        let psA: PubSub & Startable
-        let psB: PubSub & Startable
-        let psC: PubSub & Startable
+        let psA: PubSub<EventMap>
+        let psB: PubSub<EventMap>
+        let psC: PubSub<EventMap>
 
         // Create and start pubsub nodes
         beforeEach(async () => {
@@ -60,7 +60,9 @@ export default (common: TestSetup<PubSub & Startable>) => {
           psA.subscribe(topic)
           expectSet(psA.subscriptions, [topic])
 
-          await new Promise((resolve) => psB.once('pubsub:subscription-change', resolve))
+          await new Promise((resolve) => psB.addEventListener('pubsub:subscription-change', resolve, {
+            once: true
+          }))
           expect(psB.peers.size).to.equal(2)
 
           const aPeerId = psA.peerId.toString()
@@ -76,8 +78,12 @@ export default (common: TestSetup<PubSub & Startable>) => {
           expectSet(psB.subscriptions, [topic])
 
           await Promise.all([
-            new Promise((resolve) => psA.once('pubsub:subscription-change', resolve)),
-            new Promise((resolve) => psC.once('pubsub:subscription-change', resolve))
+            new Promise((resolve) => psA.addEventListener('pubsub:subscription-change', resolve, {
+              once: true
+            })),
+            new Promise((resolve) => psC.addEventListener('pubsub:subscription-change', resolve, {
+              once: true
+            }))
           ])
 
           expect(psA.peers.size).to.equal(1)
@@ -94,12 +100,14 @@ export default (common: TestSetup<PubSub & Startable>) => {
           psC.subscribe(topic)
           expectSet(psC.subscriptions, [topic])
 
-          psB.once('pubsub:subscription-change', () => {
+          psB.addEventListener('pubsub:subscription-change', () => {
             expect(psA.peers.size).to.equal(1)
             expect(psB.peers.size).to.equal(2)
             expectSet(psB.topics.get(topic), [psC.peerId.toString()])
 
             defer.resolve()
+          }, {
+            once: true
           })
 
           return await defer.promise
@@ -115,9 +123,15 @@ export default (common: TestSetup<PubSub & Startable>) => {
 
           // await subscription change
           await Promise.all([
-            new Promise(resolve => psA.once('pubsub:subscription-change', () => resolve(null))),
-            new Promise(resolve => psB.once('pubsub:subscription-change', () => resolve(null))),
-            new Promise(resolve => psC.once('pubsub:subscription-change', () => resolve(null)))
+            new Promise(resolve => psA.addEventListener('pubsub:subscription-change', () => resolve(null), {
+              once: true
+            })),
+            new Promise(resolve => psB.addEventListener('pubsub:subscription-change', () => resolve(null), {
+              once: true
+            })),
+            new Promise(resolve => psC.addEventListener('pubsub:subscription-change', () => resolve(null), {
+              once: true
+            }))
           ])
 
           // await a cycle
@@ -125,22 +139,23 @@ export default (common: TestSetup<PubSub & Startable>) => {
 
           let counter = 0
 
-          psA.on(topic, incMsg)
-          psB.on(topic, incMsg)
-          psC.on(topic, incMsg)
+          psA.addEventListener(topic, incMsg)
+          psB.addEventListener(topic, incMsg)
+          psC.addEventListener(topic, incMsg)
 
           void psA.publish(topic, uint8ArrayFromString('hey'))
 
-          function incMsg (msg: Message) {
+          function incMsg (evt: CustomEvent<Message>) {
+            const msg = evt.detail
             expect(uint8ArrayToString(msg.data)).to.equal('hey')
             check()
           }
 
           function check () {
             if (++counter === 3) {
-              psA.removeListener(topic, incMsg)
-              psB.removeListener(topic, incMsg)
-              psC.removeListener(topic, incMsg)
+              psA.removeEventListener(topic, incMsg)
+              psB.removeEventListener(topic, incMsg)
+              psC.removeEventListener(topic, incMsg)
               defer.resolve()
             }
           }
@@ -168,30 +183,37 @@ export default (common: TestSetup<PubSub & Startable>) => {
 
             // await subscription change
             await Promise.all([
-              new Promise(resolve => psA.once('pubsub:subscription-change', () => resolve(null))),
-              new Promise(resolve => psB.once('pubsub:subscription-change', () => resolve(null))),
-              new Promise(resolve => psC.once('pubsub:subscription-change', () => resolve(null)))
+              new Promise(resolve => psA.addEventListener('pubsub:subscription-change', () => resolve(null), {
+                once: true
+              })),
+              new Promise(resolve => psB.addEventListener('pubsub:subscription-change', () => resolve(null), {
+                once: true
+              })),
+              new Promise(resolve => psC.addEventListener('pubsub:subscription-change', () => resolve(null), {
+                once: true
+              }))
             ])
 
-            psA.on(topic, incMsg)
-            psB.on(topic, incMsg)
-            psC.on(topic, incMsg)
+            psA.addEventListener(topic, incMsg)
+            psB.addEventListener(topic, incMsg)
+            psC.addEventListener(topic, incMsg)
 
             // await a cycle
             await delay(1000)
 
             void psB.publish(topic, uint8ArrayFromString('hey'))
 
-            function incMsg (msg: Message) {
+            function incMsg (evt: CustomEvent<Message>) {
+              const msg = evt.detail
               expect(uint8ArrayToString(msg.data)).to.equal('hey')
               check()
             }
 
             function check () {
               if (++counter === 3) {
-                psA.removeListener(topic, incMsg)
-                psB.removeListener(topic, incMsg)
-                psC.removeListener(topic, incMsg)
+                psA.removeEventListener(topic, incMsg)
+                psB.removeEventListener(topic, incMsg)
+                psC.removeEventListener(topic, incMsg)
                 defer.resolve()
               }
             }
@@ -209,11 +231,11 @@ export default (common: TestSetup<PubSub & Startable>) => {
         //   │b     d│
         // ◉─┘       └─◉
         // a
-        let psA: PubSub & Startable
-        let psB: PubSub & Startable
-        let psC: PubSub & Startable
-        let psD: PubSub & Startable
-        let psE: PubSub & Startable
+        let psA: PubSub<EventMap>
+        let psB: PubSub<EventMap>
+        let psC: PubSub<EventMap>
+        let psD: PubSub<EventMap>
+        let psE: PubSub<EventMap>
 
         // Create and start pubsub nodes
         beforeEach(async () => {
@@ -271,22 +293,22 @@ export default (common: TestSetup<PubSub & Startable>) => {
           let counter = 0
 
           psA.subscribe('Z')
-          psA.on('Z', incMsg)
+          psA.addEventListener('Z', incMsg)
           psB.subscribe('Z')
-          psB.on('Z', incMsg)
+          psB.addEventListener('Z', incMsg)
           psC.subscribe('Z')
-          psC.on('Z', incMsg)
+          psC.addEventListener('Z', incMsg)
           psD.subscribe('Z')
-          psD.on('Z', incMsg)
+          psD.addEventListener('Z', incMsg)
           psE.subscribe('Z')
-          psE.on('Z', incMsg)
+          psE.addEventListener('Z', incMsg)
 
           await Promise.all([
-            new Promise((resolve) => psA.once('pubsub:subscription-change', resolve)),
-            new Promise((resolve) => psB.once('pubsub:subscription-change', resolve)),
-            new Promise((resolve) => psC.once('pubsub:subscription-change', resolve)),
-            new Promise((resolve) => psD.once('pubsub:subscription-change', resolve)),
-            new Promise((resolve) => psE.once('pubsub:subscription-change', resolve))
+            new Promise((resolve) => psA.addEventListener('pubsub:subscription-change', resolve)),
+            new Promise((resolve) => psB.addEventListener('pubsub:subscription-change', resolve)),
+            new Promise((resolve) => psC.addEventListener('pubsub:subscription-change', resolve)),
+            new Promise((resolve) => psD.addEventListener('pubsub:subscription-change', resolve)),
+            new Promise((resolve) => psE.addEventListener('pubsub:subscription-change', resolve))
           ])
 
           // await a cycle
@@ -294,7 +316,8 @@ export default (common: TestSetup<PubSub & Startable>) => {
 
           void psC.publish('Z', uint8ArrayFromString('hey from c'))
 
-          function incMsg (msg: Message) {
+          function incMsg (evt: CustomEvent<Message>) {
+            const msg = evt.detail
             expect(uint8ArrayToString(msg.data)).to.equal('hey from c')
             check()
           }
