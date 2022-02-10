@@ -2,7 +2,7 @@ import { expect } from 'aegir/utils/chai.js'
 import { PubsubBaseProtocol } from '../src/index.js'
 import {
   createPeerId,
-  mockRegistrar
+  MockRegistrar
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Message } from '@libp2p/interfaces/pubsub'
@@ -53,7 +53,7 @@ describe('pubsub instance', () => {
         multicodecs: ['/pubsub/1.0.0'],
         libp2p: {
           peerId: peerId,
-          registrar: mockRegistrar
+          registrar: new MockRegistrar()
         }
       })
     }).not.to.throw()

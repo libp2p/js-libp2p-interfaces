@@ -78,7 +78,7 @@ export class MulticodecTopology extends Topology {
         // If there is a connection, call _onConnect
         if (this.connectionManager != null) {
           const connection = this.connectionManager.getConnection(id)
-          ;(connection != null) && this._onConnect(id, connection)
+          ;(connection != null) && this.onConnect(id, connection)
         }
       } else {
         // Remove any peers we might be tracking that are no longer of value to us
@@ -101,7 +101,7 @@ export class MulticodecTopology extends Topology {
 
     // Not supporting the protocol any more?
     if (hadPeer && hasProtocol.length === 0) {
-      this._onDisconnect(peerId)
+      this.onDisconnect(peerId)
     }
 
     let p: Promise<void> | undefined
@@ -132,7 +132,7 @@ export class MulticodecTopology extends Topology {
       .then(protocols => {
         if (this.multicodecs.find(multicodec => protocols.includes(multicodec)) != null) {
           this.peers.add(peerId.toString())
-          this._onConnect(peerId, connection)
+          this.onConnect(peerId, connection)
         }
       })
       .catch(err => log.error(err))

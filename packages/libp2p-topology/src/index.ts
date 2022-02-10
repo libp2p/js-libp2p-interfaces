@@ -13,9 +13,9 @@ export class Topology {
    * Set of peers that support the protocol
    */
   public peers: Set<string>
+  public onConnect: onConnectHandler
+  public onDisconnect: onDisconnectHandler
 
-  protected _onConnect: onConnectHandler
-  protected _onDisconnect: onDisconnectHandler
   protected _registrar: Registrar | undefined
 
   constructor (options: TopologyOptions) {
@@ -23,8 +23,8 @@ export class Topology {
     this.max = options.max ?? Infinity
     this.peers = new Set()
 
-    this._onConnect = options.handlers?.onConnect == null ? noop : options.handlers?.onConnect
-    this._onDisconnect = options.handlers?.onDisconnect == null ? noop : options.handlers?.onDisconnect
+    this.onConnect = options.handlers?.onConnect == null ? noop : options.handlers?.onConnect
+    this.onDisconnect = options.handlers?.onDisconnect == null ? noop : options.handlers?.onDisconnect
   }
 
   get [Symbol.toStringTag] () {
@@ -54,6 +54,6 @@ export class Topology {
    * Notify about peer disconnected event
    */
   disconnect (peerId: PeerId) {
-    this._onDisconnect(peerId)
+    this.onDisconnect(peerId)
   }
 }

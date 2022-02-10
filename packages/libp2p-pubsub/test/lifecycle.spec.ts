@@ -3,9 +3,10 @@ import sinon from 'sinon'
 import { PubsubBaseProtocol } from '../src/index.js'
 import {
   createPeerId,
-  createMockRegistrar,
   PubsubImplementation,
-  ConnectionPair
+  ConnectionPair,
+  MockRegistrar,
+  mockIncomingStreamEvent
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
@@ -76,37 +77,42 @@ describe('pubsub base lifecycle', () => {
     const protocol = '/pubsub/1.0.0'
     let pubsubA: PubsubImplementation, pubsubB: PubsubImplementation
     let peerIdA: PeerId, peerIdB: PeerId
-    const registrarRecordA = new Map()
-    const registrarRecordB = new Map()
+    let registrarA: MockRegistrar
+    let registrarB: MockRegistrar
 
     // mount pubsub
     beforeEach(async () => {
       peerIdA = await createPeerId()
       peerIdB = await createPeerId()
 
+      registrarA = new MockRegistrar()
+      registrarB = new MockRegistrar()
+
       pubsubA = new PubsubImplementation({
         multicodecs: [protocol],
         libp2p: {
           peerId: peerIdA,
-          registrar: createMockRegistrar(registrarRecordA)
+          registrar: registrarA
         }
       })
       pubsubB = new PubsubImplementation({
         multicodecs: [protocol],
         libp2p: {
           peerId: peerIdB,
-          registrar: createMockRegistrar(registrarRecordB)
+          registrar: registrarB
         }
       })
     })
 
     // start pubsub
-    beforeEach(() => {
-      pubsubA.start()
-      pubsubB.start()
+    beforeEach(async () => {
+      await Promise.all([
+        pubsubA.start(),
+        pubsubB.start()
+      ])
 
-      expect(registrarRecordA).to.have.lengthOf(1)
-      expect(registrarRecordB).to.have.lengthOf(1)
+      expect(registrarA.streamHandlers).to.have.lengthOf(1)
+      expect(registrarB.streamHandlers).to.have.lengthOf(1)
     })
 
     afterEach(async () => {
@@ -119,43 +125,39 @@ describe('pubsub base lifecycle', () => {
     })
 
     it('should handle onConnect as expected', async () => {
-      const onConnectA = registrarRecordA.get(protocol).onConnect
-      const handlerB = registrarRecordB.get(protocol).handler
+      const topologyA = registrarA.topologies.get(protocol)
+      const handlerB = registrarB.streamHandlers.get(protocol)
 
-      // Notice peers of connection
+      if (topologyA == null || handlerB == null) {
+        throw new Error(`No handler registered for ${protocol}`)
+      }
+
       const [c0, c1] = ConnectionPair()
 
-      await onConnectA(peerIdB, c0)
-      await handlerB({
-        protocol,
-        stream: c1.stream,
-        connection: {
-          remotePeer: peerIdA
-        }
-      })
+      // Notify peers of connection
+      await topologyA.onConnect(peerIdB, c0)
+      await handlerB(await mockIncomingStreamEvent(protocol, c1, peerIdA))
 
       expect(pubsubA.peers.size).to.be.eql(1)
       expect(pubsubB.peers.size).to.be.eql(1)
     })
 
     it('should use the latest connection if onConnect is called more than once', async () => {
-      const onConnectA = registrarRecordA.get(protocol).onConnect
-      const handlerB = registrarRecordB.get(protocol).handler
+      const topologyA = registrarA.topologies.get(protocol)
+      const handlerB = registrarB.streamHandlers.get(protocol)
 
-      // Notice peers of connection
+      if (topologyA == null || handlerB == null) {
+        throw new Error(`No handler registered for ${protocol}`)
+      }
+
+      // Notify peers of connection
       const [c0, c1] = ConnectionPair()
       const [c2] = ConnectionPair()
 
       sinon.spy(c0, 'newStream')
 
-      await onConnectA(peerIdB, c0)
-      await handlerB({
-        protocol,
-        stream: c1.stream,
-        connection: {
-          remotePeer: peerIdA
-        }
-      })
+      await topologyA.onConnect(peerIdB, c0)
+      await handlerB(await mockIncomingStreamEvent(protocol, c1, peerIdA))
       expect(c0.newStream).to.have.property('callCount', 1)
 
       // @ts-expect-error _removePeer is a protected method
@@ -163,7 +165,7 @@ describe('pubsub base lifecycle', () => {
 
       sinon.spy(c2, 'newStream')
 
-      await onConnectA(peerIdB, c2)
+      await topologyA?.onConnect(peerIdB, c2)
       expect(c2.newStream).to.have.property('callCount', 1)
 
       // @ts-expect-error _removePeer is a protected method
@@ -182,59 +184,54 @@ describe('pubsub base lifecycle', () => {
     })
 
     it('should handle newStream errors in onConnect', async () => {
-      const onConnectA = registrarRecordA.get(protocol).onConnect
-      const handlerB = registrarRecordB.get(protocol).handler
+      const topologyA = registrarA.topologies.get(protocol)
+      const handlerB = registrarB.streamHandlers.get(protocol)
 
-      // Notice peers of connection
+      if (topologyA == null || handlerB == null) {
+        throw new Error(`No handler registered for ${protocol}`)
+      }
+
+      // Notify peers of connection
       const [c0, c1] = ConnectionPair()
       const error = new Error('new stream error')
       sinon.stub(c0, 'newStream').throws(error)
 
-      await onConnectA(peerIdB, c0)
-      await handlerB({
-        protocol,
-        stream: c1.stream,
-        connection: {
-          remotePeer: peerIdA
-        }
-      })
+      await topologyA.onConnect(peerIdB, c0)
+      await handlerB(await mockIncomingStreamEvent(protocol, c1, peerIdA))
 
       expect(c0.newStream).to.have.property('callCount', 1)
     })
 
     it('should handle onDisconnect as expected', async () => {
-      const onConnectA = registrarRecordA.get(protocol).onConnect
-      const onDisconnectA = registrarRecordA.get(protocol).onDisconnect
-      const handlerB = registrarRecordB.get(protocol).handler
-      const onDisconnectB = registrarRecordB.get(protocol).onDisconnect
+      const topologyA = registrarA.topologies.get(protocol)
+      const topologyB = registrarB.topologies.get(protocol)
+      const handlerB = registrarB.streamHandlers.get(protocol)
 
-      // Notice peers of connection
+      if (topologyA == null || handlerB == null) {
+        throw new Error(`No handler registered for ${protocol}`)
+      }
+
+      // Notify peers of connection
       const [c0, c1] = ConnectionPair()
 
-      await onConnectA(peerIdB, c0)
-      await handlerB({
-        protocol,
-        stream: c1.stream,
-        connection: {
-          remotePeer: peerIdA
-        }
-      })
+      await topologyA.onConnect(peerIdB, c0)
+      await handlerB(await mockIncomingStreamEvent(protocol, c1, peerIdA))
 
       // Notice peers of disconnect
-      onDisconnectA(peerIdB)
-      onDisconnectB(peerIdA)
+      topologyA?.onDisconnect(peerIdB)
+      topologyB?.onDisconnect(peerIdA)
 
       expect(pubsubA.peers.size).to.be.eql(0)
       expect(pubsubB.peers.size).to.be.eql(0)
     })
 
     it('should handle onDisconnect for unknown peers', () => {
-      const onDisconnectA = registrarRecordA.get(protocol).onDisconnect
+      const topologyA = registrarA.topologies.get(protocol)
 
       expect(pubsubA.peers.size).to.be.eql(0)
 
       // Notice peers of disconnect
-      onDisconnectA(peerIdB)
+      topologyA?.onDisconnect(peerIdB)
 
       expect(pubsubA.peers.size).to.be.eql(0)
     })

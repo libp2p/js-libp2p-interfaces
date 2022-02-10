@@ -1,7 +1,7 @@
 import { expect } from 'aegir/utils/chai.js'
 import {
   createPeerId,
-  mockRegistrar,
+  MockRegistrar,
   PubsubImplementation
 } from './utils/index.js'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
@@ -23,7 +23,7 @@ describe('emitSelf', () => {
         multicodecs: [protocol],
         libp2p: {
           peerId,
-          registrar: mockRegistrar
+          registrar: new MockRegistrar()
         },
         emitSelf: true
       })
@@ -55,7 +55,7 @@ describe('emitSelf', () => {
         multicodecs: [protocol],
         libp2p: {
           peerId,
-          registrar: mockRegistrar
+          registrar: new MockRegistrar()
         },
         emitSelf: false
       })

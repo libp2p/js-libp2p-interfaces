@@ -2,8 +2,12 @@ import { duplexPair } from 'it-pair/duplex'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { PubsubBaseProtocol } from '../../src/index.js'
 import { RPC, IRPC } from '../../src/message/rpc.js'
-import type { Registrar } from '@libp2p/interfaces/registrar'
+import { CustomEvent } from '@libp2p/interfaces'
+import type { IncomingStreamData, Registrar, StreamHandler } from '@libp2p/interfaces/registrar'
 import type { Ed25519PeerId } from '@libp2p/peer-id'
+import type { MulticodecTopology } from '@libp2p/topology/multicodec-topology'
+import type { Connection } from '@libp2p/interfaces/src/connection'
+import type { PeerId } from '@libp2p/interfaces/src/peer-id'
 
 export const createPeerId = async (): Promise<Ed25519PeerId> => {
   const peerId = await PeerIdFactory.createEd25519PeerId()
@@ -29,60 +33,64 @@ export class PubsubImplementation extends PubsubBaseProtocol<EventMap> {
   }
 }
 
-export const mockRegistrar = {
-  handle: () => {},
-  register: () => {},
-  unregister: () => {}
-}
+export class MockRegistrar implements Registrar {
+  public readonly topologies: Map<string, MulticodecTopology> = new Map()
+  public readonly streamHandlers: Map<string, StreamHandler> = new Map()
 
-export const createMockRegistrar = (registrarRecord: Map<string, Record<string, any>>) => {
-  const registrar: Registrar = {
-    handle: (multicodecs: string[] | string, handler) => {
-      if (!Array.isArray(multicodecs)) {
-        multicodecs = [multicodecs]
-      }
-
-      const rec = registrarRecord.get(multicodecs[0]) ?? {}
-
-      registrarRecord.set(multicodecs[0], {
-        ...rec,
-        handler
-      })
-    },
-    unhandle (multicodec: string) {
-
-    },
-    register: (topology) => {
-      const { multicodecs } = topology
-      const rec = registrarRecord.get(multicodecs[0]) ?? {}
-
-      registrarRecord.set(multicodecs[0], {
-        ...rec,
-        onConnect: topology._onConnect,
-        onDisconnect: topology._onDisconnect
-      })
-
-      return multicodecs[0]
-    },
-    unregister: (id: string) => {
-      registrarRecord.delete(id)
+  async handle (multicodecs: string | string[], handler: StreamHandler) {
+    if (!Array.isArray(multicodecs)) {
+      multicodecs = [multicodecs]
     }
+
+    this.streamHandlers.set(multicodecs[0], handler)
   }
 
-  return registrar
+  async unhandle (multicodec: string) {
+    this.streamHandlers.delete(multicodec)
+  }
+
+  register (topology: MulticodecTopology) {
+    const { multicodecs } = topology
+
+    this.topologies.set(multicodecs[0], topology)
+
+    return multicodecs[0]
+  }
+
+  unregister (id: string) {
+    this.topologies.delete(id)
+  }
 }
 
-export const ConnectionPair = () => {
+export const ConnectionPair = (): [Connection, Connection] => {
   const [d0, d1] = duplexPair<Uint8Array>()
 
   return [
     {
-      stream: d0,
-      newStream: async () => await Promise.resolve({ stream: d0 })
+      // @ts-expect-error incomplete implementation
+      newStream: async (protocol: string[]) => await Promise.resolve({
+        protocol: protocol[0],
+        stream: d0
+      })
     },
     {
-      stream: d1,
-      newStream: async () => await Promise.resolve({ stream: d1 })
+      // @ts-expect-error incomplete implementation
+      newStream: async (protocol: string[]) => await Promise.resolve({
+        protocol: protocol[0],
+        stream: d1
+      })
     }
   ]
+}
+
+export async function mockIncomingStreamEvent (protocol: string, conn: Connection, remotePeer: PeerId): Promise<CustomEvent<IncomingStreamData>> {
+  // @ts-expect-error incomplete implementation
+  return new CustomEvent('incomingStream', {
+    detail: {
+      ...await conn.newStream([protocol]),
+      connection: {
+        remotePeer
+      }
+    }
+  })
 }

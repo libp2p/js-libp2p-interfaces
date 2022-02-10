@@ -6,10 +6,10 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { PeerStreams } from '../src/peer-streams.js'
 import {
   createPeerId,
-  createMockRegistrar,
+  MockRegistrar,
   ConnectionPair,
-  mockRegistrar,
-  PubsubImplementation
+  PubsubImplementation,
+  mockIncomingStreamEvent
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 
@@ -26,7 +26,7 @@ describe('pubsub base implementation', () => {
       pubsub = new PubsubImplementation({
         libp2p: {
           peerId: peerId,
-          registrar: mockRegistrar
+          registrar: new MockRegistrar()
         },
         multicodecs: [protocol]
       })
@@ -68,7 +68,7 @@ describe('pubsub base implementation', () => {
           multicodecs: [protocol],
           libp2p: {
             peerId: peerId,
-            registrar: mockRegistrar
+            registrar: new MockRegistrar()
           }
         })
         await pubsub.start()
@@ -87,48 +87,50 @@ describe('pubsub base implementation', () => {
     describe('two nodes', () => {
       let pubsubA: PubsubImplementation, pubsubB: PubsubImplementation
       let peerIdA: PeerId, peerIdB: PeerId
-      const registrarRecordA = new Map()
-      const registrarRecordB = new Map()
+      let registrarA: MockRegistrar
+      let registrarB: MockRegistrar
 
       beforeEach(async () => {
         peerIdA = await createPeerId()
         peerIdB = await createPeerId()
 
+        registrarA = new MockRegistrar()
+        registrarB = new MockRegistrar()
+
         pubsubA = new PubsubImplementation({
           multicodecs: [protocol],
           libp2p: {
             peerId: peerIdA,
-            registrar: createMockRegistrar(registrarRecordA)
+            registrar: registrarA
           }
         })
         pubsubB = new PubsubImplementation({
           multicodecs: [protocol],
           libp2p: {
             peerId: peerIdB,
-            registrar: createMockRegistrar(registrarRecordB)
+            registrar: registrarB
           }
         })
       })
 
       // start pubsub and connect nodes
       beforeEach(async () => {
-        pubsubA.start()
-        pubsubB.start()
+        await Promise.all([
+          pubsubA.start(),
+          pubsubB.start()
+        ])
+        const topologyA = registrarA.topologies.get(protocol)
+        const handlerB = registrarB.streamHandlers.get(protocol)
 
-        const onConnectA = registrarRecordA.get(protocol).onConnect
-        const handlerB = registrarRecordB.get(protocol).handler
+        if (topologyA == null || handlerB == null) {
+          throw new Error(`No handler registered for ${protocol}`)
+        }
 
-        // Notice peers of connection
+        // Notify peers of connection
         const [c0, c1] = ConnectionPair()
 
-        await onConnectA(peerIdB, c0)
-        await handlerB({
-          protocol,
-          stream: c1.stream,
-          connection: {
-            remotePeer: peerIdA
-          }
-        })
+        await topologyA.onConnect(peerIdB, c0)
+        await handlerB(await mockIncomingStreamEvent(protocol, c1, peerIdA))
       })
 
       afterEach(() => {
@@ -169,7 +171,7 @@ describe('pubsub base implementation', () => {
           multicodecs: [protocol],
           libp2p: {
             peerId: peerId,
-            registrar: mockRegistrar
+            registrar: new MockRegistrar()
           }
         })
         await pubsub.start()
@@ -192,48 +194,51 @@ describe('pubsub base implementation', () => {
     describe('two nodes', () => {
       let pubsubA: PubsubImplementation, pubsubB: PubsubImplementation
       let peerIdA: PeerId, peerIdB: PeerId
-      const registrarRecordA = new Map()
-      const registrarRecordB = new Map()
+      let registrarA: MockRegistrar
+      let registrarB: MockRegistrar
 
       beforeEach(async () => {
         peerIdA = await createPeerId()
         peerIdB = await createPeerId()
 
+        registrarA = new MockRegistrar()
+        registrarB = new MockRegistrar()
+
         pubsubA = new PubsubImplementation({
           multicodecs: [protocol],
           libp2p: {
             peerId: peerIdA,
-            registrar: createMockRegistrar(registrarRecordA)
+            registrar: registrarA
           }
         })
         pubsubB = new PubsubImplementation({
           multicodecs: [protocol],
           libp2p: {
             peerId: peerIdB,
-            registrar: createMockRegistrar(registrarRecordB)
+            registrar: registrarB
           }
         })
       })
 
       // start pubsub and connect nodes
       beforeEach(async () => {
-        pubsubA.start()
-        pubsubB.start()
+        await Promise.all([
+          pubsubA.start(),
+          pubsubB.start()
+        ])
 
-        const onConnectA = registrarRecordA.get(protocol).onConnect
-        const handlerB = registrarRecordB.get(protocol).handler
+        const topologyA = registrarA.topologies.get(protocol)
+        const handlerB = registrarB.streamHandlers.get(protocol)
 
-        // Notice peers of connection
+        if (topologyA == null || handlerB == null) {
+          throw new Error(`No handler registered for ${protocol}`)
+        }
+
+        // Notify peers of connection
         const [c0, c1] = ConnectionPair()
 
-        await onConnectA(peerIdB, c0)
-        await handlerB({
-          protocol,
-          stream: c1.stream,
-          connection: {
-            remotePeer: peerIdA
-          }
-        })
+        await topologyA.onConnect(peerIdB, c0)
+        await handlerB(await mockIncomingStreamEvent(protocol, c1, peerIdA))
       })
 
       afterEach(() => {
@@ -302,7 +307,7 @@ describe('pubsub base implementation', () => {
         multicodecs: [protocol],
         libp2p: {
           peerId: peerId,
-          registrar: mockRegistrar
+          registrar: new MockRegistrar()
         }
       })
       await pubsub.start()
@@ -332,7 +337,7 @@ describe('pubsub base implementation', () => {
         multicodecs: [protocol],
         libp2p: {
           peerId: peerId,
-          registrar: mockRegistrar
+          registrar: new MockRegistrar()
         }
       })
     })

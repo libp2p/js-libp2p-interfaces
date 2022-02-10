@@ -1,7 +1,8 @@
 import type { PeerId } from '../peer-id'
 import type { CID } from 'multiformats/cid'
 import type { PeerData } from '../peer-data'
-import type { AbortOptions } from '../index'
+import type { AbortOptions, Startable } from '../index'
+import type { PeerDiscovery } from '../peer-discovery'
 
 /**
  * The types of events emitted during DHT queries
@@ -128,7 +129,7 @@ export interface DialingPeerEvent {
 
 export type QueryEvent = SendingQueryEvent | PeerResponseEvent | FinalPeerEvent | QueryErrorEvent | ProviderEvent | ValueEvent | AddingPeerEvent | DialingPeerEvent
 
-export interface DHT {
+export interface DHT extends PeerDiscovery, Startable {
   /**
    * Get a value from the DHT, the final ValueEvent will be the best value
    */
@@ -173,9 +174,6 @@ export interface DHT {
    * Force a routing table refresh
    */
   refreshRoutingTable: () => Promise<void>
-
-  // events
-  on: (event: 'peer', handler: (peerData: PeerData) => void) => this
 }
 
 export interface SelectFn { (key: Uint8Array, records: Uint8Array[]): number }

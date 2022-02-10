@@ -8,7 +8,7 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { PeerStreams } from '../src/peer-streams.js'
 import {
   createPeerId,
-  mockRegistrar,
+  MockRegistrar,
   PubsubImplementation
 } from './utils/index.js'
 
@@ -23,7 +23,7 @@ describe('topic validators', () => {
     pubsub = new PubsubImplementation({
       libp2p: {
         peerId: peerId,
-        registrar: mockRegistrar
+        registrar: new MockRegistrar()
       },
       multicodecs: [protocol],
       globalSignaturePolicy: 'StrictNoSign'
