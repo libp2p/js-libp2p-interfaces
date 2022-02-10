@@ -13,11 +13,10 @@ import {
   verifySignature
 } from './message/sign.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Registrar, IncomingStreamEvent } from '@libp2p/interfaces/registrar'
+import type { Registrar, IncomingStreamData } from '@libp2p/interfaces/registrar'
 import type { Connection } from '@libp2p/interfaces/connection'
 import type BufferList from 'bl'
 import type { PubSub, Message, StrictNoSign, StrictSign, PubsubOptions, PubsubEvents } from '@libp2p/interfaces/pubsub'
-import type { Startable } from '@libp2p/interfaces'
 import type { Logger } from '@libp2p/logger'
 
 export interface TopicValidator { (topic: string, message: Message): Promise<void> }
@@ -26,7 +25,7 @@ export interface TopicValidator { (topic: string, message: Message): Promise<voi
  * PubsubBaseProtocol handles the peers and connections logic for pubsub routers
  * and specifies the API that pubsub routers should have.
  */
-export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap & PubsubEvents> implements PubSub<EventMap & PubsubEvents>, Startable {
+export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap & PubsubEvents> implements PubSub<EventMap & PubsubEvents> {
   public peerId: PeerId
   public started: boolean
   /**
@@ -108,7 +107,7 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
    *
    * @returns {void}
    */
-  start () {
+  async start () {
     if (this.started) {
       return
     }
@@ -117,7 +116,7 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
 
     // Incoming streams
     // Called after a peer dials us
-    this.registrar.handle(this.multicodecs, this._onIncomingStream)
+    await this.registrar.handle(this.multicodecs, this._onIncomingStream)
 
     // register protocol with topology
     // Topology callbacks called on connection manager changes
@@ -167,7 +166,8 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
   /**
    * On an inbound stream opened
    */
-  protected _onIncomingStream ({ protocol, stream, connection }: IncomingStreamEvent) {
+  protected _onIncomingStream (evt: CustomEvent<IncomingStreamData>) {
+    const { protocol, stream, connection } = evt.detail
     const peerId = connection.remotePeer
     const idB58Str = peerId.toString()
     const peer = this._addPeer(peerId, protocol)

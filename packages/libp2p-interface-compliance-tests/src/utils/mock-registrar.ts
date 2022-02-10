@@ -1,46 +1,32 @@
-import type { IncomingStreamEvent, Registrar } from '@libp2p/interfaces/registrar'
-import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Connection } from '@libp2p/interfaces/connection'
+import type { Registrar, StreamHandler } from '@libp2p/interfaces/registrar'
+import type { MulticodecTopology } from '../../../libp2p-topology/src/multicodec-topology'
 
-class MockRegistrar implements Registrar {
-  private readonly registrarRecord: Map<string, Record<string, any>> = new Map()
+export class MockRegistrar implements Registrar {
+  public readonly topologies: Map<string, MulticodecTopology> = new Map()
+  public readonly streamHandlers: Map<string, StreamHandler> = new Map()
 
-  handle (multicodecs: string | string[], handler: (event: IncomingStreamEvent) => void) {
+  async handle (multicodecs: string | string[], handler: StreamHandler) {
     if (!Array.isArray(multicodecs)) {
       multicodecs = [multicodecs]
     }
 
-    const rec = this.registrarRecord.get(multicodecs[0]) ?? {}
-
-    this.registrarRecord.set(multicodecs[0], {
-      ...rec,
-      handler
-    })
+    this.streamHandlers.set(multicodecs[0], handler)
   }
 
-  unhandle (multicodec: string) {
-    this.registrarRecord.delete(multicodec)
+  async unhandle (multicodec: string) {
+    this.streamHandlers.delete(multicodec)
   }
 
-  register (topology: any) {
+  register (topology: MulticodecTopology) {
     const { multicodecs } = topology
-    const rec = this.registrarRecord.get(multicodecs[0]) ?? {}
 
-    this.registrarRecord.set(multicodecs[0], {
-      ...rec,
-      onConnect: topology._onConnect,
-      onDisconnect: topology._onDisconnect
-    })
+    this.topologies.set(multicodecs[0], topology)
 
     return multicodecs[0]
   }
 
   unregister (id: string) {
-    this.registrarRecord.delete(id)
-  }
-
-  getConnection (peerId: PeerId): Connection | undefined {
-    throw new Error('Not implemented')
+    this.topologies.delete(id)
   }
 }
 
