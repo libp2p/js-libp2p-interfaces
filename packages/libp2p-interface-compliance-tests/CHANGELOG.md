@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.2...@libp2p/interface-compliance-tests-v1.1.3) (2022-02-10)
+
+
+### Bug Fixes
+
+* make registrar simpler ([#163](https://github.com/libp2p/js-libp2p-interfaces/issues/163)) ([d122f3d](https://github.com/libp2p/js-libp2p-interfaces/commit/d122f3daaccc04039d90814960da92b513265644))
+
 ## [@libp2p/interface-compliance-tests-v1.1.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.1...@libp2p/interface-compliance-tests-v1.1.2) (2022-02-10)
 
 
