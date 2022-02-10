@@ -240,7 +240,9 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
   protected _removePeer (peerId: PeerId) {
     const id = peerId.toString()
     const peerStreams = this.peers.get(id)
-    if (peerStreams == null) return
+    if (peerStreams == null) {
+      return
+    }
 
     // close peer streams
     peerStreams.close()

@@ -136,7 +136,7 @@
     "generate:peer-record-types": "pbts -o src/peer-record/peer-record.d.ts src/peer-record/peer-record.js",
     "build:copy-proto-files": "cp src/envelope/envelope.js dist/src/envelope && cp src/envelope/*.d.ts dist/src/envelope && cp src/peer-record/peer-record.js dist/src/peer-record && cp src/peer-record/*.d.ts dist/src/peer-record",
     "pretest": "npm run build",
-    "test": "aegir test -f ./dist/test",
+    "test": "aegir test -f ./dist/test/*.js -f ./dist/test/**/*.js",
     "test:chrome": "npm run test -- -t browser",
     "test:chrome-webworker": "npm run test -- -t webworker",
     "test:firefox": "npm run test -- -t browser -- --browser firefox",

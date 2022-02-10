@@ -132,7 +132,7 @@
     "generate:proto-types": "pbts -o src/pb/peer.d.ts src/pb/peer.js",
     "build:copy-proto-files": "mkdirp dist/src/pb && cp src/pb/*.js dist/src/pb && cp src/pb/*.d.ts dist/src/pb",
     "pretest": "npm run build",
-    "test": "aegir test -f ./dist/test",
+    "test": "aegir test -f ./dist/test/*.js -f ./dist/test/**/*.js",
     "test:chrome": "npm run test -- -t browser",
     "test:chrome-webworker": "npm run test -- -t webworker",
     "test:firefox": "npm run test -- -t browser -- --browser firefox",

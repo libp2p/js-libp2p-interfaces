@@ -42,6 +42,7 @@ export class PeerStreams extends EventEmitter<PeerStreamEvents> {
    * An AbortController for controlled shutdown of the inbound stream
    */
   private readonly _inboundAbortController: AbortController
+  private closed: boolean
 
   constructor (opts: Options) {
     super()
@@ -50,6 +51,7 @@ export class PeerStreams extends EventEmitter<PeerStreamEvents> {
     this.protocol = opts.protocol
 
     this._inboundAbortController = new AbortController()
+    this.closed = false
   }
 
   /**
@@ -146,6 +148,12 @@ export class PeerStreams extends EventEmitter<PeerStreamEvents> {
    * Closes the open connection to peer
    */
   close () {
+    if (this.closed) {
+      return
+    }
+
+    this.closed = true
+
     // End the outbound stream
     if (this.outboundStream != null) {
       this.outboundStream.end()

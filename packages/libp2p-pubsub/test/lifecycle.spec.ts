@@ -3,9 +3,9 @@ import sinon from 'sinon'
 import { PubsubBaseProtocol } from '../src/index.js'
 import {
   createPeerId,
+  createMockRegistrar,
   PubsubImplementation,
-  ConnectionPair,
-  mockRegistrar
+  ConnectionPair
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
@@ -74,7 +74,7 @@ describe('pubsub base lifecycle', () => {
 
   describe('should be able to register two nodes', () => {
     const protocol = '/pubsub/1.0.0'
-    let pubsubA: PubsubImplementation<{}>, pubsubB: PubsubImplementation<{}>
+    let pubsubA: PubsubImplementation, pubsubB: PubsubImplementation
     let peerIdA: PeerId, peerIdB: PeerId
     const registrarRecordA = new Map()
     const registrarRecordB = new Map()
@@ -88,14 +88,14 @@ describe('pubsub base lifecycle', () => {
         multicodecs: [protocol],
         libp2p: {
           peerId: peerIdA,
-          registrar: mockRegistrar
+          registrar: createMockRegistrar(registrarRecordA)
         }
       })
       pubsubB = new PubsubImplementation({
         multicodecs: [protocol],
         libp2p: {
           peerId: peerIdB,
-          registrar: mockRegistrar
+          registrar: createMockRegistrar(registrarRecordB)
         }
       })
     })
@@ -112,7 +112,7 @@ describe('pubsub base lifecycle', () => {
     afterEach(async () => {
       sinon.restore()
 
-      return await Promise.all([
+      await Promise.all([
         pubsubA.stop(),
         pubsubB.stop()
       ])

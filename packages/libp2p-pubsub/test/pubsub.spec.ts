@@ -6,6 +6,7 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { PeerStreams } from '../src/peer-streams.js'
 import {
   createPeerId,
+  createMockRegistrar,
   ConnectionPair,
   mockRegistrar,
   PubsubImplementation
@@ -18,7 +19,7 @@ const message = uint8ArrayFromString('hello')
 
 describe('pubsub base implementation', () => {
   describe('publish', () => {
-    let pubsub: PubsubImplementation<{}>
+    let pubsub: PubsubImplementation
 
     beforeEach(async () => {
       const peerId = await createPeerId()
@@ -59,7 +60,7 @@ describe('pubsub base implementation', () => {
 
   describe('subscribe', () => {
     describe('basics', () => {
-      let pubsub: PubsubImplementation<{}>
+      let pubsub: PubsubImplementation
 
       beforeEach(async () => {
         const peerId = await createPeerId()
@@ -84,7 +85,7 @@ describe('pubsub base implementation', () => {
     })
 
     describe('two nodes', () => {
-      let pubsubA: PubsubImplementation<{}>, pubsubB: PubsubImplementation<{}>
+      let pubsubA: PubsubImplementation, pubsubB: PubsubImplementation
       let peerIdA: PeerId, peerIdB: PeerId
       const registrarRecordA = new Map()
       const registrarRecordB = new Map()
@@ -97,14 +98,14 @@ describe('pubsub base implementation', () => {
           multicodecs: [protocol],
           libp2p: {
             peerId: peerIdA,
-            registrar: mockRegistrar
+            registrar: createMockRegistrar(registrarRecordA)
           }
         })
         pubsubB = new PubsubImplementation({
           multicodecs: [protocol],
           libp2p: {
             peerId: peerIdB,
-            registrar: mockRegistrar
+            registrar: createMockRegistrar(registrarRecordB)
           }
         })
       })
@@ -160,7 +161,7 @@ describe('pubsub base implementation', () => {
 
   describe('unsubscribe', () => {
     describe('basics', () => {
-      let pubsub: PubsubImplementation<{}>
+      let pubsub: PubsubImplementation
 
       beforeEach(async () => {
         const peerId = await createPeerId()
@@ -189,7 +190,7 @@ describe('pubsub base implementation', () => {
     })
 
     describe('two nodes', () => {
-      let pubsubA: PubsubImplementation<{}>, pubsubB: PubsubImplementation<{}>
+      let pubsubA: PubsubImplementation, pubsubB: PubsubImplementation
       let peerIdA: PeerId, peerIdB: PeerId
       const registrarRecordA = new Map()
       const registrarRecordB = new Map()
@@ -202,14 +203,14 @@ describe('pubsub base implementation', () => {
           multicodecs: [protocol],
           libp2p: {
             peerId: peerIdA,
-            registrar: mockRegistrar
+            registrar: createMockRegistrar(registrarRecordA)
           }
         })
         pubsubB = new PubsubImplementation({
           multicodecs: [protocol],
           libp2p: {
             peerId: peerIdB,
-            registrar: mockRegistrar
+            registrar: createMockRegistrar(registrarRecordB)
           }
         })
       })
@@ -293,7 +294,7 @@ describe('pubsub base implementation', () => {
 
   describe('getTopics', () => {
     let peerId: PeerId
-    let pubsub: PubsubImplementation<{}>
+    let pubsub: PubsubImplementation
 
     beforeEach(async () => {
       peerId = await createPeerId()
@@ -323,7 +324,7 @@ describe('pubsub base implementation', () => {
 
   describe('getSubscribers', () => {
     let peerId: PeerId
-    let pubsub: PubsubImplementation<{}>
+    let pubsub: PubsubImplementation
 
     beforeEach(async () => {
       peerId = await createPeerId()
