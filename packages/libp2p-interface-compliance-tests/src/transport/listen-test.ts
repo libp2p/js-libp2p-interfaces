@@ -147,7 +147,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
 
       it('close', (done) => {
         const listener = transport.createListener()
-        listener.addEventListener('close', done)
+        listener.addEventListener('close', () => done())
 
         void (async () => {
           await listener.listen(addrs[0])
