@@ -35,9 +35,9 @@ export interface Transport <DialOptions extends AbortOptions = AbortOptions, Cre
 
 export interface ListenerEvents {
   'connection': CustomEvent<Connection>
-  'listening': CustomEvent<Connection>
+  'listening': CustomEvent
   'error': CustomEvent<Error>
-  'close': CustomEvent<Connection>
+  'close': CustomEvent
 }
 
 export interface Listener extends EventEmitter<ListenerEvents> {
