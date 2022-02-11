@@ -5,7 +5,7 @@ import { RPC, IRPC } from '../../src/message/rpc.js'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { IncomingStreamData, Registrar, StreamHandler } from '@libp2p/interfaces/registrar'
 import type { Ed25519PeerId } from '@libp2p/peer-id'
-import type { MulticodecTopology } from '@libp2p/topology/multicodec-topology'
+import type { Topology } from '@libp2p/interfaces/topology'
 import type { Connection } from '@libp2p/interfaces/src/connection'
 import type { PeerId } from '@libp2p/interfaces/src/peer-id'
 
@@ -34,31 +34,73 @@ export class PubsubImplementation extends PubsubBaseProtocol<EventMap> {
 }
 
 export class MockRegistrar implements Registrar {
-  public readonly topologies: Map<string, MulticodecTopology> = new Map()
-  public readonly streamHandlers: Map<string, StreamHandler> = new Map()
+  private readonly topologies: Map<string, { topology: Topology, protocols: string[] }> = new Map()
+  private readonly handlers: Map<string, { handler: StreamHandler, protocols: string[] }> = new Map()
 
-  async handle (multicodecs: string | string[], handler: StreamHandler) {
-    if (!Array.isArray(multicodecs)) {
-      multicodecs = [multicodecs]
+  async handle (protocols: string | string[], handler: StreamHandler) {
+    if (!Array.isArray(protocols)) {
+      protocols = [protocols]
     }
 
-    this.streamHandlers.set(multicodecs[0], handler)
+    const id = `handler-id-${Math.random()}`
+
+    this.handlers.set(id, {
+      handler,
+      protocols
+    })
+
+    return id
   }
 
-  async unhandle (multicodec: string) {
-    this.streamHandlers.delete(multicodec)
+  async unhandle (id: string) {
+    this.handlers.delete(id)
   }
 
-  register (topology: MulticodecTopology) {
-    const { multicodecs } = topology
+  getHandlers (protocol: string) {
+    const output: StreamHandler[] = []
 
-    this.topologies.set(multicodecs[0], topology)
+    for (const { handler, protocols } of this.handlers.values()) {
+      if (protocols.includes(protocol)) {
+        output.push(handler)
+      }
+    }
 
-    return multicodecs[0]
+    return output
   }
 
-  unregister (id: string) {
-    this.topologies.delete(id)
+  register (protocols: string | string[], topology: Topology) {
+    if (!Array.isArray(protocols)) {
+      protocols = [protocols]
+    }
+
+    const id = `topology-id-${Math.random()}`
+
+    this.topologies.set(id, {
+      topology,
+      protocols
+    })
+
+    return id
+  }
+
+  unregister (id: string | string[]) {
+    if (!Array.isArray(id)) {
+      id = [id]
+    }
+
+    id.forEach(id => this.topologies.delete(id))
+  }
+
+  getTopologies (protocol: string) {
+    const output: Topology[] = []
+
+    for (const { topology, protocols } of this.topologies.values()) {
+      if (protocols.includes(protocol)) {
+        output.push(topology)
+      }
+    }
+
+    return output
   }
 }
 

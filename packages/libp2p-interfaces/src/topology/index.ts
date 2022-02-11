@@ -1,14 +1,12 @@
 import type { PeerId } from '../peer-id/index.js'
 import type { Connection } from '../connection/index.js'
-import type { ConnectionManager } from '../registrar/index.js'
-import type { PeerStore } from '../peer-store/index.js'
 
-export interface onConnectHandler { (peerId: PeerId, conn: Connection): void }
-export interface onDisconnectHandler { (peerId: PeerId, conn?: Connection): void }
+export interface onConnectHandler {
+  (peerId: PeerId, conn: Connection): void
+}
 
-export interface Handlers {
-  onConnect?: onConnectHandler
-  onDisconnect?: onDisconnectHandler
+export interface onDisconnectHandler {
+  (peerId: PeerId, conn?: Connection): void
 }
 
 export interface TopologyOptions {
@@ -21,7 +19,8 @@ export interface TopologyOptions {
    * maximum needed connections
    */
   max?: number
-  handlers: Handlers
+  onConnect?: onConnectHandler
+  onDisconnect?: onDisconnectHandler
 }
 
 export interface Topology {
@@ -29,15 +28,6 @@ export interface Topology {
   max: number
   peers: Set<string>
 
-  disconnect: (id: PeerId) => void
-}
-
-export interface MulticodecTopologyOptions extends TopologyOptions {
-  multicodecs: string[]
-  peerStore: PeerStore
-  connectionManager: ConnectionManager
-}
-
-export interface MulticodecTopology extends Topology {
-  multicodecs: string[]
+  onConnect: (peerId: PeerId, conn: Connection) => void
+  onDisconnect: (peerId: PeerId) => void
 }

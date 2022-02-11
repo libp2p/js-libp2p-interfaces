@@ -3,7 +3,7 @@ import type { TopologyOptions, onConnectHandler, onDisconnectHandler } from '@li
 import type { Registrar } from '@libp2p/interfaces/registrar'
 
 const noop = () => {}
-const topologySymbol = Symbol.for('@libp2p/js-interfaces/topology')
+const topologySymbol = Symbol.for('@libp2p/topology')
 
 export class Topology {
   public min: number
@@ -23,12 +23,12 @@ export class Topology {
     this.max = options.max ?? Infinity
     this.peers = new Set()
 
-    this.onConnect = options.handlers?.onConnect == null ? noop : options.handlers?.onConnect
-    this.onDisconnect = options.handlers?.onDisconnect == null ? noop : options.handlers?.onDisconnect
+    this.onConnect = options.onConnect ?? noop
+    this.onDisconnect = options.onDisconnect ?? noop
   }
 
   get [Symbol.toStringTag] () {
-    return 'Topology'
+    return topologySymbol.toString()
   }
 
   get [topologySymbol] () {
@@ -38,16 +38,8 @@ export class Topology {
   /**
    * Checks if the given value is a Topology instance
    */
-  static isTopology (other: any) {
+  static isTopology (other: any): other is Topology {
     return topologySymbol in other
-  }
-
-  set registrar (registrar: Registrar | undefined) {
-    this._registrar = registrar
-  }
-
-  get registrar () {
-    return this._registrar
   }
 
   /**

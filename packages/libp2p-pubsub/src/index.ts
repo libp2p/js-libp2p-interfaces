@@ -3,7 +3,7 @@ import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
 import errcode from 'err-code'
 import { pipe } from 'it-pipe'
 import Queue from 'p-queue'
-import { MulticodecTopology } from '@libp2p/topology/multicodec-topology'
+import { Topology } from '@libp2p/topology'
 import { codes } from './errors.js'
 import { RPC, IRPC } from './message/rpc.js'
 import { PeerStreams } from './peer-streams.js'
@@ -65,7 +65,8 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
   protected log: Logger
   protected multicodecs: string[]
   protected _libp2p: any
-  private _registrarId: string | undefined
+  private _registrarHandlerId: string | undefined
+  private _registrarTopologyId: string | undefined
 
   constructor (props: PubsubOptions) {
     super()
@@ -116,20 +117,15 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
 
     // Incoming streams
     // Called after a peer dials us
-    await this.registrar.handle(this.multicodecs, this._onIncomingStream)
+    this._registrarHandlerId = await this.registrar.handle(this.multicodecs, this._onIncomingStream)
 
     // register protocol with topology
     // Topology callbacks called on connection manager changes
-    const topology = new MulticodecTopology({
-      peerStore: this._libp2p.peerStore,
-      connectionManager: this._libp2p.connectionManager,
-      multicodecs: this.multicodecs,
-      handlers: {
-        onConnect: this._onPeerConnected,
-        onDisconnect: this._onPeerDisconnected
-      }
+    const topology = new Topology({
+      onConnect: this._onPeerConnected,
+      onDisconnect: this._onPeerDisconnected
     })
-    this._registrarId = this.registrar.register(topology)
+    this._registrarTopologyId = this.registrar.register(this.multicodecs, topology)
 
     this.log('started')
     this.started = true
@@ -137,17 +133,18 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
 
   /**
    * Unregister the pubsub protocol and the streams with other peers will be closed.
-   *
-   * @returns {void}
    */
-  stop () {
+  async stop () {
     if (!this.started) {
       return
     }
 
     // unregister protocol and handlers
-    if (this._registrarId != null) {
-      this.registrar.unregister(this._registrarId)
+    if (this._registrarTopologyId != null) {
+      this.registrar.unregister(this._registrarTopologyId)
+    }
+    if (this._registrarHandlerId != null) {
+      await this.registrar.unhandle(this._registrarHandlerId)
     }
 
     this.log('stopping')

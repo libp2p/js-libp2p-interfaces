@@ -1,6 +1,6 @@
 import { expect } from 'aegir/utils/chai.js'
-import { mockMuxer } from './mock-muxer.js'
-import { mockConnection } from './mock-connection.js'
+import { mockMuxer } from './muxer.js'
+import { mockConnection } from './connection.js'
 import type { Upgrader, MultiaddrConnection } from '@libp2p/interfaces/transport'
 import type { Muxer } from '@libp2p/interfaces/stream-muxer'
 

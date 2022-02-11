@@ -1,19 +1,20 @@
 import { PeerId } from '@libp2p/peer-id'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { pipe } from 'it-pipe'
+import { duplexPair } from 'it-pair/duplex'
 import type { MultiaddrConnection } from '@libp2p/interfaces/transport'
 import type { Connection, Stream, Metadata, ProtocolStream } from '@libp2p/interfaces/connection'
 import type { Muxer } from '@libp2p/interfaces/stream-muxer'
+import type { Duplex } from 'it-stream-types'
+import { mockMuxer } from './muxer.js'
 
-export async function mockConnection (maConn: MultiaddrConnection, direction: 'inbound' | 'outbound', muxer: Muxer): Promise<Connection> {
+export async function mockConnection (maConn: MultiaddrConnection, direction: 'inbound' | 'outbound' = 'inbound', muxer: Muxer = mockMuxer()): Promise<Connection> {
   const remoteAddr = maConn.remoteAddr
   const remotePeerIdStr = remoteAddr.getPeerId()
   const remotePeer = remotePeerIdStr != null ? PeerId.fromString(remotePeerIdStr) : await createEd25519PeerId()
-
+  const registry = new Map()
   const streams: Stream[] = []
   let streamId = 0
-
-  const registry = new Map()
 
   void pipe(
     maConn, muxer, maConn
@@ -63,4 +64,38 @@ export async function mockConnection (maConn: MultiaddrConnection, direction: 'i
       await maConn.close()
     }
   }
+}
+
+export function mockStream (stream: Duplex<Uint8Array>): Stream {
+  return {
+    ...stream,
+    close: () => {},
+    abort: () => {},
+    reset: () => {},
+    timeline: {
+      open: Date.now()
+    },
+    id: `stream-${Date.now()}`
+  }
+}
+
+export function connectionPair (): [ Connection, Connection ] {
+  const [d0, d1] = duplexPair<Uint8Array>()
+
+  return [
+    // @ts-expect-error not a complete implementation
+    {
+      newStream: async (multicodecs: string[]) => await Promise.resolve({
+        stream: mockStream(d0),
+        protocol: multicodecs[0]
+      })
+    },
+    // @ts-expect-error not a complete implementation
+    {
+      newStream: async (multicodecs: string[]) => await Promise.resolve({
+        stream: mockStream(d1),
+        protocol: multicodecs[0]
+      })
+    }
+  ]
 }
