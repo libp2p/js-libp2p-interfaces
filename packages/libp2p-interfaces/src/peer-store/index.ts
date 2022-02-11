@@ -2,6 +2,7 @@ import type { PeerId } from '../peer-id/index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { EventEmitter } from '../index.js'
 import type { Envelope } from '../record/index.js'
+import type { PeerData } from '../peer-data/index.js'
 
 export interface Address {
   /**
@@ -180,10 +181,6 @@ export interface ProtoBook extends Book<string[]> {
    * If the protocols did not exist before, nothing will be done.
    */
   remove: (peerId: PeerId, protocols: string[]) => Promise<void>
-}
-
-export interface PeerData {
-  peerId: PeerId
 }
 
 export interface PeerProtocolsChangeData {

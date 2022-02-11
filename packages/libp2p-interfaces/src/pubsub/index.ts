@@ -1,6 +1,6 @@
-import type { PeerId } from '../peer-id'
+import type { PeerId } from '../peer-id/index.js'
 import type { Pushable } from 'it-pushable'
-import type { Registrar } from '../registrar'
+import type { Registrar } from '../registrar/index.js'
 import type { EventEmitter, Startable } from '../index.js'
 
 /**

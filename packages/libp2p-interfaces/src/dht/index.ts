@@ -1,8 +1,8 @@
-import type { PeerId } from '../peer-id'
+import type { PeerId } from '../peer-id/index.js'
 import type { CID } from 'multiformats/cid'
-import type { PeerData } from '../peer-data'
-import type { AbortOptions, Startable } from '../index'
-import type { PeerDiscovery } from '../peer-discovery'
+import type { PeerData } from '../peer-data/index.js'
+import type { AbortOptions, Startable } from '../index.js'
+import type { PeerDiscovery } from '../peer-discovery/index.js'
 
 /**
  * The types of events emitted during DHT queries

@@ -1,4 +1,4 @@
-import type { PeerId } from '../peer-id'
+import type { PeerId } from '../peer-id/index.js'
 
 export interface GetValueResult {
   from: PeerId
