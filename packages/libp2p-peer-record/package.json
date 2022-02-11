@@ -127,8 +127,7 @@
   "scripts": {
     "lint": "aegir lint",
     "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
-    "build": "tsc",
-    "postbuild": "npm run build:copy-proto-files",
+    "build": "tsc && npm run build:copy-proto-files",
     "generate": "npm run generate:envelope && npm run generate:envelope-types && npm run generate:peer-record && npm run generate:peer-record-types",
     "generate:envelope": "pbjs -t static-module -w es6 -r libp2p-peer-record-envelope --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/envelope/envelope.js ./src/envelope/envelope.proto",
     "generate:envelope-types": "pbts -o src/envelope/envelope.d.ts src/envelope/envelope.js",
