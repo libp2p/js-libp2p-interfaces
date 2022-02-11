@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.4...@libp2p/interfaces-v1.3.5) (2022-02-11)
+
+
+### Bug Fixes
+
+* add .js to import paths ([#166](https://github.com/libp2p/js-libp2p-interfaces/issues/166)) ([dbf6688](https://github.com/libp2p/js-libp2p-interfaces/commit/dbf6688cc7295c821b473b05d211239616ad2ae1))
+
 ## [@libp2p/interfaces-v1.3.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.3...@libp2p/interfaces-v1.3.4) (2022-02-11)
 
 
