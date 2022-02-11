@@ -5,7 +5,7 @@ import sinon from 'sinon'
 import { MemoryDatastore } from 'datastore-core/memory'
 import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
-import { DefaultPeerStore } from '../src/index.js'
+import { createPeerStore } from '../src/index.js'
 import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
@@ -31,7 +31,7 @@ describe('protoBook', () => {
     let pb: ProtoBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore()
       })
@@ -126,7 +126,7 @@ describe('protoBook', () => {
     let pb: ProtoBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore()
       })
@@ -232,7 +232,7 @@ describe('protoBook', () => {
     let pb: ProtoBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore()
       })
@@ -320,7 +320,7 @@ describe('protoBook', () => {
     let pb: ProtoBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore()
       })
@@ -353,7 +353,7 @@ describe('protoBook', () => {
     let pb: ProtoBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore()
       })

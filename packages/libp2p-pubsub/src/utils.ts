@@ -1,6 +1,6 @@
 import { randomBytes } from 'iso-random-stream'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { PeerId } from '@libp2p/peer-id'
+import { peerIdFromBytes, peerIdFromString } from '@libp2p/peer-id'
 import { sha256 } from 'multiformats/hashes/sha2'
 import type * as RPC from './message/rpc.js'
 import type { Message } from '@libp2p/interfaces/pubsub'
@@ -16,12 +16,12 @@ export const randomSeqno = () => {
  * Generate a message id, based on the `from` and `seqno`
  */
 export const msgId = (from: Uint8Array | string, seqno: Uint8Array) => {
-  let fromBytes
+  let fromBytes: Uint8Array
 
   if (from instanceof Uint8Array) {
-    fromBytes = PeerId.fromBytes(from).multihash.digest
+    fromBytes = peerIdFromBytes(from).multihash.digest
   } else {
-    fromBytes = PeerId.fromString(from).multihash.digest
+    fromBytes = peerIdFromString(from).multihash.digest
   }
 
   const msgId = new Uint8Array(fromBytes.length + seqno.length)

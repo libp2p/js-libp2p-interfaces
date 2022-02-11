@@ -9,7 +9,7 @@ import filter from 'it-filter'
 import map from 'it-map'
 import each from 'it-foreach'
 import { base58btc } from 'multiformats/bases/base58'
-import { PeerId as PeerIdImpl } from '@libp2p/peer-id'
+import { peerIdFromPeerId } from '@libp2p/peer-id'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { PeerStore } from '@libp2p/interfaces/peer-store'
 import type { Store } from './store.js'
@@ -139,7 +139,7 @@ export class PeerStoreAddressBook {
   }
 
   async get (peerId: PeerId) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     log('get wait for read lock')
     const release = await this.store.lock.readLock()
@@ -162,7 +162,7 @@ export class PeerStoreAddressBook {
   }
 
   async set (peerId: PeerId, multiaddrs: Multiaddr[]) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     if (!Array.isArray(multiaddrs)) {
       log.error('multiaddrs must be an array of Multiaddrs')
@@ -224,7 +224,7 @@ export class PeerStoreAddressBook {
   }
 
   async add (peerId: PeerId, multiaddrs: Multiaddr[]) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     if (!Array.isArray(multiaddrs)) {
       log.error('multiaddrs must be an array of Multiaddrs')
@@ -283,7 +283,7 @@ export class PeerStoreAddressBook {
   }
 
   async delete (peerId: PeerId) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     log('delete await write lock')
     const release = await this.store.lock.writeLock()

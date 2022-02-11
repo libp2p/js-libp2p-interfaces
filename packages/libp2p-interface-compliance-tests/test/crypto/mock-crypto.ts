@@ -1,4 +1,4 @@
-import { PeerId } from '@libp2p/peer-id'
+import { peerIdFromBytes } from '@libp2p/peer-id'
 import { handshake } from 'it-handshake'
 import { duplexPair } from 'it-pair/duplex'
 import { pipe } from 'it-pipe'
@@ -28,7 +28,7 @@ const crypto: Crypto = {
       throw new Error('Could not read remote ID')
     }
 
-    const remotePeer = PeerId.fromBytes(remoteId.slice())
+    const remotePeer = peerIdFromBytes(remoteId.slice())
     shake.rest()
 
     if (expectedPeer != null && !expectedPeer.equals(remotePeer)) {
@@ -99,7 +99,7 @@ const crypto: Crypto = {
         },
         conn: true
       },
-      remotePeer: PeerId.fromBytes(remoteId.slice()),
+      remotePeer: peerIdFromBytes(remoteId.slice()),
       remoteEarlyData: new Uint8Array(0)
     }
   }

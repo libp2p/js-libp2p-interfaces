@@ -3,7 +3,7 @@
 import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
 import { MemoryDatastore } from 'datastore-core/memory'
-import { DefaultPeerStore } from '../src/index.js'
+import { createPeerStore } from '../src/index.js'
 import pDefer from 'p-defer'
 import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
@@ -20,7 +20,7 @@ describe('keyBook', () => {
   beforeEach(async () => {
     peerId = await createEd25519PeerId()
     datastore = new MemoryDatastore()
-    peerStore = new DefaultPeerStore({
+    peerStore = createPeerStore({
       peerId,
       datastore
     })

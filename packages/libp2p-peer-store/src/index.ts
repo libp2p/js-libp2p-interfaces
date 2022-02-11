@@ -30,7 +30,7 @@ export interface PeerStoreOptions {
 /**
  * An implementation of PeerStore that stores data in a Datastore
  */
-export class DefaultPeerStore extends EventEmitter<PeerStoreEvents> implements PeerStore {
+export class PeerStoreImpl extends EventEmitter<PeerStoreEvents> implements PeerStore {
   public addressBook: AddressBook
   public keyBook: KeyBook
   public metadataBook: MetadataBook
@@ -120,4 +120,8 @@ export class DefaultPeerStore extends EventEmitter<PeerStoreEvents> implements P
       release()
     }
   }
+}
+
+export function createPeerStore (opts: PeerStoreOptions): PeerStore {
+  return new PeerStoreImpl(opts)
 }

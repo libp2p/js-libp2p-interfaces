@@ -1,5 +1,5 @@
 import { logger } from '@libp2p/logger'
-import { PeerId as PeerIdImpl } from '@libp2p/peer-id'
+import { peerIdFromBytes } from '@libp2p/peer-id'
 import errcode from 'err-code'
 import { codes } from './errors.js'
 import { Key } from 'interface-datastore/key'
@@ -219,7 +219,7 @@ export class PersistentStore {
       const base32Str = key.toString().split('/')[2]
       const buf = base32.decode(base32Str)
 
-      yield this.load(PeerIdImpl.fromBytes(buf))
+      yield this.load(peerIdFromBytes(buf))
     }
   }
 }

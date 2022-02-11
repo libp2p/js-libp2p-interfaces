@@ -5,7 +5,7 @@ import { expect } from 'aegir/utils/chai.js'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { MemoryDatastore } from 'datastore-core/memory'
 import pDefer from 'p-defer'
-import { DefaultPeerStore } from '../src/index.js'
+import { createPeerStore } from '../src/index.js'
 import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
@@ -23,7 +23,7 @@ describe('metadataBook', () => {
     let mb: MetadataBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore()
       })
@@ -163,7 +163,7 @@ describe('metadataBook', () => {
     let mb: MetadataBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore()
       })
@@ -206,7 +206,7 @@ describe('metadataBook', () => {
     let mb: MetadataBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore()
       })
@@ -259,7 +259,7 @@ describe('metadataBook', () => {
     let mb: MetadataBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore()
       })
@@ -317,7 +317,7 @@ describe('metadataBook', () => {
     let mb: MetadataBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore()
       })
