@@ -1,6 +1,7 @@
 import type { EventEmitter } from '../index.js'
 import type { Connection, Stream } from '../connection/index.js'
 import type { PeerId } from '../peer-id/index.js'
+import type { Topology } from '../topology/index.js'
 
 export interface IncomingStreamData {
   protocol: string
@@ -21,9 +22,11 @@ export interface StreamHandler {
 }
 
 export interface Registrar {
-  handle: (multicodec: string | string[], handler: StreamHandler) => Promise<void>
-  unhandle: (multicodec: string) => Promise<void>
+  handle: (protocol: string | string[], handler: StreamHandler) => Promise<string>
+  unhandle: (id: string) => Promise<void>
+  getHandlers: (protocol: string) => StreamHandler[]
 
-  register: (topology: any) => string
+  register: (protocols: string | string[], topology: Topology) => string
   unregister: (id: string) => void
+  getTopologies: (protocol: string) => Topology[]
 }

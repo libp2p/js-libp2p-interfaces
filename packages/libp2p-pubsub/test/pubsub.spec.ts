@@ -32,7 +32,7 @@ describe('pubsub base implementation', () => {
       })
     })
 
-    afterEach(() => pubsub.stop())
+    afterEach(async () => await pubsub.stop())
 
     it('calls _publish for router to forward messages', async () => {
       sinon.spy(pubsub, '_publish')
@@ -74,7 +74,7 @@ describe('pubsub base implementation', () => {
         await pubsub.start()
       })
 
-      afterEach(() => pubsub.stop())
+      afterEach(async () => await pubsub.stop())
 
       it('should add subscription', () => {
         pubsub.subscribe(topic)
@@ -119,8 +119,8 @@ describe('pubsub base implementation', () => {
           pubsubA.start(),
           pubsubB.start()
         ])
-        const topologyA = registrarA.topologies.get(protocol)
-        const handlerB = registrarB.streamHandlers.get(protocol)
+        const topologyA = registrarA.getTopologies(protocol)[0]
+        const handlerB = registrarB.getHandlers(protocol)[0]
 
         if (topologyA == null || handlerB == null) {
           throw new Error(`No handler registered for ${protocol}`)
@@ -133,9 +133,11 @@ describe('pubsub base implementation', () => {
         await handlerB(await mockIncomingStreamEvent(protocol, c1, peerIdA))
       })
 
-      afterEach(() => {
-        pubsubA.stop()
-        pubsubB.stop()
+      afterEach(async () => {
+        await Promise.all([
+          pubsubA.stop(),
+          pubsubB.stop()
+        ])
       })
 
       it('should send subscribe message to connected peers', async () => {
@@ -177,7 +179,7 @@ describe('pubsub base implementation', () => {
         await pubsub.start()
       })
 
-      afterEach(() => pubsub.stop())
+      afterEach(async () => await pubsub.stop())
 
       it('should remove all subscriptions for a topic', () => {
         pubsub.subscribe(topic)
@@ -227,8 +229,8 @@ describe('pubsub base implementation', () => {
           pubsubB.start()
         ])
 
-        const topologyA = registrarA.topologies.get(protocol)
-        const handlerB = registrarB.streamHandlers.get(protocol)
+        const topologyA = registrarA.getTopologies(protocol)[0]
+        const handlerB = registrarB.getHandlers(protocol)[0]
 
         if (topologyA == null || handlerB == null) {
           throw new Error(`No handler registered for ${protocol}`)
@@ -241,9 +243,11 @@ describe('pubsub base implementation', () => {
         await handlerB(await mockIncomingStreamEvent(protocol, c1, peerIdA))
       })
 
-      afterEach(() => {
-        pubsubA.stop()
-        pubsubB.stop()
+      afterEach(async () => {
+        await Promise.all([
+          pubsubA.stop(),
+          pubsubB.stop()
+        ])
       })
 
       it('should send unsubscribe message to connected peers', async () => {
@@ -313,7 +317,7 @@ describe('pubsub base implementation', () => {
       await pubsub.start()
     })
 
-    afterEach(() => pubsub.stop())
+    afterEach(async () => await pubsub.stop())
 
     it('returns the subscribed topics', () => {
       let subsTopics = pubsub.getTopics()
@@ -342,7 +346,7 @@ describe('pubsub base implementation', () => {
       })
     })
 
-    afterEach(() => pubsub.stop())
+    afterEach(async () => await pubsub.stop())
 
     it('should fail if pubsub is not started', () => {
       const topic = 'topic-test'

@@ -161,14 +161,14 @@ export interface DHT extends PeerDiscovery, Startable {
   put: (key: Uint8Array, value: Uint8Array, options?: QueryOptions) => AsyncIterable<QueryEvent>
 
   /**
-   * Enable server mode (e.g. allow publishing provider records)
+   * Returns the mode this node is in
    */
-  enableServerMode: () => void
+  getMode: () => Promise<'client' | 'server'>
 
   /**
-   * Enable server mode (e.g. disallow publishing provider records)
+   * If 'server' this node will respond to DHT queries, if 'client' this node will not
    */
-  enableClientMode: () => void
+  setMode: (mode: 'client' | 'server') => Promise<void>
 
   /**
    * Force a routing table refresh

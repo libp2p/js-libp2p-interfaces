@@ -10,7 +10,7 @@ import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { PeerStore } from '@libp2p/interfaces/peer-store'
 
-import { mockConnectionGater } from '@libp2p/interface-compliance-tests/utils/mock-connection-gater'
+import { mockConnectionGater } from '@libp2p/interface-compliance-tests/mocks'
 import { base58btc } from 'multiformats/bases/base58'
 
 const addr1 = new Multiaddr('/ip4/127.0.0.1/tcp/8000')
@@ -21,10 +21,6 @@ const addr4 = new Multiaddr('/ip4/127.0.0.1/tcp/8003')
 const proto1 = '/protocol1'
 const proto2 = '/protocol2'
 const proto3 = '/protocol3'
-
-/**
- * @typedef {import('../../src/peer-store/types').PeerStore} PeerStore
- */
 
 describe('peer-store', () => {
   const connectionGater = mockConnectionGater()

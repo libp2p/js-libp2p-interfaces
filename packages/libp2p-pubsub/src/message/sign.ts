@@ -3,8 +3,9 @@ import { RPC } from './rpc.js'
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { normalizeOutRpcMessage } from '../utils.js'
-import { PeerId } from '@libp2p/peer-id'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
 import { keys } from '@libp2p/crypto'
+import { PeerId as PeerIdImpl } from '@libp2p/peer-id'
 import type { Message } from '@libp2p/interfaces/pubsub'
 
 export const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
@@ -79,7 +80,7 @@ export async function messagePublicKey (message: Message) {
     throw new Error('Could not get the public key from the originator id')
   }
 
-  const from = PeerId.fromBytes(message.from)
+  const from = PeerIdImpl.fromBytes(message.from)
 
   if (message.key != null) {
     const keyPeerId = await PeerIdFactory.createFromPubKey(keys.unmarshalPublicKey(message.key))

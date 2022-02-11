@@ -167,8 +167,7 @@
   "scripts": {
     "lint": "aegir lint",
     "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
-    "build": "tsc",
-    "postbuild": "npm run build:copy-proto-files",
+    "build": "tsc && npm run build:copy-proto-files",
     "pretest": "npm run build",
     "test": "aegir test -f ./dist/test/*.js -f ./dist/test/**/*.js",
     "test:chrome": "npm run test -- -t browser",

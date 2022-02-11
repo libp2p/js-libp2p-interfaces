@@ -11,12 +11,6 @@ import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { PeerStore, KeyBook } from '@libp2p/interfaces/peer-store'
 import { base58btc } from 'multiformats/bases/base58'
 
-/**
- * @typedef {import('../../src/peer-store/types').PeerStore} PeerStore
- * @typedef {import('../../src/peer-store/types').KeyBook} KeyBook
- * @typedef {import('peer-id')} PeerId
- */
-
 describe('keyBook', () => {
   let peerId: PeerId
   let peerStore: PeerStore

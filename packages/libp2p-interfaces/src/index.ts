@@ -1,6 +1,6 @@
 import type { PeerId } from './peer-id/index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { Duplex } from 'it-stream-types'
+import type { ProtocolStream, Connection } from './connection/index.js'
 
 export interface AbortOptions {
   signal?: AbortSignal
@@ -12,12 +12,11 @@ export interface Startable {
   isStarted: () => boolean
 }
 
-// Implemented by libp2p, should be moved to libp2p-interfaces eventually
 export interface Dialer {
-  dialProtocol: (peer: PeerId, protocol: string, options?: { signal?: AbortSignal }) => Promise<{ stream: Duplex<Uint8Array> }>
+  dial: (peer: PeerId, options?: { signal?: AbortSignal }) => Promise<Connection>
+  dialProtocol: (peer: PeerId, protocol: string, options?: { signal?: AbortSignal }) => Promise<ProtocolStream>
 }
 
-// Implemented by libp2p, should be moved to libp2p-interfaces eventually
 export interface Addressable {
   multiaddrs: Multiaddr[]
 }

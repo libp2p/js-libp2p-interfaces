@@ -1,11 +1,12 @@
 import { logger } from '@libp2p/logger'
 import errcode from 'err-code'
 import { codes } from './errors.js'
-import { PeerId } from '@libp2p/peer-id'
+import { PeerId as PeerIdImpl } from '@libp2p/peer-id'
 import { base58btc } from 'multiformats/bases/base58'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { Store } from './store.js'
 import type { PeerStore, ProtoBook } from '@libp2p/interfaces/src/peer-store'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 const log = logger('libp2p:peer-store:proto-book')
 
@@ -46,7 +47,7 @@ export class PeerStoreProtoBook implements ProtoBook {
   }
 
   async set (peerId: PeerId, protocols: string[]) {
-    peerId = PeerId.fromPeerId(peerId)
+    peerId = PeerIdImpl.fromPeerId(peerId)
 
     if (!Array.isArray(protocols)) {
       log.error('protocols must be provided to store data')
@@ -90,7 +91,7 @@ export class PeerStoreProtoBook implements ProtoBook {
   }
 
   async add (peerId: PeerId, protocols: string[]) {
-    peerId = PeerId.fromPeerId(peerId)
+    peerId = PeerIdImpl.fromPeerId(peerId)
 
     if (!Array.isArray(protocols)) {
       log.error('protocols must be provided to store data')
@@ -135,7 +136,7 @@ export class PeerStoreProtoBook implements ProtoBook {
   }
 
   async remove (peerId: PeerId, protocols: string[]) {
-    peerId = PeerId.fromPeerId(peerId)
+    peerId = PeerIdImpl.fromPeerId(peerId)
 
     if (!Array.isArray(protocols)) {
       log.error('protocols must be provided to store data')
@@ -182,7 +183,7 @@ export class PeerStoreProtoBook implements ProtoBook {
   }
 
   async delete (peerId: PeerId) {
-    peerId = PeerId.fromPeerId(peerId)
+    peerId = PeerIdImpl.fromPeerId(peerId)
 
     log('delete await write lock')
     const release = await this.store.lock.writeLock()

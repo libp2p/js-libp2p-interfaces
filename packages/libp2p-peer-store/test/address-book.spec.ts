@@ -10,17 +10,12 @@ import pDefer from 'p-defer'
 import { MemoryDatastore } from 'datastore-core/memory'
 import { DefaultPeerStore } from '../src/index.js'
 import { RecordEnvelope, PeerRecord } from '@libp2p/peer-record'
-import { mockConnectionGater } from '@libp2p/interface-compliance-tests/utils/mock-connection-gater'
+import { mockConnectionGater } from '@libp2p/interface-compliance-tests/mocks'
 import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerStore, AddressBook } from '@libp2p/interfaces/peer-store'
 import { base58btc } from 'multiformats/bases/base58'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-
-/**
- * @typedef {import('../../src/peer-store/types').PeerStore} PeerStore
- * @typedef {import('../../src/peer-store/types').AddressBook} AddressBook
- */
 
 const addr1 = new Multiaddr('/ip4/127.0.0.1/tcp/8000')
 const addr2 = new Multiaddr('/ip4/20.0.0.1/tcp/8001')

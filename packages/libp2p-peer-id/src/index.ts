@@ -9,6 +9,8 @@ import errcode from 'err-code'
 import type { MultibaseDecoder, MultibaseEncoder } from 'multiformats/bases/interface'
 import type { MultihashDigest } from 'multiformats/hashes/interface'
 
+const peerIdSymbol = Symbol.for('@libp2p/peer-id')
+
 const baseDecoder = Object
   .values(bases)
   .map(codec => codec.decoder)
@@ -53,6 +55,18 @@ export class PeerId {
     this.type = opts.type
     this.multihash = opts.multihash
     this.privateKey = opts.privateKey
+  }
+
+  static isPeerId (other: any): other is PeerId {
+    return peerIdSymbol in other
+  }
+
+  get [Symbol.toStringTag] () {
+    return peerIdSymbol.toString()
+  }
+
+  get [peerIdSymbol] () {
+    return true
   }
 
   toString (codec?: MultibaseEncoder<any>) {

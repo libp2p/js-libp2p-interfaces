@@ -125,8 +125,7 @@
   "scripts": {
     "lint": "aegir lint",
     "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
-    "build": "tsc",
-    "postbuild": "npm run build:copy-proto-files",
+    "build": "tsc && npm run build:copy-proto-files",
     "generate": "npm run generate:proto && npm run generate:proto-types && tsc",
     "generate:proto": "pbjs -t static-module -w es6 -r libp2p-peer-store --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/pb/peer.js ./src/pb/peer.proto",
     "generate:proto-types": "pbts -o src/pb/peer.d.ts src/pb/peer.js",
@@ -143,7 +142,7 @@
   "dependencies": {
     "@libp2p/interfaces": "^1.0.0",
     "@libp2p/logger": "^1.0.1",
-    "@libp2p/peer-record": "^0.0.0",
+    "@libp2p/peer-record": "^1.0.1",
     "@multiformats/multiaddr": "^10.1.5",
     "interface-datastore": "^6.1.0",
     "it-all": "^1.0.6",
@@ -156,7 +155,7 @@
     "protobufjs": "^6.10.2"
   },
   "devDependencies": {
-    "@libp2p/interface-compliance-tests": "^1.1.0",
+    "@libp2p/interface-compliance-tests": "^1.1.2",
     "@libp2p/peer-id": "^1.1.0",
     "@libp2p/peer-id-factory": "^1.0.3",
     "@libp2p/utils": "^1.0.5",
