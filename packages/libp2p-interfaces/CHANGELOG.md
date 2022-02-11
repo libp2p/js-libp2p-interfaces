@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.3...@libp2p/interfaces-v1.3.4) (2022-02-11)
+
+
+### Bug Fixes
+
+* simpler topologies ([#164](https://github.com/libp2p/js-libp2p-interfaces/issues/164)) ([45fcaa1](https://github.com/libp2p/js-libp2p-interfaces/commit/45fcaa10a6a3215089340ff2eff117d7fd1100e7))
+
 ## [@libp2p/interfaces-v1.3.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.2...@libp2p/interfaces-v1.3.3) (2022-02-10)
 
 
