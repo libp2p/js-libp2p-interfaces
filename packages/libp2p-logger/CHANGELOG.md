@@ -1,3 +1,10 @@
+## [@libp2p/logger-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/logger-v1.0.2...@libp2p/logger-v1.0.3) (2022-02-11)
+
+
+### Bug Fixes
+
+* log cids ([#165](https://github.com/libp2p/js-libp2p-interfaces/issues/165)) ([68831e8](https://github.com/libp2p/js-libp2p-interfaces/commit/68831e804630e1f45ffee56a7585af62072d7145))
+
 ## [@libp2p/logger-v1.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/logger-v1.0.1...@libp2p/logger-v1.0.2) (2022-02-10)
 
 
