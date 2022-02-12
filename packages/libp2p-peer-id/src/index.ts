@@ -6,10 +6,10 @@ import { identity } from 'multiformats/hashes/identity'
 import { equals as uint8ArrayEquals } from 'uint8arrays/equals'
 import { sha256 } from 'multiformats/hashes/sha2'
 import errcode from 'err-code'
+import { Ed25519PeerId, RSAPeerId, Secp256k1PeerId, symbol } from '@libp2p/interfaces/peer-id'
 import type { MultibaseDecoder, MultibaseEncoder } from 'multiformats/bases/interface'
 import type { MultihashDigest } from 'multiformats/hashes/interface'
-
-const peerIdSymbol = Symbol.for('@libp2p/peer-id')
+import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 const baseDecoder = Object
   .values(bases)
@@ -45,7 +45,7 @@ interface Secp256k1PeerIdOptions {
   privateKey?: Uint8Array
 }
 
-export class PeerId {
+class PeerIdImpl {
   public type: 'RSA' | 'Ed25519' | 'secp256k1'
   public readonly multihash: MultihashDigest
   public readonly privateKey?: Uint8Array
@@ -57,15 +57,11 @@ export class PeerId {
     this.privateKey = opts.privateKey
   }
 
-  static isPeerId (other: any): other is PeerId {
-    return peerIdSymbol in other
-  }
-
   get [Symbol.toStringTag] () {
-    return peerIdSymbol.toString()
+    return symbol.toString()
   }
 
-  get [peerIdSymbol] () {
+  get [symbol] () {
     return true
   }
 
@@ -102,105 +98,9 @@ export class PeerId {
       throw new Error('not valid Id')
     }
   }
-
-  static fromPeerId (other: any) {
-    const err = errcode(new Error('Not a PeerId'), 'ERR_INVALID_PARAMETERS')
-
-    if (other.type === 'RSA') {
-      return new RSAPeerId(other)
-    }
-
-    if (other.type === 'Ed25519') {
-      return new Ed25519PeerId(other)
-    }
-
-    if (other.type === 'secp256k1') {
-      return new Secp256k1PeerId(other)
-    }
-
-    throw err
-  }
-
-  static fromString (str: string, decoder?: MultibaseDecoder<any>) {
-    decoder = decoder ?? baseDecoder
-
-    if (str.charAt(0) === '1' || str.charAt(0) === 'Q') {
-      // identity hash ed25519/secp256k1 key or sha2-256 hash of
-      // rsa public key - base58btc encoded either way
-      const multihash = Digest.decode(base58btc.decode(`z${str}`))
-
-      if (str.startsWith('12D')) {
-        return new Ed25519PeerId({ multihash })
-      } else if (str.startsWith('16U')) {
-        return new Secp256k1PeerId({ multihash })
-      } else {
-        return new RSAPeerId({ multihash })
-      }
-    }
-
-    return PeerId.fromBytes(baseDecoder.decode(str))
-  }
-
-  static fromBytes (buf: Uint8Array) {
-    try {
-      const multihash = Digest.decode(buf)
-
-      if (multihash.code === identity.code) {
-        if (multihash.digest.length === MARSHALLED_ED225519_PUBLIC_KEY_LENGTH) {
-          return new Ed25519PeerId({ multihash })
-        } else if (multihash.digest.length === MARSHALLED_SECP258K1_PUBLIC_KEY_LENGTH) {
-          return new Secp256k1PeerId({ multihash })
-        }
-      }
-
-      if (multihash.code === sha256.code) {
-        return new RSAPeerId({ multihash })
-      }
-    } catch {
-      return PeerId.fromCID(CID.decode(buf))
-    }
-
-    throw new Error('Supplied PeerID CID is invalid')
-  }
-
-  static fromCID (cid: CID) {
-    if (cid == null || cid.multihash == null || cid.version == null || (cid.version === 1 && cid.code !== LIBP2P_KEY_CODE)) {
-      throw new Error('Supplied PeerID CID is invalid')
-    }
-
-    const multihash = cid.multihash
-
-    if (multihash.code === sha256.code) {
-      return new RSAPeerId({ multihash: cid.multihash })
-    } else if (multihash.code === identity.code) {
-      if (multihash.bytes.length === MARSHALLED_ED225519_PUBLIC_KEY_LENGTH) {
-        return new Ed25519PeerId({ multihash: cid.multihash })
-      } else if (multihash.bytes.length === MARSHALLED_SECP258K1_PUBLIC_KEY_LENGTH) {
-        return new Secp256k1PeerId({ multihash: cid.multihash })
-      }
-    }
-
-    throw new Error('Supplied PeerID CID is invalid')
-  }
-
-  /**
-   * @param publicKey - A marshalled public key
-   * @param privateKey - A marshalled private key
-   */
-  static async fromKeys (publicKey: Uint8Array, privateKey?: Uint8Array) {
-    if (publicKey.length === MARSHALLED_ED225519_PUBLIC_KEY_LENGTH) {
-      return new Ed25519PeerId({ multihash: Digest.create(identity.code, publicKey), privateKey })
-    }
-
-    if (publicKey.length === MARSHALLED_SECP258K1_PUBLIC_KEY_LENGTH) {
-      return new Secp256k1PeerId({ multihash: Digest.create(identity.code, publicKey), privateKey })
-    }
-
-    return new RSAPeerId({ multihash: await sha256.digest(publicKey), publicKey, privateKey })
-  }
 }
 
-export class RSAPeerId extends PeerId {
+class RSAPeerIdImpl extends PeerIdImpl implements RSAPeerId {
   public readonly type = 'RSA'
   public readonly publicKey?: Uint8Array
 
@@ -211,7 +111,7 @@ export class RSAPeerId extends PeerId {
   }
 }
 
-export class Ed25519PeerId extends PeerId {
+class Ed25519PeerIdImpl extends PeerIdImpl implements Ed25519PeerId {
   public readonly type = 'Ed25519'
   public readonly publicKey: Uint8Array
 
@@ -222,7 +122,7 @@ export class Ed25519PeerId extends PeerId {
   }
 }
 
-export class Secp256k1PeerId extends PeerId {
+class Secp256k1PeerIdImpl extends PeerIdImpl implements Secp256k1PeerId {
   public readonly type = 'secp256k1'
   public readonly publicKey: Uint8Array
 
@@ -231,4 +131,104 @@ export class Secp256k1PeerId extends PeerId {
 
     this.publicKey = opts.multihash.digest
   }
+}
+
+export function createPeerId (opts: PeerIdOptions) {
+  return new PeerIdImpl(opts)
+}
+
+export function peerIdFromPeerId (other: any): PeerId {
+  const err = errcode(new Error('Not a PeerId'), 'ERR_INVALID_PARAMETERS')
+
+  if (other.type === 'RSA') {
+    return new RSAPeerIdImpl(other)
+  }
+
+  if (other.type === 'Ed25519') {
+    return new Ed25519PeerIdImpl(other)
+  }
+
+  if (other.type === 'secp256k1') {
+    return new Secp256k1PeerIdImpl(other)
+  }
+
+  throw err
+}
+
+export function peerIdFromString (str: string, decoder?: MultibaseDecoder<any>): PeerId {
+  decoder = decoder ?? baseDecoder
+
+  if (str.charAt(0) === '1' || str.charAt(0) === 'Q') {
+    // identity hash ed25519/secp256k1 key or sha2-256 hash of
+    // rsa public key - base58btc encoded either way
+    const multihash = Digest.decode(base58btc.decode(`z${str}`))
+
+    if (str.startsWith('12D')) {
+      return new Ed25519PeerIdImpl({ multihash })
+    } else if (str.startsWith('16U')) {
+      return new Secp256k1PeerIdImpl({ multihash })
+    } else {
+      return new RSAPeerIdImpl({ multihash })
+    }
+  }
+
+  return peerIdFromBytes(baseDecoder.decode(str))
+}
+
+export function peerIdFromBytes (buf: Uint8Array) {
+  try {
+    const multihash = Digest.decode(buf)
+
+    if (multihash.code === identity.code) {
+      if (multihash.digest.length === MARSHALLED_ED225519_PUBLIC_KEY_LENGTH) {
+        return new Ed25519PeerIdImpl({ multihash })
+      } else if (multihash.digest.length === MARSHALLED_SECP258K1_PUBLIC_KEY_LENGTH) {
+        return new Secp256k1PeerIdImpl({ multihash })
+      }
+    }
+
+    if (multihash.code === sha256.code) {
+      return new RSAPeerIdImpl({ multihash })
+    }
+  } catch {
+    return peerIdFromCID(CID.decode(buf))
+  }
+
+  throw new Error('Supplied PeerID CID is invalid')
+}
+
+export function peerIdFromCID (cid: CID): PeerId {
+  if (cid == null || cid.multihash == null || cid.version == null || (cid.version === 1 && cid.code !== LIBP2P_KEY_CODE)) {
+    throw new Error('Supplied PeerID CID is invalid')
+  }
+
+  const multihash = cid.multihash
+
+  if (multihash.code === sha256.code) {
+    return new RSAPeerIdImpl({ multihash: cid.multihash })
+  } else if (multihash.code === identity.code) {
+    if (multihash.bytes.length === MARSHALLED_ED225519_PUBLIC_KEY_LENGTH) {
+      return new Ed25519PeerIdImpl({ multihash: cid.multihash })
+    } else if (multihash.bytes.length === MARSHALLED_SECP258K1_PUBLIC_KEY_LENGTH) {
+      return new Secp256k1PeerIdImpl({ multihash: cid.multihash })
+    }
+  }
+
+  throw new Error('Supplied PeerID CID is invalid')
+}
+
+/**
+ * @param publicKey - A marshalled public key
+ * @param privateKey - A marshalled private key
+ */
+export async function peerIdFromKeys (publicKey: Uint8Array, privateKey?: Uint8Array): Promise<PeerId> {
+  if (publicKey.length === MARSHALLED_ED225519_PUBLIC_KEY_LENGTH) {
+    return new Ed25519PeerIdImpl({ multihash: Digest.create(identity.code, publicKey), privateKey })
+  }
+
+  if (publicKey.length === MARSHALLED_SECP258K1_PUBLIC_KEY_LENGTH) {
+    return new Secp256k1PeerIdImpl({ multihash: Digest.create(identity.code, publicKey), privateKey })
+  }
+
+  return new RSAPeerIdImpl({ multihash: await sha256.digest(publicKey), publicKey, privateKey })
 }

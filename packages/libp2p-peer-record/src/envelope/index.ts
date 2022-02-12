@@ -6,7 +6,7 @@ import varint from 'varint'
 import { equals as uint8arraysEquals } from 'uint8arrays/equals'
 import { codes } from '../errors.js'
 import { Envelope as Protobuf } from './envelope.js'
-import { PeerId as PeerIdImpl } from '@libp2p/peer-id'
+import { peerIdFromKeys } from '@libp2p/peer-id'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Record, Envelope } from '@libp2p/interfaces/record'
 
@@ -23,7 +23,7 @@ export class RecordEnvelope implements Envelope {
    */
   static createFromProtobuf = async (data: Uint8Array) => {
     const envelopeData = Protobuf.decode(data)
-    const peerId = await PeerIdImpl.fromKeys(envelopeData.publicKey)
+    const peerId = await peerIdFromKeys(envelopeData.publicKey)
 
     return new RecordEnvelope({
       peerId,

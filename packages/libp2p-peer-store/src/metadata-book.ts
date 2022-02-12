@@ -1,7 +1,7 @@
 import { logger } from '@libp2p/logger'
 import errcode from 'err-code'
 import { codes } from './errors.js'
-import { PeerId as PeerIdImpl } from '@libp2p/peer-id'
+import { peerIdFromPeerId } from '@libp2p/peer-id'
 import { equals as uint8ArrayEquals } from 'uint8arrays/equals'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { Store } from './store.js'
@@ -29,7 +29,7 @@ export class PeerStoreMetadataBook implements MetadataBook {
    * Get the known data of a provided peer
    */
   async get (peerId: PeerId) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     log('get await read lock')
     const release = await this.store.lock.readLock()
@@ -55,7 +55,7 @@ export class PeerStoreMetadataBook implements MetadataBook {
    * Get specific metadata value, if it exists
    */
   async getValue (peerId: PeerId, key: string) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     log('getValue await read lock')
     const release = await this.store.lock.readLock()
@@ -76,7 +76,7 @@ export class PeerStoreMetadataBook implements MetadataBook {
   }
 
   async set (peerId: PeerId, metadata: Map<string, Uint8Array>) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     if (!(metadata instanceof Map)) {
       log.error('valid metadata must be provided to store data')
@@ -105,7 +105,7 @@ export class PeerStoreMetadataBook implements MetadataBook {
    * Set metadata key and value of a provided peer
    */
   async setValue (peerId: PeerId, key: string, value: Uint8Array) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     if (typeof key !== 'string' || !(value instanceof Uint8Array)) {
       log.error('valid key and value must be provided to store data')
@@ -146,7 +146,7 @@ export class PeerStoreMetadataBook implements MetadataBook {
   }
 
   async delete (peerId: PeerId) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     log('delete await write lock')
     const release = await this.store.lock.writeLock()
@@ -175,7 +175,7 @@ export class PeerStoreMetadataBook implements MetadataBook {
   }
 
   async deleteValue (peerId: PeerId, key: string) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     log('deleteValue await write lock')
     const release = await this.store.lock.writeLock()

@@ -4,12 +4,11 @@ import { PubsubBaseProtocol } from '../../src/index.js'
 import { RPC, IRPC } from '../../src/message/rpc.js'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { IncomingStreamData, Registrar, StreamHandler } from '@libp2p/interfaces/registrar'
-import type { Ed25519PeerId } from '@libp2p/peer-id'
 import type { Topology } from '@libp2p/interfaces/topology'
 import type { Connection } from '@libp2p/interfaces/src/connection'
 import type { PeerId } from '@libp2p/interfaces/src/peer-id'
 
-export const createPeerId = async (): Promise<Ed25519PeerId> => {
+export const createPeerId = async (): Promise<PeerId> => {
   const peerId = await PeerIdFactory.createEd25519PeerId()
 
   return peerId

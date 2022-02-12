@@ -2,7 +2,7 @@
 
 import { expect } from 'aegir/utils/chai.js'
 import all from 'it-all'
-import { DefaultPeerStore } from '../src/index.js'
+import { createPeerStore } from '../src/index.js'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { MemoryDatastore } from 'datastore-core/memory'
@@ -39,7 +39,7 @@ describe('peer-store', () => {
     let peerStore: PeerStore
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId: peerIds[4],
         datastore: new MemoryDatastore(),
         addressFilter: connectionGater.filterMultiaddrForPeer
@@ -72,7 +72,7 @@ describe('peer-store', () => {
     let peerStore: PeerStore
 
     beforeEach(async () => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId: peerIds[4],
         datastore: new MemoryDatastore(),
         addressFilter: connectionGater.filterMultiaddrForPeer
@@ -176,7 +176,7 @@ describe('peer-store', () => {
     let peerStore: PeerStore
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId: peerIds[4],
         datastore: new MemoryDatastore(),
         addressFilter: connectionGater.filterMultiaddrForPeer

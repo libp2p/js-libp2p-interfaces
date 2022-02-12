@@ -1,4 +1,4 @@
-import { PeerId } from '@libp2p/peer-id'
+import { peerIdFromString } from '@libp2p/peer-id'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { pipe } from 'it-pipe'
 import { duplexPair } from 'it-pair/duplex'
@@ -11,7 +11,7 @@ import { mockMuxer } from './muxer.js'
 export async function mockConnection (maConn: MultiaddrConnection, direction: 'inbound' | 'outbound' = 'inbound', muxer: Muxer = mockMuxer()): Promise<Connection> {
   const remoteAddr = maConn.remoteAddr
   const remotePeerIdStr = remoteAddr.getPeerId()
-  const remotePeer = remotePeerIdStr != null ? PeerId.fromString(remotePeerIdStr) : await createEd25519PeerId()
+  const remotePeer = remotePeerIdStr != null ? peerIdFromString(remotePeerIdStr) : await createEd25519PeerId()
   const registry = new Map()
   const streams: Stream[] = []
   let streamId = 0

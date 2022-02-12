@@ -1,7 +1,7 @@
 import { logger } from '@libp2p/logger'
 import errcode from 'err-code'
 import { codes } from './errors.js'
-import { PeerId as PeerIdImpl } from '@libp2p/peer-id'
+import { peerIdFromPeerId } from '@libp2p/peer-id'
 import { equals as uint8arrayEquals } from 'uint8arrays/equals'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { Store } from './store.js'
@@ -28,7 +28,7 @@ export class PeerStoreKeyBook implements KeyBook {
    * Set the Peer public key
    */
   async set (peerId: PeerId, publicKey: Uint8Array) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     if (!(publicKey instanceof Uint8Array)) {
       log.error('publicKey must be an instance of Uint8Array to store data')
@@ -74,7 +74,7 @@ export class PeerStoreKeyBook implements KeyBook {
    * Get Public key of the given PeerId, if stored
    */
   async get (peerId: PeerId) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     log('get await write lock')
     const release = await this.store.lock.readLock()
@@ -95,7 +95,7 @@ export class PeerStoreKeyBook implements KeyBook {
   }
 
   async delete (peerId: PeerId) {
-    peerId = PeerIdImpl.fromPeerId(peerId)
+    peerId = peerIdFromPeerId(peerId)
 
     log('delete await write lock')
     const release = await this.store.lock.writeLock()

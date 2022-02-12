@@ -2,7 +2,7 @@ import type { CID } from 'multiformats/cid'
 import type { MultihashDigest } from 'multiformats/hashes/interface'
 import type { MultibaseEncoder } from 'multiformats/bases/interface'
 
-export interface PeerId {
+interface BasePeerId {
   readonly type: 'RSA' | 'Ed25519' | 'secp256k1'
   readonly multihash: MultihashDigest
   readonly privateKey?: Uint8Array
@@ -14,17 +14,25 @@ export interface PeerId {
   equals: (other: any) => boolean
 }
 
-export interface RSAPeerId extends PeerId {
+export interface RSAPeerId extends BasePeerId {
   readonly type: 'RSA'
   readonly publicKey?: Uint8Array
 }
 
-export interface Ed25519PeerId extends PeerId {
+export interface Ed25519PeerId extends BasePeerId {
   readonly type: 'Ed25519'
   readonly publicKey: Uint8Array
 }
 
-export interface Secp256k1PeerId extends PeerId {
+export interface Secp256k1PeerId extends BasePeerId {
   readonly type: 'secp256k1'
   readonly publicKey: Uint8Array
+}
+
+export type PeerId = RSAPeerId | Ed25519PeerId | Secp256k1PeerId
+
+export const symbol = Symbol.for('@libp2p/peer-id')
+
+export function isPeerId (other: any): other is PeerId {
+  return symbol in other
 }

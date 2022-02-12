@@ -8,7 +8,7 @@ import { publicAddressesFirst } from '@libp2p/utils/address-sort'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import pDefer from 'p-defer'
 import { MemoryDatastore } from 'datastore-core/memory'
-import { DefaultPeerStore } from '../src/index.js'
+import { createPeerStore } from '../src/index.js'
 import { RecordEnvelope, PeerRecord } from '@libp2p/peer-record'
 import { mockConnectionGater } from '@libp2p/interface-compliance-tests/mocks'
 import { codes } from '../src/errors.js'
@@ -34,7 +34,7 @@ describe('addressBook', () => {
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore(),
         addressFilter: connectionGater.filterMultiaddrForPeer
@@ -155,7 +155,7 @@ describe('addressBook', () => {
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore(),
         addressFilter: connectionGater.filterMultiaddrForPeer
@@ -313,7 +313,7 @@ describe('addressBook', () => {
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore(),
         addressFilter: connectionGater.filterMultiaddrForPeer
@@ -354,7 +354,7 @@ describe('addressBook', () => {
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore(),
         addressFilter: connectionGater.filterMultiaddrForPeer
@@ -408,7 +408,7 @@ describe('addressBook', () => {
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = new DefaultPeerStore({
+      peerStore = createPeerStore({
         peerId,
         datastore: new MemoryDatastore(),
         addressFilter: connectionGater.filterMultiaddrForPeer
@@ -469,7 +469,7 @@ describe('addressBook', () => {
 
     describe('consumes a valid peer record and stores its data', () => {
       beforeEach(() => {
-        peerStore = new DefaultPeerStore({
+        peerStore = createPeerStore({
           peerId,
           datastore: new MemoryDatastore(),
           addressFilter: connectionGater.filterMultiaddrForPeer
@@ -674,7 +674,7 @@ describe('addressBook', () => {
 
     describe('fails to consume invalid peer records', () => {
       beforeEach(() => {
-        peerStore = new DefaultPeerStore({
+        peerStore = createPeerStore({
           peerId,
           datastore: new MemoryDatastore(),
           addressFilter: connectionGater.filterMultiaddrForPeer

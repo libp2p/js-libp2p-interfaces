@@ -1,6 +1,6 @@
 import { expect } from 'aegir/utils/chai.js'
 import { pair } from 'it-pair'
-import { PeerId } from '@libp2p/peer-id'
+import { peerIdFromString } from '@libp2p/peer-id'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { pushable } from 'it-pushable'
 import drain from 'it-drain'
@@ -114,7 +114,7 @@ export function mockUpgrader (options: MockUpgraderOptions = {}) {
 async function createConnection (maConn: MultiaddrConnection, direction: 'inbound' | 'outbound', muxer: Muxer): Promise<Connection> {
   const remoteAddr = maConn.remoteAddr
   const remotePeerIdStr = remoteAddr.getPeerId()
-  const remotePeer = remotePeerIdStr != null ? PeerId.fromString(remotePeerIdStr) : await PeerIdFactory.createEd25519PeerId()
+  const remotePeer = remotePeerIdStr != null ? peerIdFromString(remotePeerIdStr) : await PeerIdFactory.createEd25519PeerId()
 
   const streams: Stream[] = []
   let streamId = 0
