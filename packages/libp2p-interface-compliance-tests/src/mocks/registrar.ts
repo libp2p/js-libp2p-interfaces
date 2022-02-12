@@ -62,6 +62,12 @@ export class MockRegistrar implements Registrar {
   getTopologies (protocol: string) {
     const output: Topology[] = []
 
+    for (const { topology, protocols } of this.topologies.values()) {
+      if (protocols.includes(protocol)) {
+        output.push(topology)
+      }
+    }
+
     return output
   }
 }
