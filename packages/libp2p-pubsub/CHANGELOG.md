@@ -1,3 +1,10 @@
+## [@libp2p/pubsub-v1.2.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.3...@libp2p/pubsub-v1.2.4) (2022-02-12)
+
+
+### Bug Fixes
+
+* hide implementations behind factory methods ([#167](https://github.com/libp2p/js-libp2p-interfaces/issues/167)) ([2fba080](https://github.com/libp2p/js-libp2p-interfaces/commit/2fba0800c9896af6dcc49da4fa904bb4a3e3e40d))
+
 ## [@libp2p/pubsub-v1.2.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.2...@libp2p/pubsub-v1.2.3) (2022-02-11)
 
 
