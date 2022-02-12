@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.5...@libp2p/interface-compliance-tests-v1.1.6) (2022-02-12)
+
+
+### Bug Fixes
+
+* return registered topologies in mock ([#168](https://github.com/libp2p/js-libp2p-interfaces/issues/168)) ([1583019](https://github.com/libp2p/js-libp2p-interfaces/commit/158301982384a694ac3fb8f9df67c71b7b776b47))
+
 ## [@libp2p/interface-compliance-tests-v1.1.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.4...@libp2p/interface-compliance-tests-v1.1.5) (2022-02-12)
 
 
