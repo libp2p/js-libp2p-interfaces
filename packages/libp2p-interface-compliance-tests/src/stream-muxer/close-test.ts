@@ -4,14 +4,12 @@ import { duplexPair } from 'it-pair/duplex'
 import { abortableSource, abortableDuplex } from 'abortable-iterator'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import drain from 'it-drain'
-import { mockUpgrader, mockMultiaddrConnection } from '../transport/utils/index.js'
+import { mockUpgrader } from '../mocks/upgrader.js'
+import { mockMultiaddrConnection } from '../mocks/multiaddr-connection.js'
+import { expect } from 'aegir/utils/chai.js'
+import delay from 'delay'
 import type { TestSetup } from '../index.js'
 import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
-import { expect } from 'aegir/utils/chai.js'
-
-async function pause (ms: number) {
-  return await new Promise(resolve => setTimeout(resolve, ms))
-}
 
 function randomBuffer () {
   return uint8ArrayFromString(Math.random().toString())
@@ -21,7 +19,7 @@ const infiniteRandom = {
   [Symbol.asyncIterator]: async function * () {
     while (true) {
       yield randomBuffer()
-      await pause(10)
+      await delay(50)
     }
   }
 }
@@ -31,7 +29,7 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
     it('closing underlying socket closes streams', async () => {
       const muxer = await common.setup({
         onStream: (stream) => {
-          void pipe(stream, stream)
+          void pipe(stream, drain)
         }
       })
       const upgrader = mockUpgrader({ muxer })
@@ -93,12 +91,12 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       })
 
       // Pause, and then send some data and close the first stream
-      await pause(50)
+      await delay(50)
       await pipe([randomBuffer()], stream, drain)
       closed = true
 
       // Abort all the other streams later
-      await pause(50)
+      await delay(50)
       controllers.forEach(c => c.abort())
 
       // These should now all resolve without error

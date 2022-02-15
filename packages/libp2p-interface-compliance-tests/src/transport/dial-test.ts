@@ -1,5 +1,6 @@
 import { expect } from 'aegir/utils/chai.js'
-import { isValidTick, mockUpgrader } from './utils/index.js'
+import { isValidTick } from '../utils/is-valid-tick.js'
+import { mockUpgrader } from '../mocks/upgrader.js'
 import { goodbye } from 'it-goodbye'
 import all from 'it-all'
 import { pipe } from 'it-pipe'

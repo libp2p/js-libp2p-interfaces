@@ -7,17 +7,21 @@ import type { Connection, Stream, Metadata, ProtocolStream } from '@libp2p/inter
 import type { Muxer } from '@libp2p/interfaces/stream-muxer'
 import type { Duplex } from 'it-stream-types'
 import { mockMuxer } from './muxer.js'
+import type { PeerId } from '@libp2p/interfaces/src/peer-id'
+import { mockMultiaddrConnection } from './multiaddr-connection.js'
+import { Multiaddr } from '@multiformats/multiaddr'
 
-export async function mockConnection (maConn: MultiaddrConnection, direction: 'inbound' | 'outbound' = 'inbound', muxer: Muxer = mockMuxer()): Promise<Connection> {
+export async function mockConnection (maConn: MultiaddrConnection, direction: 'inbound' | 'outbound' = 'inbound', muxer?: Muxer): Promise<Connection> {
   const remoteAddr = maConn.remoteAddr
   const remotePeerIdStr = remoteAddr.getPeerId()
   const remotePeer = remotePeerIdStr != null ? peerIdFromString(remotePeerIdStr) : await createEd25519PeerId()
   const registry = new Map()
   const streams: Stream[] = []
   let streamId = 0
+  const mux = muxer ?? mockMuxer()
 
   void pipe(
-    maConn, muxer, maConn
+    maConn, mux, maConn
   )
 
   return {
@@ -44,7 +48,7 @@ export async function mockConnection (maConn: MultiaddrConnection, direction: 'i
       }
 
       const id = `${streamId++}`
-      const stream: Stream = muxer.newStream(id)
+      const stream: Stream = mux.newStream(id)
       const streamData: ProtocolStream = {
         protocol: protocols[0],
         stream
@@ -79,23 +83,26 @@ export function mockStream (stream: Duplex<Uint8Array>): Stream {
   }
 }
 
-export function connectionPair (): [ Connection, Connection ] {
+export async function connectionPair (peerA: PeerId, peerB: PeerId): Promise<[ Connection, Connection ]> {
   const [d0, d1] = duplexPair<Uint8Array>()
 
-  return [
-    // @ts-expect-error not a complete implementation
-    {
-      newStream: async (multicodecs: string[]) => await Promise.resolve({
-        stream: mockStream(d0),
-        protocol: multicodecs[0]
-      })
-    },
-    // @ts-expect-error not a complete implementation
-    {
-      newStream: async (multicodecs: string[]) => await Promise.resolve({
-        stream: mockStream(d1),
-        protocol: multicodecs[0]
-      })
-    }
-  ]
+  return [{
+    ...await mockConnection(mockMultiaddrConnection({
+      ...d0,
+      remoteAddr: new Multiaddr(`/ip4/127.0.0.1/tcp/4001/p2p/${peerA.toString()}`)
+    })),
+    newStream: async (multicodecs: string[]) => await Promise.resolve({
+      stream: mockStream(d0),
+      protocol: multicodecs[0]
+    })
+  }, {
+    ...await mockConnection(mockMultiaddrConnection({
+      ...d1,
+      remoteAddr: new Multiaddr(`/ip4/127.0.0.1/tcp/4001/p2p/${peerB.toString()}`)
+    })),
+    newStream: async (multicodecs: string[]) => await Promise.resolve({
+      stream: mockStream(d1),
+      protocol: multicodecs[0]
+    })
+  }]
 }
