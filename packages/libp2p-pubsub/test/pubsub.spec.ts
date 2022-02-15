@@ -24,10 +24,8 @@ describe('pubsub base implementation', () => {
     beforeEach(async () => {
       const peerId = await createPeerId()
       pubsub = new PubsubImplementation({
-        libp2p: {
-          peerId: peerId,
-          registrar: new MockRegistrar()
-        },
+        peerId: peerId,
+        registrar: new MockRegistrar(),
         multicodecs: [protocol]
       })
     })
@@ -66,10 +64,8 @@ describe('pubsub base implementation', () => {
         const peerId = await createPeerId()
         pubsub = new PubsubImplementation({
           multicodecs: [protocol],
-          libp2p: {
-            peerId: peerId,
-            registrar: new MockRegistrar()
-          }
+          peerId: peerId,
+          registrar: new MockRegistrar()
         })
         await pubsub.start()
       })
@@ -99,17 +95,13 @@ describe('pubsub base implementation', () => {
 
         pubsubA = new PubsubImplementation({
           multicodecs: [protocol],
-          libp2p: {
-            peerId: peerIdA,
-            registrar: registrarA
-          }
+          peerId: peerIdA,
+          registrar: registrarA
         })
         pubsubB = new PubsubImplementation({
           multicodecs: [protocol],
-          libp2p: {
-            peerId: peerIdB,
-            registrar: registrarB
-          }
+          peerId: peerIdB,
+          registrar: registrarB
         })
       })
 
@@ -171,10 +163,8 @@ describe('pubsub base implementation', () => {
         const peerId = await createPeerId()
         pubsub = new PubsubImplementation({
           multicodecs: [protocol],
-          libp2p: {
-            peerId: peerId,
-            registrar: new MockRegistrar()
-          }
+          peerId: peerId,
+          registrar: new MockRegistrar()
         })
         await pubsub.start()
       })
@@ -208,17 +198,13 @@ describe('pubsub base implementation', () => {
 
         pubsubA = new PubsubImplementation({
           multicodecs: [protocol],
-          libp2p: {
-            peerId: peerIdA,
-            registrar: registrarA
-          }
+          peerId: peerIdA,
+          registrar: registrarA
         })
         pubsubB = new PubsubImplementation({
           multicodecs: [protocol],
-          libp2p: {
-            peerId: peerIdB,
-            registrar: registrarB
-          }
+          peerId: peerIdB,
+          registrar: registrarB
         })
       })
 
@@ -309,10 +295,8 @@ describe('pubsub base implementation', () => {
       peerId = await createPeerId()
       pubsub = new PubsubImplementation({
         multicodecs: [protocol],
-        libp2p: {
-          peerId: peerId,
-          registrar: new MockRegistrar()
-        }
+        peerId: peerId,
+        registrar: new MockRegistrar()
       })
       await pubsub.start()
     })
@@ -339,10 +323,8 @@ describe('pubsub base implementation', () => {
       peerId = await createPeerId()
       pubsub = new PubsubImplementation({
         multicodecs: [protocol],
-        libp2p: {
-          peerId: peerId,
-          registrar: new MockRegistrar()
-        }
+        peerId: peerId,
+        registrar: new MockRegistrar()
       })
     })
 

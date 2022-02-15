@@ -45,7 +45,8 @@ export interface PeerStreams {
 export interface PubsubOptions {
   debugName?: string
   multicodecs: string[]
-  libp2p: any
+  registrar: Registrar
+  peerId: PeerId
 
   /**
    * defines how signatures should be handled

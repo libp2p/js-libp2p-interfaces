@@ -29,10 +29,8 @@ describe('pubsub base messages', () => {
     pubsub = new PubsubProtocol({
       debugName: 'pubsub',
       multicodecs: ['/pubsub/1.0.0'],
-      libp2p: {
-        peerId: peerId,
-        registrar: new MockRegistrar()
-      }
+      peerId: peerId,
+      registrar: new MockRegistrar()
     })
   })
 

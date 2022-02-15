@@ -21,10 +21,11 @@ class PubsubProtocol extends PubsubBaseProtocol<{}> {
 describe('pubsub base lifecycle', () => {
   describe('should start and stop properly', () => {
     let pubsub: PubsubProtocol
-    let sinonMockRegistrar: Partial<Registrar>
+    let sinonMockRegistrar: Registrar
 
     beforeEach(async () => {
       const peerId = await createPeerId()
+      // @ts-expect-error incomplete implementation
       sinonMockRegistrar = {
         handle: sinon.stub(),
         register: sinon.stub().returns(`id-${Math.random()}`),
@@ -34,10 +35,8 @@ describe('pubsub base lifecycle', () => {
       pubsub = new PubsubProtocol({
         debugName: 'pubsub',
         multicodecs: ['/pubsub/1.0.0'],
-        libp2p: {
-          peerId: peerId,
-          registrar: sinonMockRegistrar
-        }
+        peerId: peerId,
+        registrar: sinonMockRegistrar
       })
 
       expect(pubsub.peers.size).to.be.eql(0)
@@ -90,17 +89,13 @@ describe('pubsub base lifecycle', () => {
 
       pubsubA = new PubsubImplementation({
         multicodecs: [protocol],
-        libp2p: {
-          peerId: peerIdA,
-          registrar: registrarA
-        }
+        peerId: peerIdA,
+        registrar: registrarA
       })
       pubsubB = new PubsubImplementation({
         multicodecs: [protocol],
-        libp2p: {
-          peerId: peerIdB,
-          registrar: registrarB
-        }
+        peerId: peerIdB,
+        registrar: registrarB
       })
     })
 

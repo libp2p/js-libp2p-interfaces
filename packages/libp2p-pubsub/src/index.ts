@@ -74,7 +74,8 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
     const {
       debugName = 'libp2p:pubsub',
       multicodecs = [],
-      libp2p = null,
+      peerId,
+      registrar,
       globalSignaturePolicy = 'StrictSign',
       canRelayMessage = false,
       emitSelf = false,
@@ -83,9 +84,8 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
 
     this.log = logger(debugName)
     this.multicodecs = utils.ensureArray(multicodecs)
-    this._libp2p = libp2p
-    this.registrar = libp2p.registrar
-    this.peerId = libp2p.peerId
+    this.registrar = registrar
+    this.peerId = peerId
     this.started = false
     this.topics = new Map()
     this.subscriptions = new Set()

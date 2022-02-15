@@ -21,10 +21,8 @@ describe('topic validators', () => {
     const peerId = await createPeerId()
 
     pubsub = new PubsubImplementation({
-      libp2p: {
-        peerId: peerId,
-        registrar: new MockRegistrar()
-      },
+      peerId: peerId,
+      registrar: new MockRegistrar(),
       multicodecs: [protocol],
       globalSignaturePolicy: 'StrictNoSign'
     })

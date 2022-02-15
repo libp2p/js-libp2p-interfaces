@@ -27,34 +27,13 @@ describe('pubsub instance', () => {
     }).to.throw()
   })
 
-  it('should throw if no multicodec is provided', () => {
-    expect(() => {
-      // @ts-expect-error incorrect constructor args
-      new PubsubProtocol({ // eslint-disable-line no-new
-        debugName: 'pubsub'
-      })
-    }).to.throw()
-  })
-
-  it('should throw if no libp2p is provided', () => {
-    expect(() => {
-      // @ts-expect-error incorrect constructor args
-      new PubsubProtocol({ // eslint-disable-line no-new
-        debugName: 'pubsub',
-        multicodecs: ['/pubsub/1.0.0']
-      })
-    }).to.throw()
-  })
-
   it('should accept valid parameters', () => {
     expect(() => {
       new PubsubProtocol({ // eslint-disable-line no-new
         debugName: 'pubsub',
         multicodecs: ['/pubsub/1.0.0'],
-        libp2p: {
-          peerId: peerId,
-          registrar: new MockRegistrar()
-        }
+        peerId: peerId,
+        registrar: new MockRegistrar()
       })
     }).not.to.throw()
   })
