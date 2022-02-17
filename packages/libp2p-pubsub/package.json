@@ -190,7 +190,7 @@
     "@libp2p/logger": "^1.0.1",
     "@libp2p/peer-id": "^1.0.0",
     "@libp2p/peer-id-factory": "^1.0.0",
-    "@libp2p/peer-map": "^0.0.0",
+    "@libp2p/peer-map": "^1.0.0",
     "@libp2p/topology": "^1.0.0",
     "@multiformats/multiaddr": "^10.1.1",
     "err-code": "^3.0.1",
