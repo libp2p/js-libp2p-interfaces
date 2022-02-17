@@ -1,21 +1,23 @@
 import { expect } from 'aegir/utils/chai.js'
 import * as utils from '../src/utils.js'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import type { Message, RPCMessage } from '@libp2p/interfaces/src/pubsub'
+import { peerIdFromBytes, peerIdFromString } from '@libp2p/peer-id'
 
 describe('utils', () => {
   it('randomSeqno', () => {
     const first = utils.randomSeqno()
     const second = utils.randomSeqno()
 
-    expect(first).to.have.length(8)
-    expect(second).to.have.length(8)
-    expect(first).to.not.eql(second)
+    expect(first).to.be.a('BigInt')
+    expect(second).to.be.a('BigInt')
+    expect(first).to.not.equal(second)
   })
 
   it('msgId should not generate same ID for two different Uint8Arrays', () => {
-    const peerId = 'QmPNdSYk5Rfpo5euNqwtyizzmKXMNHdXeLjTQhcN4yfX22'
-    const msgId0 = utils.msgId(peerId, uint8ArrayFromString('15603533e990dfde', 'base16'))
-    const msgId1 = utils.msgId(peerId, uint8ArrayFromString('15603533e990dfe0', 'base16'))
+    const peerId = peerIdFromString('QmPNdSYk5Rfpo5euNqwtyizzmKXMNHdXeLjTQhcN4yfX22')
+    const msgId0 = utils.msgId(peerId, 1n)
+    const msgId1 = utils.msgId(peerId, 2n)
     expect(msgId0).to.not.deep.equal(msgId1)
   })
 
@@ -41,18 +43,32 @@ describe('utils', () => {
   it('converts an OUT msg.from to binary', () => {
     const binaryId = uint8ArrayFromString('1220e2187eb3e6c4fb3e7ff9ad4658610624a6315e0240fc6f37130eedb661e939cc', 'base16')
     const stringId = 'QmdZEWgtaWAxBh93fELFT298La1rsZfhiC2pqwMVwy3jZM'
-    const m = [{
-      from: binaryId
+    const m: Message[] = [{
+      from: peerIdFromBytes(binaryId),
+      topicIDs: [],
+      data: new Uint8Array()
     }, {
-      from: stringId
+      from: peerIdFromString(stringId),
+      topicIDs: [],
+      data: new Uint8Array()
     }]
-    const expected = [
-      { from: binaryId },
-      { from: binaryId }
-    ]
+    const expected: RPCMessage[] = [{
+      from: binaryId,
+      topicIDs: [],
+      data: new Uint8Array(),
+      seqno: undefined,
+      signature: undefined,
+      key: undefined
+    }, {
+      from: binaryId,
+      topicIDs: [],
+      data: new Uint8Array(),
+      seqno: undefined,
+      signature: undefined,
+      key: undefined
+    }]
     for (let i = 0; i < m.length; i++) {
-      // @ts-expect-error some Message fields are missing from m
-      expect(utils.normalizeOutRpcMessage(m[i])).to.deep.equal(expected[i])
+      expect(utils.toRpcMessage(m[i])).to.deep.equal(expected[i])
     }
   })
 })

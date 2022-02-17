@@ -28,12 +28,9 @@ export interface PeerRecordOptions {
  */
 export class PeerRecord {
   /**
-   * Unmarshal Peer Record Protobuf.
-   *
-   * @param {Uint8Array} buf - marshaled peer record.
-   * @returns {PeerRecord}
+   * Unmarshal Peer Record Protobuf
    */
-  static createFromProtobuf = (buf: Uint8Array) => {
+  static createFromProtobuf = (buf: Uint8Array): PeerRecord => {
     const peerRecord = Protobuf.decode(buf)
     const peerId = peerIdFromBytes(peerRecord.peerId)
     const multiaddrs = (peerRecord.addresses ?? []).map((a) => new Multiaddr(a.multiaddr))

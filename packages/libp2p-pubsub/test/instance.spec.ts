@@ -5,10 +5,10 @@ import {
   MockRegistrar
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Message } from '@libp2p/interfaces/pubsub'
+import type { RPCMessage } from '@libp2p/interfaces/pubsub'
 
 class PubsubProtocol extends PubsubBaseProtocol<{}> {
-  async _publish (message: Message): Promise<void> {
+  async _publish (message: RPCMessage): Promise<void> {
     throw new Error('Method not implemented.')
   }
 }

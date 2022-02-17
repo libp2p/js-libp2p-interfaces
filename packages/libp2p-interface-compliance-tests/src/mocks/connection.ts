@@ -1,5 +1,4 @@
 import { peerIdFromString } from '@libp2p/peer-id'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { pipe } from 'it-pipe'
 import { duplexPair } from 'it-pair/duplex'
 import type { MultiaddrConnection } from '@libp2p/interfaces/transport'
@@ -9,22 +8,67 @@ import type { Duplex } from 'it-stream-types'
 import { mockMuxer } from './muxer.js'
 import type { PeerId } from '@libp2p/interfaces/src/peer-id'
 import { mockMultiaddrConnection } from './multiaddr-connection.js'
-import { Multiaddr } from '@multiformats/multiaddr'
+import type { Registrar } from '@libp2p/interfaces/registrar'
+import { mockRegistrar } from './registrar.js'
+import { Listener } from '@libp2p/multistream-select'
+import { logger } from '@libp2p/logger'
+import { CustomEvent } from '@libp2p/interfaces'
 
-export async function mockConnection (maConn: MultiaddrConnection, direction: 'inbound' | 'outbound' = 'inbound', muxer?: Muxer): Promise<Connection> {
+const log = logger('libp2p:mock-connection')
+
+export interface MockConnectionOptions {
+  direction?: 'inbound' | 'outbound'
+  muxer?: Muxer
+  registrar?: Registrar
+}
+
+export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectionOptions = {}): Connection {
   const remoteAddr = maConn.remoteAddr
   const remotePeerIdStr = remoteAddr.getPeerId()
-  const remotePeer = remotePeerIdStr != null ? peerIdFromString(remotePeerIdStr) : await createEd25519PeerId()
+
+  if (remotePeerIdStr == null) {
+    throw new Error('Remote multiaddr must contain a peer id')
+  }
+
+  const remotePeer = peerIdFromString(remotePeerIdStr)
   const registry = new Map()
   const streams: Stream[] = []
   let streamId = 0
-  const mux = muxer ?? mockMuxer()
+  const direction = opts.direction ?? 'inbound'
+  const registrar = opts.registrar ?? mockRegistrar()
+
+  const muxer = opts.muxer ?? mockMuxer({
+    onStream: (muxedStream) => {
+      const mss = new Listener(muxedStream)
+      try {
+        mss.handle(registrar.getProtocols())
+          .then(({ stream, protocol }) => {
+            log('%s: incoming stream opened on %s', direction, protocol)
+            muxedStream = { ...muxedStream, ...stream }
+
+            connection.addStream(muxedStream, { protocol, metadata: {} })
+            const handler = registrar.getHandler(protocol)
+
+            handler(new CustomEvent('incomingStream', {
+              detail: { connection, stream: muxedStream, protocol }
+            }))
+          }).catch(err => {
+            log.error(err)
+          })
+      } catch (err: any) {
+        log.error(err)
+      }
+    },
+    onStreamEnd: (stream) => {
+      connection.removeStream(stream.id)
+    }
+  })
 
   void pipe(
-    maConn, mux, maConn
+    maConn, muxer, maConn
   )
 
-  return {
+  const connection:Connection = {
     id: 'mock-connection',
     remoteAddr,
     remotePeer,
@@ -48,7 +92,7 @@ export async function mockConnection (maConn: MultiaddrConnection, direction: 'i
       }
 
       const id = `${streamId++}`
-      const stream: Stream = mux.newStream(id)
+      const stream: Stream = muxer.newStream(id)
       const streamData: ProtocolStream = {
         protocol: protocols[0],
         stream
@@ -68,6 +112,8 @@ export async function mockConnection (maConn: MultiaddrConnection, direction: 'i
       await maConn.close()
     }
   }
+
+  return connection
 }
 
 export function mockStream (stream: Duplex<Uint8Array>): Stream {
@@ -83,26 +129,15 @@ export function mockStream (stream: Duplex<Uint8Array>): Stream {
   }
 }
 
-export async function connectionPair (peerA: PeerId, peerB: PeerId): Promise<[ Connection, Connection ]> {
-  const [d0, d1] = duplexPair<Uint8Array>()
+export function connectionPair (peerA: PeerId, peerB: PeerId): [ Connection, Connection ] {
+  const [peerBtoPeerA, peerAtoPeerB] = duplexPair<Uint8Array>()
 
-  return [{
-    ...await mockConnection(mockMultiaddrConnection({
-      ...d0,
-      remoteAddr: new Multiaddr(`/ip4/127.0.0.1/tcp/4001/p2p/${peerA.toString()}`)
-    })),
-    newStream: async (multicodecs: string[]) => await Promise.resolve({
-      stream: mockStream(d0),
-      protocol: multicodecs[0]
-    })
-  }, {
-    ...await mockConnection(mockMultiaddrConnection({
-      ...d1,
-      remoteAddr: new Multiaddr(`/ip4/127.0.0.1/tcp/4001/p2p/${peerB.toString()}`)
-    })),
-    newStream: async (multicodecs: string[]) => await Promise.resolve({
-      stream: mockStream(d1),
-      protocol: multicodecs[0]
-    })
-  }]
+  return [
+    mockConnection(
+      mockMultiaddrConnection(peerBtoPeerA, peerA)
+    ),
+    mockConnection(
+      mockMultiaddrConnection(peerAtoPeerB, peerB)
+    )
+  ]
 }

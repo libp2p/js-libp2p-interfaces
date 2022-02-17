@@ -12,6 +12,7 @@ import {
   mockIncomingStreamEvent
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
+import { toMessage } from '../src/utils.js'
 
 const protocol = '/pubsub/1.0.0'
 const topic = 'test-topic'
@@ -50,9 +51,9 @@ describe('pubsub base implementation', () => {
 
       // Get the first message sent to _publish, and validate it
       // @ts-expect-error .getCall is a added by sinon
-      const signedMessage = pubsub._publish.getCall(0).lastArg
+      const signedMessage: RPCMessage = pubsub._publish.getCall(0).lastArg
 
-      await expect(pubsub.validate(signedMessage)).to.eventually.be.undefined()
+      await expect(pubsub.validate(toMessage(signedMessage))).to.eventually.be.undefined()
     })
   })
 
@@ -112,7 +113,7 @@ describe('pubsub base implementation', () => {
           pubsubB.start()
         ])
         const topologyA = registrarA.getTopologies(protocol)[0]
-        const handlerB = registrarB.getHandlers(protocol)[0]
+        const handlerB = registrarB.getHandler(protocol)
 
         if (topologyA == null || handlerB == null) {
           throw new Error(`No handler registered for ${protocol}`)
@@ -216,7 +217,7 @@ describe('pubsub base implementation', () => {
         ])
 
         const topologyA = registrarA.getTopologies(protocol)[0]
-        const handlerB = registrarB.getHandlers(protocol)[0]
+        const handlerB = registrarB.getHandler(protocol)
 
         if (topologyA == null || handlerB == null) {
           throw new Error(`No handler registered for ${protocol}`)
@@ -369,15 +370,15 @@ describe('pubsub base implementation', () => {
 
       // Set mock peer subscribed
       const peer = new PeerStreams({ id: peerId, protocol: 'a-protocol' })
-      const id = peer.id.toString()
+      const id = peer.id
 
-      pubsub.topics.set(topic, new Set([id]))
-      pubsub.peers.set(id, peer)
+      pubsub.topics.set(topic, new Set([id.toString()]))
+      pubsub.peers.set(peer.id, peer)
 
       peersSubscribed = pubsub.getSubscribers(topic)
 
       expect(peersSubscribed).to.not.be.empty()
-      expect(peersSubscribed[0]).to.eql(id)
+      expect(id.equals(peersSubscribed[0])).to.be.true()
     })
   })
 })

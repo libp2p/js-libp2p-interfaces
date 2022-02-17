@@ -36,9 +36,31 @@ export class MockRegistrar implements Registrar {
   private readonly topologies: Map<string, { topology: Topology, protocols: string[] }> = new Map()
   private readonly handlers: Map<string, { handler: StreamHandler, protocols: string[] }> = new Map()
 
+  getProtocols () {
+    const protocols = new Set<string>()
+
+    for (const topology of this.topologies.values()) {
+      topology.protocols.forEach(protocol => protocols.add(protocol))
+    }
+
+    for (const handler of this.handlers.values()) {
+      handler.protocols.forEach(protocol => protocols.add(protocol))
+    }
+
+    return Array.from(protocols).sort()
+  }
+
   async handle (protocols: string | string[], handler: StreamHandler) {
     if (!Array.isArray(protocols)) {
       protocols = [protocols]
+    }
+
+    for (const protocol of protocols) {
+      for (const { protocols } of this.handlers.values()) {
+        if (protocols.includes(protocol)) {
+          throw new Error(`Handler already registered for protocol ${protocol}`)
+        }
+      }
     }
 
     const id = `handler-id-${Math.random()}`
@@ -55,16 +77,14 @@ export class MockRegistrar implements Registrar {
     this.handlers.delete(id)
   }
 
-  getHandlers (protocol: string) {
-    const output: StreamHandler[] = []
-
+  getHandler (protocol: string) {
     for (const { handler, protocols } of this.handlers.values()) {
       if (protocols.includes(protocol)) {
-        output.push(handler)
+        return handler
       }
     }
 
-    return output
+    throw new Error(`No handler registered for protocol ${protocol}`)
   }
 
   register (protocols: string | string[], topology: Topology) {
@@ -99,7 +119,11 @@ export class MockRegistrar implements Registrar {
       }
     }
 
-    return output
+    if (output.length) {
+      return output
+    }
+
+    throw new Error(`No topologies registered for protocol ${protocol}`)
   }
 }
 

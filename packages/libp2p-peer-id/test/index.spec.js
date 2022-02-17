@@ -78,4 +78,15 @@ describe('PeerId', () => {
     const id = peerIdFromBytes(buf)
     expect(id).to.have.property('type', 'secp256k1')
   })
+
+  it('caches toString output', async () => {
+    const buf = uint8ArrayFromString('16Uiu2HAkxSnqYGDU5iZTQrZyAcQDQHKrZqSNPBmKFifEagS2XfrL', 'base58btc')
+    const id = peerIdFromBytes(buf)
+
+    expect(id).to.have.property('strings').that.is.empty()
+
+    id.toString()
+
+    expect(id).to.have.property('strings').that.is.not.empty()
+  })
 })

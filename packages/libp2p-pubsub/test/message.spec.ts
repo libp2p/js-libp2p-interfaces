@@ -8,15 +8,15 @@ import {
   MockRegistrar
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Message } from '@libp2p/interfaces/pubsub'
+import type { Message, RPCMessage } from '@libp2p/interfaces/pubsub'
 
 class PubsubProtocol extends PubsubBaseProtocol<{}> {
-  async _publish (message: Message): Promise<void> {
+  async _publish (message: RPCMessage): Promise<void> {
     throw new Error('Method not implemented')
   }
 
   async buildMessage (message: Message) {
-    return await this._buildMessage(message)
+    return await this._maybeSignMessage(message)
   }
 }
 
@@ -40,8 +40,7 @@ describe('pubsub base messages', () => {
 
   it('_buildMessage normalizes and signs messages', async () => {
     const message = {
-      from: peerId.multihash.bytes,
-      receivedFrom: peerId.toString(),
+      from: peerId,
       data: uint8ArrayFromString('hello'),
       topicIDs: ['test-topic']
     }
@@ -53,8 +52,7 @@ describe('pubsub base messages', () => {
 
   it('validate with StrictNoSign will reject a message with from, signature, key, seqno present', async () => {
     const message = {
-      from: peerId.multihash.bytes,
-      receivedFrom: peerId.toString(),
+      from: peerId,
       data: uint8ArrayFromString('hello'),
       topicIDs: ['test-topic']
     }
@@ -65,6 +63,7 @@ describe('pubsub base messages', () => {
 
     sinon.stub(pubsub, 'globalSignaturePolicy').value('StrictNoSign')
     await expect(pubsub.validate(signedMessage)).to.eventually.be.rejected()
+    // @ts-expect-error this field is not optional
     delete signedMessage.from
     await expect(pubsub.validate(signedMessage)).to.eventually.be.rejected()
     delete signedMessage.signature
@@ -77,8 +76,7 @@ describe('pubsub base messages', () => {
 
   it('validate with StrictNoSign will validate a message without a signature, key, and seqno', async () => {
     const message = {
-      from: peerId.multihash.bytes,
-      receivedFrom: peerId.toString(),
+      from: peerId,
       data: uint8ArrayFromString('hello'),
       topicIDs: ['test-topic']
     }
@@ -91,8 +89,7 @@ describe('pubsub base messages', () => {
 
   it('validate with StrictSign requires a signature', async () => {
     const message = {
-      from: peerId.multihash.bytes,
-      receivedFrom: peerId.toString(),
+      from: peerId,
       data: uint8ArrayFromString('hello'),
       topicIDs: ['test-topic']
     }

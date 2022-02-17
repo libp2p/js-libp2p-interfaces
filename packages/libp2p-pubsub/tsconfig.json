@@ -27,6 +27,9 @@
       "path": "../libp2p-peer-id-factory"
     },
     {
+      "path": "../libp2p-peer-map"
+    },
+    {
       "path": "../libp2p-logger"
     },
     {

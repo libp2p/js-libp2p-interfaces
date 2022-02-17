@@ -56,6 +56,10 @@
       "import": "./dist/src/crypto/index.js",
       "types": "./dist/src/crypto/index.d.ts"
     },
+    "./mocks": {
+      "import": "./dist/src/mocks/index.js",
+      "types": "./dist/src/mocks/index.d.ts"
+    },
     "./peer-discovery": {
       "import": "./dist/src/peer-discovery/index.js",
       "types": "./dist/src/peer-discovery/index.d.ts"
@@ -87,10 +91,6 @@
     "./transport/utils": {
       "import": "./dist/src/transport/utils/index.js",
       "types": "./dist/src/transport/utils/index.d.ts"
-    },
-    "./mocks": {
-      "import": "./dist/src/mocks/index.js",
-      "types": "./dist/src/mocks/index.d.ts"
     },
     "./utils/peers": {
       "import": "./dist/src/utils/peers.js",
@@ -203,6 +203,7 @@
     "@libp2p/peer-id": "^1.0.0",
     "@libp2p/peer-id-factory": "^1.0.0",
     "@libp2p/pubsub": "^1.1.0",
+    "@libp2p/multistream-select": "^0.0.0",
     "@multiformats/multiaddr": "^10.1.1",
     "abortable-iterator": "^4.0.0",
     "aegir": "^36.1.3",

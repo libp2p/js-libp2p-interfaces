@@ -5,9 +5,8 @@ import { pipe } from 'it-pipe'
 import Queue from 'p-queue'
 import { Topology } from '@libp2p/topology'
 import { codes } from './errors.js'
-import { RPC, IRPC } from './message/rpc.js'
-import { PeerStreams } from './peer-streams.js'
-import * as utils from './utils.js'
+import { PeerStreams as PeerStreamsImpl } from './peer-streams.js'
+import { toRpcMessage, toMessage, ensureArray, randomSeqno, noSignMsgId, msgId } from './utils.js'
 import {
   signMessage,
   verifySignature
@@ -15,9 +14,14 @@ import {
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar, IncomingStreamData } from '@libp2p/interfaces/registrar'
 import type { Connection } from '@libp2p/interfaces/connection'
-import type BufferList from 'bl'
-import type { PubSub, Message, StrictNoSign, StrictSign, PubsubOptions, PubsubEvents } from '@libp2p/interfaces/pubsub'
+import type { PubSub, Message, StrictNoSign, StrictSign, PubSubOptions, PubSubEvents, RPCMessage, RPC, PeerStreams, RPCSubscription } from '@libp2p/interfaces/pubsub'
 import type { Logger } from '@libp2p/logger'
+import { base58btc } from 'multiformats/bases/base58'
+import { peerMap } from '@libp2p/peer-map'
+import type { PeerMap } from '@libp2p/peer-map'
+import { peerIdFromString } from '@libp2p/peer-id'
+import type { IRPC } from './message/rpc.js'
+import { RPC as RPCProto } from './message/rpc.js'
 
 export interface TopicValidator { (topic: string, message: Message): Promise<void> }
 
@@ -25,7 +29,7 @@ export interface TopicValidator { (topic: string, message: Message): Promise<voi
  * PubsubBaseProtocol handles the peers and connections logic for pubsub routers
  * and specifies the API that pubsub routers should have.
  */
-export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap & PubsubEvents> implements PubSub<EventMap & PubsubEvents> {
+export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap & PubSubEvents> implements PubSub<EventMap & PubSubEvents> {
   public peerId: PeerId
   public started: boolean
   /**
@@ -39,11 +43,11 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
   /**
    * Map of peer streams
    */
-  public peers: Map<string, PeerStreams>
+  public peers: PeerMap<PeerStreams>
   /**
    * The signature policy to follow by default
    */
-  public globalSignaturePolicy: StrictNoSign | StrictSign
+  public globalSignaturePolicy: typeof StrictNoSign | typeof StrictSign
   /**
    * If router can relay received messages, even if not subscribed
    */
@@ -61,14 +65,14 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
   public topicValidators: Map<string, TopicValidator>
   public queue: Queue
   public registrar: Registrar
+  public multicodecs: string[]
 
   protected log: Logger
-  protected multicodecs: string[]
   protected _libp2p: any
   private _registrarHandlerId: string | undefined
   private _registrarTopologyId: string | undefined
 
-  constructor (props: PubsubOptions) {
+  constructor (props: PubSubOptions) {
     super()
 
     const {
@@ -83,13 +87,13 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
     } = props
 
     this.log = logger(debugName)
-    this.multicodecs = utils.ensureArray(multicodecs)
+    this.multicodecs = ensureArray(multicodecs)
     this.registrar = registrar
     this.peerId = peerId
     this.started = false
     this.topics = new Map()
     this.subscriptions = new Set()
-    this.peers = new Map()
+    this.peers = peerMap<PeerStreams>()
     this.globalSignaturePolicy = globalSignaturePolicy === 'StrictNoSign' ? 'StrictNoSign' : 'StrictSign'
     this.canRelayMessage = canRelayMessage
     this.emitSelf = emitSelf
@@ -148,9 +152,11 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
     }
 
     this.log('stopping')
-    this.peers.forEach((peerStreams) => peerStreams.close())
+    for (const peerStreams of this.peers.values()) {
+      peerStreams.close()
+    }
 
-    this.peers = new Map()
+    this.peers.clear()
     this.subscriptions = new Set()
     this.started = false
     this.log('stopped')
@@ -166,11 +172,10 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
   protected _onIncomingStream (evt: CustomEvent<IncomingStreamData>) {
     const { protocol, stream, connection } = evt.detail
     const peerId = connection.remotePeer
-    const idB58Str = peerId.toString()
     const peer = this._addPeer(peerId, protocol)
     const inboundStream = peer.attachInboundStream(stream)
 
-    this._processMessages(idB58Str, inboundStream, peer)
+    this._processMessages(peerId, inboundStream, peer)
       .catch(err => this.log(err))
   }
 
@@ -178,8 +183,7 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
    * Registrar notifies an established connection with pubsub protocol
    */
   protected async _onPeerConnected (peerId: PeerId, conn: Connection) {
-    const idB58Str = peerId.toString()
-    this.log('connected', idB58Str)
+    this.log('connected %p', peerId)
 
     try {
       const { stream, protocol } = await conn.newStream(this.multicodecs)
@@ -190,7 +194,7 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
     }
 
     // Immediately send my own subscriptions to the newly established conn
-    this._sendSubscriptions(idB58Str, Array.from(this.subscriptions), true)
+    this._sendSubscriptions(peerId, Array.from(this.subscriptions), true)
   }
 
   /**
@@ -206,9 +210,8 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
   /**
    * Notifies the router that a peer has been connected
    */
-  protected _addPeer (peerId: PeerId, protocol: string) {
-    const id = peerId.toString()
-    const existing = this.peers.get(id)
+  protected _addPeer (peerId: PeerId, protocol: string): PeerStreams {
+    const existing = this.peers.get(peerId)
 
     // If peer streams already exists, do nothing
     if (existing != null) {
@@ -216,14 +219,14 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
     }
 
     // else create a new peer streams
-    this.log('new peer', id)
+    this.log('new peer %p', peerId)
 
-    const peerStreams = new PeerStreams({
+    const peerStreams: PeerStreams = new PeerStreamsImpl({
       id: peerId,
       protocol
     })
 
-    this.peers.set(id, peerStreams)
+    this.peers.set(peerId, peerStreams)
     peerStreams.addEventListener('close', () => this._removePeer(peerId), {
       once: true
     })
@@ -236,7 +239,7 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
    */
   protected _removePeer (peerId: PeerId) {
     const id = peerId.toString()
-    const peerStreams = this.peers.get(id)
+    const peerStreams = this.peers.get(peerId)
     if (peerStreams == null) {
       return
     }
@@ -245,8 +248,8 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
     peerStreams.close()
 
     // delete peer streams
-    this.log('delete peer', id)
-    this.peers.delete(id)
+    this.log('delete peer %p', peerId)
+    this.peers.delete(peerId)
 
     // remove peer from topics map
     for (const peers of this.topics.values()) {
@@ -261,20 +264,32 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
   /**
    * Responsible for processing each RPC message received by other peers.
    */
-  async _processMessages (idB58Str: string, stream: AsyncIterable<Uint8Array|BufferList>, peerStreams: PeerStreams) {
+  async _processMessages (peerId: PeerId, stream: AsyncIterable<Uint8Array>, peerStreams: PeerStreams) {
     try {
       await pipe(
         stream,
         async (source) => {
           for await (const data of source) {
-            const rpcBytes = data instanceof Uint8Array ? data : data.slice()
-            const rpcMsg = this._decodeRpc(rpcBytes)
+            const rpcMsg = this._decodeRpc(data)
 
             // Since _processRpc may be overridden entirely in unsafe ways,
             // the simplest/safest option here is to wrap in a function and capture all errors
             // to prevent a top-level unhandled exception
             // This processing of rpc messages should happen without awaiting full validation/execution of prior messages
-            this._processRpc(idB58Str, peerStreams, rpcMsg)
+            this.processRpc(peerId, peerStreams, {
+              subscriptions: (rpcMsg.subscriptions).map(sub => ({
+                subscribe: Boolean(sub.subscribe),
+                topicID: sub.topicID ?? ''
+              })),
+              msgs: (rpcMsg.msgs ?? []).map(msg => ({
+                from: msg.from ?? peerId.multihash.bytes,
+                data: msg.data ?? new Uint8Array(0),
+                topicIDs: msg.topicIDs ?? [],
+                seqno: msg.seqno ?? undefined,
+                signature: msg.signature ?? undefined,
+                key: msg.key ?? undefined
+              }))
+            })
               .catch(err => this.log(err))
           }
         }
@@ -287,23 +302,23 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
   /**
    * Handles an rpc request from a peer
    */
-  async _processRpc (idB58Str: string, peerStreams: PeerStreams, rpc: RPC) {
-    this.log('rpc from', idB58Str)
+  async processRpc (from: PeerId, peerStreams: PeerStreams, rpc: RPC) {
+    this.log('rpc from %p', from)
     const subs = rpc.subscriptions
     const msgs = rpc.msgs
 
     if (subs.length > 0) {
       // update peer subscriptions
       subs.forEach((subOpt) => {
-        this._processRpcSubOpt(idB58Str, subOpt)
+        this._processRpcSubOpt(from, subOpt)
       })
       this.dispatchEvent(new CustomEvent('pubsub:subscription-change', {
         detail: { peerId: peerStreams.id, subscriptions: subs }
       }))
     }
 
-    if (!this._acceptFrom(idB58Str)) {
-      this.log('received message from unacceptable peer %s', idB58Str)
+    if (!this._acceptFrom(from)) {
+      this.log('received message from unacceptable peer %p', from)
       return false
     }
 
@@ -318,9 +333,12 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
         }
 
         try {
-          const msg = utils.normalizeInRpcMessage(message, idB58Str)
+          const msg = toMessage({
+            ...message,
+            from: from.multihash.bytes
+          })
 
-          await this._processRpcMessage(msg)
+          await this._processMessage(msg)
         } catch (err: any) {
           this.log.error(err)
         }
@@ -333,7 +351,7 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
   /**
    * Handles a subscription change from a peer
    */
-  _processRpcSubOpt (id: string, subOpt: RPC.ISubOpts) {
+  _processRpcSubOpt (id: PeerId, subOpt: RPCSubscription) {
     const t = subOpt.topicID
 
     if (t == null) {
@@ -346,20 +364,20 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
       this.topics.set(t, topicSet)
     }
 
-    if (subOpt.subscribe === true) {
+    if (subOpt.subscribe) {
       // subscribe peer to new topic
-      topicSet.add(id)
+      topicSet.add(id.toString())
     } else {
       // unsubscribe from existing topic
-      topicSet.delete(id)
+      topicSet.delete(id.toString())
     }
   }
 
   /**
    * Handles an message from a peer
    */
-  async _processRpcMessage (msg: Message) {
-    if ((msg.from != null) && this.peerId.equals(msg.from) && !this.emitSelf) {
+  async _processMessage (msg: Message) {
+    if (this.peerId.equals(msg.from) && !this.emitSelf) {
       return
     }
 
@@ -372,15 +390,15 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
     }
 
     // Emit to self
-    this._emitMessage(msg)
+    this.emitMessage(msg)
 
-    return await this._publish(utils.normalizeOutRpcMessage(msg))
+    return await this._publish(toRpcMessage(msg))
   }
 
   /**
    * Emit a message from a peer
    */
-  _emitMessage (message: Message) {
+  emitMessage (message: Message) {
     message.topicIDs.forEach((topic) => {
       if (this.subscriptions.has(topic)) {
         this.dispatchEvent(new CustomEvent(topic, {
@@ -398,10 +416,13 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
     const signaturePolicy = this.globalSignaturePolicy
     switch (signaturePolicy) {
       case 'StrictSign':
-        // @ts-expect-error seqno is optional in protobuf definition but it will exist
-        return utils.msgId(msg.from, msg.seqno)
+        if (msg.seqno == null) {
+          throw errcode(new Error('Need seqno when signature policy is StrictSign but it was missing'), codes.ERR_MISSING_SEQNO)
+        }
+
+        return msgId(msg.from, msg.seqno)
       case 'StrictNoSign':
-        return utils.noSignMsgId(msg.data)
+        return noSignMsgId(msg.data)
       default:
         throw errcode(new Error('Cannot get message id: unhandled signature policy'), codes.ERR_UNHANDLED_SIGNATURE_POLICY)
     }
@@ -411,7 +432,7 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
    * Whether to accept a message from a peer
    * Override to create a graylist
    */
-  _acceptFrom (id: string) {
+  _acceptFrom (id: PeerId) {
     return true
   }
 
@@ -420,7 +441,7 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
    * This can be override to use a custom router protobuf.
    */
   _decodeRpc (bytes: Uint8Array) {
-    return RPC.decode(bytes)
+    return RPCProto.decode(bytes)
   }
 
   /**
@@ -428,27 +449,29 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
    * This can be override to use a custom router protobuf.
    */
   _encodeRpc (rpc: IRPC) {
-    return RPC.encode(rpc).finish()
+    return RPCProto.encode(rpc).finish()
   }
 
   /**
    * Send an rpc object to a peer
    */
-  _sendRpc (id: string, rpc: IRPC) {
-    const peerStreams = this.peers.get(id)
-    if ((peerStreams == null) || !peerStreams.isWritable) {
-      const msg = `Cannot send RPC to ${id} as there is no open stream to it available`
+  _sendRpc (peer: PeerId, rpc: IRPC) {
+    const peerStreams = this.peers.get(peer)
+
+    if (peerStreams == null || !peerStreams.isWritable) {
+      const msg = `Cannot send RPC to ${peer.toString(base58btc)} as there is no open stream to it available`
 
       this.log.error(msg)
       return
     }
+
     peerStreams.write(this._encodeRpc(rpc))
   }
 
   /**
    * Send subscriptions to a peer
    */
-  _sendSubscriptions (id: string, topics: string[], subscribe: boolean) {
+  _sendSubscriptions (id: PeerId, topics: string[], subscribe: boolean) {
     return this._sendRpc(id, {
       subscriptions: topics.map(t => ({ topicID: t, subscribe: subscribe }))
     })
@@ -462,9 +485,6 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
     const signaturePolicy = this.globalSignaturePolicy
     switch (signaturePolicy) {
       case 'StrictNoSign':
-        if (message.from != null) {
-          throw errcode(new Error('StrictNoSigning: from should not be present'), codes.ERR_UNEXPECTED_FROM)
-        }
         if (message.signature != null) {
           throw errcode(new Error('StrictNoSigning: signature should not be present'), codes.ERR_UNEXPECTED_SIGNATURE)
         }
@@ -502,12 +522,11 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
    * Normalizes the message and signs it, if signing is enabled.
    * Should be used by the routers to create the message to send.
    */
-  protected async _buildMessage (message: Message) {
+  protected async _maybeSignMessage (message: Message) {
     const signaturePolicy = this.globalSignaturePolicy
     switch (signaturePolicy) {
       case 'StrictSign':
-        message.from = this.peerId.multihash.bytes
-        message.seqno = utils.randomSeqno()
+        message.seqno = randomSeqno()
         return await signMessage(this.peerId, message)
       case 'StrictNoSign':
         return await Promise.resolve(message)
@@ -536,7 +555,7 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
       return []
     }
 
-    return Array.from(peersInTopic)
+    return Array.from(peersInTopic).map(str => peerIdFromString(str))
   }
 
   /**
@@ -549,29 +568,27 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
 
     this.log('publish', topic, message)
 
-    const from = this.peerId.toString()
     const msgObject = {
-      receivedFrom: from,
+      from: this.peerId,
       data: message,
       topicIDs: [topic]
     }
 
     // ensure that the message follows the signature policy
-    const outMsg = await this._buildMessage(msgObject)
-    const msg = utils.normalizeInRpcMessage(outMsg)
+    const msg = await this._maybeSignMessage(msgObject)
 
     // Emit to self if I'm interested and emitSelf enabled
-    this.emitSelf && this._emitMessage(msg)
+    this.emitSelf && this.emitMessage(msg)
 
     // send to all the other peers
-    await this._publish(msg)
+    await this._publish(toRpcMessage(msg))
   }
 
   /**
    * Overriding the implementation of publish should handle the appropriate algorithms for the publish/subscriber implementation.
    * For example, a Floodsub implementation might simply publish each message to each topic for every peer
    */
-  abstract _publish (message: Message): Promise<void>
+  abstract _publish (message: RPCMessage): Promise<void>
 
   /**
    * Subscribes to a given topic.
@@ -583,7 +600,10 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
 
     if (!this.subscriptions.has(topic)) {
       this.subscriptions.add(topic)
-      this.peers.forEach((_, id) => this._sendSubscriptions(id, [topic], true))
+
+      for (const peerId of this.peers.keys()) {
+        this._sendSubscriptions(peerId, [topic], true)
+      }
     }
   }
 
@@ -597,7 +617,10 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
 
     if (this.subscriptions.has(topic) && this.listenerCount(topic) === 0) {
       this.subscriptions.delete(topic)
-      this.peers.forEach((_, id) => this._sendSubscriptions(id, [topic], false))
+
+      for (const peerId of this.peers.keys()) {
+        this._sendSubscriptions(peerId, [topic], false)
+      }
     }
   }
 
@@ -610,5 +633,13 @@ export abstract class PubsubBaseProtocol<EventMap> extends EventEmitter<EventMap
     }
 
     return Array.from(this.subscriptions)
+  }
+
+  getPeers () {
+    if (!this.started) {
+      throw new Error('Pubsub is not started')
+    }
+
+    return Array.from(this.peers.keys())
   }
 }

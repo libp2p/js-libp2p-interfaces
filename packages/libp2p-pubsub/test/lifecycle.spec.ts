@@ -10,10 +10,10 @@ import {
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
-import type { Message } from '@libp2p/interfaces/pubsub'
+import type { RPCMessage } from '@libp2p/interfaces/pubsub'
 
 class PubsubProtocol extends PubsubBaseProtocol<{}> {
-  async _publish (message: Message): Promise<void> {
+  async _publish (message: RPCMessage): Promise<void> {
     throw new Error('Method not implemented.')
   }
 }
@@ -106,8 +106,8 @@ describe('pubsub base lifecycle', () => {
         pubsubB.start()
       ])
 
-      expect(registrarA.getHandlers(protocol)).to.have.lengthOf(1)
-      expect(registrarB.getHandlers(protocol)).to.have.lengthOf(1)
+      expect(registrarA.getHandler(protocol)).to.be.ok()
+      expect(registrarB.getHandler(protocol)).to.be.ok()
     })
 
     afterEach(async () => {
@@ -121,7 +121,7 @@ describe('pubsub base lifecycle', () => {
 
     it('should handle onConnect as expected', async () => {
       const topologyA = registrarA.getTopologies(protocol)[0]
-      const handlerB = registrarB.getHandlers(protocol)[0]
+      const handlerB = registrarB.getHandler(protocol)
 
       if (topologyA == null || handlerB == null) {
         throw new Error(`No handler registered for ${protocol}`)
@@ -139,7 +139,7 @@ describe('pubsub base lifecycle', () => {
 
     it('should use the latest connection if onConnect is called more than once', async () => {
       const topologyA = registrarA.getTopologies(protocol)[0]
-      const handlerB = registrarB.getHandlers(protocol)[0]
+      const handlerB = registrarB.getHandler(protocol)
 
       if (topologyA == null || handlerB == null) {
         throw new Error(`No handler registered for ${protocol}`)
@@ -180,7 +180,7 @@ describe('pubsub base lifecycle', () => {
 
     it('should handle newStream errors in onConnect', async () => {
       const topologyA = registrarA.getTopologies(protocol)[0]
-      const handlerB = registrarB.getHandlers(protocol)[0]
+      const handlerB = registrarB.getHandler(protocol)
 
       if (topologyA == null || handlerB == null) {
         throw new Error(`No handler registered for ${protocol}`)
@@ -200,7 +200,7 @@ describe('pubsub base lifecycle', () => {
     it('should handle onDisconnect as expected', async () => {
       const topologyA = registrarA.getTopologies(protocol)[0]
       const topologyB = registrarB.getTopologies(protocol)[0]
-      const handlerB = registrarB.getHandlers(protocol)[0]
+      const handlerB = registrarB.getHandler(protocol)
 
       if (topologyA == null || handlerB == null) {
         throw new Error(`No handler registered for ${protocol}`)

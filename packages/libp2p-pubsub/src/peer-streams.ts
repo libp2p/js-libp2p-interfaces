@@ -25,19 +25,19 @@ export class PeerStreams extends EventEmitter<PeerStreamEvents> {
   /**
    * Write stream - it's preferable to use the write method
    */
-  public outboundStream: Pushable<Uint8Array> | undefined
+  public outboundStream?: Pushable<Uint8Array>
   /**
    * Read stream
    */
-  public inboundStream: AsyncIterable<Uint8Array> | undefined
+  public inboundStream?: AsyncIterable<Uint8Array>
   /**
    * The raw outbound stream, as retrieved from conn.newStream
    */
-  private _rawOutboundStream: Stream | undefined
+  private _rawOutboundStream?: Stream
   /**
    * The raw inbound stream, as retrieved from the callback from libp2p.handle
    */
-  private _rawInboundStream: Stream | undefined
+  private _rawInboundStream?: Stream
   /**
    * An AbortController for controlled shutdown of the inbound stream
    */
@@ -142,6 +142,8 @@ export class PeerStreams extends EventEmitter<PeerStreamEvents> {
     if (_prevStream == null) {
       this.dispatchEvent(new CustomEvent('stream:outbound'))
     }
+
+    return this.outboundStream
   }
 
   /**
