@@ -144,6 +144,7 @@
     "it-handshake": "^3.0.0",
     "it-length-prefixed": "^7.0.0",
     "it-pipe": "^2.0.3",
+    "it-pushable": "^2.0.1",
     "it-reader": "^5.0.0",
     "it-stream-types": "^1.0.4",
     "p-defer": "^4.0.0",
@@ -152,6 +153,9 @@
   },
   "devDependencies": {
     "aegir": "^36.1.1",
+    "iso-random-stream": "^2.0.2",
+    "it-all": "^1.0.6",
+    "it-map": "^1.0.6",
     "it-pair": "^2.0.2",
     "p-timeout": "^5.0.2",
     "timeout-abort-controller": "^3.0.0",

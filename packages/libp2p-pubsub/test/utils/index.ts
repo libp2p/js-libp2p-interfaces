@@ -119,7 +119,7 @@ export class MockRegistrar implements Registrar {
       }
     }
 
-    if (output.length) {
+    if (output.length > 0) {
       return output
     }
 

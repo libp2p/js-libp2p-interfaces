@@ -92,7 +92,7 @@ export class MockRegistrar implements Registrar {
       }
     }
 
-    if (output.length) {
+    if (output.length > 0) {
       return output
     }
 
@@ -119,15 +119,15 @@ export async function mockIncomingStreamEvent (protocol: string, conn: Connectio
 export async function connectPeers (protocol: string, registrarA: Registrar, registrarB: Registrar, peerIdA: PeerId, peerIdB: PeerId) {
   const topologyA = registrarA.getTopologies(protocol)[0]
   const topologyB = registrarB.getTopologies(protocol)[0]
-  //const handlerA = registrarA.getHandler(protocol)
-  //const handlerB = registrarB.getHandler(protocol)
+  // const handlerA = registrarA.getHandler(protocol)
+  // const handlerB = registrarB.getHandler(protocol)
 
   // Notify peers of connection
   const [bToA, aToB] = connectionPair(peerIdA, peerIdB)
 
   await topologyA.onConnect(peerIdB, aToB)
-  //await handlerA(await mockIncomingStreamEvent(protocol, aToB, peerIdB))
+  // await handlerA(await mockIncomingStreamEvent(protocol, aToB, peerIdB))
 
   await topologyB.onConnect(peerIdA, bToA)
-  //await handlerB(await mockIncomingStreamEvent(protocol, bToA, peerIdA))
+  // await handlerB(await mockIncomingStreamEvent(protocol, bToA, peerIdA))
 }

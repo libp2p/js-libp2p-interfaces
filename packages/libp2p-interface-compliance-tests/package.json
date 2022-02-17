@@ -200,10 +200,11 @@
   "dependencies": {
     "@libp2p/crypto": "^0.22.2",
     "@libp2p/interfaces": "^1.0.0",
+    "@libp2p/logger": "^1.0.3",
+    "@libp2p/multistream-select": "^0.0.0",
     "@libp2p/peer-id": "^1.0.0",
     "@libp2p/peer-id-factory": "^1.0.0",
     "@libp2p/pubsub": "^1.1.0",
-    "@libp2p/multistream-select": "^0.0.0",
     "@multiformats/multiaddr": "^10.1.1",
     "abortable-iterator": "^4.0.0",
     "aegir": "^36.1.3",

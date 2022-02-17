@@ -68,7 +68,7 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
     maConn, muxer, maConn
   )
 
-  const connection:Connection = {
+  const connection: Connection = {
     id: 'mock-connection',
     remoteAddr,
     remotePeer,
