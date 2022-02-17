@@ -8,7 +8,7 @@ import {
   verifySignature
 } from '../src/message/sign.js'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
-import { randomSeqno } from '../src/utils.js'
+import { randomSeqno, toRpcMessage } from '../src/utils.js'
 import { keys } from '@libp2p/crypto'
 import type { Message } from '@libp2p/interfaces/pubsub'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
@@ -24,14 +24,13 @@ describe('message signing', () => {
 
   it('should be able to sign and verify a message', async () => {
     const message: Message = {
-      from: peerId.toBytes(),
-      receivedFrom: peerId.toString(),
+      from: peerId,
       data: uint8ArrayFromString('hello'),
       seqno: randomSeqno(),
       topicIDs: ['test-topic']
     }
 
-    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(message).finish()])
+    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message)).finish()])
 
     if (peerId.privateKey == null) {
       throw new Error('No private key found on PeerId')
@@ -49,7 +48,7 @@ describe('message signing', () => {
     // Verify the signature
     const verified = await verifySignature({
       ...signedMessage,
-      from: peerId.toBytes()
+      from: peerId
     })
     expect(verified).to.eql(true)
   })
@@ -58,14 +57,13 @@ describe('message signing', () => {
     const secPeerId = await PeerIdFactory.createSecp256k1PeerId()
 
     const message: Message = {
-      from: secPeerId.toBytes(),
-      receivedFrom: secPeerId.toString(),
+      from: secPeerId,
       data: uint8ArrayFromString('hello'),
       seqno: randomSeqno(),
       topicIDs: ['test-topic']
     }
 
-    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(message).finish()])
+    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message)).finish()])
 
     if (secPeerId.privateKey == null) {
       throw new Error('No private key found on PeerId')
@@ -83,21 +81,20 @@ describe('message signing', () => {
     // Verify the signature
     const verified = await verifySignature({
       ...signedMessage,
-      from: secPeerId.toBytes()
+      from: secPeerId
     })
     expect(verified).to.eql(true)
   })
 
   it('should be able to extract the public key from the message', async () => {
     const message: Message = {
-      from: peerId.toBytes(),
-      receivedFrom: peerId.toString(),
+      from: peerId,
       data: uint8ArrayFromString('hello'),
       seqno: randomSeqno(),
       topicIDs: ['test-topic']
     }
 
-    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(message).finish()])
+    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message)).finish()])
 
     if (peerId.privateKey == null) {
       throw new Error('No private key found on PeerId')
@@ -115,7 +112,7 @@ describe('message signing', () => {
     // Verify the signature
     const verified = await verifySignature({
       ...signedMessage,
-      from: peerId.toBytes()
+      from: peerId
     })
     expect(verified).to.eql(true)
   })

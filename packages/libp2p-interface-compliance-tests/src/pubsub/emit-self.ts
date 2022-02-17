@@ -2,20 +2,26 @@ import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
-import type { PubSub, PubsubOptions } from '@libp2p/interfaces/pubsub'
+import type { PubSub, PubSubOptions } from '@libp2p/interfaces/pubsub'
 import type { EventMap } from './index.js'
+import { createEd25519PeerId } from '@libp2p/peer-id-factory'
+import { mockRegistrar } from '../mocks/registrar.js'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 const shouldNotHappen = () => expect.fail()
 
-export default (common: TestSetup<PubSub<EventMap>, Partial<PubsubOptions>>) => {
+export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
   describe('emit self', () => {
     let pubsub: PubSub<EventMap>
 
     describe('enabled', () => {
       before(async () => {
-        pubsub = await common.setup({ emitSelf: true })
+        pubsub = await common.setup({
+          peerId: await createEd25519PeerId(),
+          registrar: mockRegistrar(),
+          emitSelf: true
+        })
       })
 
       before(async () => {
@@ -42,7 +48,11 @@ export default (common: TestSetup<PubSub<EventMap>, Partial<PubsubOptions>>) => 
 
     describe('disabled', () => {
       before(async () => {
-        pubsub = await common.setup({ emitSelf: false })
+        pubsub = await common.setup({
+          peerId: await createEd25519PeerId(),
+          registrar: mockRegistrar(),
+          emitSelf: false
+        })
       })
 
       before(async () => {

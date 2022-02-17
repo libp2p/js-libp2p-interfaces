@@ -1,39 +1,41 @@
 import { randomBytes } from 'iso-random-stream'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { peerIdFromBytes, peerIdFromString } from '@libp2p/peer-id'
+import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
+import { peerIdFromBytes } from '@libp2p/peer-id'
 import { sha256 } from 'multiformats/hashes/sha2'
+import errcode from 'err-code'
+import { codes } from './errors.js'
 import type * as RPC from './message/rpc.js'
-import type { Message } from '@libp2p/interfaces/pubsub'
+import type { Message, RPCMessage } from '@libp2p/interfaces/pubsub'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 /**
  * Generate a random sequence number
  */
-export const randomSeqno = () => {
-  return randomBytes(8)
+export function randomSeqno (): BigInt {
+  return BigInt(`0x${uint8ArrayToString(randomBytes(8), 'base16')}`)
 }
 
 /**
  * Generate a message id, based on the `from` and `seqno`
  */
-export const msgId = (from: Uint8Array | string, seqno: Uint8Array) => {
-  let fromBytes: Uint8Array
+export const msgId = (from: PeerId, seqno: BigInt) => {
+  const fromBytes = from.multihash.digest
+  const seqnoBytes = uint8ArrayFromString(seqno.toString(16).padStart(16, '0'), 'base16')
 
-  if (from instanceof Uint8Array) {
-    fromBytes = peerIdFromBytes(from).multihash.digest
-  } else {
-    fromBytes = peerIdFromString(from).multihash.digest
-  }
-
-  const msgId = new Uint8Array(fromBytes.length + seqno.length)
+  const msgId = new Uint8Array(fromBytes.length + seqnoBytes.length)
   msgId.set(fromBytes, 0)
-  msgId.set(seqno, fromBytes.length)
+  msgId.set(seqnoBytes, fromBytes.length)
+
   return msgId
 }
 
 /**
  * Generate a message id, based on message `data`
  */
-export const noSignMsgId = (data: Uint8Array) => sha256.encode(data)
+export const noSignMsgId = (data: Uint8Array) => {
+  return sha256.encode(data)
+}
 
 /**
  * Check if any member of the first set is also a member
@@ -70,24 +72,32 @@ export const ensureArray = function <T> (maybeArray: T | T[]) {
 /**
  * Ensures `message.from` is base58 encoded
  */
-export const normalizeInRpcMessage = (message: RPC.RPC.IMessage, peerId?: string) => {
-  // @ts-expect-error receivedFrom not yet defined
-  const m: NormalizedIMessage = Object.assign({}, message)
-
-  if (peerId != null) {
-    m.receivedFrom = peerId
+export const toMessage = (message: RPC.RPC.IMessage): Message => {
+  if (message.from == null) {
+    throw errcode(new Error('From field is required and was not present'), codes.ERR_MISSING_FROM)
   }
 
-  return m
+  return {
+    from: peerIdFromBytes(message.from),
+    topicIDs: message.topicIDs ?? [],
+    seqno: message.seqno == null ? undefined : BigInt(`0x${uint8ArrayToString(message.seqno, 'base16')}`),
+    data: message.data ?? new Uint8Array(0),
+    signature: message.signature ?? undefined,
+    key: message.key ?? undefined
+  }
 }
 
-export const normalizeOutRpcMessage = (message: Message) => {
-  const m: Message = Object.assign({}, message)
-  if (typeof message.from === 'string') {
-    m.from = uint8ArrayFromString(message.from, 'base58btc')
+export const toRpcMessage = (message: Message): RPCMessage => {
+  if (message.from == null) {
+    throw errcode(new Error('From field is required and was not present'), codes.ERR_MISSING_FROM)
   }
-  if (typeof message.data === 'string') {
-    m.data = uint8ArrayFromString(message.data)
+
+  return {
+    from: message.from.multihash.bytes,
+    data: message.data,
+    seqno: message.seqno == null ? undefined : uint8ArrayFromString(message.seqno.toString(16).padStart(16, '0'), 'base16'),
+    topicIDs: message.topicIDs,
+    signature: message.signature,
+    key: message.key
   }
-  return m
 }

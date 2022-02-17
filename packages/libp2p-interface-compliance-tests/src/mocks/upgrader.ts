@@ -18,11 +18,17 @@ export function mockUpgrader (options: MockUpgraderOptions = {}) {
   const upgrader: Upgrader = {
     async upgradeOutbound (multiaddrConnection) {
       ensureProps(multiaddrConnection)
-      return await mockConnection(multiaddrConnection, 'outbound', options.muxer)
+      return mockConnection(multiaddrConnection, {
+        direction: 'outbound',
+        muxer: options.muxer
+      })
     },
     async upgradeInbound (multiaddrConnection) {
       ensureProps(multiaddrConnection)
-      return await mockConnection(multiaddrConnection, 'inbound', options.muxer)
+      return mockConnection(multiaddrConnection, {
+        direction: 'inbound',
+        muxer: options.muxer
+      })
     }
   }
 

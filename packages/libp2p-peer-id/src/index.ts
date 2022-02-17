@@ -50,11 +50,18 @@ class PeerIdImpl {
   public readonly multihash: MultihashDigest
   public readonly privateKey?: Uint8Array
   public readonly publicKey?: Uint8Array
+  private readonly strings: Map<string, string>
 
   constructor (opts: PeerIdOptions) {
     this.type = opts.type
     this.multihash = opts.multihash
     this.privateKey = opts.privateKey
+
+    // mark toString cache as non-enumerable
+    this.strings = new Map()
+    Object.defineProperty(this, 'strings', {
+      enumerable: false
+    })
   }
 
   get [Symbol.toStringTag] () {
@@ -70,7 +77,17 @@ class PeerIdImpl {
       codec = base58btc
     }
 
-    return codec.encode(this.multihash.bytes).slice(1)
+    const cached = this.strings.get(codec.name)
+
+    if (cached != null) {
+      return cached
+    }
+
+    const encoded = codec.encode(this.multihash.bytes).slice(1)
+
+    this.strings.set(codec.name, encoded)
+
+    return encoded
   }
 
   // return self-describing String representation
@@ -84,12 +101,9 @@ class PeerIdImpl {
   }
 
   /**
-   * Checks the equality of `this` peer against a given PeerId.
-   *
-   * @param {Uint8Array|PeerId} id
-   * @returns {boolean}
+   * Checks the equality of `this` peer against a given PeerId
    */
-  equals (id: any) {
+  equals (id: any): boolean {
     if (id instanceof Uint8Array) {
       return uint8ArrayEquals(this.multihash.bytes, id)
     } else if (id?.multihash?.bytes != null) {

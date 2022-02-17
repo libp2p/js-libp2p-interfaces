@@ -6,12 +6,12 @@ import pWaitFor from 'p-wait-for'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
-import type { PubSub, Message } from '@libp2p/interfaces/pubsub'
-import {
-  first,
-  expectSet
-} from './utils.js'
+import type { PubSub, Message, PubSubOptions } from '@libp2p/interfaces/pubsub'
 import type { EventMap } from './index.js'
+import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
+import type { PeerId } from '@libp2p/interfaces/src/peer-id'
+import type { Registrar } from '@libp2p/interfaces/src/registrar'
+import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 
 const topic = 'foo'
 
@@ -19,28 +19,43 @@ function shouldNotHappen () {
   expect.fail()
 }
 
-export default (common: TestSetup<PubSub<EventMap>>) => {
+export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
   describe('pubsub with two nodes', () => {
     let psA: PubSub<EventMap>
     let psB: PubSub<EventMap>
+    let peerIdA: PeerId
+    let peerIdB: PeerId
+    let registrarA: Registrar
+    let registrarB: Registrar
 
     // Create pubsub nodes and connect them
     before(async () => {
-      psA = await common.setup()
-      psB = await common.setup()
+      peerIdA = await createEd25519PeerId()
+      peerIdB = await createEd25519PeerId()
 
-      expect(psA.peers.size).to.be.eql(0)
-      expect(psB.peers.size).to.be.eql(0)
+      registrarA = mockRegistrar()
+      registrarB = mockRegistrar()
+
+      psA = await common.setup({
+        peerId: peerIdA,
+        registrar: registrarA
+      })
+      psB = await common.setup({
+        peerId: peerIdB,
+        registrar: registrarB
+      })
 
       // Start pubsub and connect nodes
       await psA.start()
       await psB.start()
 
-      // @ts-expect-error protected property
-      await psA._libp2p.dial(psB.peerId)
+      expect(psA.getPeers()).to.be.empty()
+      expect(psB.getPeers()).to.be.empty()
+
+      await connectPeers(psA.multicodecs[0], registrarA, registrarB, peerIdA, peerIdB)
 
       // Wait for peers to be ready in pubsub
-      await pWaitFor(() => psA.peers.size === 1 && psB.peers.size === 1)
+      await pWaitFor(() => psA.getPeers().length === 1 && psB.getPeers().length === 1)
     })
 
     after(async () => {
@@ -57,10 +72,10 @@ export default (common: TestSetup<PubSub<EventMap>>) => {
 
       psB.addEventListener('pubsub:subscription-change', (evt) => {
         const { peerId: changedPeerId, subscriptions: changedSubs } = evt.detail
-        expectSet(psA.subscriptions, [topic])
-        expect(psB.peers.size).to.equal(1)
-        expectSet(psB.topics.get(topic), [psA.peerId.toString()])
-        expect(changedPeerId.toString()).to.equal(first(psB.peers).id.toString())
+        expect(psA.getTopics()).to.deep.equal([topic])
+        expect(psB.getPeers()).to.have.lengthOf(1)
+        expect(psB.getSubscribers(topic)).to.deep.equal([peerIdA])
+        expect(changedPeerId).to.deep.equal(psB.getPeers()[0])
         expect(changedSubs).to.have.lengthOf(1)
         expect(changedSubs[0].topicID).to.equal(topic)
         expect(changedSubs[0].subscribe).to.equal(true)
@@ -135,7 +150,7 @@ export default (common: TestSetup<PubSub<EventMap>>) => {
       function receivedMsg (evt: CustomEvent<Message>) {
         const msg = evt.detail
         expect(uint8ArrayToString(msg.data)).to.equal('banana')
-        expect(msg.from).to.be.eql(psB.peerId.toString())
+        expect(msg.from).to.deep.equal(peerIdB)
         expect(msg.seqno).to.be.a('Uint8Array')
         expect(msg.topicIDs).to.be.eql([topic])
 
@@ -156,13 +171,13 @@ export default (common: TestSetup<PubSub<EventMap>>) => {
       const defer = pDefer()
 
       psA.unsubscribe(topic)
-      expect(psA.subscriptions.size).to.equal(0)
+      expect(psA.getTopics()).to.be.empty()
 
       psB.addEventListener('pubsub:subscription-change', (evt) => {
         const { peerId: changedPeerId, subscriptions: changedSubs } = evt.detail
-        expect(psB.peers.size).to.equal(1)
-        expectSet(psB.topics.get(topic), [])
-        expect(changedPeerId.toString()).to.equal(first(psB.peers).id.toString())
+        expect(psB.getPeers()).to.have.lengthOf(1)
+        expect(psB.getTopics()).to.be.empty()
+        expect(changedPeerId).to.deep.equal(psB.getPeers()[0])
         expect(changedSubs).to.have.lengthOf(1)
         expect(changedSubs[0].topicID).to.equal(topic)
         expect(changedSubs[0].subscribe).to.equal(false)

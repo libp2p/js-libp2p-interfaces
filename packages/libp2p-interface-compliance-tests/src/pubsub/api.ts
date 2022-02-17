@@ -4,19 +4,29 @@ import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '../index.js'
-import type { PubSub } from '@libp2p/interfaces/pubsub'
+import type { PubSub, PubSubOptions } from '@libp2p/interfaces/pubsub'
 import type { EventMap } from './index.js'
+import type { Registrar } from '@libp2p/interfaces/src/registrar'
+import { mockRegistrar } from '../mocks/registrar.js'
+import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 
-export default (common: TestSetup<PubSub<EventMap>>) => {
+export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
   describe('pubsub api', () => {
     let pubsub: PubSub<EventMap>
+    let registrar: Registrar
 
     // Create pubsub router
     beforeEach(async () => {
-      pubsub = await common.setup()
+      registrar = mockRegistrar()
+
+      pubsub = await common.setup({
+        peerId: await createEd25519PeerId(),
+        registrar,
+        emitSelf: true
+      })
     })
 
     afterEach(async () => {
@@ -26,22 +36,22 @@ export default (common: TestSetup<PubSub<EventMap>>) => {
     })
 
     it('can start correctly', async () => {
-      sinon.spy(pubsub.registrar, 'register')
+      sinon.spy(registrar, 'register')
 
       await pubsub.start()
 
-      expect(pubsub.started).to.eql(true)
-      expect(pubsub.registrar.register).to.have.property('callCount', 1)
+      expect(pubsub.isStarted()).to.equal(true)
+      expect(registrar.register).to.have.property('callCount', 1)
     })
 
     it('can stop correctly', async () => {
-      sinon.spy(pubsub.registrar, 'unregister')
+      sinon.spy(registrar, 'unregister')
 
       await pubsub.start()
       await pubsub.stop()
 
-      expect(pubsub.started).to.eql(false)
-      expect(pubsub.registrar.unregister).to.have.property('callCount', 1)
+      expect(pubsub.isStarted()).to.equal(false)
+      expect(registrar.unregister).to.have.property('callCount', 1)
     })
 
     it('can subscribe and unsubscribe correctly', async () => {

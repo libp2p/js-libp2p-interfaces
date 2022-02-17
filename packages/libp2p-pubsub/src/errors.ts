@@ -23,6 +23,10 @@ export const codes = {
    * Message `signature` is invalid
    */
   ERR_INVALID_SIGNATURE: 'ERR_INVALID_SIGNATURE',
+  /**
+   * Message expected to have a `from`, but doesn't
+   */
+  ERR_MISSING_FROM: 'ERR_MISSING_FROM',
 
   // Strict no-signing codes
 

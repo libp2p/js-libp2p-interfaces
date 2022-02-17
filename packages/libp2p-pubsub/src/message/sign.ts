@@ -2,10 +2,9 @@ import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { RPC } from './rpc.js'
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { normalizeOutRpcMessage } from '../utils.js'
+import { toRpcMessage } from '../utils.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import { keys } from '@libp2p/crypto'
-import { peerIdFromBytes } from '@libp2p/peer-id'
 import type { Message } from '@libp2p/interfaces/pubsub'
 
 export const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
@@ -17,7 +16,7 @@ export async function signMessage (peerId: PeerId, message: Message) {
   // Get the message in bytes, and prepend with the pubsub prefix
   const bytes = uint8ArrayConcat([
     SignPrefix,
-    RPC.Message.encode(normalizeOutRpcMessage(message)).finish()
+    RPC.Message.encode(toRpcMessage(message)).finish()
   ])
 
   if (peerId.privateKey == null) {
@@ -56,7 +55,7 @@ export async function verifySignature (message: Message) {
   const bytes = uint8ArrayConcat([
     SignPrefix,
     RPC.Message.encode({
-      ...message,
+      ...toRpcMessage(message),
       signature: undefined,
       key: undefined
     }).finish()
@@ -80,21 +79,19 @@ export async function messagePublicKey (message: Message) {
     throw new Error('Could not get the public key from the originator id')
   }
 
-  const from = peerIdFromBytes(message.from)
-
   if (message.key != null) {
     const keyPeerId = await PeerIdFactory.createFromPubKey(keys.unmarshalPublicKey(message.key))
 
     // the key belongs to the sender, return the key
-    if (!keyPeerId.equals(from)) {
+    if (!keyPeerId.equals(message.from)) {
       throw new Error('Public Key does not match the originator')
     }
 
     if (keyPeerId.publicKey != null) {
       return keyPeerId.publicKey
     }
-  } else if (from.publicKey != null) {
-    return from.publicKey
+  } else if (message.from.publicKey != null) {
+    return message.from.publicKey
   }
 
   // We couldn't validate pubkey is from the originator, error

@@ -22,9 +22,10 @@ export interface StreamHandler {
 }
 
 export interface Registrar {
+  getProtocols: () => string[]
   handle: (protocol: string | string[], handler: StreamHandler) => Promise<string>
   unhandle: (id: string) => Promise<void>
-  getHandlers: (protocol: string) => StreamHandler[]
+  getHandler: (protocol: string) => StreamHandler
 
   register: (protocols: string | string[], topology: Topology) => string
   unregister: (id: string) => void

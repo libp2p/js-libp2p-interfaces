@@ -21,10 +21,8 @@ describe('emitSelf', () => {
 
       pubsub = new PubsubImplementation({
         multicodecs: [protocol],
-        libp2p: {
-          peerId,
-          registrar: new MockRegistrar()
-        },
+        peerId,
+        registrar: new MockRegistrar(),
         emitSelf: true
       })
     })
@@ -53,10 +51,8 @@ describe('emitSelf', () => {
 
       pubsub = new PubsubImplementation({
         multicodecs: [protocol],
-        libp2p: {
-          peerId,
-          registrar: new MockRegistrar()
-        },
+        peerId,
+        registrar: new MockRegistrar(),
         emitSelf: false
       })
     })

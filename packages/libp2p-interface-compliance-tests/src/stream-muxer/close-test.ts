@@ -10,6 +10,7 @@ import { expect } from 'aegir/utils/chai.js'
 import delay from 'delay'
 import type { TestSetup } from '../index.js'
 import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
+import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 
 function randomBuffer () {
   return uint8ArrayFromString(Math.random().toString())
@@ -27,6 +28,8 @@ const infiniteRandom = {
 export default (common: TestSetup<Muxer, MuxerOptions>) => {
   describe('close', () => {
     it('closing underlying socket closes streams', async () => {
+      const localPeer = await createEd25519PeerId()
+      const remotePeer = await createEd25519PeerId()
       const muxer = await common.setup({
         onStream: (stream) => {
           void pipe(stream, drain)
@@ -40,8 +43,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
         returnOnAbort: true
       })
 
-      await upgrader.upgradeInbound(mockMultiaddrConnection(abortableRemote))
-      const dialerConn = await upgrader.upgradeOutbound(mockMultiaddrConnection(local))
+      await upgrader.upgradeInbound(mockMultiaddrConnection(abortableRemote, localPeer))
+      const dialerConn = await upgrader.upgradeOutbound(mockMultiaddrConnection(local, remotePeer))
 
       const s1 = await dialerConn.newStream([''])
       const s2 = await dialerConn.newStream([''])
