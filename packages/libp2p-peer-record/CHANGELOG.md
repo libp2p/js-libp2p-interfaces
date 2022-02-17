@@ -1,3 +1,10 @@
+## [@libp2p/peer-record-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-record-v1.0.3...@libp2p/peer-record-v1.0.4) (2022-02-17)
+
+
+### Bug Fixes
+
+* add multistream-select and update pubsub types ([#170](https://github.com/libp2p/js-libp2p-interfaces/issues/170)) ([b9ecb2b](https://github.com/libp2p/js-libp2p-interfaces/commit/b9ecb2bee8f2abc0c41bfcf7bf2025894e37ddc2))
+
 ## [@libp2p/peer-record-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-record-v1.0.2...@libp2p/peer-record-v1.0.3) (2022-02-12)
 
 
