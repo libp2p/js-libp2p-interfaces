@@ -116,18 +116,20 @@ export async function mockIncomingStreamEvent (protocol: string, conn: Connectio
   })
 }
 
-export async function connectPeers (protocol: string, registrarA: Registrar, registrarB: Registrar, peerIdA: PeerId, peerIdB: PeerId) {
-  const topologyA = registrarA.getTopologies(protocol)[0]
-  const topologyB = registrarB.getTopologies(protocol)[0]
-  // const handlerA = registrarA.getHandler(protocol)
-  // const handlerB = registrarB.getHandler(protocol)
+export interface Peer {
+  peerId: PeerId
+  registrar: Registrar
+}
 
+export async function connectPeers (protocol: string, a: Peer, b: Peer) {
   // Notify peers of connection
-  const [bToA, aToB] = connectionPair(peerIdA, peerIdB)
+  const [aToB, bToA] = connectionPair(a, b)
 
-  await topologyA.onConnect(peerIdB, aToB)
-  // await handlerA(await mockIncomingStreamEvent(protocol, aToB, peerIdB))
+  for (const topology of a.registrar.getTopologies(protocol)) {
+    await topology.onConnect(b.peerId, aToB)
+  }
 
-  await topologyB.onConnect(peerIdA, bToA)
-  // await handlerB(await mockIncomingStreamEvent(protocol, bToA, peerIdA))
+  for (const topology of b.registrar.getTopologies(protocol)) {
+    await topology.onConnect(a.peerId, bToA)
+  }
 }

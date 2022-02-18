@@ -16,8 +16,8 @@ describe('utils', () => {
 
   it('msgId should not generate same ID for two different Uint8Arrays', () => {
     const peerId = peerIdFromString('QmPNdSYk5Rfpo5euNqwtyizzmKXMNHdXeLjTQhcN4yfX22')
-    const msgId0 = utils.msgId(peerId, 1n)
-    const msgId1 = utils.msgId(peerId, 2n)
+    const msgId0 = utils.msgId(peerId.multihash.bytes, 1n)
+    const msgId1 = utils.msgId(peerId.multihash.bytes, 2n)
     expect(msgId0).to.not.deep.equal(msgId1)
   })
 
@@ -45,23 +45,23 @@ describe('utils', () => {
     const stringId = 'QmdZEWgtaWAxBh93fELFT298La1rsZfhiC2pqwMVwy3jZM'
     const m: Message[] = [{
       from: peerIdFromBytes(binaryId),
-      topicIDs: [],
+      topic: '',
       data: new Uint8Array()
     }, {
       from: peerIdFromString(stringId),
-      topicIDs: [],
+      topic: '',
       data: new Uint8Array()
     }]
     const expected: RPCMessage[] = [{
       from: binaryId,
-      topicIDs: [],
+      topic: '',
       data: new Uint8Array(),
       seqno: undefined,
       signature: undefined,
       key: undefined
     }, {
       from: binaryId,
-      topicIDs: [],
+      topic: '',
       data: new Uint8Array(),
       seqno: undefined,
       signature: undefined,

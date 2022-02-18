@@ -8,5 +8,16 @@
   "include": [
     "src",
     "test"
+  ],
+  "references": [
+    {
+      "path": "../libp2p-interfaces"
+    },
+    {
+      "path": "../libp2p-peer-id"
+    },
+    {
+      "path": "../libp2p-peer-id-factory"
+    }
   ]
 }

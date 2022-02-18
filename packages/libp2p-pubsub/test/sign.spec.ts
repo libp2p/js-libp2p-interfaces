@@ -27,7 +27,7 @@ describe('message signing', () => {
       from: peerId,
       data: uint8ArrayFromString('hello'),
       seqno: randomSeqno(),
-      topicIDs: ['test-topic']
+      topic: 'test-topic'
     }
 
     const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message)).finish()])
@@ -60,7 +60,7 @@ describe('message signing', () => {
       from: secPeerId,
       data: uint8ArrayFromString('hello'),
       seqno: randomSeqno(),
-      topicIDs: ['test-topic']
+      topic: 'test-topic'
     }
 
     const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message)).finish()])
@@ -91,7 +91,7 @@ describe('message signing', () => {
       from: peerId,
       data: uint8ArrayFromString('hello'),
       seqno: randomSeqno(),
-      topicIDs: ['test-topic']
+      topic: 'test-topic'
     }
 
     const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message)).finish()])

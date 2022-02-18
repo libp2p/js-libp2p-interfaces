@@ -10,10 +10,9 @@ import {
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
-import type { RPCMessage } from '@libp2p/interfaces/pubsub'
 
-class PubsubProtocol extends PubsubBaseProtocol<{}> {
-  async _publish (message: RPCMessage): Promise<void> {
+class PubsubProtocol extends PubsubBaseProtocol {
+  async publishMessage (): Promise<void> {
     throw new Error('Method not implemented.')
   }
 }

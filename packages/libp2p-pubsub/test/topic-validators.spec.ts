@@ -11,6 +11,7 @@ import {
   PubsubImplementation
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/src/peer-id'
+import type { RPC } from '@libp2p/interfaces/src/pubsub'
 
 const protocol = '/pubsub/1.0.0'
 
@@ -38,8 +39,8 @@ describe('topic validators', () => {
   })
 
   it('should filter messages by topic validator', async () => {
-    // use _publish.callCount() to see if a message is valid or not
-    sinon.spy(pubsub, '_publish')
+    // use publishMessage.callCount() to see if a message is valid or not
+    sinon.spy(pubsub, 'publishMessage')
     // @ts-expect-error not all fields are implemented in return value
     sinon.stub(pubsub.peers, 'get').returns({})
     const filteredTopic = 't'
@@ -53,14 +54,13 @@ describe('topic validators', () => {
     })
 
     // valid case
-    const validRpc = {
+    const validRpc: RPC = {
       subscriptions: [],
-      msgs: [{
+      messages: [{
         from: otherPeerId.multihash.bytes,
         data: uint8ArrayFromString('a message'),
-        topicIDs: [filteredTopic]
-      }],
-      toJSON: () => ({})
+        topic: filteredTopic
+      }]
     }
 
     // process valid message
@@ -68,36 +68,34 @@ describe('topic validators', () => {
     void pubsub.processRpc(peer.id, peer, validRpc)
 
     // @ts-expect-error .callCount is a property added by sinon
-    await pWaitFor(() => pubsub._publish.callCount === 1)
+    await pWaitFor(() => pubsub.publishMessage.callCount === 1)
 
     // invalid case
     const invalidRpc = {
       subscriptions: [],
-      msgs: [{
+      messages: [{
         data: uint8ArrayFromString('a different message'),
-        topicIDs: [filteredTopic]
-      }],
-      toJSON: () => ({})
+        topic: filteredTopic
+      }]
     }
 
     // @ts-expect-error process invalid message
     void pubsub.processRpc(peer.id, peer, invalidRpc)
 
     // @ts-expect-error .callCount is a property added by sinon
-    expect(pubsub._publish.callCount).to.eql(1)
+    expect(pubsub.publishMessage.callCount).to.eql(1)
 
     // remove topic validator
     pubsub.topicValidators.delete(filteredTopic)
 
     // another invalid case
-    const invalidRpc2 = {
+    const invalidRpc2: RPC = {
       subscriptions: [],
-      msgs: [{
+      messages: [{
         from: otherPeerId.multihash.bytes,
         data: uint8ArrayFromString('a different message'),
-        topicIDs: [filteredTopic]
-      }],
-      toJSON: () => ({})
+        topic: filteredTopic
+      }]
     }
 
     // process previously invalid message, now is valid
@@ -105,6 +103,6 @@ describe('topic validators', () => {
     pubsub.unsubscribe(filteredTopic)
 
     // @ts-expect-error .callCount is a property added by sinon
-    await pWaitFor(() => pubsub._publish.callCount === 2)
+    await pWaitFor(() => pubsub.publishMessage.callCount === 2)
   })
 })

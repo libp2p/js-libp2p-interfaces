@@ -1,13 +1,12 @@
 import { randomBytes } from 'iso-random-stream'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
-import { peerIdFromBytes } from '@libp2p/peer-id'
 import { sha256 } from 'multiformats/hashes/sha2'
-import errcode from 'err-code'
-import { codes } from './errors.js'
 import type * as RPC from './message/rpc.js'
 import type { Message, RPCMessage } from '@libp2p/interfaces/pubsub'
-import type { PeerId } from '@libp2p/interfaces/peer-id'
+import { peerIdFromBytes } from '@libp2p/peer-id'
+import { codes } from './errors.js'
+import errcode from 'err-code'
 
 /**
  * Generate a random sequence number
@@ -17,15 +16,14 @@ export function randomSeqno (): BigInt {
 }
 
 /**
- * Generate a message id, based on the `from` and `seqno`
+ * Generate a message id, based on the `key` and `seqno`
  */
-export const msgId = (from: PeerId, seqno: BigInt) => {
-  const fromBytes = from.multihash.digest
+export const msgId = (key: Uint8Array, seqno: BigInt) => {
   const seqnoBytes = uint8ArrayFromString(seqno.toString(16).padStart(16, '0'), 'base16')
 
-  const msgId = new Uint8Array(fromBytes.length + seqnoBytes.length)
-  msgId.set(fromBytes, 0)
-  msgId.set(seqnoBytes, fromBytes.length)
+  const msgId = new Uint8Array(key.length + seqnoBytes.length)
+  msgId.set(key, 0)
+  msgId.set(seqnoBytes, key.length)
 
   return msgId
 }
@@ -69,17 +67,14 @@ export const ensureArray = function <T> (maybeArray: T | T[]) {
   return maybeArray
 }
 
-/**
- * Ensures `message.from` is base58 encoded
- */
 export const toMessage = (message: RPC.RPC.IMessage): Message => {
   if (message.from == null) {
-    throw errcode(new Error('From field is required and was not present'), codes.ERR_MISSING_FROM)
+    throw errcode(new Error('RPC message was missing from'), codes.ERR_MISSING_FROM)
   }
 
   return {
     from: peerIdFromBytes(message.from),
-    topicIDs: message.topicIDs ?? [],
+    topic: message.topic ?? '',
     seqno: message.seqno == null ? undefined : BigInt(`0x${uint8ArrayToString(message.seqno, 'base16')}`),
     data: message.data ?? new Uint8Array(0),
     signature: message.signature ?? undefined,
@@ -88,15 +83,11 @@ export const toMessage = (message: RPC.RPC.IMessage): Message => {
 }
 
 export const toRpcMessage = (message: Message): RPCMessage => {
-  if (message.from == null) {
-    throw errcode(new Error('From field is required and was not present'), codes.ERR_MISSING_FROM)
-  }
-
   return {
     from: message.from.multihash.bytes,
     data: message.data,
     seqno: message.seqno == null ? undefined : uint8ArrayFromString(message.seqno.toString(16).padStart(16, '0'), 'base16'),
-    topicIDs: message.topicIDs,
+    topic: message.topic,
     signature: message.signature,
     key: message.key
   }

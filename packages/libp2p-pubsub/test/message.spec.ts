@@ -8,15 +8,11 @@ import {
   MockRegistrar
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Message, RPCMessage } from '@libp2p/interfaces/pubsub'
+import type { Message } from '@libp2p/interfaces/src/pubsub'
 
-class PubsubProtocol extends PubsubBaseProtocol<{}> {
-  async _publish (message: RPCMessage): Promise<void> {
-    throw new Error('Method not implemented')
-  }
-
-  async buildMessage (message: Message) {
-    return await this._maybeSignMessage(message)
+class PubsubProtocol extends PubsubBaseProtocol {
+  async publishMessage (): Promise<void> {
+    throw new Error('Method not implemented.')
   }
 }
 
@@ -38,11 +34,11 @@ describe('pubsub base messages', () => {
     sinon.restore()
   })
 
-  it('_buildMessage normalizes and signs messages', async () => {
-    const message = {
+  it('buildMessage normalizes and signs messages', async () => {
+    const message: Message = {
       from: peerId,
       data: uint8ArrayFromString('hello'),
-      topicIDs: ['test-topic']
+      topic: 'test-topic'
     }
 
     const signedMessage = await pubsub.buildMessage(message)
@@ -51,10 +47,10 @@ describe('pubsub base messages', () => {
   })
 
   it('validate with StrictNoSign will reject a message with from, signature, key, seqno present', async () => {
-    const message = {
+    const message: Message = {
       from: peerId,
       data: uint8ArrayFromString('hello'),
-      topicIDs: ['test-topic']
+      topic: 'test-topic'
     }
 
     sinon.stub(pubsub, 'globalSignaturePolicy').value('StrictSign')
@@ -75,10 +71,10 @@ describe('pubsub base messages', () => {
   })
 
   it('validate with StrictNoSign will validate a message without a signature, key, and seqno', async () => {
-    const message = {
+    const message: Message = {
       from: peerId,
       data: uint8ArrayFromString('hello'),
-      topicIDs: ['test-topic']
+      topic: 'test-topic'
     }
 
     sinon.stub(pubsub, 'globalSignaturePolicy').value('StrictNoSign')
@@ -88,10 +84,10 @@ describe('pubsub base messages', () => {
   })
 
   it('validate with StrictSign requires a signature', async () => {
-    const message = {
+    const message: Message = {
       from: peerId,
       data: uint8ArrayFromString('hello'),
-      topicIDs: ['test-topic']
+      topic: 'test-topic'
     }
 
     await expect(pubsub.validate(message)).to.be.rejectedWith(Error, 'Signing required and no signature was present')

@@ -28,17 +28,17 @@ export const StrictNoSign = 'StrictNoSign'
 
 export interface Message {
   from: PeerId
-  topicIDs: string[]
-  seqno?: BigInt
+  topic: string
   data: Uint8Array
+  seqno?: BigInt
   signature?: Uint8Array
   key?: Uint8Array
 }
 
 export interface RPCMessage {
   from: Uint8Array
+  topic: string
   data: Uint8Array
-  topicIDs: string[]
   seqno?: Uint8Array
   signature?: Uint8Array
   key?: Uint8Array
@@ -46,12 +46,12 @@ export interface RPCMessage {
 
 export interface RPCSubscription {
   subscribe: boolean
-  topicID: string
+  topic: string
 }
 
 export interface RPC {
   subscriptions: RPCSubscription[]
-  msgs: RPCMessage[]
+  messages: RPCMessage[]
 }
 
 export interface PeerStreams extends EventEmitter<PeerStreamEvents> {
@@ -95,7 +95,7 @@ export interface PubSubOptions {
 }
 
 interface Subscription {
-  topicID: string
+  topic: string
   subscribe: boolean
 }
 
@@ -108,20 +108,16 @@ export interface PubSubEvents {
   'pubsub:subscription-change': CustomEvent<SubscriptionChangeData>
 }
 
-export interface PubSub<EventMap extends PubSubEvents> extends EventEmitter<EventMap>, Startable {
+export interface PubSub<EventMap = PubSubEvents> extends EventEmitter<EventMap & PubSubEvents>, Startable {
   globalSignaturePolicy: typeof StrictSign | typeof StrictNoSign
   multicodecs: string[]
 
   getPeers: () => PeerId[]
   getTopics: () => string[]
   subscribe: (topic: string) => void
-  getSubscribers: (topic: string) => PeerId[]
   unsubscribe: (topic: string) => void
-  publish: (topic: string, data: Uint8Array) => Promise<void>
+  getSubscribers: (topic: string) => PeerId[]
   validate: (message: Message) => Promise<void>
-
-  processRpc: (from: PeerId, peerStreams: PeerStreams, rpc: RPC) => Promise<boolean>
-  emitMessage: (message: Message) => void
 }
 
 export interface PeerStreamEvents {

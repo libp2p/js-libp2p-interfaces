@@ -1,4 +1,3 @@
-import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { RPC } from './rpc.js'
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
@@ -6,6 +5,7 @@ import { toRpcMessage } from '../utils.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import { keys } from '@libp2p/crypto'
 import type { Message } from '@libp2p/interfaces/pubsub'
+import { peerIdFromKeys } from '@libp2p/peer-id'
 
 export const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
 
@@ -71,7 +71,7 @@ export async function verifySignature (message: Message) {
 
 /**
  * Returns the PublicKey associated with the given message.
- * If no, valid PublicKey can be retrieved an error will be returned.
+ * If no valid PublicKey can be retrieved an error will be returned.
  */
 export async function messagePublicKey (message: Message) {
   // should be available in the from property of the message (peer id)
@@ -80,17 +80,14 @@ export async function messagePublicKey (message: Message) {
   }
 
   if (message.key != null) {
-    const keyPeerId = await PeerIdFactory.createFromPubKey(keys.unmarshalPublicKey(message.key))
-
-    // the key belongs to the sender, return the key
-    if (!keyPeerId.equals(message.from)) {
-      throw new Error('Public Key does not match the originator')
-    }
+    const keyPeerId = await peerIdFromKeys(message.key)
 
     if (keyPeerId.publicKey != null) {
       return keyPeerId.publicKey
     }
-  } else if (message.from.publicKey != null) {
+  }
+
+  if (message.from.publicKey != null) {
     return message.from.publicKey
   }
 

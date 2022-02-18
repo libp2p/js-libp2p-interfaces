@@ -20,6 +20,10 @@ export const codes = {
    */
   ERR_MISSING_SEQNO: 'ERR_MISSING_SEQNO',
   /**
+   * Message expected to have a `key`, but doesn't
+   */
+  ERR_MISSING_KEY: 'ERR_MISSING_KEY',
+  /**
    * Message `signature` is invalid
    */
   ERR_INVALID_SIGNATURE: 'ERR_INVALID_SIGNATURE',
