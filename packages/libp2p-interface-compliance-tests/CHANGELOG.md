@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.11](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.10...@libp2p/interface-compliance-tests-v1.1.11) (2022-02-18)
+
+
+### Bug Fixes
+
+* remove delays from pubsub tests ([#173](https://github.com/libp2p/js-libp2p-interfaces/issues/173)) ([5c8fe09](https://github.com/libp2p/js-libp2p-interfaces/commit/5c8fe09294f0cbd8add1406a61fa7dbc5b4e788b))
+
 ## [@libp2p/interface-compliance-tests-v1.1.10](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.9...@libp2p/interface-compliance-tests-v1.1.10) (2022-02-18)
 
 
