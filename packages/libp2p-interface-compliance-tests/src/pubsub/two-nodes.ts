@@ -8,7 +8,7 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { CustomEvent } from '@libp2p/interfaces'
-import delay from 'delay'
+import { waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { Message, PubSubOptions } from '@libp2p/interfaces/pubsub'
 import type { EventMap } from './index.js'
@@ -32,7 +32,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
     let registrarB: Registrar
 
     // Create pubsub nodes and connect them
-    before(async () => {
+    beforeEach(async () => {
       peerIdA = await createEd25519PeerId()
       peerIdB = await createEd25519PeerId()
 
@@ -46,7 +46,8 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
       })
       psB = await common.setup({
         peerId: peerIdB,
-        registrar: registrarB
+        registrar: registrarB,
+        emitSelf: false
       })
 
       // Start pubsub and connect nodes
@@ -68,7 +69,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
       await pWaitFor(() => psA.getPeers().length === 1 && psB.getPeers().length === 1)
     })
 
-    after(async () => {
+    afterEach(async () => {
       sinon.restore()
 
       await psA.stop()
@@ -114,7 +115,10 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         once: true
       })
 
-      await delay(100)
+      await Promise.all([
+        waitForSubscriptionUpdate(psA, psB),
+        waitForSubscriptionUpdate(psB, psA)
+      ])
 
       void psA.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('hey') }))
 
@@ -145,7 +149,10 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         once: true
       })
 
-      await delay(100)
+      await Promise.all([
+        waitForSubscriptionUpdate(psA, psB),
+        waitForSubscriptionUpdate(psB, psA)
+      ])
 
       void psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('banana') }))
 
@@ -176,7 +183,10 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         }
       }
 
-      await delay(100)
+      await Promise.all([
+        waitForSubscriptionUpdate(psA, psB),
+        waitForSubscriptionUpdate(psB, psA)
+      ])
 
       Array.from({ length: 10 }, (_, i) => psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('banana') })))
 
@@ -232,6 +242,11 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
       psB.addEventListener(topic, shouldNotHappen, {
         once: true
       })
+
+      await Promise.all([
+        waitForSubscriptionUpdate(psA, psB),
+        waitForSubscriptionUpdate(psB, psA)
+      ])
 
       setTimeout(() => {
         psA.removeEventListener(topic, shouldNotHappen)

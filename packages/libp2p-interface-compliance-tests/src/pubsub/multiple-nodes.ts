@@ -1,7 +1,6 @@
 /* eslint max-nested-callbacks: ["error", 6] */
 import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
-import delay from 'delay'
 import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
@@ -9,6 +8,7 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
 import { CustomEvent } from '@libp2p/interfaces'
+import { waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { Message, PubSubOptions } from '@libp2p/interfaces/pubsub'
 import type { EventMap } from './index.js'
@@ -106,11 +106,9 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           psA.subscribe(topic)
           expect(psA.getTopics()).to.deep.equal([topic])
 
-          await new Promise((resolve) => psB.addEventListener('pubsub:subscription-change', resolve, {
-            once: true
-          }))
-          expect(psB.getPeers().length).to.equal(2)
+          await waitForSubscriptionUpdate(psB, psA)
 
+          expect(psB.getPeers().length).to.equal(2)
           expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([peerIdA.toString()])
 
           expect(psC.getPeers().length).to.equal(1)
@@ -123,12 +121,8 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           expect(psB.getTopics()).to.deep.equal([topic])
 
           await Promise.all([
-            new Promise((resolve) => psA.addEventListener('pubsub:subscription-change', resolve, {
-              once: true
-            })),
-            new Promise((resolve) => psC.addEventListener('pubsub:subscription-change', resolve, {
-              once: true
-            }))
+            waitForSubscriptionUpdate(psA, psB),
+            waitForSubscriptionUpdate(psC, psB)
           ])
 
           expect(psA.getPeers().length).to.equal(1)
@@ -162,24 +156,9 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           const topic = 'Z'
           const defer = pDefer()
 
-          // await subscription change
-          const p = Promise.all([
-            new Promise<void>(resolve => psA.addEventListener('pubsub:subscription-change', () => resolve(), {
-              once: true
-            })),
-            new Promise<void>(resolve => psB.addEventListener('pubsub:subscription-change', () => resolve(), {
-              once: true
-            })),
-            new Promise<void>(resolve => psC.addEventListener('pubsub:subscription-change', () => resolve(), {
-              once: true
-            }))
-          ])
-
           psA.subscribe(topic)
           psB.subscribe(topic)
           psC.subscribe(topic)
-
-          await p
 
           let counter = 0
 
@@ -187,8 +166,11 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           psB.addEventListener(topic, incMsg)
           psC.addEventListener(topic, incMsg)
 
-          // await a cycle
-          await delay(1000)
+          await Promise.all([
+            waitForSubscriptionUpdate(psA, psB),
+            waitForSubscriptionUpdate(psB, psA),
+            waitForSubscriptionUpdate(psC, psB)
+          ])
 
           void psA.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('hey') }))
 
@@ -245,8 +227,11 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
             psB.addEventListener(topic, incMsg)
             psC.addEventListener(topic, incMsg)
 
-            // await a cycle
-            await delay(1000)
+            await Promise.all([
+              waitForSubscriptionUpdate(psA, psB),
+              waitForSubscriptionUpdate(psB, psA),
+              waitForSubscriptionUpdate(psC, psB)
+            ])
 
             void psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('hey') }))
 
@@ -417,15 +402,12 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           psE.addEventListener('Z', incMsg)
 
           await Promise.all([
-            new Promise((resolve) => psA.addEventListener('pubsub:subscription-change', resolve)),
-            new Promise((resolve) => psB.addEventListener('pubsub:subscription-change', resolve)),
-            new Promise((resolve) => psC.addEventListener('pubsub:subscription-change', resolve)),
-            new Promise((resolve) => psD.addEventListener('pubsub:subscription-change', resolve)),
-            new Promise((resolve) => psE.addEventListener('pubsub:subscription-change', resolve))
+            waitForSubscriptionUpdate(psA, psB),
+            waitForSubscriptionUpdate(psB, psA),
+            waitForSubscriptionUpdate(psC, psB),
+            waitForSubscriptionUpdate(psD, psC),
+            waitForSubscriptionUpdate(psE, psD)
           ])
-
-          // await a cycle
-          await delay(1000)
 
           void psC.dispatchEvent(new CustomEvent('Z', { detail: uint8ArrayFromString('hey from c') }))
 

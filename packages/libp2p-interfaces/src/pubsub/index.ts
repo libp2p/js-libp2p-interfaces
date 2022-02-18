@@ -99,7 +99,7 @@ interface Subscription {
   subscribe: boolean
 }
 
-interface SubscriptionChangeData {
+export interface SubscriptionChangeData {
   peerId: PeerId
   subscriptions: Subscription[]
 }

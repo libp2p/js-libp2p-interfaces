@@ -218,6 +218,7 @@
     "it-pushable": "^2.0.1",
     "it-stream-types": "^1.0.4",
     "multiformats": "^9.4.10",
+    "p-event": "^5.0.1",
     "p-defer": "^4.0.0",
     "p-limit": "^4.0.0",
     "p-wait-for": "^4.1.0",
