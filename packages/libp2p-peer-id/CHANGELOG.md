@@ -1,3 +1,10 @@
+## [@libp2p/peer-id-v1.1.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-v1.1.4...@libp2p/peer-id-v1.1.5) (2022-02-18)
+
+
+### Bug Fixes
+
+* simpler pubsub ([#172](https://github.com/libp2p/js-libp2p-interfaces/issues/172)) ([98715ed](https://github.com/libp2p/js-libp2p-interfaces/commit/98715ed73183b32e4fda3d878a462389548358d9))
+
 ## [@libp2p/peer-id-v1.1.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-v1.1.3...@libp2p/peer-id-v1.1.4) (2022-02-17)
 
 
