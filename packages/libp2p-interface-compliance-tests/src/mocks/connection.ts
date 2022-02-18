@@ -10,7 +10,7 @@ import type { PeerId } from '@libp2p/interfaces/src/peer-id'
 import { mockMultiaddrConnection } from './multiaddr-connection.js'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 import { mockRegistrar } from './registrar.js'
-import { Listener } from '@libp2p/multistream-select'
+import { Dialer, Listener } from '@libp2p/multistream-select'
 import { logger } from '@libp2p/logger'
 import { CustomEvent } from '@libp2p/interfaces'
 
@@ -33,7 +33,6 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
   const remotePeer = peerIdFromString(remotePeerIdStr)
   const registry = new Map()
   const streams: Stream[] = []
-  let streamId = 0
   const direction = opts.direction ?? 'inbound'
   const registrar = opts.registrar ?? mockRegistrar()
 
@@ -91,11 +90,17 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
         throw new Error('protocols must have a length')
       }
 
-      const id = `${streamId++}`
+      const id = `${Math.random()}`
       const stream: Stream = muxer.newStream(id)
+      const mss = new Dialer(stream)
+      const result = await mss.select(protocols)
+
       const streamData: ProtocolStream = {
-        protocol: protocols[0],
-        stream
+        protocol: result.protocol,
+        stream: {
+          ...stream,
+          ...result.stream
+        }
       }
 
       registry.set(id, streamData)
@@ -129,15 +134,24 @@ export function mockStream (stream: Duplex<Uint8Array>): Stream {
   }
 }
 
-export function connectionPair (peerA: PeerId, peerB: PeerId): [ Connection, Connection ] {
+export interface Peer {
+  peerId: PeerId
+  registrar: Registrar
+}
+
+export function connectionPair (a: Peer, b: Peer): [ Connection, Connection ] {
   const [peerBtoPeerA, peerAtoPeerB] = duplexPair<Uint8Array>()
 
   return [
     mockConnection(
-      mockMultiaddrConnection(peerBtoPeerA, peerA)
+      mockMultiaddrConnection(peerAtoPeerB, b.peerId), {
+        registrar: a.registrar
+      }
     ),
     mockConnection(
-      mockMultiaddrConnection(peerAtoPeerB, peerB)
+      mockMultiaddrConnection(peerBtoPeerA, a.peerId), {
+        registrar: b.registrar
+      }
     )
   ]
 }

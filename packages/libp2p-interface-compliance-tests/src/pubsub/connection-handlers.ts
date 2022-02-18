@@ -4,18 +4,20 @@ import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import { createEd25519PeerId } from '@libp2p/peer-id-factory'
+import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
+import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
-import type { PubSub, Message, PubSubOptions } from '@libp2p/interfaces/pubsub'
+import type { Message, PubSubOptions } from '@libp2p/interfaces/pubsub'
 import type { EventMap } from './index.js'
 import type { PeerId } from '@libp2p/interfaces/src/peer-id'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { Registrar } from '@libp2p/interfaces/src/registrar'
-import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
+import type { PubsubBaseProtocol } from '@libp2p/pubsub'
 
-export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
+export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) => {
   describe('pubsub connection handlers', () => {
-    let psA: PubSub<EventMap>
-    let psB: PubSub<EventMap>
+    let psA: PubsubBaseProtocol<EventMap>
+    let psB: PubsubBaseProtocol<EventMap>
     let peerA: PeerId
     let peerB: PeerId
     let registrarA: Registrar
@@ -64,9 +66,7 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
       })
 
       it('existing subscriptions are sent upon peer connection', async function () {
-        await connectPeers(psA.multicodecs[0], registrarA, registrarB, peerA, peerB)
-
-        await Promise.all([
+        const subscriptionsChanged = Promise.all([
           new Promise((resolve) => psA.addEventListener('pubsub:subscription-change', resolve, {
             once: true
           })),
@@ -75,22 +75,51 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
           }))
         ])
 
+        await connectPeers(psA.multicodecs[0], {
+          peerId: peerA,
+          registrar: registrarA
+        }, {
+          peerId: peerB,
+          registrar: registrarB
+        })
+
+        await subscriptionsChanged
+
         expect(psA.getPeers()).to.have.lengthOf(1)
         expect(psB.getPeers()).to.have.lengthOf(1)
 
         expect(psA.getTopics()).to.deep.equal(['Za'])
         expect(psB.getTopics()).to.deep.equal(['Zb'])
 
-        expect(psA.getSubscribers('Zb')).to.deep.equal([peerB])
-        expect(psB.getSubscribers('Za')).to.deep.equal([peerA])
+        expect(psA.getSubscribers('Zb').map(p => p.toString())).to.deep.equal([peerB.toString()])
+        expect(psB.getSubscribers('Za').map(p => p.toString())).to.deep.equal([peerA.toString()])
       })
     })
 
     describe('pubsub started before connect', () => {
+      let psA: PubsubBaseProtocol<EventMap>
+      let psB: PubsubBaseProtocol<EventMap>
+      let peerA: PeerId
+      let peerB: PeerId
+      let registrarA: Registrar
+      let registrarB: Registrar
+
       // Create pubsub nodes and start them
       beforeEach(async () => {
-        psA = await common.setup()
-        psB = await common.setup()
+        peerA = await createEd25519PeerId()
+        peerB = await createEd25519PeerId()
+
+        registrarA = mockRegistrar()
+        registrarB = mockRegistrar()
+
+        psA = await common.setup({
+          peerId: peerA,
+          registrar: registrarA
+        })
+        psB = await common.setup({
+          peerId: peerB,
+          registrar: registrarB
+        })
 
         await psA.start()
         await psB.start()
@@ -103,7 +132,13 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
       })
 
       it('should get notified of connected peers on dial', async () => {
-        await connectPeers(psA.multicodecs[0], registrarA, registrarB, peerA, peerB)
+        await connectPeers(psA.multicodecs[0], {
+          peerId: peerA,
+          registrar: registrarA
+        }, {
+          peerId: peerB,
+          registrar: registrarB
+        })
 
         return await Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
@@ -116,7 +151,13 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
         const topic = 'test-topic'
         const data = uint8ArrayFromString('hey!')
 
-        await connectPeers(psA.multicodecs[0], registrarA, registrarB, peerA, peerB)
+        await connectPeers(psA.multicodecs[0], {
+          peerId: peerA,
+          registrar: registrarA
+        }, {
+          peerId: peerB,
+          registrar: registrarB
+        })
 
         let subscribedTopics = psA.getTopics()
         expect(subscribedTopics).to.not.include(topic)
@@ -134,19 +175,38 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
         // wait for psB to know about psA subscription
         await pWaitFor(() => {
           const subscribedPeers = psB.getSubscribers(topic)
-          return subscribedPeers.includes(peerA)
+          return subscribedPeers.map(p => p.toString()).includes(peerA.toString())
         })
-        void psB.publish(topic, data)
+        void psB.dispatchEvent(new CustomEvent(topic, { detail: data }))
 
         await defer.promise
       })
     })
 
     describe('pubsub started after connect', () => {
+      let psA: PubsubBaseProtocol<EventMap>
+      let psB: PubsubBaseProtocol<EventMap>
+      let peerA: PeerId
+      let peerB: PeerId
+      let registrarA: Registrar
+      let registrarB: Registrar
+
       // Create pubsub nodes
       beforeEach(async () => {
-        psA = await common.setup()
-        psB = await common.setup()
+        peerA = await createEd25519PeerId()
+        peerB = await createEd25519PeerId()
+
+        registrarA = mockRegistrar()
+        registrarB = mockRegistrar()
+
+        psA = await common.setup({
+          peerId: peerA,
+          registrar: registrarA
+        })
+        psB = await common.setup({
+          peerId: peerB,
+          registrar: registrarB
+        })
       })
 
       afterEach(async () => {
@@ -159,14 +219,16 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
       })
 
       it('should get notified of connected peers after starting', async () => {
-        // @ts-expect-error protected fields
-        const connection = await psA._libp2p.dial(psB.peerId)
-        expect(connection).to.exist()
-        expect(psA.getPeers()).to.be.empty()
-        expect(psB.getPeers()).to.be.empty()
-
         await psA.start()
         await psB.start()
+
+        await connectPeers(psA.multicodecs[0], {
+          peerId: peerA,
+          registrar: registrarA
+        }, {
+          peerId: peerB,
+          registrar: registrarB
+        })
 
         return await Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
@@ -179,10 +241,16 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
         const topic = 'test-topic'
         const data = uint8ArrayFromString('hey!')
 
-        await connectPeers(psA.multicodecs[0], registrarA, registrarB, peerA, peerB)
-
         await psA.start()
         await psB.start()
+
+        await connectPeers(psA.multicodecs[0], {
+          peerId: peerA,
+          registrar: registrarA
+        }, {
+          peerId: peerB,
+          registrar: registrarB
+        })
 
         await Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
@@ -205,19 +273,38 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
         // wait for psB to know about psA subscription
         await pWaitFor(() => {
           const subscribedPeers = psB.getSubscribers(topic)
-          return subscribedPeers.includes(peerA)
+          return subscribedPeers.map(p => p.toString()).includes(peerA.toString())
         })
-        void psB.publish(topic, data)
+        void psB.dispatchEvent(new CustomEvent(topic, { detail: data }))
 
         await defer.promise
       })
     })
 
     describe('pubsub with intermittent connections', () => {
+      let psA: PubsubBaseProtocol<EventMap>
+      let psB: PubsubBaseProtocol<EventMap>
+      let peerA: PeerId
+      let peerB: PeerId
+      let registrarA: Registrar
+      let registrarB: Registrar
+
       // Create pubsub nodes and start them
       beforeEach(async () => {
-        psA = await common.setup()
-        psB = await common.setup()
+        peerA = await createEd25519PeerId()
+        peerB = await createEd25519PeerId()
+
+        registrarA = mockRegistrar()
+        registrarB = mockRegistrar()
+
+        psA = await common.setup({
+          peerId: peerA,
+          registrar: registrarA
+        })
+        psB = await common.setup({
+          peerId: peerB,
+          registrar: registrarB
+        })
 
         await psA.start()
         await psB.start()
@@ -240,7 +327,13 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
         const defer1 = pDefer()
         const defer2 = pDefer()
 
-        await connectPeers(psA.multicodecs[0], registrarA, registrarB, peerA, peerB)
+        await connectPeers(psA.multicodecs[0], {
+          peerId: peerA,
+          registrar: registrarA
+        }, {
+          peerId: peerB,
+          registrar: registrarB
+        })
 
         let subscribedTopics = psA.getTopics()
         expect(subscribedTopics).to.not.include(topic)
@@ -259,9 +352,9 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
         // wait for psB to know about psA subscription
         await pWaitFor(() => {
           const subscribedPeers = psB.getSubscribers(topic)
-          return subscribedPeers.includes(peerA)
+          return subscribedPeers.map(p => p.toString()).includes(peerA.toString())
         })
-        void psB.publish(topic, data)
+        void psB.dispatchEvent(new CustomEvent(topic, { detail: data }))
 
         await defer1.promise
 
@@ -280,15 +373,21 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
         await psB._libp2p.start()
         await psB.start()
 
-        await connectPeers(psA.multicodecs[0], registrarA, registrarB, peerA, peerB)
+        await connectPeers(psA.multicodecs[0], {
+          peerId: peerA,
+          registrar: registrarA
+        }, {
+          peerId: peerB,
+          registrar: registrarB
+        })
 
         // wait for remoteLibp2p to know about libp2p subscription
         await pWaitFor(() => {
           const subscribedPeers = psB.getSubscribers(topic)
-          return subscribedPeers.includes(peerA)
+          return subscribedPeers.toString().includes(peerA.toString())
         })
 
-        void psB.publish(topic, data)
+        void psB.dispatchEvent(new CustomEvent(topic, { detail: data }))
 
         await defer2.promise
       })
@@ -337,17 +436,23 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
         const originalConnection = await psA._libp2p.dialer.connectToPeer(psB.peerId)
 
         // second connection
-        await connectPeers(psA.multicodecs[0], registrarA, registrarB, peerA, peerB)
+        await connectPeers(psA.multicodecs[0], {
+          peerId: peerA,
+          registrar: registrarA
+        }, {
+          peerId: peerB,
+          registrar: registrarB
+        })
 
         // Wait for subscriptions to occur
         await pWaitFor(() => {
           return psA.getSubscribers(topic).includes(peerB) &&
-            psB.getSubscribers(topic).includes(peerA)
+            psB.getSubscribers(topic).map(p => p.toString()).includes(peerA.toString())
         })
 
         // Verify messages go both ways
-        void psA.publish(topic, uint8ArrayFromString('message-from-a-1'))
-        void psB.publish(topic, uint8ArrayFromString('message-from-b-1'))
+        void psA.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('message-from-a-1') }))
+        void psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('message-from-b-1') }))
         await pWaitFor(() => {
           return aReceivedFirstMessageFromB && bReceivedFirstMessageFromA
         })
@@ -360,8 +465,8 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
         await pWaitFor(() => psAConnUpdateSpy.callCount === 1)
 
         // Verify messages go both ways after the disconnect
-        void psA.publish(topic, uint8ArrayFromString('message-from-a-2'))
-        void psB.publish(topic, uint8ArrayFromString('message-from-b-2'))
+        void psA.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('message-from-a-2') }))
+        void psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('message-from-b-2') }))
         await pWaitFor(() => {
           return aReceivedSecondMessageFromB && bReceivedSecondMessageFromA
         })

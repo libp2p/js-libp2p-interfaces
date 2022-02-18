@@ -7,6 +7,7 @@ import type { IncomingStreamData, Registrar, StreamHandler } from '@libp2p/inter
 import type { Topology } from '@libp2p/interfaces/topology'
 import type { Connection } from '@libp2p/interfaces/src/connection'
 import type { PeerId } from '@libp2p/interfaces/src/peer-id'
+import type { PubSubEvents } from '@libp2p/interfaces/src/pubsub'
 
 export const createPeerId = async (): Promise<PeerId> => {
   const peerId = await PeerIdFactory.createEd25519PeerId()
@@ -14,12 +15,14 @@ export const createPeerId = async (): Promise<PeerId> => {
   return peerId
 }
 
-interface EventMap {
+interface EventMap extends PubSubEvents {
   'foo': CustomEvent
+  'test-topic': CustomEvent
+  't': CustomEvent
 }
 
 export class PubsubImplementation extends PubsubBaseProtocol<EventMap> {
-  async _publish () {
+  async publishMessage () {
     // ...
   }
 

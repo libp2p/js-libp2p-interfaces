@@ -1,19 +1,21 @@
 import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import type { TestSetup } from '../index.js'
-import type { PubSub, PubSubOptions } from '@libp2p/interfaces/pubsub'
-import type { EventMap } from './index.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { mockRegistrar } from '../mocks/registrar.js'
+import { CustomEvent } from '@libp2p/interfaces'
+import type { TestSetup } from '../index.js'
+import type { PubSubOptions } from '@libp2p/interfaces/pubsub'
+import type { EventMap } from './index.js'
+import type { PubsubBaseProtocol } from '@libp2p/pubsub'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 const shouldNotHappen = () => expect.fail()
 
-export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
+export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) => {
   describe('emit self', () => {
-    let pubsub: PubSub<EventMap>
+    let pubsub: PubsubBaseProtocol<EventMap>
 
     describe('enabled', () => {
       before(async () => {
@@ -40,7 +42,7 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
           once: true
         }))
 
-        void pubsub.publish(topic, data)
+        void pubsub.dispatchEvent(new CustomEvent(topic, { detail: data }))
 
         return await promise
       })
@@ -71,7 +73,7 @@ export default (common: TestSetup<PubSub<EventMap>, PubSubOptions>) => {
           once: true
         })
 
-        void pubsub.publish(topic, data)
+        void pubsub.dispatchEvent(new CustomEvent(topic, { detail: data }))
 
         // Wait 1 second to guarantee that self is not noticed
         return await new Promise((resolve) => setTimeout(resolve, 1000))

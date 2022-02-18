@@ -12,7 +12,7 @@ import {
   mockIncomingStreamEvent
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import { toMessage } from '../src/utils.js'
+import { CustomEvent } from '@libp2p/interfaces'
 
 const protocol = '/pubsub/1.0.0'
 const topic = 'test-topic'
@@ -34,26 +34,39 @@ describe('pubsub base implementation', () => {
     afterEach(async () => await pubsub.stop())
 
     it('calls _publish for router to forward messages', async () => {
-      sinon.spy(pubsub, '_publish')
+      sinon.spy(pubsub, 'publishMessage')
 
       await pubsub.start()
-      await pubsub.publish(topic, message)
+      pubsub.dispatchEvent(new CustomEvent(topic, { detail: message }))
+
+      // event dispatch is async
+      await pWaitFor(() => {
+        // @ts-expect-error .callCount is a added by sinon
+        return pubsub.publishMessage.callCount === 1
+      })
 
       // @ts-expect-error .callCount is a added by sinon
-      expect(pubsub._publish.callCount).to.eql(1)
+      expect(pubsub.publishMessage.callCount).to.eql(1)
     })
 
     it('should sign messages on publish', async () => {
-      sinon.spy(pubsub, '_publish')
+      sinon.spy(pubsub, 'publishMessage')
 
       await pubsub.start()
-      await pubsub.publish(topic, message)
+
+      pubsub.dispatchEvent(new CustomEvent(topic, { detail: message }))
+
+      // event dispatch is async
+      await pWaitFor(() => {
+        // @ts-expect-error .callCount is a added by sinon
+        return pubsub.publishMessage.callCount === 1
+      })
 
       // Get the first message sent to _publish, and validate it
       // @ts-expect-error .getCall is a added by sinon
-      const signedMessage: RPCMessage = pubsub._publish.getCall(0).lastArg
+      const signedMessage: Message = pubsub.publishMessage.getCall(0).lastArg
 
-      await expect(pubsub.validate(toMessage(signedMessage))).to.eventually.be.undefined()
+      await expect(pubsub.validate(signedMessage)).to.eventually.be.undefined()
     })
   })
 
@@ -134,14 +147,14 @@ describe('pubsub base implementation', () => {
       })
 
       it('should send subscribe message to connected peers', async () => {
-        sinon.spy(pubsubA, '_sendSubscriptions')
-        sinon.spy(pubsubB, '_processRpcSubOpt')
+        sinon.spy(pubsubA, 'send')
+        sinon.spy(pubsubB, 'processRpcSubOpt')
 
         pubsubA.subscribe(topic)
 
         // Should send subscriptions to a peer
         // @ts-expect-error .callCount is a added by sinon
-        expect(pubsubA._sendSubscriptions.callCount).to.eql(1)
+        expect(pubsubA.send.callCount).to.eql(1)
 
         // Other peer should receive subscription message
         await pWaitFor(() => {
@@ -151,7 +164,7 @@ describe('pubsub base implementation', () => {
         })
 
         // @ts-expect-error .callCount is a added by sinon
-        expect(pubsubB._processRpcSubOpt.callCount).to.eql(1)
+        expect(pubsubB.processRpcSubOpt.callCount).to.eql(1)
       })
     })
   })
@@ -238,13 +251,13 @@ describe('pubsub base implementation', () => {
       })
 
       it('should send unsubscribe message to connected peers', async () => {
-        sinon.spy(pubsubA, '_sendSubscriptions')
-        sinon.spy(pubsubB, '_processRpcSubOpt')
+        sinon.spy(pubsubA, 'send')
+        sinon.spy(pubsubB, 'processRpcSubOpt')
 
         pubsubA.subscribe(topic)
         // Should send subscriptions to a peer
         // @ts-expect-error .callCount is a property added by sinon
-        expect(pubsubA._sendSubscriptions.callCount).to.eql(1)
+        expect(pubsubA.send.callCount).to.eql(1)
 
         // Other peer should receive subscription message
         await pWaitFor(() => {
@@ -254,14 +267,14 @@ describe('pubsub base implementation', () => {
         })
 
         // @ts-expect-error .callCount is a property added by sinon
-        expect(pubsubB._processRpcSubOpt.callCount).to.eql(1)
+        expect(pubsubB.processRpcSubOpt.callCount).to.eql(1)
 
         // Unsubscribe
         pubsubA.unsubscribe(topic)
 
         // Should send subscriptions to a peer
         // @ts-expect-error .callCount is a property added by sinon
-        expect(pubsubA._sendSubscriptions.callCount).to.eql(2)
+        expect(pubsubA.send.callCount).to.eql(2)
 
         // Other peer should receive subscription message
         await pWaitFor(() => {
@@ -271,19 +284,19 @@ describe('pubsub base implementation', () => {
         })
 
         // @ts-expect-error .callCount is a property added by sinon
-        expect(pubsubB._processRpcSubOpt.callCount).to.eql(2)
+        expect(pubsubB.processRpcSubOpt.callCount).to.eql(2)
       })
 
       it('should not send unsubscribe message to connected peers if not subscribed', () => {
-        sinon.spy(pubsubA, '_sendSubscriptions')
-        sinon.spy(pubsubB, '_processRpcSubOpt')
+        sinon.spy(pubsubA, 'send')
+        sinon.spy(pubsubB, 'processRpcSubOpt')
 
         // Unsubscribe
         pubsubA.unsubscribe(topic)
 
         // Should send subscriptions to a peer
         // @ts-expect-error .callCount is a property added by sinon
-        expect(pubsubA._sendSubscriptions.callCount).to.eql(0)
+        expect(pubsubA.send.callCount).to.eql(0)
       })
     })
   })
@@ -332,7 +345,7 @@ describe('pubsub base implementation', () => {
     afterEach(async () => await pubsub.stop())
 
     it('should fail if pubsub is not started', () => {
-      const topic = 'topic-test'
+      const topic = 'test-topic'
 
       try {
         pubsub.getSubscribers(topic)
@@ -360,7 +373,7 @@ describe('pubsub base implementation', () => {
     })
 
     it('should get peer subscribed to one topic', async () => {
-      const topic = 'topic-test'
+      const topic = 'test-topic'
 
       // start pubsub
       await pubsub.start()

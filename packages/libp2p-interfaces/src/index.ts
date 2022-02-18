@@ -21,8 +21,13 @@ export interface Addressable {
   multiaddrs: Multiaddr[]
 }
 
-interface EventCallback<EventType> { (evt: EventType): void }
-type EventHandler<EventType> = EventCallback<EventType> | ({ handleEvent: EventCallback<EventType> }) | null
+export interface EventCallback<EventType> { (evt: EventType): void }
+export type EventHandler<EventType> = EventCallback<EventType> | ({ handleEvent: EventCallback<EventType> }) | null
+
+interface Listener {
+  once: boolean
+  callback: any
+}
 
 /**
  * Adds types to the EventTarget class. Hopefully this won't be necessary forever.
@@ -33,34 +38,64 @@ type EventHandler<EventType> = EventCallback<EventType> | ({ handleEvent: EventC
  * etc
  */
 export class EventEmitter<EventMap> extends EventTarget {
-  #listeners: Map<any, number> = new Map()
+  #listeners: Map<any, Listener[]> = new Map()
 
   listenerCount (type: string) {
-    return this.#listeners.get(type) ?? 0
+    const listeners = this.#listeners.get(type)
+
+    if (listeners == null) {
+      return 0
+    }
+
+    return listeners.length
   }
 
   // @ts-expect-error EventTarget is not typed
   addEventListener<U extends keyof EventMap> (type: U, callback: EventHandler<EventMap[U]>, options?: AddEventListenerOptions | boolean) {
     // @ts-expect-error EventTarget is not typed
-    super.addEventListener(type, callback)
+    super.addEventListener(type, callback, options)
 
-    const count = this.#listeners.get(type) ?? 0
+    let list = this.#listeners.get(type)
 
-    this.#listeners.set(type, count + 1)
+    if (list == null) {
+      list = []
+      this.#listeners.set(type, list)
+    }
+
+    list.push({
+      callback,
+      once: (options !== true && options !== false && options?.once) ?? false
+    })
   }
 
   // @ts-expect-error EventTarget is not typed
-  removeEventListener<U extends keyof EventMap> (type: U, callback: EventHandler<EventMap[U]> | undefined, options?: EventListenerOptions | boolean) {
+  removeEventListener<U extends keyof EventMap> (type: U, callback?: EventHandler<EventMap[U]> | undefined, options?: EventListenerOptions | boolean) {
     // @ts-expect-error EventTarget is not typed
-    super.removeEventListener(type, callback)
+    super.removeEventListener(type, callback, options)
 
-    const count = this.#listeners.get(type) ?? 0
+    let list = this.#listeners.get(type)
 
-    if (count === 1) {
-      this.#listeners.delete(type)
-    } else {
-      this.#listeners.set(type, count - 1)
+    if (list == null) {
+      return
     }
+
+    list = list.filter(({ callback: cb }) => cb !== callback)
+    this.#listeners.set(type, list)
+  }
+
+  dispatchEvent (event: CustomEvent): boolean {
+    const result = super.dispatchEvent(event)
+
+    let list = this.#listeners.get(event.type)
+
+    if (list == null) {
+      return result
+    }
+
+    list = list.filter(({ once }) => !once)
+    this.#listeners.set(event.type, list)
+
+    return result
   }
 }
 

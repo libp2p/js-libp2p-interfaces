@@ -65,7 +65,7 @@ class PeerIdImpl {
   }
 
   get [Symbol.toStringTag] () {
-    return symbol.toString()
+    return `PeerId(${this.toString()})`
   }
 
   get [symbol] () {
