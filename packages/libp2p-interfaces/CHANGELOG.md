@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.8...@libp2p/interfaces-v1.3.9) (2022-02-18)
+
+
+### Bug Fixes
+
+* remove delays from pubsub tests ([#173](https://github.com/libp2p/js-libp2p-interfaces/issues/173)) ([5c8fe09](https://github.com/libp2p/js-libp2p-interfaces/commit/5c8fe09294f0cbd8add1406a61fa7dbc5b4e788b))
+
 ## [@libp2p/interfaces-v1.3.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.7...@libp2p/interfaces-v1.3.8) (2022-02-18)
 
 
