@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.12](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.11...@libp2p/interface-compliance-tests-v1.1.12) (2022-02-21)
+
+
+### Bug Fixes
+
+* update muxer to pass transport tests ([#174](https://github.com/libp2p/js-libp2p-interfaces/issues/174)) ([466ed53](https://github.com/libp2p/js-libp2p-interfaces/commit/466ed53192aa196ac2dbdb83df3c8db9cd5b1e07))
+
 ## [@libp2p/interface-compliance-tests-v1.1.11](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.10...@libp2p/interface-compliance-tests-v1.1.11) (2022-02-18)
 
 
