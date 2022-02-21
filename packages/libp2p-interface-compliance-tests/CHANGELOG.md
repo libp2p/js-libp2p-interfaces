@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.13](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.12...@libp2p/interface-compliance-tests-v1.1.13) (2022-02-21)
+
+
+### Bug Fixes
+
+* increase stream test timeout ([#175](https://github.com/libp2p/js-libp2p-interfaces/issues/175)) ([568aefb](https://github.com/libp2p/js-libp2p-interfaces/commit/568aefb5c099ba0161ffecf86bda238b92d396b0))
+
 ## [@libp2p/interface-compliance-tests-v1.1.12](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.11...@libp2p/interface-compliance-tests-v1.1.12) (2022-02-21)
 
 
