@@ -3,7 +3,6 @@ import { pipe } from 'it-pipe'
 import { duplexPair } from 'it-pair/duplex'
 import type { MultiaddrConnection } from '@libp2p/interfaces/transport'
 import type { Connection, Stream, Metadata, ProtocolStream } from '@libp2p/interfaces/connection'
-import type { Muxer } from '@libp2p/interfaces/stream-muxer'
 import type { Duplex } from 'it-stream-types'
 import { mockMuxer } from './muxer.js'
 import type { PeerId } from '@libp2p/interfaces/src/peer-id'
@@ -18,13 +17,12 @@ const log = logger('libp2p:mock-connection')
 
 export interface MockConnectionOptions {
   direction?: 'inbound' | 'outbound'
-  muxer?: Muxer
   registrar?: Registrar
 }
 
 export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectionOptions = {}): Connection {
   const remoteAddr = maConn.remoteAddr
-  const remotePeerIdStr = remoteAddr.getPeerId()
+  const remotePeerIdStr = remoteAddr.getPeerId() ?? '12D3KooWCrhmFM1BCPGBkNzbPfDk4cjYmtAYSpZwUBC69Qg2kZyq'
 
   if (remotePeerIdStr == null) {
     throw new Error('Remote multiaddr must contain a peer id')
@@ -36,8 +34,8 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
   const direction = opts.direction ?? 'inbound'
   const registrar = opts.registrar ?? mockRegistrar()
 
-  const muxer = opts.muxer ?? mockMuxer({
-    onStream: (muxedStream) => {
+  const muxer = mockMuxer({
+    onIncomingStream: (muxedStream) => {
       const mss = new Listener(muxedStream)
       try {
         mss.handle(registrar.getProtocols())
@@ -58,8 +56,8 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
         log.error(err)
       }
     },
-    onStreamEnd: (stream) => {
-      connection.removeStream(stream.id)
+    onStreamEnd: (muxedStream) => {
+      connection.removeStream(muxedStream.id)
     }
   })
 

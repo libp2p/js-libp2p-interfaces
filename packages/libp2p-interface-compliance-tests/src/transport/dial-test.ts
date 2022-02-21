@@ -1,26 +1,34 @@
 import { expect } from 'aegir/utils/chai.js'
 import { isValidTick } from '../utils/is-valid-tick.js'
 import { mockUpgrader } from '../mocks/upgrader.js'
-import { goodbye } from 'it-goodbye'
+import { mockRegistrar } from '../mocks/registrar.js'
 import all from 'it-all'
 import { pipe } from 'it-pipe'
 import { AbortError } from '@libp2p/interfaces/errors'
 import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import drain from 'it-drain'
 import type { TestSetup } from '../index.js'
-import type { Transport, Listener } from '@libp2p/interfaces/transport'
+import type { Transport, Listener, Upgrader } from '@libp2p/interfaces/transport'
 import type { TransportTestFixtures, SetupArgs, Connector } from './index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
+import type { Registrar } from '@libp2p/interfaces/src/registrar'
 
 export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
   describe('dial', () => {
-    const upgrader = mockUpgrader()
+    let upgrader: Upgrader
+    let registrar: Registrar
     let addrs: Multiaddr[]
     let transport: Transport<any, any>
     let connector: Connector
     let listener: Listener
 
     before(async () => {
+      registrar = mockRegistrar()
+      upgrader = mockUpgrader({
+        registrar
+      });
+
       ({ addrs, transport, connector } = await common.setup({ upgrader }))
     })
 
@@ -40,12 +48,21 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
     })
 
     it('simple', async () => {
+      const protocol = '/hello/1.0.0'
+      void registrar.handle(protocol, (evt) => {
+        void pipe([
+          uint8ArrayFromString('hey')
+        ],
+        evt.detail.stream,
+        drain
+        )
+      })
+
       const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
       const conn = await transport.dial(addrs[0])
-      const { stream } = await conn.newStream(['/hello'])
-      const s = goodbye({ source: [uint8ArrayFromString('hey')], sink: async (source) => await all(source) })
 
-      const result = await pipe(s, stream, s)
+      const { stream } = await conn.newStream([protocol])
+      const result = await all(stream.source)
 
       expect(upgradeSpy.callCount).to.equal(1)
       await expect(upgradeSpy.getCall(0).returnValue).to.eventually.equal(conn)

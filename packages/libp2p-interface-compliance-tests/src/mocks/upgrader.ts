@@ -1,10 +1,10 @@
 import { expect } from 'aegir/utils/chai.js'
 import { mockConnection } from './connection.js'
 import type { Upgrader, MultiaddrConnection } from '@libp2p/interfaces/transport'
-import type { Muxer } from '@libp2p/interfaces/stream-muxer'
+import type { Registrar } from '@libp2p/interfaces/registrar'
 
 export interface MockUpgraderOptions {
-  muxer?: Muxer
+  registrar?: Registrar
 }
 
 export function mockUpgrader (options: MockUpgraderOptions = {}) {
@@ -20,14 +20,14 @@ export function mockUpgrader (options: MockUpgraderOptions = {}) {
       ensureProps(multiaddrConnection)
       return mockConnection(multiaddrConnection, {
         direction: 'outbound',
-        muxer: options.muxer
+        registrar: options.registrar
       })
     },
     async upgradeInbound (multiaddrConnection) {
       ensureProps(multiaddrConnection)
       return mockConnection(multiaddrConnection, {
         direction: 'inbound',
-        muxer: options.muxer
+        registrar: options.registrar
       })
     }
   }

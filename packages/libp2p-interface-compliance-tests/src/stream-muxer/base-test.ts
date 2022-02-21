@@ -27,10 +27,10 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       const onStreamEndPromise: DeferredPromise<Stream> = defer()
 
       const listener = await common.setup({
-        onStream: stream => {
+        onIncomingStream: (stream) => {
           onStreamPromise.resolve(stream)
         },
-        onStreamEnd: stream => {
+        onStreamEnd: (stream) => {
           onStreamEndPromise.resolve(stream)
         }
       })
@@ -74,7 +74,7 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       const p = duplexPair<Uint8Array>()
       const onStreamPromise: DeferredPromise<Stream> = defer()
       const dialer = await common.setup({
-        onStream: stream => {
+        onIncomingStream: (stream: Stream) => {
           onStreamPromise.resolve(stream)
         }
       })
@@ -103,12 +103,13 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       const onDialerStreamPromise: DeferredPromise<Stream> = defer()
       const onListenerStreamPromise: DeferredPromise<Stream> = defer()
       const dialer = await common.setup({
-        onStream: stream => {
+        onIncomingStream: (stream) => {
           onDialerStreamPromise.resolve(stream)
         }
       })
+
       const listener = await common.setup({
-        onStream: stream => {
+        onIncomingStream: (stream) => {
           onListenerStreamPromise.resolve(stream)
         }
       })
@@ -116,20 +117,20 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const listenerConn = listener.newStream()
-      const dialerConn = dialer.newStream()
+      const dialerInitiatorStream = dialer.newStream()
+      const listenerInitiatorStream = listener.newStream()
 
-      void drainAndClose(dialerConn)
-      void drainAndClose(listenerConn)
+      await Promise.all([
+        drainAndClose(dialerInitiatorStream),
+        drainAndClose(listenerInitiatorStream),
+        onDialerStreamPromise.promise.then(async stream => await drainAndClose(stream)),
+        onListenerStreamPromise.promise.then(async stream => await drainAndClose(stream))
+      ])
 
-      const dialerStream = await onDialerStreamPromise.promise
-      const listenerStream = await onListenerStreamPromise.promise
-
-      await drainAndClose(dialerStream)
-      await drainAndClose(listenerStream)
-
-      await drainAndClose(dialer)
-      await drainAndClose(listener)
+      await Promise.all([
+        drainAndClose(dialer),
+        drainAndClose(listener)
+      ])
     })
 
     it('Open a stream on one side, write, open a stream on the other side', async () => {
@@ -138,12 +139,12 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       const onDialerStreamPromise: DeferredPromise<Stream> = defer()
       const onListenerStreamPromise: DeferredPromise<Stream> = defer()
       const dialer = await common.setup({
-        onStream: stream => {
+        onIncomingStream: (stream) => {
           onDialerStreamPromise.resolve(stream)
         }
       })
       const listener = await common.setup({
-        onStream: stream => {
+        onIncomingStream: (stream) => {
           onListenerStreamPromise.resolve(stream)
         }
       })
@@ -157,13 +158,23 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
       void pipe([uint8ArrayFromString('hey')], dialerConn)
       void pipe([uint8ArrayFromString('hello')], listenerConn)
 
-      const listenerStream = await onListenerStreamPromise.promise
-      const dialerStream = await onDialerStreamPromise.promise
+      const [
+        dialerStream,
+        listenerStream
+      ] = await Promise.all([
+        onDialerStreamPromise.promise,
+        onListenerStreamPromise.promise
+      ])
 
-      const listenerChunks = await pipe(listenerStream, toString, async (source) => await all(source))
+      const [
+        listenerChunks,
+        dialerChunks
+      ] = await Promise.all([
+        pipe(listenerStream, toString, async (source) => await all(source)),
+        pipe(dialerStream, toString, async (source) => await all(source))
+      ])
+
       expect(listenerChunks).to.be.eql(['hey'])
-
-      const dialerChunks = await pipe(dialerStream, toString, async (source) => await all(source))
       expect(dialerChunks).to.be.eql(['hello'])
     })
   })
