@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.10](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.9...@libp2p/interfaces-v1.3.10) (2022-02-21)
+
+
+### Bug Fixes
+
+* update muxer to pass transport tests ([#174](https://github.com/libp2p/js-libp2p-interfaces/issues/174)) ([466ed53](https://github.com/libp2p/js-libp2p-interfaces/commit/466ed53192aa196ac2dbdb83df3c8db9cd5b1e07))
+
 ## [@libp2p/interfaces-v1.3.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.8...@libp2p/interfaces-v1.3.9) (2022-02-18)
 
 
