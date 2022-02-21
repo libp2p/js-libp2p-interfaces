@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.11](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.10...@libp2p/interfaces-v1.3.11) (2022-02-21)
+
+
+### Bug Fixes
+
+* remove unused dht query option ([#176](https://github.com/libp2p/js-libp2p-interfaces/issues/176)) ([e0ce46d](https://github.com/libp2p/js-libp2p-interfaces/commit/e0ce46d371a92a7063f02e7a1729a39def80e15e))
+
 ## [@libp2p/interfaces-v1.3.10](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.9...@libp2p/interfaces-v1.3.10) (2022-02-21)
 
 
