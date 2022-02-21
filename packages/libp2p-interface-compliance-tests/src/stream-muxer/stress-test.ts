@@ -18,7 +18,8 @@ export default (common: TestSetup<Muxer, MuxerOptions>) => {
     it('1000 streams with 1 msg', async () => await spawn(createMuxer, 1000, 1))
     it('1000 streams with 10 msg', async () => await spawn(createMuxer, 1000, 10))
     it('1000 streams with 100 msg', async function () {
-      return await spawn(createMuxer, 1000, 100)
+      this.timeout(120000)
+      await spawn(createMuxer, 1000, 100)
     })
   })
 }
