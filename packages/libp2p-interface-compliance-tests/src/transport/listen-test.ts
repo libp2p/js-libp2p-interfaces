@@ -13,14 +13,23 @@ import type { Transport } from '@libp2p/interfaces/transport'
 import type { TransportTestFixtures, SetupArgs } from './index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Connection } from '@libp2p/interfaces/connection'
+import type { Registrar } from '@libp2p/interfaces/src/registrar'
+import { mockRegistrar } from '../mocks/registrar.js'
+import drain from 'it-drain'
 
 export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
   describe('listen', () => {
-    const upgrader = mockUpgrader()
+    let upgrader = mockUpgrader()
     let addrs: Multiaddr[]
     let transport: Transport
+    let registrar: Registrar
 
     before(async () => {
+      registrar = mockRegistrar()
+      upgrader = mockUpgrader({
+        registrar
+      });
+
       ({ transport, addrs } = await common.setup({ upgrader }))
     })
 
@@ -42,6 +51,11 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
       const listenerConns: Connection[] = []
 
+      const protocol = '/test/protocol'
+      void registrar.handle(protocol, (evt) => {
+        void drain(evt.detail.stream.source)
+      })
+
       const listener = transport.createListener({
         handler: (conn) => {
           listenerConns.push(conn)
@@ -60,7 +74,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       // Give the listener a chance to finish its upgrade
       await pWaitFor(() => listenerConns.length === 2)
 
-      const { stream: stream1 } = await conn1.newStream(['/test/protocol'])
+      const { stream: stream1 } = await conn1.newStream([protocol])
 
       // Wait for the data send and close to finish
       await Promise.all([

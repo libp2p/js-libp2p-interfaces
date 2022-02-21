@@ -13,16 +13,13 @@ export default async (createMuxer: (options?: MuxerOptions) => Promise<Muxer>, n
   const msg = uint8ArrayFromString('simple msg')
 
   const listener = await createMuxer({
-    onStream: async (stream) => {
-      await pipe(
+    onIncomingStream: (stream) => {
+      void pipe(
         stream,
         drain
-      )
-
-      void pipe([], stream)
+      ).then(async () => await pipe([], stream))
     }
   })
-
   const dialer = await createMuxer()
 
   void pipe(listenerSocket, listener, listenerSocket)

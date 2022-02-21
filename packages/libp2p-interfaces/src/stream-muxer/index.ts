@@ -1,5 +1,6 @@
 import type { Duplex } from 'it-stream-types'
 import type { Stream } from '../connection/index.js'
+import type { AbortOptions } from '../index.js'
 
 export interface MuxerFactory {
   new (options: MuxerOptions): Muxer
@@ -18,15 +19,7 @@ export interface Muxer extends Duplex<Uint8Array> {
   newStream: (name?: string) => Stream
 }
 
-export interface MuxerOptions {
-  /**
-   * A function called when receiving a new stream from the remote.
-   */
-  onStream?: (stream: Stream) => void
-
-  /**
-   * A function called when a stream ends.
-   */
+export interface MuxerOptions extends AbortOptions {
+  onIncomingStream?: (stream: Stream) => void
   onStreamEnd?: (stream: Stream) => void
-  maxMsgSize?: number
 }
