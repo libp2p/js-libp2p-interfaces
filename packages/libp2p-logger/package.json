@@ -134,6 +134,7 @@
   "dependencies": {
     "@libp2p/interfaces": "^1.0.0",
     "debug": "^4.3.3",
+    "interface-datastore": "^6.1.0",
     "multiformats": "^9.6.3"
   },
   "devDependencies": {

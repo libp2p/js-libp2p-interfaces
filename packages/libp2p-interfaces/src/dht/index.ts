@@ -40,7 +40,6 @@ export interface DHTRecord {
 
 export interface QueryOptions extends AbortOptions {
   queryFuncTimeout?: number
-  minPeers?: number
 }
 
 /**
