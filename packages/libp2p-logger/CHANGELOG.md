@@ -1,3 +1,10 @@
+## [@libp2p/logger-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/logger-v1.0.4...@libp2p/logger-v1.1.0) (2022-02-26)
+
+
+### Features
+
+* add trace option to logger ([#177](https://github.com/libp2p/js-libp2p-interfaces/issues/177)) ([19774eb](https://github.com/libp2p/js-libp2p-interfaces/commit/19774ebe05cc4ff8c8200dfdde046016abf5d19e))
+
 ## [@libp2p/logger-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/logger-v1.0.3...@libp2p/logger-v1.0.4) (2022-02-21)
 
 
