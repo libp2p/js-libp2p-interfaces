@@ -23,24 +23,24 @@ const LIBP2P_KEY_CODE = 0x72
 const MARSHALLED_ED225519_PUBLIC_KEY_LENGTH = 36
 const MARSHALLED_SECP258K1_PUBLIC_KEY_LENGTH = 37
 
-interface PeerIdOptions {
+interface PeerIdInit {
   type: 'RSA' | 'Ed25519' | 'secp256k1'
   multihash: MultihashDigest
   privateKey?: Uint8Array
 }
 
-interface RSAPeerIdOptions {
+interface RSAPeerIdInit {
   multihash: MultihashDigest
   privateKey?: Uint8Array
   publicKey?: Uint8Array
 }
 
-interface Ed25519PeerIdOptions {
+interface Ed25519PeerIdInit {
   multihash: MultihashDigest
   privateKey?: Uint8Array
 }
 
-interface Secp256k1PeerIdOptions {
+interface Secp256k1PeerIdInit {
   multihash: MultihashDigest
   privateKey?: Uint8Array
 }
@@ -52,10 +52,10 @@ class PeerIdImpl {
   public readonly publicKey?: Uint8Array
   private readonly strings: Map<string, string>
 
-  constructor (opts: PeerIdOptions) {
-    this.type = opts.type
-    this.multihash = opts.multihash
-    this.privateKey = opts.privateKey
+  constructor (init: PeerIdInit) {
+    this.type = init.type
+    this.multihash = init.multihash
+    this.privateKey = init.privateKey
 
     // mark toString cache as non-enumerable
     this.strings = new Map()
@@ -118,10 +118,10 @@ class RSAPeerIdImpl extends PeerIdImpl implements RSAPeerId {
   public readonly type = 'RSA'
   public readonly publicKey?: Uint8Array
 
-  constructor (opts: RSAPeerIdOptions) {
-    super({ ...opts, type: 'RSA' })
+  constructor (init: RSAPeerIdInit) {
+    super({ ...init, type: 'RSA' })
 
-    this.publicKey = opts.publicKey
+    this.publicKey = init.publicKey
   }
 }
 
@@ -129,10 +129,10 @@ class Ed25519PeerIdImpl extends PeerIdImpl implements Ed25519PeerId {
   public readonly type = 'Ed25519'
   public readonly publicKey: Uint8Array
 
-  constructor (opts: Ed25519PeerIdOptions) {
-    super({ ...opts, type: 'Ed25519' })
+  constructor (init: Ed25519PeerIdInit) {
+    super({ ...init, type: 'Ed25519' })
 
-    this.publicKey = opts.multihash.digest
+    this.publicKey = init.multihash.digest
   }
 }
 
@@ -140,15 +140,15 @@ class Secp256k1PeerIdImpl extends PeerIdImpl implements Secp256k1PeerId {
   public readonly type = 'secp256k1'
   public readonly publicKey: Uint8Array
 
-  constructor (opts: Secp256k1PeerIdOptions) {
-    super({ ...opts, type: 'secp256k1' })
+  constructor (init: Secp256k1PeerIdInit) {
+    super({ ...init, type: 'secp256k1' })
 
-    this.publicKey = opts.multihash.digest
+    this.publicKey = init.multihash.digest
   }
 }
 
-export function createPeerId (opts: PeerIdOptions) {
-  return new PeerIdImpl(opts)
+export function createPeerId (init: PeerIdInit) {
+  return new PeerIdImpl(init)
 }
 
 export function peerIdFromPeerId (other: any): PeerId {

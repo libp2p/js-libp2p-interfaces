@@ -9,7 +9,7 @@ export interface onDisconnectHandler {
   (peerId: PeerId, conn?: Connection): void
 }
 
-export interface TopologyOptions {
+export interface TopologyInit {
   /**
    * minimum needed connections
    */
@@ -30,4 +30,10 @@ export interface Topology {
 
   onConnect: (peerId: PeerId, conn: Connection) => void
   onDisconnect: (peerId: PeerId) => void
+}
+
+export const symbol = Symbol.for('@libp2p/topology')
+
+export function isTopology (other: any): other is Topology {
+  return symbol in other
 }

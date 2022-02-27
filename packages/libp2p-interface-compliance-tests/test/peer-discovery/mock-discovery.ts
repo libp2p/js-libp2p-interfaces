@@ -3,7 +3,7 @@ import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
 import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interfaces/peer-discovery'
 
-interface MockDiscoveryOptions {
+interface MockDiscoveryInit {
   discoveryDelay?: number
 }
 
@@ -11,14 +11,14 @@ interface MockDiscoveryOptions {
  * Emits 'peer' events on discovery.
  */
 export class MockDiscovery extends EventEmitter<PeerDiscoveryEvents> implements PeerDiscovery {
-  public readonly options: MockDiscoveryOptions
+  public readonly options: MockDiscoveryInit
   private _isRunning: boolean
   private _timer: any
 
-  constructor (options = {}) {
+  constructor (init = {}) {
     super()
 
-    this.options = options
+    this.options = init
     this._isRunning = false
   }
 

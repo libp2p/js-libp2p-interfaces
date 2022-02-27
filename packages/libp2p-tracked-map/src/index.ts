@@ -1,6 +1,6 @@
 import type { ComponentMetricsTracker } from '@libp2p/interfaces/metrics'
 
-export interface TrackedMapOptions {
+export interface TrackedMapInit {
   metrics: ComponentMetricsTracker
   system?: string
   component: string
@@ -13,10 +13,10 @@ class TrackedMap<K, V> extends Map<K, V> {
   private readonly metric: string
   private readonly metrics: ComponentMetricsTracker
 
-  constructor (options: TrackedMapOptions) {
+  constructor (init: TrackedMapInit) {
     super()
 
-    const { system, component, metric, metrics } = options
+    const { system, component, metric, metrics } = init
     this.system = system ?? 'libp2p'
     this.component = component
     this.metric = metric

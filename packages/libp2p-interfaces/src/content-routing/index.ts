@@ -2,8 +2,8 @@ import type { CID } from 'multiformats/cid'
 import type { AbortOptions } from '../index'
 import type { PeerData } from '../peer-data'
 
-export interface ContentRoutingFactory {
-  new (options?: any): ContentRouting
+export interface ContentRoutingFactory<ContentRoutingInit> {
+  new (init?: ContentRoutingInit): ContentRouting
 }
 
 export interface ContentRouting {

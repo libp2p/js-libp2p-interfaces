@@ -1,4 +1,4 @@
-import tests from '../../src/crypto/index.js'
+import tests from '../../src/connection-encrypter/index.js'
 import mockCrypto from './mock-crypto.js'
 
 describe('compliance tests', () => {

@@ -52,9 +52,9 @@
       "import": "./dist/src/connection/index.js",
       "types": "./dist/src/connection/index.d.ts"
     },
-    "./crypto": {
-      "import": "./dist/src/crypto/index.js",
-      "types": "./dist/src/crypto/index.d.ts"
+    "./connection-encrypter": {
+      "import": "./dist/src/connection-encrypter/index.js",
+      "types": "./dist/src/connection-encrypter/index.d.ts"
     },
     "./mocks": {
       "import": "./dist/src/mocks/index.js",
@@ -199,12 +199,12 @@
   },
   "dependencies": {
     "@libp2p/crypto": "^0.22.7",
-    "@libp2p/interfaces": "^1.3.6",
-    "@libp2p/logger": "^1.0.3",
-    "@libp2p/multistream-select": "^1.0.0",
-    "@libp2p/peer-id": "^1.0.4",
-    "@libp2p/peer-id-factory": "^1.0.0",
-    "@libp2p/pubsub": "^1.1.0",
+    "@libp2p/interfaces": "^1.3.12",
+    "@libp2p/logger": "^1.1.0",
+    "@libp2p/multistream-select": "^1.0.1",
+    "@libp2p/peer-id": "^1.1.6",
+    "@libp2p/peer-id-factory": "^1.0.6",
+    "@libp2p/pubsub": "^1.2.8",
     "@multiformats/multiaddr": "^10.1.5",
     "abortable-iterator": "^4.0.2",
     "aegir": "^36.1.3",

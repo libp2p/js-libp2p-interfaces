@@ -3,7 +3,7 @@ import { EventEmitter, CustomEvent, EventHandler } from '@libp2p/interfaces'
 import errcode from 'err-code'
 import { pipe } from 'it-pipe'
 import Queue from 'p-queue'
-import { Topology } from '@libp2p/topology'
+import { createTopology } from '@libp2p/topology'
 import { codes } from './errors.js'
 import { PeerStreams as PeerStreamsImpl } from './peer-streams.js'
 import { toMessage, ensureArray, randomSeqno, noSignMsgId, msgId, toRpcMessage } from './utils.js'
@@ -125,7 +125,7 @@ export abstract class PubsubBaseProtocol<EventMap extends PubSubEvents = PubSubE
 
     // register protocol with topology
     // Topology callbacks called on connection manager changes
-    const topology = new Topology({
+    const topology = createTopology({
       onConnect: this._onPeerConnected,
       onDisconnect: this._onPeerDisconnected
     })

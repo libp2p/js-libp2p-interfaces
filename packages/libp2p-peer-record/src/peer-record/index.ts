@@ -8,7 +8,7 @@ import {
   ENVELOPE_PAYLOAD_TYPE_PEER_RECORD
 } from './consts.js'
 
-export interface PeerRecordOptions {
+export interface PeerRecordInit {
   peerId: PeerId
 
   /**
@@ -49,8 +49,8 @@ export class PeerRecord {
   public codec = PeerRecord.CODEC
   private marshaled?: Uint8Array
 
-  constructor (options: PeerRecordOptions) {
-    const { peerId, multiaddrs, seqNumber } = options
+  constructor (init: PeerRecordInit) {
+    const { peerId, multiaddrs, seqNumber } = init
 
     this.peerId = peerId
     this.multiaddrs = multiaddrs ?? []

@@ -2,9 +2,9 @@ import { peerIdFromBytes } from '@libp2p/peer-id'
 import { handshake } from 'it-handshake'
 import { duplexPair } from 'it-pair/duplex'
 import { pipe } from 'it-pipe'
-import { UnexpectedPeerError } from '@libp2p/interfaces/crypto/errors'
+import { UnexpectedPeerError } from '@libp2p/interfaces/connection-encrypter/errors'
 import { Multiaddr } from '@multiformats/multiaddr'
-import type { Crypto } from '@libp2p/interfaces/crypto'
+import type { Encrypter } from '@libp2p/interfaces/connection-encrypter'
 import type { Transform, Source } from 'it-stream-types'
 
 // A basic transform that does nothing to the data
@@ -16,7 +16,7 @@ const transform = (): Transform<Uint8Array, Uint8Array> => {
   })()
 }
 
-const crypto: Crypto = {
+const crypto: Encrypter = {
   protocol: 'insecure',
   secureInbound: async (localPeer, duplex, expectedPeer) => {
     // 1. Perform a basic handshake.

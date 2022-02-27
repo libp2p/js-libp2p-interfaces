@@ -7,7 +7,7 @@ import drain from 'it-drain'
 import { expect } from 'aegir/utils/chai.js'
 import delay from 'delay'
 import type { TestSetup } from '../index.js'
-import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
+import type { Muxer, MuxerInit } from '@libp2p/interfaces/stream-muxer'
 
 function randomBuffer () {
   return uint8ArrayFromString(Math.random().toString())
@@ -22,7 +22,7 @@ const infiniteRandom = {
   }
 }
 
-export default (common: TestSetup<Muxer, MuxerOptions>) => {
+export default (common: TestSetup<Muxer, MuxerInit>) => {
   describe('close', () => {
     it('closing underlying socket closes streams', async () => {
       let openedStreams = 0

@@ -39,8 +39,8 @@ const YourTransport = require('../src')
 
 describe('compliance', () => {
   tests({
-    setup (options) {
-      let transport = new YourTransport(options)
+    setup (init) {
+      let transport = new YourTransport(init)
 
       const addrs = [
         multiaddr('valid-multiaddr-for-your-transport'),

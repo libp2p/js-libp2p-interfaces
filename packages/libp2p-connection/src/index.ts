@@ -6,7 +6,7 @@ import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
 
-interface ConnectionOptions {
+interface ConnectionInit {
   localAddr: Multiaddr
   remoteAddr: Multiaddr
   localPeer: PeerId
@@ -74,8 +74,8 @@ export class Connection {
    * An implementation of the js-libp2p connection.
    * Any libp2p transport should use an upgrader to return this connection.
    */
-  constructor (options: ConnectionOptions) {
-    const { localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat } = options
+  constructor (init: ConnectionInit) {
+    const { localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat } = init
 
     this.id = `${(parseInt(String(Math.random() * 1e9))).toString(36)}${Date.now()}`
     this.localAddr = localAddr

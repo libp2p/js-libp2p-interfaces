@@ -38,33 +38,18 @@ TBA
 ###  Topology
 
 ```js
-const Topology = require('libp2p-interfaces/src/topology')
+import { createTopology } from '@libp2p/topology'
 
-const toplogy = new Topology({
-  min: 0,
-  max: 50
-})
-```
-
-### Multicodec Topology
-
-```js
-const MulticodecTopology = require('libp2p-interfaces/src/topology/multicodec-topology')
-
-const toplogy = new MulticodecTopology({
+const toplogy = createTopology({
   min: 0,
   max: 50,
   multicodecs: ['/echo/1.0.0'],
-  handlers: {
-    onConnect: (peerId, conn) => {},
-    onDisconnect: (peerId) => {}
-  }
+  onConnect: (peerId, conn) => {},
+  onDisconnect: (peerId) => {}
 })
 ```
 
 ## API
-
-The `MulticodecTopology` extends the `Topology`, which makes the `Topology` API a subset of the `MulticodecTopology` API.
 
 ###  Topology
 
@@ -75,13 +60,13 @@ The `MulticodecTopology` extends the `Topology`, which makes the `Topology` API 
 #### Constructor
 
 ```js
-const toplogy = new Topology({
+import { createTopology } from '@libp2p/topology'
+
+const toplogy = createTopology({
   min: 0,
   max: 50,
-  handlers: {
-    onConnect: (peerId, conn) => {},
-    onDisconnect: (peerId) => {}
-  }
+  onConnect: (peerId, conn) => {},
+  onDisconnect: (peerId) => {}
 })
 ```
 

@@ -1,13 +1,14 @@
-import type { PeerId } from '../peer-id'
-import type { PeerData } from '../peer-data'
+import type { PeerId } from '../peer-id/index.js'
+import type { PeerData } from '../peer-data/index.js'
+import type { AbortOptions } from '../index.js'
 
-export interface PeerRoutingFactory {
-  new (options?: any): PeerRouting
+export interface PeerRoutingFactory<PeerRoutingInit> {
+  new (init?: PeerRoutingInit): PeerRouting
 }
 
 export interface PeerRouting {
-  findPeer: (peerId: PeerId, options?: Object) => Promise<PeerData>
-  getClosestPeers: (key: Uint8Array, options?: Object) => AsyncIterable<PeerData>
+  findPeer: (peerId: PeerId, options?: AbortOptions) => Promise<PeerData>
+  getClosestPeers: (key: Uint8Array, options?: AbortOptions) => AsyncIterable<PeerData>
 }
 
 export default PeerRouting

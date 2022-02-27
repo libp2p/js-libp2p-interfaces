@@ -52,6 +52,14 @@
       "import": "./dist/src/connection/index.js",
       "types": "./dist/src/connection/index.d.ts"
     },
+    "./connection-encrypter": {
+      "import": "./dist/src/connection-encrypter/index.js",
+      "types": "./dist/src/connection-encrypter/index.d.ts"
+    },
+    "./connection-encrypter/errors": {
+      "import": "./dist/src/connection-encrypter/errors.js",
+      "types": "./dist/src/connection-encrypter/errors.d.ts"
+    },
     "./connection/status": {
       "import": "./dist/src/connection/status.js",
       "types": "./dist/src/connection/status.d.ts"
@@ -59,14 +67,6 @@
     "./content-routing": {
       "import": "./dist/src/content-routing/index.js",
       "types": "./dist/src/content-routing/index.d.ts"
-    },
-    "./crypto": {
-      "import": "./dist/src/crypto/index.js",
-      "types": "./dist/src/crypto/index.d.ts"
-    },
-    "./crypto/errors": {
-      "import": "./dist/src/crypto/errors.js",
-      "types": "./dist/src/crypto/errors.d.ts"
     },
     "./dht": {
       "import": "./dist/src/dht/index.js",
