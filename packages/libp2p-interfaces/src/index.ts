@@ -15,6 +15,8 @@ export interface Startable {
 export interface Dialer {
   dial: (peer: PeerId, options?: { signal?: AbortSignal }) => Promise<Connection>
   dialProtocol: (peer: PeerId, protocol: string, options?: { signal?: AbortSignal }) => Promise<ProtocolStream>
+  getTokens: (count: number) => number[]
+  releaseToken: (token: number) => void
 }
 
 export interface Addressable {

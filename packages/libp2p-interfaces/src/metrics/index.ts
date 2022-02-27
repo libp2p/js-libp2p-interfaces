@@ -111,7 +111,7 @@ export interface ComponentMetricsTracker {
   /**
    * Returns tracked metrics key by system, component, metric, value
    */
-  getComponentMetrics: () => Map<string, Map<string, Map<string, string>>>
+  getComponentMetrics: () => Map<string, Map<string, Map<string, number>>>
 
   /**
    * Update the stored metric value for the given system and component

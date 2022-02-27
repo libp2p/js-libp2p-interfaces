@@ -12,6 +12,9 @@
   "references": [
     {
       "path": "../libp2p-interfaces"
+    },
+    {
+      "path": "../libp2p-logger"
     }
   ]
 }
