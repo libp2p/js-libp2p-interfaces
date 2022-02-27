@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.14](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.13...@libp2p/interface-compliance-tests-v1.1.14) (2022-02-27)
+
+
+### Bug Fixes
+
+* update package config and add connection gater interface ([#178](https://github.com/libp2p/js-libp2p-interfaces/issues/178)) ([c6079a6](https://github.com/libp2p/js-libp2p-interfaces/commit/c6079a6367f004788062df3e30ad2e26330d947b))
+
 ## [@libp2p/interface-compliance-tests-v1.1.13](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.12...@libp2p/interface-compliance-tests-v1.1.13) (2022-02-21)
 
 
