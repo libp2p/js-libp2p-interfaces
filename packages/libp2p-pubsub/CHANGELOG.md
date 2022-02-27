@@ -1,3 +1,10 @@
+## [@libp2p/pubsub-v1.2.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.8...@libp2p/pubsub-v1.2.9) (2022-02-27)
+
+
+### Bug Fixes
+
+* rename crypto to connection-encrypter ([#179](https://github.com/libp2p/js-libp2p-interfaces/issues/179)) ([d197f55](https://github.com/libp2p/js-libp2p-interfaces/commit/d197f554d7cdadb3b05ed2d6c69fda2c4362b1eb))
+
 ## [@libp2p/pubsub-v1.2.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.7...@libp2p/pubsub-v1.2.8) (2022-02-27)
 
 
