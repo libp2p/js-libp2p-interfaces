@@ -2,8 +2,8 @@ import type { Duplex } from 'it-stream-types'
 import type { Stream } from '../connection/index.js'
 import type { AbortOptions } from '../index.js'
 
-export interface MuxerFactory {
-  new (options: MuxerOptions): Muxer
+export interface MuxerFactory<T extends MuxerInit> {
+  new (init?: T): Muxer
   multicodec: string
 }
 
@@ -19,7 +19,7 @@ export interface Muxer extends Duplex<Uint8Array> {
   newStream: (name?: string) => Stream
 }
 
-export interface MuxerOptions extends AbortOptions {
+export interface MuxerInit extends AbortOptions {
   onIncomingStream?: (stream: Stream) => void
   onStreamEnd?: (stream: Stream) => void
 }

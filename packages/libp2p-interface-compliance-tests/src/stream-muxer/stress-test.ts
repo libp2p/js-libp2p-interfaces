@@ -1,9 +1,9 @@
 import spawn from './spawner.js'
 import type { TestSetup } from '../index.js'
-import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
+import type { Muxer, MuxerInit } from '@libp2p/interfaces/stream-muxer'
 
-export default (common: TestSetup<Muxer, MuxerOptions>) => {
-  const createMuxer = async (opts?: MuxerOptions) => await common.setup(opts)
+export default (common: TestSetup<Muxer, MuxerInit>) => {
+  const createMuxer = async (init?: MuxerInit) => await common.setup(init)
 
   describe('stress test', () => {
     it('1 stream with 1 msg', async () => await spawn(createMuxer, 1, 1))

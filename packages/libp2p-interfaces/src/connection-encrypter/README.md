@@ -1,4 +1,4 @@
-interface-crypto
+interface-connection-encrypter
 ==================
 
 > A test suite you can use to implement a libp2p crypto module. A libp2p crypto module is used to ensure all exchanged data between two peers is encrypted.
@@ -9,7 +9,7 @@ interface-crypto
 - [js-libp2p-secio](https://github.com/NodeFactoryIo/js-libp2p-secio)
 
 ## Table of Contents
-- [interface-crypto](#interface-crypto)
+- [interface-connection-encrypter](#interface-connection-encrypter)
   - [Table of Contents](#table-of-contents)
   - [Using the Test Suite](#using-the-test-suite)
   - [API](#api)
@@ -23,8 +23,8 @@ interface-crypto
 You can also check out the [internal test suite](../../test/crypto/compliance.spec.js) to see the setup in action.
 
 ```js
-const tests = require('libp2p-interfaces-compliance-tests/crypto')
-const yourCrypto = require('./your-crypto')
+const tests = require('libp2p-interfaces-compliance-tests/connection-encrypter')
+const yourCrypto = require('./your-encrypter')
 
 tests({
   setup () {

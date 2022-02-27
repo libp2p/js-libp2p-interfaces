@@ -4,16 +4,16 @@ import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import all from 'it-all'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import peers from '../utils/peers.js'
-import { UnexpectedPeerError } from '@libp2p/interfaces/crypto/errors'
+import { UnexpectedPeerError } from '@libp2p/interfaces/connection-encrypter/errors'
 import { createMaConnPair } from './utils/index.js'
 import type { TestSetup } from '../index.js'
-import type { Crypto } from '@libp2p/interfaces/crypto'
+import type { Encrypter } from '@libp2p/interfaces/connection-encrypter'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Source } from 'it-stream-types'
 
-export default (common: TestSetup<Crypto>) => {
-  describe('interface-crypto compliance tests', () => {
-    let crypto: Crypto
+export default (common: TestSetup<Encrypter>) => {
+  describe('interface-connection-encrypter compliance tests', () => {
+    let crypto: Encrypter
     let localPeer: PeerId
     let remotePeer: PeerId
     let mitmPeer: PeerId

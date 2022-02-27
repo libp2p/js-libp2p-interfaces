@@ -5,9 +5,9 @@ import pLimit from 'p-limit'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import drain from 'it-drain'
 import all from 'it-all'
-import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
+import type { Muxer, MuxerInit } from '@libp2p/interfaces/stream-muxer'
 
-export default async (createMuxer: (options?: MuxerOptions) => Promise<Muxer>, nStreams: number, nMsg: number, limit?: number) => {
+export default async (createMuxer: (init?: MuxerInit) => Promise<Muxer>, nStreams: number, nMsg: number, limit?: number) => {
   const [dialerSocket, listenerSocket] = duplexPair<Uint8Array>()
 
   const msg = uint8ArrayFromString('simple msg')

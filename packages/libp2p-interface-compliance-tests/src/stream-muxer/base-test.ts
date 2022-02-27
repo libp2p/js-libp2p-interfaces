@@ -11,14 +11,14 @@ import { isValidTick } from '../utils/is-valid-tick.js'
 import type { DeferredPromise } from 'p-defer'
 import type { TestSetup } from '../index.js'
 import type { Stream } from '@libp2p/interfaces/connection'
-import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
+import type { Muxer, MuxerInit } from '@libp2p/interfaces/stream-muxer'
 import type { Source, Duplex } from 'it-stream-types'
 
 async function drainAndClose (stream: Duplex<Uint8Array>) {
   return await pipe([], stream, drain)
 }
 
-export default (common: TestSetup<Muxer, MuxerOptions>) => {
+export default (common: TestSetup<Muxer, MuxerInit>) => {
   describe('base', () => {
     it('Open a stream from the dialer', async () => {
       const p = duplexPair<Uint8Array>()

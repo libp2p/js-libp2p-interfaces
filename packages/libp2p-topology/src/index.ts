@@ -1,11 +1,11 @@
+import { symbol } from '@libp2p/interfaces/topology'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { TopologyOptions, onConnectHandler, onDisconnectHandler } from '@libp2p/interfaces/topology'
+import type { Topology, TopologyInit, onConnectHandler, onDisconnectHandler } from '@libp2p/interfaces/topology'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 
 const noop = () => {}
-const topologySymbol = Symbol.for('@libp2p/topology')
 
-export class Topology {
+class TopologyImpl implements Topology {
   public min: number
   public max: number
 
@@ -18,28 +18,21 @@ export class Topology {
 
   protected _registrar: Registrar | undefined
 
-  constructor (options: TopologyOptions) {
-    this.min = options.min ?? 0
-    this.max = options.max ?? Infinity
+  constructor (init: TopologyInit) {
+    this.min = init.min ?? 0
+    this.max = init.max ?? Infinity
     this.peers = new Set()
 
-    this.onConnect = options.onConnect ?? noop
-    this.onDisconnect = options.onDisconnect ?? noop
+    this.onConnect = init.onConnect ?? noop
+    this.onDisconnect = init.onDisconnect ?? noop
   }
 
   get [Symbol.toStringTag] () {
-    return topologySymbol.toString()
+    return symbol.toString()
   }
 
-  get [topologySymbol] () {
+  get [symbol] () {
     return true
-  }
-
-  /**
-   * Checks if the given value is a Topology instance
-   */
-  static isTopology (other: any): other is Topology {
-    return topologySymbol in other
   }
 
   /**
@@ -48,4 +41,8 @@ export class Topology {
   disconnect (peerId: PeerId) {
     this.onDisconnect(peerId)
   }
+}
+
+export function createTopology (init: TopologyInit): Topology {
+  return new TopologyImpl(init)
 }

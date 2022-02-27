@@ -10,7 +10,7 @@ import { peerIdFromKeys } from '@libp2p/peer-id'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Record, Envelope } from '@libp2p/interfaces/record'
 
-export interface EnvelopeOptions {
+export interface EnvelopeInit {
   peerId: PeerId
   payloadType: Uint8Array
   payload: Uint8Array
@@ -84,8 +84,8 @@ export class RecordEnvelope implements Envelope {
    * The Envelope is responsible for keeping an arbitrary signed record
    * by a libp2p peer.
    */
-  constructor (options: EnvelopeOptions) {
-    const { peerId, payloadType, payload, signature } = options
+  constructor (init: EnvelopeInit) {
+    const { peerId, payloadType, payload, signature } = init
 
     this.peerId = peerId
     this.payloadType = payloadType

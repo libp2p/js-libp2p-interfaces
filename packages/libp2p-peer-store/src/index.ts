@@ -21,7 +21,7 @@ export interface AddressSorter {
   (addresses: Address[]): Address[]
 }
 
-export interface PeerStoreOptions {
+export interface PeerStoreInit {
   peerId: PeerId
   datastore: Datastore
   addressFilter?: AddressFilter
@@ -39,10 +39,10 @@ export class PeerStoreImpl extends EventEmitter<PeerStoreEvents> implements Peer
   private readonly peerId: PeerId
   private readonly store: Store
 
-  constructor (options: PeerStoreOptions) {
+  constructor (init: PeerStoreInit) {
     super()
 
-    const { peerId, datastore, addressFilter } = options
+    const { peerId, datastore, addressFilter } = init
 
     this.peerId = peerId
     this.store = new PersistentStore(datastore)
@@ -122,6 +122,6 @@ export class PeerStoreImpl extends EventEmitter<PeerStoreEvents> implements Peer
   }
 }
 
-export function createPeerStore (opts: PeerStoreOptions): PeerStore {
-  return new PeerStoreImpl(opts)
+export function createPeerStore (init: PeerStoreInit): PeerStore {
+  return new PeerStoreImpl(init)
 }

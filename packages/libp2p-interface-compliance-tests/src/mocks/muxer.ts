@@ -7,7 +7,7 @@ import errCode from 'err-code'
 import { Logger, logger } from '@libp2p/logger'
 import * as ndjson from 'it-ndjson'
 import type { Stream } from '@libp2p/interfaces/connection'
-import type { Muxer, MuxerOptions } from '@libp2p/interfaces/stream-muxer'
+import type { Muxer, MuxerInit } from '@libp2p/interfaces/stream-muxer'
 import type { Source } from 'it-stream-types'
 import { pipe } from 'it-pipe'
 import map from 'it-map'
@@ -54,8 +54,8 @@ class MuxedStream {
   private readonly resetController: AbortController
   private readonly log: Logger
 
-  constructor (opts: { id: string, type: 'initiator' | 'recipient', push: Pushable<StreamMessage>, onEnd: (err?: Error) => void }) {
-    const { id, type, push, onEnd } = opts
+  constructor (init: { id: string, type: 'initiator' | 'recipient', push: Pushable<StreamMessage>, onEnd: (err?: Error) => void }) {
+    const { id, type, push, onEnd } = init
 
     this.log = logger(`libp2p:mock-muxer:stream:${id}:${type}`)
 
@@ -224,17 +224,17 @@ class MockMuxer implements Muxer {
 
   private readonly registryInitiatorStreams: Map<string, MuxedStream>
   private readonly registryRecipientStreams: Map<string, MuxedStream>
-  private readonly options: MuxerOptions
+  private readonly options: MuxerInit
 
   private readonly log: Logger
 
-  constructor (options?: MuxerOptions) {
+  constructor (init?: MuxerInit) {
     this.name = `muxer:${muxers++}`
     this.log = logger(`libp2p:mock-muxer:${this.name}`)
     this.registryInitiatorStreams = new Map()
     this.registryRecipientStreams = new Map()
     this.log('create muxer')
-    this.options = options ?? {}
+    this.options = init ?? {}
     // receives data from the muxer at the other end of the stream
     this.source = this.input = pushable<Uint8Array>({
       onEnd: (err) => {
@@ -349,8 +349,8 @@ class MockMuxer implements Muxer {
   }
 }
 
-export function mockMuxer (options?: MuxerOptions): Muxer {
-  const mockMuxer = new MockMuxer(options)
+export function mockMuxer (init?: MuxerInit): Muxer {
+  const mockMuxer = new MockMuxer(init)
 
   void Promise.resolve().then(async () => {
     void pipe(

@@ -11,7 +11,7 @@ import type { PeerStreamEvents } from '@libp2p/interfaces/pubsub'
 
 const log = logger('libp2p-pubsub:peer-streams')
 
-export interface Options {
+export interface PeerStreamsInit {
   id: PeerId
   protocol: string
 }
@@ -44,11 +44,11 @@ export class PeerStreams extends EventEmitter<PeerStreamEvents> {
   private readonly _inboundAbortController: AbortController
   private closed: boolean
 
-  constructor (opts: Options) {
+  constructor (init: PeerStreamsInit) {
     super()
 
-    this.id = opts.id
-    this.protocol = opts.protocol
+    this.id = init.id
+    this.protocol = init.protocol
 
     this._inboundAbortController = new AbortController()
     this.closed = false
