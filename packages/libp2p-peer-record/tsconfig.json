@@ -10,16 +10,21 @@
     "test"
   ],
   "exclude": [
-    // exclude generated files
     "src/envelope/envelope.js",
     "src/peer-record/peer-record.js"
   ],
   "references": [
     {
+      "path": "../libp2p-interface-compliance-tests"
+    },
+    {
       "path": "../libp2p-interfaces"
     },
     {
       "path": "../libp2p-logger"
+    },
+    {
+      "path": "../libp2p-peer-id"
     },
     {
       "path": "../libp2p-peer-id-factory"

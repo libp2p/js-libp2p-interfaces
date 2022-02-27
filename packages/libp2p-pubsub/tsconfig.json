@@ -10,15 +10,15 @@
     "test"
   ],
   "exclude": [
-    "src/message/rpc.js", // exclude generated file
-    "src/message/topic-descriptor.js" // exclude generated file
+    "src/message/rpc.js",
+    "src/message/topic-descriptor.js"
   ],
   "references": [
     {
       "path": "../libp2p-interfaces"
     },
     {
-      "path": "../libp2p-topology"
+      "path": "../libp2p-logger"
     },
     {
       "path": "../libp2p-peer-id"
@@ -28,9 +28,6 @@
     },
     {
       "path": "../libp2p-peer-map"
-    },
-    {
-      "path": "../libp2p-logger"
     },
     {
       "path": "../libp2p-topology"

@@ -11,6 +11,7 @@ export interface IncomingStreamData {
 
 export interface ConnectionManagerEvents {
   'peer:connect': CustomEvent<Connection>
+  'peer:disconnect': CustomEvent<Connection>
 }
 
 export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents> {

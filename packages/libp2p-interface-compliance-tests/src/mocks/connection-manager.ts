@@ -12,11 +12,11 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     throw new Error('Method not implemented.')
   }
 
-  addEventListener<U extends 'peer:connect'>(type: U, callback: ((evt: ConnectionManagerEvents[U]) => void) | { handleEvent: (evt: ConnectionManagerEvents[U]) => void } | null, options?: boolean | AddEventListenerOptions): void {
+  addEventListener<U extends keyof ConnectionManagerEvents>(type: U, callback: ((evt: ConnectionManagerEvents[U]) => void) | { handleEvent: (evt: ConnectionManagerEvents[U]) => void } | null, options?: boolean | AddEventListenerOptions): void {
     throw new Error('Method not implemented.')
   }
 
-  removeEventListener<U extends 'peer:connect'>(type: U, callback: (((evt: ConnectionManagerEvents[U]) => void) | { handleEvent: (evt: ConnectionManagerEvents[U]) => void } | null) | undefined, options?: boolean | EventListenerOptions): void {
+  removeEventListener<U extends keyof ConnectionManagerEvents>(type: U, callback: (((evt: ConnectionManagerEvents[U]) => void) | { handleEvent: (evt: ConnectionManagerEvents[U]) => void } | null) | undefined, options?: boolean | EventListenerOptions): void {
     throw new Error('Method not implemented.')
   }
 

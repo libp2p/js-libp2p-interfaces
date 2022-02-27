@@ -16,6 +16,10 @@ export interface Address {
   isCertified: boolean
 }
 
+export interface AddressSorter {
+  (ms: Address[]): Address[]
+}
+
 export interface Peer {
   /**
    * Peer's peer-id instance
@@ -123,7 +127,7 @@ export interface AddressBook {
    * Get the known multiaddrs for a given peer. All returned multiaddrs
    * will include the encapsulated `PeerId` of the peer.
    */
-  getMultiaddrsForPeer: (peerId: PeerId, addressSorter?: (ms: Address[]) => Address[]) => Promise<Multiaddr[]>
+  getMultiaddrsForPeer: (peerId: PeerId, addressSorter?: AddressSorter) => Promise<Multiaddr[]>
 }
 
 /**

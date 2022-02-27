@@ -14,16 +14,19 @@
       "path": "../libp2p-interfaces"
     },
     {
-      "path": "../libp2p-pubsub"
+      "path": "../libp2p-logger"
     },
     {
-      "path": "../libp2p-topology"
+      "path": "../libp2p-multistream-select"
     },
     {
       "path": "../libp2p-peer-id"
     },
     {
       "path": "../libp2p-peer-id-factory"
+    },
+    {
+      "path": "../libp2p-pubsub"
     }
   ]
 }
