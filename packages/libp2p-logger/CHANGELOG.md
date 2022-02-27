@@ -1,3 +1,10 @@
+## [@libp2p/logger-v1.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/logger-v1.1.0...@libp2p/logger-v1.1.1) (2022-02-27)
+
+
+### Bug Fixes
+
+* rename crypto to connection-encrypter ([#179](https://github.com/libp2p/js-libp2p-interfaces/issues/179)) ([d197f55](https://github.com/libp2p/js-libp2p-interfaces/commit/d197f554d7cdadb3b05ed2d6c69fda2c4362b1eb))
+
 ## [@libp2p/logger-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/logger-v1.0.4...@libp2p/logger-v1.1.0) (2022-02-26)
 
 
