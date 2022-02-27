@@ -1,3 +1,10 @@
+## [@libp2p/peer-id-v1.1.7](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-v1.1.6...@libp2p/peer-id-v1.1.7) (2022-02-27)
+
+
+### Bug Fixes
+
+* rename crypto to connection-encrypter ([#179](https://github.com/libp2p/js-libp2p-interfaces/issues/179)) ([d197f55](https://github.com/libp2p/js-libp2p-interfaces/commit/d197f554d7cdadb3b05ed2d6c69fda2c4362b1eb))
+
 ## [@libp2p/peer-id-v1.1.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-v1.1.5...@libp2p/peer-id-v1.1.6) (2022-02-27)
 
 
