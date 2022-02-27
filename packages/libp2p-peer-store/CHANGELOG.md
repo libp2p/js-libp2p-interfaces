@@ -1,3 +1,10 @@
+## [@libp2p/peer-store-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.3...@libp2p/peer-store-v1.0.4) (2022-02-27)
+
+
+### Bug Fixes
+
+* update package config and add connection gater interface ([#178](https://github.com/libp2p/js-libp2p-interfaces/issues/178)) ([c6079a6](https://github.com/libp2p/js-libp2p-interfaces/commit/c6079a6367f004788062df3e30ad2e26330d947b))
+
 ## [@libp2p/peer-store-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.2...@libp2p/peer-store-v1.0.3) (2022-02-12)
 
 
