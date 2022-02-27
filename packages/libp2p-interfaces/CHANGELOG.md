@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.13](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.12...@libp2p/interfaces-v1.3.13) (2022-02-27)
+
+
+### Bug Fixes
+
+* rename crypto to connection-encrypter ([#179](https://github.com/libp2p/js-libp2p-interfaces/issues/179)) ([d197f55](https://github.com/libp2p/js-libp2p-interfaces/commit/d197f554d7cdadb3b05ed2d6c69fda2c4362b1eb))
+
 ## [@libp2p/interfaces-v1.3.12](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.11...@libp2p/interfaces-v1.3.12) (2022-02-27)
 
 
