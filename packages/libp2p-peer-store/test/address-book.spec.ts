@@ -4,18 +4,17 @@
 import { expect } from 'aegir/utils/chai.js'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { arrayEquals } from '@libp2p/utils/array-equals'
-import { publicAddressesFirst } from '@libp2p/utils/address-sort'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import pDefer from 'p-defer'
 import { MemoryDatastore } from 'datastore-core/memory'
-import { createPeerStore } from '../src/index.js'
+import { PersistentPeerStore } from '../src/index.js'
 import { RecordEnvelope, PeerRecord } from '@libp2p/peer-record'
 import { mockConnectionGater } from '@libp2p/interface-compliance-tests/mocks'
 import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerStore, AddressBook } from '@libp2p/interfaces/peer-store'
-import { base58btc } from 'multiformats/bases/base58'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import { Components } from '@libp2p/interfaces/components'
 
 const addr1 = new Multiaddr('/ip4/127.0.0.1/tcp/8000')
 const addr2 = new Multiaddr('/ip4/20.0.0.1/tcp/8001')
@@ -34,9 +33,7 @@ describe('addressBook', () => {
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
-        peerId,
-        datastore: new MemoryDatastore(),
+      peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
         addressFilter: connectionGater.filterMultiaddrForPeer
       })
       ab = peerStore.addressBook
@@ -155,9 +152,7 @@ describe('addressBook', () => {
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
-        peerId,
-        datastore: new MemoryDatastore(),
+      peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
         addressFilter: connectionGater.filterMultiaddrForPeer
       })
       ab = peerStore.addressBook
@@ -313,9 +308,7 @@ describe('addressBook', () => {
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
-        peerId,
-        datastore: new MemoryDatastore(),
+      peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
         addressFilter: connectionGater.filterMultiaddrForPeer
       })
       ab = peerStore.addressBook
@@ -349,68 +342,12 @@ describe('addressBook', () => {
     })
   })
 
-  describe('addressBook.getMultiaddrsForPeer', () => {
-    let peerStore: PeerStore
-    let ab: AddressBook
-
-    beforeEach(() => {
-      peerStore = createPeerStore({
-        peerId,
-        datastore: new MemoryDatastore(),
-        addressFilter: connectionGater.filterMultiaddrForPeer
-      })
-      ab = peerStore.addressBook
-    })
-
-    it('throws invalid parameters error if invalid PeerId is provided', async () => {
-      try {
-        // @ts-expect-error invalid input
-        await ab.getMultiaddrsForPeer('invalid peerId')
-      } catch (err: any) {
-        expect(err.code).to.equal(codes.ERR_INVALID_PARAMETERS)
-        return
-      }
-      throw new Error('invalid peerId should throw error')
-    })
-
-    it('returns empty if no multiaddrs are known for the provided peer', async () => {
-      const addresses = await ab.getMultiaddrsForPeer(peerId)
-
-      expect(addresses).to.be.empty()
-    })
-
-    it('returns the multiaddrs stored', async () => {
-      const supportedMultiaddrs = [addr1, addr2]
-
-      await ab.set(peerId, supportedMultiaddrs)
-
-      const multiaddrs = await ab.getMultiaddrsForPeer(peerId)
-      multiaddrs.forEach((m) => {
-        expect(m.getPeerId()).to.equal(peerId.toString(base58btc))
-      })
-    })
-
-    it('can sort multiaddrs providing a sorter', async () => {
-      const supportedMultiaddrs = [addr1, addr2]
-      await ab.set(peerId, supportedMultiaddrs)
-
-      const multiaddrs = await ab.getMultiaddrsForPeer(peerId, publicAddressesFirst)
-      const sortedAddresses = publicAddressesFirst(supportedMultiaddrs.map((m) => ({ multiaddr: m, isCertified: false })))
-
-      multiaddrs.forEach((m, index) => {
-        expect(m.equals(sortedAddresses[index].multiaddr))
-      })
-    })
-  })
-
   describe('addressBook.delete', () => {
     let peerStore: PeerStore
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
-        peerId,
-        datastore: new MemoryDatastore(),
+      peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
         addressFilter: connectionGater.filterMultiaddrForPeer
       })
       ab = peerStore.addressBook
@@ -469,9 +406,7 @@ describe('addressBook', () => {
 
     describe('consumes a valid peer record and stores its data', () => {
       beforeEach(() => {
-        peerStore = createPeerStore({
-          peerId,
-          datastore: new MemoryDatastore(),
+        peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
           addressFilter: connectionGater.filterMultiaddrForPeer
         })
         ab = peerStore.addressBook
@@ -674,9 +609,7 @@ describe('addressBook', () => {
 
     describe('fails to consume invalid peer records', () => {
       beforeEach(() => {
-        peerStore = createPeerStore({
-          peerId,
-          datastore: new MemoryDatastore(),
+        peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
           addressFilter: connectionGater.filterMultiaddrForPeer
         })
         ab = peerStore.addressBook

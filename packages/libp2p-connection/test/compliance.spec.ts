@@ -1,5 +1,5 @@
 import tests from '@libp2p/interface-compliance-tests/connection'
-import { Connection } from '../src/index.js'
+import { createConnection } from '../src/index.js'
 import peers from '@libp2p/interface-compliance-tests/utils/peers'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { Multiaddr } from '@multiformats/multiaddr'
@@ -13,19 +13,13 @@ describe('compliance tests', () => {
      * certain values for testing.
      */
     async setup (properties) {
-      const localAddr = new Multiaddr('/ip4/127.0.0.1/tcp/8080')
       const remoteAddr = new Multiaddr('/ip4/127.0.0.1/tcp/8081')
-      const [localPeer, remotePeer] = await Promise.all([
-        PeerIdFactory.createFromJSON(peers[0]),
-        PeerIdFactory.createFromJSON(peers[1])
-      ])
+      const remotePeer = await PeerIdFactory.createFromJSON(peers[0])
       const openStreams: Stream[] = []
       let streamId = 0
 
-      const connection = new Connection({
-        localPeer,
+      const connection = createConnection({
         remotePeer,
-        localAddr,
         remoteAddr,
         stat: {
           timeline: {

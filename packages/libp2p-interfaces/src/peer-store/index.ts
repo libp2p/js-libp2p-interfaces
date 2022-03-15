@@ -16,10 +16,6 @@ export interface Address {
   isCertified: boolean
 }
 
-export interface AddressSorter {
-  (ms: Address[]): Address[]
-}
-
 export interface Peer {
   /**
    * Peer's peer-id instance
@@ -122,12 +118,6 @@ export interface AddressBook {
    * Remove stored addresses of a peer
    */
   delete: (peerId: PeerId) => Promise<void>
-
-  /**
-   * Get the known multiaddrs for a given peer. All returned multiaddrs
-   * will include the encapsulated `PeerId` of the peer.
-   */
-  getMultiaddrsForPeer: (peerId: PeerId, addressSorter?: AddressSorter) => Promise<Multiaddr[]>
 }
 
 /**
@@ -190,21 +180,25 @@ export interface ProtoBook extends Book<string[]> {
 export interface PeerProtocolsChangeData {
   peerId: PeerId
   protocols: string[]
+  oldProtocols: string[]
 }
 
 export interface PeerMultiaddrsChangeData {
   peerId: PeerId
   multiaddrs: Multiaddr[]
+  oldMultiaddrs: Multiaddr[]
 }
 
 export interface PeerPublicKeyChangeData {
   peerId: PeerId
-  pubKey?: Uint8Array
+  publicKey?: Uint8Array
+  oldPublicKey?: Uint8Array
 }
 
 export interface PeerMetadataChangeData {
   peerId: PeerId
   metadata: Map<string, Uint8Array>
+  oldMetadata: Map<string, Uint8Array>
 }
 
 export type EventName = 'peer' | 'change:protocols' | 'change:multiaddrs' | 'change:pubkey' | 'change:metadata'
@@ -217,13 +211,33 @@ export interface PeerStoreEvents {
   'change:metadata': CustomEvent<PeerMetadataChangeData>
 }
 
+export interface AddressFilter {
+  (peerId: PeerId, multiaddr: Multiaddr): Promise<boolean>
+}
+
+export interface AddressSorter {
+  (a: Address, b: Address): -1 | 0 | 1
+}
+
+export interface PeerStoreInit {
+  addressFilter?: AddressFilter
+}
+
 export interface PeerStore extends EventEmitter<PeerStoreEvents> {
   addressBook: AddressBook
   keyBook: KeyBook
   metadataBook: MetadataBook
   protoBook: ProtoBook
 
-  getPeers: () => AsyncIterable<Peer>
+  /**
+   * Loop over every peer - the looping is async because we read from a
+   * datastore but the peer operation is sync, this is to prevent
+   * long-lived peer operations causing deadlocks over the datastore
+   * which can happen if they try to access the peer store during the
+   * loop
+   */
+  forEach: (fn: (peer: Peer) => void) => Promise<void>
+  all: () => Promise<Peer[]>
   delete: (peerId: PeerId) => Promise<void>
   has: (peerId: PeerId) => Promise<boolean>
   get: (peerId: PeerId) => Promise<Peer>

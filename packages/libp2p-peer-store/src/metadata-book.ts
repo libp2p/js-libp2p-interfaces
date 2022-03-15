@@ -5,7 +5,7 @@ import { peerIdFromPeerId } from '@libp2p/peer-id'
 import { equals as uint8ArrayEquals } from 'uint8arrays/equals'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { Store } from './store.js'
-import type { PeerStore, MetadataBook } from '@libp2p/interfaces/src/peer-store'
+import type { PeerStore, MetadataBook, PeerMetadataChangeData, Peer } from '@libp2p/interfaces/peer-store'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 const log = logger('libp2p:peer-store:metadata-book')
@@ -31,9 +31,9 @@ export class PeerStoreMetadataBook implements MetadataBook {
   async get (peerId: PeerId) {
     peerId = peerIdFromPeerId(peerId)
 
-    log('get await read lock')
+    log.trace('get await read lock')
     const release = await this.store.lock.readLock()
-    log('get got read lock')
+    log.trace('get got read lock')
 
     try {
       const peer = await this.store.load(peerId)
@@ -44,7 +44,7 @@ export class PeerStoreMetadataBook implements MetadataBook {
         throw err
       }
     } finally {
-      log('get release read lock')
+      log.trace('get release read lock')
       release()
     }
 
@@ -57,9 +57,9 @@ export class PeerStoreMetadataBook implements MetadataBook {
   async getValue (peerId: PeerId, key: string) {
     peerId = peerIdFromPeerId(peerId)
 
-    log('getValue await read lock')
+    log.trace('getValue await read lock')
     const release = await this.store.lock.readLock()
-    log('getValue got read lock')
+    log.trace('getValue got read lock')
 
     try {
       const peer = await this.store.load(peerId)
@@ -70,7 +70,7 @@ export class PeerStoreMetadataBook implements MetadataBook {
         throw err
       }
     } finally {
-      log('getValue release write lock')
+      log.trace('getValue release write lock')
       release()
     }
   }
@@ -83,21 +83,35 @@ export class PeerStoreMetadataBook implements MetadataBook {
       throw errcode(new Error('valid metadata must be provided'), codes.ERR_INVALID_PARAMETERS)
     }
 
-    log('set await write lock')
+    log.trace('set await write lock')
     const release = await this.store.lock.writeLock()
-    log('set got write lock')
+    log.trace('set got write lock')
+
+    let peer: Peer | undefined
 
     try {
+      try {
+        peer = await this.store.load(peerId)
+      } catch (err: any) {
+        if (err.code !== codes.ERR_NOT_FOUND) {
+          throw err
+        }
+      }
+
       await this.store.mergeOrCreate(peerId, {
         metadata
       })
     } finally {
-      log('set release write lock')
+      log.trace('set release write lock')
       release()
     }
 
-    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-      detail: { peerId, metadata }
+    this.dispatchEvent(new CustomEvent<PeerMetadataChangeData>(EVENT_NAME, {
+      detail: {
+        peerId,
+        metadata,
+        oldMetadata: peer == null ? new Map() : peer.metadata
+      }
     }))
   }
 
@@ -112,16 +126,17 @@ export class PeerStoreMetadataBook implements MetadataBook {
       throw errcode(new Error('valid key and value must be provided'), codes.ERR_INVALID_PARAMETERS)
     }
 
-    log('setValue await write lock')
+    log.trace('setValue await write lock')
     const release = await this.store.lock.writeLock()
-    log('setValue got write lock')
+    log.trace('setValue got write lock')
 
+    let peer: Peer | undefined
     let updatedPeer
 
     try {
       try {
-        const existingPeer = await this.store.load(peerId)
-        const existingValue = existingPeer.metadata.get(key)
+        peer = await this.store.load(peerId)
+        const existingValue = peer.metadata.get(key)
 
         if (existingValue != null && uint8ArrayEquals(value, existingValue)) {
           return
@@ -136,40 +151,54 @@ export class PeerStoreMetadataBook implements MetadataBook {
         metadata: new Map([[key, value]])
       })
     } finally {
-      log('setValue release write lock')
+      log.trace('setValue release write lock')
       release()
     }
 
-    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-      detail: { peerId, metadata: updatedPeer.metadata }
+    this.dispatchEvent(new CustomEvent<PeerMetadataChangeData>(EVENT_NAME, {
+      detail: {
+        peerId,
+        metadata: updatedPeer.metadata,
+        oldMetadata: peer == null ? new Map() : peer.metadata
+      }
     }))
   }
 
   async delete (peerId: PeerId) {
     peerId = peerIdFromPeerId(peerId)
 
-    log('delete await write lock')
+    log.trace('delete await write lock')
     const release = await this.store.lock.writeLock()
-    log('delete got write lock')
+    log.trace('delete got write lock')
 
-    let has
+    let peer: Peer | undefined
 
     try {
-      has = await this.store.has(peerId)
+      try {
+        peer = await this.store.load(peerId)
+      } catch (err: any) {
+        if (err.code !== codes.ERR_NOT_FOUND) {
+          throw err
+        }
+      }
 
-      if (has) {
+      if (peer != null) {
         await this.store.patch(peerId, {
           metadata: new Map()
         })
       }
     } finally {
-      log('delete release write lock')
+      log.trace('delete release write lock')
       release()
     }
 
-    if (has) {
-      this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-        detail: { peerId, metadata: new Map() }
+    if (peer != null) {
+      this.dispatchEvent(new CustomEvent<PeerMetadataChangeData>(EVENT_NAME, {
+        detail: {
+          peerId,
+          metadata: new Map(),
+          oldMetadata: peer.metadata
+        }
       }))
     }
   }
@@ -177,14 +206,15 @@ export class PeerStoreMetadataBook implements MetadataBook {
   async deleteValue (peerId: PeerId, key: string) {
     peerId = peerIdFromPeerId(peerId)
 
-    log('deleteValue await write lock')
+    log.trace('deleteValue await write lock')
     const release = await this.store.lock.writeLock()
-    log('deleteValue got write lock')
+    log.trace('deleteValue got write lock')
 
     let metadata
+    let peer: Peer | undefined
 
     try {
-      const peer = await this.store.load(peerId)
+      peer = await this.store.load(peerId)
       metadata = peer.metadata
 
       metadata.delete(key)
@@ -197,13 +227,17 @@ export class PeerStoreMetadataBook implements MetadataBook {
         throw err
       }
     } finally {
-      log('deleteValue release write lock')
+      log.trace('deleteValue release write lock')
       release()
     }
 
     if (metadata != null) {
-      this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-        detail: { peerId, metadata }
+      this.dispatchEvent(new CustomEvent<PeerMetadataChangeData>(EVENT_NAME, {
+        detail: {
+          peerId,
+          metadata,
+          oldMetadata: peer == null ? new Map() : peer.metadata
+        }
       }))
     }
   }

@@ -1,6 +1,5 @@
 import type { PeerId } from '../peer-id/index.js'
 import type { Pushable } from 'it-pushable'
-import type { Registrar } from '../registrar/index.js'
 import type { EventEmitter, Startable } from '../index.js'
 import type { Stream } from '../connection/index.js'
 
@@ -30,28 +29,28 @@ export interface Message {
   from: PeerId
   topic: string
   data: Uint8Array
-  seqno?: BigInt
+  sequenceNumber?: BigInt
   signature?: Uint8Array
   key?: Uint8Array
 }
 
-export interface RPCMessage {
-  from: Uint8Array
-  topic: string
-  data: Uint8Array
-  seqno?: Uint8Array
-  signature?: Uint8Array
-  key?: Uint8Array
+export interface PubSubRPCMessage {
+  from?: Uint8Array | null
+  topic?: string | null
+  data?: Uint8Array | null
+  sequenceNumber?: Uint8Array | null
+  signature?: Uint8Array | null
+  key?: Uint8Array | null
 }
 
-export interface RPCSubscription {
-  subscribe: boolean
-  topic: string
+export interface PubSubRPCSubscription {
+  subscribe?: boolean | null
+  topic?: string | null
 }
 
-export interface RPC {
-  subscriptions: RPCSubscription[]
-  messages: RPCMessage[]
+export interface PubSubRPC {
+  subscriptions?: PubSubRPCSubscription[] | null
+  messages?: PubSubRPCMessage[] | null
 }
 
 export interface PeerStreams extends EventEmitter<PeerStreamEvents> {
@@ -67,10 +66,9 @@ export interface PeerStreams extends EventEmitter<PeerStreamEvents> {
   attachOutboundStream: (stream: Stream) => Promise<Pushable<Uint8Array>>
 }
 
-export interface PubSubOptions {
-  registrar: Registrar
-  peerId: PeerId
-  debugName?: string
+export interface PubSubInit {
+  enabled?: boolean
+
   multicodecs?: string[]
 
   /**
@@ -117,7 +115,8 @@ export interface PubSub<EventMap = PubSubEvents> extends EventEmitter<EventMap &
   subscribe: (topic: string) => void
   unsubscribe: (topic: string) => void
   getSubscribers: (topic: string) => PeerId[]
-  validate: (message: Message) => Promise<void>
+
+  dispatchEvent: (event: CustomEvent<Uint8Array | Message>) => boolean
 }
 
 export interface PeerStreamEvents {

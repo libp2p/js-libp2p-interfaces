@@ -334,11 +334,11 @@ export class ControlMessage implements IControlMessage {
 /** Properties of a ControlIHave. */
 export interface IControlIHave {
 
-    /** ControlIHave topicID */
-    topicID?: (string|null);
+    /** ControlIHave topic */
+    topic?: (string|null);
 
     /** ControlIHave messageIDs */
-    messageIDs?: (string[]|null);
+    messageIDs?: (Uint8Array[]|null);
 }
 
 /** Represents a ControlIHave. */
@@ -350,14 +350,14 @@ export class ControlIHave implements IControlIHave {
      */
     constructor(p?: IControlIHave);
 
-    /** ControlIHave topicID. */
-    public topicID?: (string|null);
+    /** ControlIHave topic. */
+    public topic?: (string|null);
 
     /** ControlIHave messageIDs. */
-    public messageIDs: string[];
+    public messageIDs: Uint8Array[];
 
-    /** ControlIHave _topicID. */
-    public _topicID?: "topicID";
+    /** ControlIHave _topic. */
+    public _topic?: "topic";
 
     /**
      * Encodes the specified ControlIHave message. Does not implicitly {@link ControlIHave.verify|verify} messages.
@@ -403,7 +403,7 @@ export class ControlIHave implements IControlIHave {
 export interface IControlIWant {
 
     /** ControlIWant messageIDs */
-    messageIDs?: (string[]|null);
+    messageIDs?: (Uint8Array[]|null);
 }
 
 /** Represents a ControlIWant. */
@@ -416,7 +416,7 @@ export class ControlIWant implements IControlIWant {
     constructor(p?: IControlIWant);
 
     /** ControlIWant messageIDs. */
-    public messageIDs: string[];
+    public messageIDs: Uint8Array[];
 
     /**
      * Encodes the specified ControlIWant message. Does not implicitly {@link ControlIWant.verify|verify} messages.
@@ -461,8 +461,8 @@ export class ControlIWant implements IControlIWant {
 /** Properties of a ControlGraft. */
 export interface IControlGraft {
 
-    /** ControlGraft topicID */
-    topicID?: (string|null);
+    /** ControlGraft topic */
+    topic?: (string|null);
 }
 
 /** Represents a ControlGraft. */
@@ -474,11 +474,11 @@ export class ControlGraft implements IControlGraft {
      */
     constructor(p?: IControlGraft);
 
-    /** ControlGraft topicID. */
-    public topicID?: (string|null);
+    /** ControlGraft topic. */
+    public topic?: (string|null);
 
-    /** ControlGraft _topicID. */
-    public _topicID?: "topicID";
+    /** ControlGraft _topic. */
+    public _topic?: "topic";
 
     /**
      * Encodes the specified ControlGraft message. Does not implicitly {@link ControlGraft.verify|verify} messages.
@@ -523,8 +523,8 @@ export class ControlGraft implements IControlGraft {
 /** Properties of a ControlPrune. */
 export interface IControlPrune {
 
-    /** ControlPrune topicID */
-    topicID?: (string|null);
+    /** ControlPrune topic */
+    topic?: (string|null);
 
     /** ControlPrune peers */
     peers?: (IPeerInfo[]|null);
@@ -542,8 +542,8 @@ export class ControlPrune implements IControlPrune {
      */
     constructor(p?: IControlPrune);
 
-    /** ControlPrune topicID. */
-    public topicID?: (string|null);
+    /** ControlPrune topic. */
+    public topic?: (string|null);
 
     /** ControlPrune peers. */
     public peers: IPeerInfo[];
@@ -551,8 +551,8 @@ export class ControlPrune implements IControlPrune {
     /** ControlPrune backoff. */
     public backoff?: (number|null);
 
-    /** ControlPrune _topicID. */
-    public _topicID?: "topicID";
+    /** ControlPrune _topic. */
+    public _topic?: "topic";
 
     /** ControlPrune _backoff. */
     public _backoff?: "backoff";

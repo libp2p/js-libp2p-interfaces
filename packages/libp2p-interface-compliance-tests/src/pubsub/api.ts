@@ -8,15 +8,16 @@ import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import delay from 'delay'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
-import type { PubSub, PubSubOptions } from '@libp2p/interfaces/pubsub'
-import type { EventMap } from './index.js'
-import type { Registrar } from '@libp2p/interfaces/src/registrar'
-import type { PubsubBaseProtocol } from '@libp2p/pubsub'
+import type { PubSub } from '@libp2p/interfaces/pubsub'
+import type { EventMap, PubSubArgs } from './index.js'
+import type { Registrar } from '@libp2p/interfaces/registrar'
+import type { PubSubBaseProtocol } from '@libp2p/pubsub'
+import { Components } from '@libp2p/interfaces/components'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 
-export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) => {
+export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => {
   describe('pubsub api', () => {
     let pubsub: PubSub<EventMap>
     let registrar: Registrar
@@ -26,9 +27,13 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
       registrar = mockRegistrar()
 
       pubsub = await common.setup({
-        peerId: await createEd25519PeerId(),
-        registrar,
-        emitSelf: true
+        components: new Components({
+          peerId: await createEd25519PeerId(),
+          registrar
+        }),
+        init: {
+          emitSelf: true
+        }
       })
     })
 
@@ -75,7 +80,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
       await pWaitFor(() => pubsub.getTopics().length === 0)
 
       // Publish to guarantee the handler is not called
-      pubsub.dispatchEvent(new CustomEvent(topic, { detail: data }))
+      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
 
       // handlers are called async
       await delay(100)
@@ -93,7 +98,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         expect(msg).to.not.eql(undefined)
         defer.resolve()
       })
-      pubsub.dispatchEvent(new CustomEvent(topic, { detail: data }))
+      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
       await defer.promise
 
       await pubsub.stop()

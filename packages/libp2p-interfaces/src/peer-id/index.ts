@@ -1,6 +1,5 @@
 import type { CID } from 'multiformats/cid'
 import type { MultihashDigest } from 'multiformats/hashes/interface'
-import type { MultibaseEncoder } from 'multiformats/bases/interface'
 
 interface BasePeerId {
   readonly type: 'RSA' | 'Ed25519' | 'secp256k1'
@@ -8,10 +7,10 @@ interface BasePeerId {
   readonly privateKey?: Uint8Array
   readonly publicKey?: Uint8Array
 
-  toString: (codec?: MultibaseEncoder<any>) => string
+  toString: () => string
   toCID: () => CID
   toBytes: () => Uint8Array
-  equals: (other: any) => boolean
+  equals: (other: PeerId | Uint8Array | string) => boolean
 }
 
 export interface RSAPeerId extends BasePeerId {

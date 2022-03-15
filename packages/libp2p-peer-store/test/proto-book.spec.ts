@@ -5,11 +5,13 @@ import sinon from 'sinon'
 import { MemoryDatastore } from 'datastore-core/memory'
 import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
-import { createPeerStore } from '../src/index.js'
+import { PersistentPeerStore } from '../src/index.js'
 import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { PeerStore, ProtoBook } from '@libp2p/interfaces/peer-store'
+import { Components } from '@libp2p/interfaces/components'
+import { mockConnectionGater } from '@libp2p/interface-compliance-tests/mocks'
 
 const arraysAreEqual = (a: string[], b: string[]) => {
   if (a.length !== b.length) {
@@ -31,10 +33,11 @@ describe('protoBook', () => {
     let pb: ProtoBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
+      peerStore = new PersistentPeerStore(new Components({
         peerId,
-        datastore: new MemoryDatastore()
-      })
+        datastore: new MemoryDatastore(),
+        connectionGater: mockConnectionGater()
+      }))
       pb = peerStore.protoBook
     })
 
@@ -126,10 +129,11 @@ describe('protoBook', () => {
     let pb: ProtoBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
+      peerStore = new PersistentPeerStore(new Components({
         peerId,
-        datastore: new MemoryDatastore()
-      })
+        datastore: new MemoryDatastore(),
+        connectionGater: mockConnectionGater()
+      }))
       pb = peerStore.protoBook
     })
 
@@ -232,10 +236,11 @@ describe('protoBook', () => {
     let pb: ProtoBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
+      peerStore = new PersistentPeerStore(new Components({
         peerId,
-        datastore: new MemoryDatastore()
-      })
+        datastore: new MemoryDatastore(),
+        connectionGater: mockConnectionGater()
+      }))
       pb = peerStore.protoBook
     })
 
@@ -320,10 +325,11 @@ describe('protoBook', () => {
     let pb: ProtoBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
+      peerStore = new PersistentPeerStore(new Components({
         peerId,
-        datastore: new MemoryDatastore()
-      })
+        datastore: new MemoryDatastore(),
+        connectionGater: mockConnectionGater()
+      }))
       pb = peerStore.protoBook
     })
 
@@ -353,10 +359,11 @@ describe('protoBook', () => {
     let pb: ProtoBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
+      peerStore = new PersistentPeerStore(new Components({
         peerId,
-        datastore: new MemoryDatastore()
-      })
+        datastore: new MemoryDatastore(),
+        connectionGater: mockConnectionGater()
+      }))
       pb = peerStore.protoBook
     })
 

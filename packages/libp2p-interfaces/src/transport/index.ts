@@ -3,30 +3,45 @@ import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Connection } from '../connection/index.js'
 import type { Duplex } from 'it-stream-types'
 
-export interface TransportFactory<DialOptions extends { signal?: AbortSignal }, ListenerOptions> {
-  new(upgrader: Upgrader): Transport<DialOptions, ListenerOptions>
-}
+export const symbol = Symbol.for('@libp2p/transport')
 
 export interface ConnectionHandler { (connection: Connection): void }
 
 export interface MultiaddrFilter { (multiaddrs: Multiaddr[]): Multiaddr[] }
 
-export interface ListenerOptions {
+export interface CreateListenerOptions {
   handler?: ConnectionHandler
+  upgrader: Upgrader
+}
+
+export interface DialOptions extends AbortOptions {
+  upgrader: Upgrader
 }
 
 /**
  * A libp2p transport is understood as something that offers a dial and listen interface to establish connections.
  */
-export interface Transport <DialOptions extends AbortOptions = AbortOptions, CreateListenerOptions extends ListenerOptions = ListenerOptions> {
+export interface Transport {
+  /**
+   * Used to identify the transport
+   */
+  [Symbol.toStringTag]: string
+
+  /**
+   * Used by the isTransport function
+   */
+  [symbol]: true
+
   /**
    * Dial a given multiaddr.
    */
-  dial: (ma: Multiaddr, options?: DialOptions) => Promise<Connection>
+  dial: (ma: Multiaddr, options: DialOptions) => Promise<Connection>
+
   /**
    * Create transport listeners.
    */
-  createListener: (options?: CreateListenerOptions) => Listener
+  createListener: (options: CreateListenerOptions) => Listener
+
   /**
    * Takes a list of `Multiaddr`s and returns only valid addresses for the transport
    */
@@ -57,7 +72,12 @@ export interface Listener extends EventEmitter<ListenerEvents> {
   close: () => Promise<void>
 }
 
-export interface Upgrader {
+export interface UpgraderEvents {
+  'connection': CustomEvent<Connection>
+  'connectionEnd': CustomEvent<Connection>
+}
+
+export interface Upgrader extends EventEmitter<UpgraderEvents> {
   /**
    * Upgrades an outbound connection on `transport.dial`.
    */
@@ -88,4 +108,24 @@ export interface MultiaddrConnection extends Duplex<Uint8Array> {
 
 export interface ProtocolHandler {
   (stream: Duplex<Uint8Array>, connection: Connection): void
+}
+
+export function isTransport (other: any): other is Transport {
+  return symbol in other
+}
+
+export interface TransportManagerEvents {
+  'listener:listening': CustomEvent<Listener>
+  'listener:close': CustomEvent<Listener>
+}
+
+export interface TransportManager extends EventEmitter<TransportManagerEvents> {
+  add: (transport: Transport) => void
+  dial: (ma: Multiaddr, options?: any) => Promise<Connection>
+  getAddrs: () => Multiaddr[]
+  getTransports: () => Transport[]
+  transportForMultiaddr: (ma: Multiaddr) => Transport | undefined
+  listen: (addrs: Multiaddr[]) => Promise<void>
+  remove: (key: string) => Promise<void>
+  removeAll: () => Promise<void>
 }

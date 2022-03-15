@@ -7,10 +7,11 @@ import errCode from 'err-code'
 import { Logger, logger } from '@libp2p/logger'
 import * as ndjson from 'it-ndjson'
 import type { Stream } from '@libp2p/interfaces/connection'
-import type { Muxer, MuxerInit } from '@libp2p/interfaces/stream-muxer'
+import type { StreamMuxer, StreamMuxerFactory, StreamMuxerInit } from '@libp2p/interfaces/stream-muxer'
 import type { Source } from 'it-stream-types'
 import { pipe } from 'it-pipe'
 import map from 'it-map'
+import type { Components } from '@libp2p/interfaces/components'
 
 let muxers = 0
 let streams = 0
@@ -216,19 +217,20 @@ class MuxedStream {
   }
 }
 
-class MockMuxer implements Muxer {
+class MockMuxer implements StreamMuxer {
   public source: Source<Uint8Array>
   public input: Pushable<Uint8Array>
   public streamInput: Pushable<StreamMessage>
   public name: string
+  public protocol: string = '/mock-muxer/1.0.0'
 
   private readonly registryInitiatorStreams: Map<string, MuxedStream>
   private readonly registryRecipientStreams: Map<string, MuxedStream>
-  private readonly options: MuxerInit
+  private readonly options: StreamMuxerInit
 
   private readonly log: Logger
 
-  constructor (init?: MuxerInit) {
+  constructor (init?: StreamMuxerInit) {
     this.name = `muxer:${muxers++}`
     this.log = logger(`libp2p:mock-muxer:${this.name}`)
     this.registryInitiatorStreams = new Map()
@@ -349,21 +351,29 @@ class MockMuxer implements Muxer {
   }
 }
 
-export function mockMuxer (init?: MuxerInit): Muxer {
-  const mockMuxer = new MockMuxer(init)
+class MockMuxerFactory implements StreamMuxerFactory {
+  public protocol: string = '/mock-muxer/1.0.0'
 
-  void Promise.resolve().then(async () => {
-    void pipe(
-      mockMuxer.streamInput,
-      ndjson.stringify,
-      (source) => map(source, str => uint8ArrayFromString(str)),
-      async (source) => {
-        for await (const buf of source) {
-          mockMuxer.input.push(buf)
+  createStreamMuxer (c: Components, init?: StreamMuxerInit): StreamMuxer {
+    const mockMuxer = new MockMuxer(init)
+
+    void Promise.resolve().then(async () => {
+      void pipe(
+        mockMuxer.streamInput,
+        ndjson.stringify,
+        (source) => map(source, str => uint8ArrayFromString(str)),
+        async (source) => {
+          for await (const buf of source) {
+            mockMuxer.input.push(buf)
+          }
         }
-      }
-    )
-  })
+      )
+    })
 
-  return mockMuxer
+    return mockMuxer
+  }
+}
+
+export function mockMuxer (): MockMuxerFactory {
+  return new MockMuxerFactory()
 }

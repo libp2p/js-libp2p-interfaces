@@ -8,14 +8,13 @@ import all from 'it-all'
 import filter from 'it-filter'
 import map from 'it-map'
 import each from 'it-foreach'
-import { base58btc } from 'multiformats/bases/base58'
 import { peerIdFromPeerId } from '@libp2p/peer-id'
 import { CustomEvent } from '@libp2p/interfaces'
-import type { PeerStore } from '@libp2p/interfaces/peer-store'
+import type { AddressFilter, Peer, PeerMultiaddrsChangeData, PeerStore } from '@libp2p/interfaces/peer-store'
 import type { Store } from './store.js'
-import type { AddressFilter, AddressSorter } from './index.js'
 import type { Envelope } from '@libp2p/interfaces/record'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { PeerData } from '@libp2p/interfaces/peer-data'
 
 const log = logger('libp2p:peer-store:address-book')
 const EVENT_NAME = 'change:multiaddrs'
@@ -41,11 +40,12 @@ export class PeerStoreAddressBook {
    * into the AddressBook.
    */
   async consumePeerRecord (envelope: Envelope) {
-    log('consumePeerRecord await write lock')
+    log.trace('consumePeerRecord await write lock')
     const release = await this.store.lock.writeLock()
-    log('consumePeerRecord got write lock')
+    log.trace('consumePeerRecord got write lock')
 
     let peerId
+    let peer: Peer | undefined
     let updatedPeer
 
     try {
@@ -72,7 +72,7 @@ export class PeerStoreAddressBook {
       }
 
       if (await this.store.has(peerId)) {
-        const peer = await this.store.load(peerId)
+        peer = await this.store.load(peerId)
 
         if (peer.peerRecordEnvelope != null) {
           const storedEnvelope = await RecordEnvelope.createFromProtobuf(peer.peerRecordEnvelope)
@@ -80,35 +80,42 @@ export class PeerStoreAddressBook {
 
           // ensure seq is greater than, or equal to, the last received
           if (storedRecord.seqNumber >= peerRecord.seqNumber) {
+            log('sequence number was lower or equal to existing sequence number - stored: %d received: %d', storedRecord.seqNumber, peerRecord.seqNumber)
             return false
           }
         }
       }
 
+      const addresses = await filterMultiaddrs(peerId, multiaddrs, this.addressFilter, true)
+
       // Replace unsigned addresses by the new ones from the record
       // TODO: Once we have ttls for the addresses, we should merge these in
       updatedPeer = await this.store.patchOrCreate(peerId, {
-        addresses: await filterMultiaddrs(peerId, multiaddrs, this.addressFilter, true),
+        addresses,
         peerRecordEnvelope: envelope.marshal()
       })
 
-      log(`stored provided peer record for ${peerRecord.peerId.toString(base58btc)}`)
+      log('stored provided peer record for %p', peerRecord.peerId)
     } finally {
-      log('consumePeerRecord release write lock')
+      log.trace('consumePeerRecord release write lock')
       release()
     }
 
-    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-      detail: { peerId, multiaddrs: updatedPeer.addresses.map(({ multiaddr }) => multiaddr) }
+    this.dispatchEvent(new CustomEvent<PeerMultiaddrsChangeData>(EVENT_NAME, {
+      detail: {
+        peerId,
+        multiaddrs: updatedPeer.addresses.map(({ multiaddr }) => multiaddr),
+        oldMultiaddrs: peer == null ? [] : peer.addresses.map(({ multiaddr }) => multiaddr)
+      }
     }))
 
     return true
   }
 
   async getRawEnvelope (peerId: PeerId) {
-    log('getRawEnvelope await read lock')
+    log.trace('getRawEnvelope await read lock')
     const release = await this.store.lock.readLock()
-    log('getRawEnvelope got read lock')
+    log.trace('getRawEnvelope got read lock')
 
     try {
       const peer = await this.store.load(peerId)
@@ -119,7 +126,7 @@ export class PeerStoreAddressBook {
         throw err
       }
     } finally {
-      log('getRawEnvelope release read lock')
+      log.trace('getRawEnvelope release read lock')
       release()
     }
   }
@@ -141,9 +148,9 @@ export class PeerStoreAddressBook {
   async get (peerId: PeerId) {
     peerId = peerIdFromPeerId(peerId)
 
-    log('get wait for read lock')
+    log.trace('get wait for read lock')
     const release = await this.store.lock.readLock()
-    log('get got read lock')
+    log.trace('get got read lock')
 
     try {
       const peer = await this.store.load(peerId)
@@ -154,7 +161,7 @@ export class PeerStoreAddressBook {
         throw err
       }
     } finally {
-      log('get release read lock')
+      log.trace('get release read lock')
       release()
     }
 
@@ -169,11 +176,12 @@ export class PeerStoreAddressBook {
       throw errcode(new Error('multiaddrs must be an array of Multiaddrs'), codes.ERR_INVALID_PARAMETERS)
     }
 
-    log('set await write lock')
+    log.trace('set await write lock')
     const release = await this.store.lock.writeLock()
-    log('set got write lock')
+    log.trace('set got write lock')
 
     let hasPeer = false
+    let peer: Peer | undefined
     let updatedPeer
 
     try {
@@ -185,7 +193,7 @@ export class PeerStoreAddressBook {
       }
 
       try {
-        const peer = await this.store.load(peerId)
+        peer = await this.store.load(peerId)
         hasPeer = true
 
         if (new Set([
@@ -203,21 +211,28 @@ export class PeerStoreAddressBook {
 
       updatedPeer = await this.store.patchOrCreate(peerId, { addresses })
 
-      log(`set multiaddrs for ${peerId.toString(base58btc)}`)
+      log('set multiaddrs for %p', peerId)
     } finally {
+      log.trace('set multiaddrs for %p', peerId)
       log('set release write lock')
       release()
     }
 
-    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-      detail: { peerId, multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr) }
+    this.dispatchEvent(new CustomEvent<PeerMultiaddrsChangeData>(EVENT_NAME, {
+      detail: {
+        peerId,
+        multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr),
+        oldMultiaddrs: peer == null ? [] : peer.addresses.map(({ multiaddr }) => multiaddr)
+      }
     }))
 
     // Notify the existence of a new peer
     if (!hasPeer) {
-      this.dispatchEvent(new CustomEvent('peer', {
+      this.dispatchEvent(new CustomEvent<PeerData>('peer', {
         detail: {
-          peerId
+          id: peerId,
+          multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr),
+          protocols: updatedPeer.protocols
         }
       }))
     }
@@ -231,11 +246,12 @@ export class PeerStoreAddressBook {
       throw errcode(new Error('multiaddrs must be an array of Multiaddrs'), codes.ERR_INVALID_PARAMETERS)
     }
 
-    log('add await write lock')
+    log.trace('add await write lock')
     const release = await this.store.lock.writeLock()
-    log('add got write lock')
+    log.trace('add got write lock')
 
     let hasPeer
+    let peer: Peer | undefined
     let updatedPeer
 
     try {
@@ -247,7 +263,7 @@ export class PeerStoreAddressBook {
       }
 
       try {
-        const peer = await this.store.load(peerId)
+        peer = await this.store.load(peerId)
         hasPeer = true
 
         if (new Set([
@@ -264,20 +280,28 @@ export class PeerStoreAddressBook {
 
       updatedPeer = await this.store.mergeOrCreate(peerId, { addresses })
 
-      log(`added multiaddrs for ${peerId.toString(base58btc)}`)
+      log('added multiaddrs for %p', peerId)
     } finally {
-      log('set release write lock')
+      log.trace('set release write lock')
       release()
     }
 
-    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-      detail: { peerId, multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr) }
+    this.dispatchEvent(new CustomEvent<PeerMultiaddrsChangeData>(EVENT_NAME, {
+      detail: {
+        peerId,
+        multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr),
+        oldMultiaddrs: peer == null ? [] : peer.addresses.map(({ multiaddr }) => multiaddr)
+      }
     }))
 
     // Notify the existence of a new peer
     if (hasPeer === true) {
-      this.dispatchEvent(new CustomEvent('peer', {
-        detail: { peerId }
+      this.dispatchEvent(new CustomEvent<PeerData>('peer', {
+        detail: {
+          id: peerId,
+          multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr),
+          protocols: updatedPeer.protocols
+        }
       }))
     }
   }
@@ -285,45 +309,38 @@ export class PeerStoreAddressBook {
   async delete (peerId: PeerId) {
     peerId = peerIdFromPeerId(peerId)
 
-    log('delete await write lock')
+    log.trace('delete await write lock')
     const release = await this.store.lock.writeLock()
-    log('delete got write lock')
+    log.trace('delete got write lock')
 
-    let has
+    let peer: Peer | undefined
 
     try {
-      has = await this.store.has(peerId)
+      try {
+        peer = await this.store.load(peerId)
+      } catch (err: any) {
+        if (err.code !== codes.ERR_NOT_FOUND) {
+          throw err
+        }
+      }
 
       await this.store.patchOrCreate(peerId, {
         addresses: []
       })
     } finally {
-      log('delete release write lock')
+      log.trace('delete release write lock')
       release()
     }
 
-    if (has) {
-      this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-        detail: { peerId, multiaddrs: [] }
+    if (peer != null) {
+      this.dispatchEvent(new CustomEvent<PeerMultiaddrsChangeData>(EVENT_NAME, {
+        detail: {
+          peerId,
+          multiaddrs: [],
+          oldMultiaddrs: peer == null ? [] : peer.addresses.map(({ multiaddr }) => multiaddr)
+        }
       }))
     }
-  }
-
-  async getMultiaddrsForPeer (peerId: PeerId, addressSorter: AddressSorter = (mas) => mas) {
-    const addresses = await this.get(peerId)
-
-    return addressSorter(
-      addresses
-    ).map((address) => {
-      const multiaddr = address.multiaddr
-      const idString = multiaddr.getPeerId()
-
-      if (idString === peerId.toString()) {
-        return multiaddr
-      }
-
-      return multiaddr.encapsulate(`/p2p/${peerId.toString(base58btc)}`)
-    })
   }
 }
 

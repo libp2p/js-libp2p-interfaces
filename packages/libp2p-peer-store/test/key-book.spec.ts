@@ -3,13 +3,14 @@
 import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
 import { MemoryDatastore } from 'datastore-core/memory'
-import { createPeerStore } from '../src/index.js'
+import { PersistentPeerStore } from '../src/index.js'
 import pDefer from 'p-defer'
 import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { PeerStore, KeyBook } from '@libp2p/interfaces/peer-store'
-import { base58btc } from 'multiformats/bases/base58'
+import { Components } from '@libp2p/interfaces/components'
+import { mockConnectionGater } from '@libp2p/interface-compliance-tests/mocks'
 
 describe('keyBook', () => {
   let peerId: PeerId
@@ -20,10 +21,11 @@ describe('keyBook', () => {
   beforeEach(async () => {
     peerId = await createEd25519PeerId()
     datastore = new MemoryDatastore()
-    peerStore = createPeerStore({
+    peerStore = new PersistentPeerStore(new Components({
       peerId,
-      datastore
-    })
+      datastore,
+      connectionGater: mockConnectionGater()
+    }))
     kb = peerStore.keyBook
   })
 
@@ -64,14 +66,15 @@ describe('keyBook', () => {
 
   it('should not store if already stored', async () => {
     const spy = sinon.spy(datastore, 'put')
+    const peer = await createEd25519PeerId()
 
-    if (peerId.publicKey == null) {
+    if (peer.publicKey == null) {
       throw new Error('Public key was missing')
     }
 
     // Set PeerId
-    await kb.set(peerId, peerId.publicKey)
-    await kb.set(peerId, peerId.publicKey)
+    await kb.set(peer, peer.publicKey)
+    await kb.set(peer, peer.publicKey)
 
     expect(spy).to.have.property('callCount', 1)
   })
@@ -80,13 +83,13 @@ describe('keyBook', () => {
     const defer = pDefer()
 
     peerStore.addEventListener('change:pubkey', (evt) => {
-      const { peerId: id, pubKey } = evt.detail
+      const { peerId: id, publicKey } = evt.detail
       if (peerId.publicKey == null) {
         throw new Error('Public key was missing')
       }
 
-      expect(id.toString(base58btc)).to.equal(peerId.toString(base58btc))
-      expect(pubKey).to.equalBytes(peerId.publicKey)
+      expect(id.toString()).to.equal(peerId.toString())
+      expect(publicKey).to.equalBytes(peerId.publicKey)
       defer.resolve()
     })
 
@@ -120,9 +123,9 @@ describe('keyBook', () => {
     await kb.set(peerId, peerId.publicKey)
 
     peerStore.addEventListener('change:pubkey', (evt) => {
-      const { peerId: id, pubKey } = evt.detail
-      expect(id.toString(base58btc)).to.equal(peerId.toString(base58btc))
-      expect(pubKey).to.be.undefined()
+      const { peerId: id, publicKey } = evt.detail
+      expect(id.toString()).to.equal(peerId.toString())
+      expect(publicKey).to.be.undefined()
       defer.resolve()
     })
 

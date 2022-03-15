@@ -13,6 +13,8 @@ import {
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import { CustomEvent } from '@libp2p/interfaces'
+import { PeerSet } from '@libp2p/peer-collections'
+import { Components } from '@libp2p/interfaces/components'
 
 const protocol = '/pubsub/1.0.0'
 const topic = 'test-topic'
@@ -25,10 +27,12 @@ describe('pubsub base implementation', () => {
     beforeEach(async () => {
       const peerId = await createPeerId()
       pubsub = new PubsubImplementation({
-        peerId: peerId,
-        registrar: new MockRegistrar(),
         multicodecs: [protocol]
       })
+      pubsub.init(new Components({
+        peerId: peerId,
+        registrar: new MockRegistrar()
+      }))
     })
 
     afterEach(async () => await pubsub.stop())
@@ -37,7 +41,7 @@ describe('pubsub base implementation', () => {
       sinon.spy(pubsub, 'publishMessage')
 
       await pubsub.start()
-      pubsub.dispatchEvent(new CustomEvent(topic, { detail: message }))
+      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: message }))
 
       // event dispatch is async
       await pWaitFor(() => {
@@ -54,7 +58,7 @@ describe('pubsub base implementation', () => {
 
       await pubsub.start()
 
-      pubsub.dispatchEvent(new CustomEvent(topic, { detail: message }))
+      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: message }))
 
       // event dispatch is async
       await pWaitFor(() => {
@@ -77,10 +81,12 @@ describe('pubsub base implementation', () => {
       beforeEach(async () => {
         const peerId = await createPeerId()
         pubsub = new PubsubImplementation({
-          multicodecs: [protocol],
+          multicodecs: [protocol]
+        })
+        pubsub.init(new Components({
           peerId: peerId,
           registrar: new MockRegistrar()
-        })
+        }))
         await pubsub.start()
       })
 
@@ -108,15 +114,19 @@ describe('pubsub base implementation', () => {
         registrarB = new MockRegistrar()
 
         pubsubA = new PubsubImplementation({
-          multicodecs: [protocol],
+          multicodecs: [protocol]
+        })
+        pubsubA.init(new Components({
           peerId: peerIdA,
           registrar: registrarA
-        })
+        }))
         pubsubB = new PubsubImplementation({
-          multicodecs: [protocol],
+          multicodecs: [protocol]
+        })
+        pubsubB.init(new Components({
           peerId: peerIdB,
           registrar: registrarB
-        })
+        }))
       })
 
       // start pubsub and connect nodes
@@ -176,10 +186,12 @@ describe('pubsub base implementation', () => {
       beforeEach(async () => {
         const peerId = await createPeerId()
         pubsub = new PubsubImplementation({
-          multicodecs: [protocol],
+          multicodecs: [protocol]
+        })
+        pubsub.init(new Components({
           peerId: peerId,
           registrar: new MockRegistrar()
-        })
+        }))
         await pubsub.start()
       })
 
@@ -211,15 +223,19 @@ describe('pubsub base implementation', () => {
         registrarB = new MockRegistrar()
 
         pubsubA = new PubsubImplementation({
-          multicodecs: [protocol],
+          multicodecs: [protocol]
+        })
+        pubsubA.init(new Components({
           peerId: peerIdA,
           registrar: registrarA
-        })
+        }))
         pubsubB = new PubsubImplementation({
-          multicodecs: [protocol],
+          multicodecs: [protocol]
+        })
+        pubsubB.init(new Components({
           peerId: peerIdB,
           registrar: registrarB
-        })
+        }))
       })
 
       // start pubsub and connect nodes
@@ -308,10 +324,12 @@ describe('pubsub base implementation', () => {
     beforeEach(async () => {
       peerId = await createPeerId()
       pubsub = new PubsubImplementation({
-        multicodecs: [protocol],
+        multicodecs: [protocol]
+      })
+      pubsub.init(new Components({
         peerId: peerId,
         registrar: new MockRegistrar()
-      })
+      }))
       await pubsub.start()
     })
 
@@ -336,10 +354,12 @@ describe('pubsub base implementation', () => {
     beforeEach(async () => {
       peerId = await createPeerId()
       pubsub = new PubsubImplementation({
-        multicodecs: [protocol],
+        multicodecs: [protocol]
+      })
+      pubsub.init(new Components({
         peerId: peerId,
         registrar: new MockRegistrar()
-      })
+      }))
     })
 
     afterEach(async () => await pubsub.stop())
@@ -385,7 +405,10 @@ describe('pubsub base implementation', () => {
       const peer = new PeerStreams({ id: peerId, protocol: 'a-protocol' })
       const id = peer.id
 
-      pubsub.topics.set(topic, new Set([id.toString()]))
+      const set = new PeerSet()
+      set.add(id)
+
+      pubsub.topics.set(topic, set)
       pubsub.peers.set(peer.id, peer)
 
       peersSubscribed = pubsub.getSubscribers(topic)

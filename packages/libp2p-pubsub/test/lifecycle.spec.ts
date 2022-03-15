@@ -1,6 +1,6 @@
 import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
-import { PubsubBaseProtocol } from '../src/index.js'
+import { PubSubBaseProtocol } from '../src/index.js'
 import {
   createPeerId,
   PubsubImplementation,
@@ -10,8 +10,26 @@ import {
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
+import type { PubSubRPC, PubSubRPCMessage } from '@libp2p/interfaces/pubsub'
+import { Components } from '@libp2p/interfaces/components'
 
-class PubsubProtocol extends PubsubBaseProtocol {
+class PubsubProtocol extends PubSubBaseProtocol {
+  decodeRpc (bytes: Uint8Array): PubSubRPC {
+    throw new Error('Method not implemented.')
+  }
+
+  encodeRpc (rpc: PubSubRPC): Uint8Array {
+    throw new Error('Method not implemented.')
+  }
+
+  decodeMessage (bytes: Uint8Array): PubSubRPCMessage {
+    throw new Error('Method not implemented.')
+  }
+
+  encodeMessage (rpc: PubSubRPCMessage): Uint8Array {
+    throw new Error('Method not implemented.')
+  }
+
   async publishMessage (): Promise<void> {
     throw new Error('Method not implemented.')
   }
@@ -27,16 +45,18 @@ describe('pubsub base lifecycle', () => {
       // @ts-expect-error incomplete implementation
       sinonMockRegistrar = {
         handle: sinon.stub(),
+        unhandle: sinon.stub(),
         register: sinon.stub().returns(`id-${Math.random()}`),
         unregister: sinon.stub()
       }
 
       pubsub = new PubsubProtocol({
-        debugName: 'pubsub',
-        multicodecs: ['/pubsub/1.0.0'],
+        multicodecs: ['/pubsub/1.0.0']
+      })
+      pubsub.init(new Components({
         peerId: peerId,
         registrar: sinonMockRegistrar
-      })
+      }))
 
       expect(pubsub.peers.size).to.be.eql(0)
     })
@@ -51,6 +71,7 @@ describe('pubsub base lifecycle', () => {
       expect(sinonMockRegistrar.register).to.have.property('calledOnce', true)
 
       await pubsub.stop()
+      expect(sinonMockRegistrar.unhandle).to.have.property('calledOnce', true)
       expect(sinonMockRegistrar.unregister).to.have.property('calledOnce', true)
     })
 
@@ -61,11 +82,14 @@ describe('pubsub base lifecycle', () => {
       expect(sinonMockRegistrar.register).to.have.property('calledOnce', true)
 
       await pubsub.stop()
+      expect(sinonMockRegistrar.unhandle).to.have.property('calledOnce', true)
       expect(sinonMockRegistrar.unregister).to.have.property('calledOnce', true)
     })
 
     it('stopping should not throw if not started', async () => {
       await pubsub.stop()
+      expect(sinonMockRegistrar.handle).to.have.property('calledOnce', false)
+      expect(sinonMockRegistrar.unhandle).to.have.property('calledOnce', false)
       expect(sinonMockRegistrar.register).to.have.property('calledOnce', false)
       expect(sinonMockRegistrar.unregister).to.have.property('calledOnce', false)
     })
@@ -87,15 +111,19 @@ describe('pubsub base lifecycle', () => {
       registrarB = new MockRegistrar()
 
       pubsubA = new PubsubImplementation({
-        multicodecs: [protocol],
+        multicodecs: [protocol]
+      })
+      pubsubA.init(new Components({
         peerId: peerIdA,
         registrar: registrarA
-      })
+      }))
       pubsubB = new PubsubImplementation({
-        multicodecs: [protocol],
+        multicodecs: [protocol]
+      })
+      pubsubB.init(new Components({
         peerId: peerIdB,
         registrar: registrarB
-      })
+      }))
     })
 
     // start pubsub

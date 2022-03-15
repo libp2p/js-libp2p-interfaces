@@ -1,9 +1,21 @@
 import { EventEmitter } from '@libp2p/interfaces'
-import type { Connection } from '@libp2p/interfaces/src/connection'
-import type { PeerId } from '@libp2p/interfaces/src/peer-id'
-import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interfaces/src/registrar'
+import type { Connection } from '@libp2p/interfaces/connection'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interfaces/registrar'
 
 class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager {
+  getConnectionMap (): Map<string, Connection[]> {
+    throw new Error('Method not implemented.')
+  }
+
+  getConnectionList (): Connection[] {
+    throw new Error('Method not implemented.')
+  }
+
+  getConnections (): Connection[] {
+    throw new Error('Method not implemented.')
+  }
+
   getConnection (peerId: PeerId): Connection | undefined {
     throw new Error('Method not implemented.')
   }

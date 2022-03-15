@@ -5,11 +5,13 @@ import { expect } from 'aegir/utils/chai.js'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { MemoryDatastore } from 'datastore-core/memory'
 import pDefer from 'p-defer'
-import { createPeerStore } from '../src/index.js'
+import { PersistentPeerStore } from '../src/index.js'
 import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { PeerStore, MetadataBook } from '@libp2p/interfaces/peer-store'
+import { Components } from '@libp2p/interfaces/components'
+import { mockConnectionGater } from '@libp2p/interface-compliance-tests/mocks'
 
 describe('metadataBook', () => {
   let peerId: PeerId
@@ -23,10 +25,11 @@ describe('metadataBook', () => {
     let mb: MetadataBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
+      peerStore = new PersistentPeerStore(new Components({
         peerId,
-        datastore: new MemoryDatastore()
-      })
+        datastore: new MemoryDatastore(),
+        connectionGater: mockConnectionGater()
+      }))
       mb = peerStore.metadataBook
     })
 
@@ -163,10 +166,11 @@ describe('metadataBook', () => {
     let mb: MetadataBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
+      peerStore = new PersistentPeerStore(new Components({
         peerId,
-        datastore: new MemoryDatastore()
-      })
+        datastore: new MemoryDatastore(),
+        connectionGater: mockConnectionGater()
+      }))
       mb = peerStore.metadataBook
     })
 
@@ -206,10 +210,11 @@ describe('metadataBook', () => {
     let mb: MetadataBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
+      peerStore = new PersistentPeerStore(new Components({
         peerId,
-        datastore: new MemoryDatastore()
-      })
+        datastore: new MemoryDatastore(),
+        connectionGater: mockConnectionGater()
+      }))
       mb = peerStore.metadataBook
     })
 
@@ -259,10 +264,11 @@ describe('metadataBook', () => {
     let mb: MetadataBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
+      peerStore = new PersistentPeerStore(new Components({
         peerId,
-        datastore: new MemoryDatastore()
-      })
+        datastore: new MemoryDatastore(),
+        connectionGater: mockConnectionGater()
+      }))
       mb = peerStore.metadataBook
     })
 
@@ -317,10 +323,11 @@ describe('metadataBook', () => {
     let mb: MetadataBook
 
     beforeEach(() => {
-      peerStore = createPeerStore({
+      peerStore = new PersistentPeerStore(new Components({
         peerId,
-        datastore: new MemoryDatastore()
-      })
+        datastore: new MemoryDatastore(),
+        connectionGater: mockConnectionGater()
+      }))
       mb = peerStore.metadataBook
     })
 

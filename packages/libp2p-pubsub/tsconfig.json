@@ -10,8 +10,7 @@
     "test"
   ],
   "exclude": [
-    "src/message/rpc.js",
-    "src/message/topic-descriptor.js"
+    "test/message/rpc.js"
   ],
   "references": [
     {
@@ -21,13 +20,13 @@
       "path": "../libp2p-logger"
     },
     {
+      "path": "../libp2p-peer-collections"
+    },
+    {
       "path": "../libp2p-peer-id"
     },
     {
       "path": "../libp2p-peer-id-factory"
-    },
-    {
-      "path": "../libp2p-peer-map"
     },
     {
       "path": "../libp2p-topology"

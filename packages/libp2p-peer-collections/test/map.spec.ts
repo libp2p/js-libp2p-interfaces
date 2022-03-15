@@ -1,11 +1,11 @@
 import { expect } from 'aegir/utils/chai.js'
-import { peerMap } from '../src/index.js'
+import { PeerMap } from '../src/index.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { peerIdFromBytes } from '@libp2p/peer-id'
 
 describe('peer-map', () => {
   it('should return a map', async () => {
-    const map = peerMap<number>()
+    const map = new PeerMap<number>()
     const value = 5
     const peer = await createEd25519PeerId()
 
@@ -14,5 +14,17 @@ describe('peer-map', () => {
     const peer2 = peerIdFromBytes(peer.toBytes())
 
     expect(map.get(peer2)).to.equal(value)
+  })
+
+  it('should create a map with contents', async () => {
+    const map1 = new PeerMap<number>()
+    const value = 5
+    const peer = await createEd25519PeerId()
+
+    map1.set(peer, value)
+
+    const map2 = new PeerMap<number>(map1)
+
+    expect(map2.get(peer)).to.equal(value)
   })
 })

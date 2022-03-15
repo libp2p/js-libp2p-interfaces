@@ -1,4 +1,4 @@
-import { Connection } from '../src/index.js'
+import { createConnection } from '../src/index.js'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { pair } from 'it-pair'
 import { Multiaddr } from '@multiformats/multiaddr'
@@ -32,15 +32,12 @@ const peers = [{
 
 describe('connection tests', () => {
   it('should not require local or remote addrs', async () => {
-    const localPeer = await PeerIdFactory.createFromJSON(peers[0])
     const remotePeer = await PeerIdFactory.createFromJSON(peers[1])
 
     const openStreams: any[] = []
     let streamId = 0
 
-    return new Connection({
-      localPeer,
-      localAddr: new Multiaddr('/ip4/127.0.0.1/tcp/4001'),
+    return createConnection({
       remotePeer,
       remoteAddr: new Multiaddr('/ip4/127.0.0.1/tcp/4002'),
       stat: {

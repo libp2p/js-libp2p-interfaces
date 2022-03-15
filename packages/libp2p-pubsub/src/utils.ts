@@ -2,8 +2,7 @@ import { randomBytes } from 'iso-random-stream'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { sha256 } from 'multiformats/hashes/sha2'
-import type * as RPC from './message/rpc.js'
-import type { Message, RPCMessage } from '@libp2p/interfaces/pubsub'
+import type { Message, PubSubRPCMessage } from '@libp2p/interfaces/pubsub'
 import { peerIdFromBytes } from '@libp2p/peer-id'
 import { codes } from './errors.js'
 import errcode from 'err-code'
@@ -67,7 +66,7 @@ export const ensureArray = function <T> (maybeArray: T | T[]) {
   return maybeArray
 }
 
-export const toMessage = (message: RPC.RPC.IMessage): Message => {
+export const toMessage = (message: PubSubRPCMessage): Message => {
   if (message.from == null) {
     throw errcode(new Error('RPC message was missing from'), codes.ERR_MISSING_FROM)
   }
@@ -75,18 +74,18 @@ export const toMessage = (message: RPC.RPC.IMessage): Message => {
   return {
     from: peerIdFromBytes(message.from),
     topic: message.topic ?? '',
-    seqno: message.seqno == null ? undefined : BigInt(`0x${uint8ArrayToString(message.seqno, 'base16')}`),
+    sequenceNumber: message.sequenceNumber == null ? undefined : BigInt(`0x${uint8ArrayToString(message.sequenceNumber, 'base16')}`),
     data: message.data ?? new Uint8Array(0),
     signature: message.signature ?? undefined,
     key: message.key ?? undefined
   }
 }
 
-export const toRpcMessage = (message: Message): RPCMessage => {
+export const toRpcMessage = (message: Message): PubSubRPCMessage => {
   return {
     from: message.from.multihash.bytes,
     data: message.data,
-    seqno: message.seqno == null ? undefined : uint8ArrayFromString(message.seqno.toString(16).padStart(16, '0'), 'base16'),
+    sequenceNumber: message.sequenceNumber == null ? undefined : uint8ArrayFromString(message.sequenceNumber.toString(16).padStart(16, '0'), 'base16'),
     topic: message.topic,
     signature: message.signature,
     key: message.key

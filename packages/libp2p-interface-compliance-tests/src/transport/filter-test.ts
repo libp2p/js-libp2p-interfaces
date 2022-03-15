@@ -1,17 +1,16 @@
 import { expect } from 'aegir/utils/chai.js'
-import { mockUpgrader } from '../mocks/upgrader.js'
 import type { TestSetup } from '../index.js'
 import type { Transport } from '@libp2p/interfaces/transport'
-import type { TransportTestFixtures, SetupArgs } from './index.js'
+import type { TransportTestFixtures } from './index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 
-export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
+export default (common: TestSetup<TransportTestFixtures>) => {
   describe('filter', () => {
     let addrs: Multiaddr[]
-    let transport: Transport<any, any>
+    let transport: Transport
 
     before(async () => {
-      ({ addrs, transport } = await common.setup({ upgrader: mockUpgrader() }))
+      ({ addrs, transport } = await common.setup())
     })
 
     after(async () => {

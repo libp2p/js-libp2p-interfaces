@@ -49,7 +49,7 @@ The `addressBook` keeps the known multiaddrs of a peer. The multiaddrs of each p
 
 `Map<string, Address>`
 
-A `peerId.toString(base58btc)` identifier mapping to a `Address` object, which should have the following structure:
+A `peerId.toString()` identifier mapping to a `Address` object, which should have the following structure:
 
 ```js
 {
@@ -63,7 +63,7 @@ The `keyBook` tracks the public keys of the peers by keeping their [`PeerId`][pe
 
 `Map<string, PeerId`
 
-A `peerId.toString(base58btc)` identifier mapping to a `PeerId` of the peer. This instance contains the peer public key.
+A `peerId.toString()` identifier mapping to a `PeerId` of the peer. This instance contains the peer public key.
 
 #### Protocol Book
 
@@ -71,7 +71,7 @@ The `protoBook` holds the identifiers of the protocols supported by each peer. T
 
 `Map<string, Set<string>>`
 
-A `peerId.toString(base58btc)` identifier mapping to a `Set` of protocol identifier strings.
+A `peerId.toString()` identifier mapping to a `Set` of protocol identifier strings.
 
 #### Metadata Book
 
@@ -79,7 +79,7 @@ The `metadataBook` keeps track of the known metadata of a peer. Its metadata is 
 
 `Map<string, Map<string, Uint8Array>>`
 
-A `peerId.toString(base58btc)` identifier mapping to the peer metadata Map.
+A `peerId.toString()` identifier mapping to the peer metadata Map.
 
 ### API
 

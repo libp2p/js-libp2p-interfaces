@@ -7,7 +7,7 @@ import { equals as uint8ArrayEquals } from 'uint8arrays/equals'
 import { sha256 } from 'multiformats/hashes/sha2'
 import errcode from 'err-code'
 import { Ed25519PeerId, RSAPeerId, Secp256k1PeerId, symbol } from '@libp2p/interfaces/peer-id'
-import type { MultibaseDecoder, MultibaseEncoder } from 'multiformats/bases/interface'
+import type { MultibaseDecoder } from 'multiformats/bases/interface'
 import type { MultihashDigest } from 'multiformats/hashes/interface'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 
@@ -50,17 +50,17 @@ class PeerIdImpl {
   public readonly multihash: MultihashDigest
   public readonly privateKey?: Uint8Array
   public readonly publicKey?: Uint8Array
-  private readonly strings: Map<string, string>
+  private string?: string
 
   constructor (init: PeerIdInit) {
     this.type = init.type
     this.multihash = init.multihash
     this.privateKey = init.privateKey
 
-    // mark toString cache as non-enumerable
-    this.strings = new Map()
-    Object.defineProperty(this, 'strings', {
-      enumerable: false
+    // mark string cache as non-enumerable
+    Object.defineProperty(this, 'string', {
+      enumerable: false,
+      writable: true
     })
   }
 
@@ -72,22 +72,12 @@ class PeerIdImpl {
     return true
   }
 
-  toString (codec?: MultibaseEncoder<any>) {
-    if (codec == null) {
-      codec = base58btc
+  toString () {
+    if (this.string == null) {
+      this.string = base58btc.encode(this.multihash.bytes).slice(1)
     }
 
-    const cached = this.strings.get(codec.name)
-
-    if (cached != null) {
-      return cached
-    }
-
-    const encoded = codec.encode(this.multihash.bytes).slice(1)
-
-    this.strings.set(codec.name, encoded)
-
-    return encoded
+    return this.string
   }
 
   // return self-describing String representation
@@ -103,9 +93,11 @@ class PeerIdImpl {
   /**
    * Checks the equality of `this` peer against a given PeerId
    */
-  equals (id: any): boolean {
+  equals (id: PeerId | Uint8Array | string): boolean {
     if (id instanceof Uint8Array) {
       return uint8ArrayEquals(this.multihash.bytes, id)
+    } else if (typeof id === 'string') {
+      return peerIdFromString(id).equals(this as PeerId)
     } else if (id?.multihash?.bytes != null) {
       return uint8ArrayEquals(this.multihash.bytes, id.multihash.bytes)
     } else {

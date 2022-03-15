@@ -2,7 +2,6 @@
 import { expect } from 'aegir/utils/chai.js'
 import { createPeerId, peerIdFromBytes, peerIdFromString } from '../src/index.js'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { base58btc } from 'multiformats/bases/base58'
 
 describe('PeerId', () => {
   it('create an id without \'new\'', () => {
@@ -20,12 +19,6 @@ describe('PeerId', () => {
     const buf = uint8ArrayFromString('12D3KooWbtp1AcgweFSArD7dbKWYpAr8MZR1tofwNwLFLjeNGLWa', 'base58btc')
     const id = peerIdFromBytes(buf)
     expect(id.toString()).to.equal('12D3KooWbtp1AcgweFSArD7dbKWYpAr8MZR1tofwNwLFLjeNGLWa')
-  })
-
-  it('accepts a multibase encoder when stringifying', async () => {
-    const buf = uint8ArrayFromString('12D3KooWbtp1AcgweFSArD7dbKWYpAr8MZR1tofwNwLFLjeNGLWa', 'base58btc')
-    const id = peerIdFromBytes(buf)
-    expect(id.toString(base58btc)).to.equal('12D3KooWbtp1AcgweFSArD7dbKWYpAr8MZR1tofwNwLFLjeNGLWa')
   })
 
   it('turns into a CID', async () => {
@@ -83,10 +76,10 @@ describe('PeerId', () => {
     const buf = uint8ArrayFromString('16Uiu2HAkxSnqYGDU5iZTQrZyAcQDQHKrZqSNPBmKFifEagS2XfrL', 'base58btc')
     const id = peerIdFromBytes(buf)
 
-    expect(id).to.have.property('strings').that.is.empty()
+    expect(id).to.have.property('string').that.is.not.ok()
 
     id.toString()
 
-    expect(id).to.have.property('strings').that.is.not.empty()
+    expect(id).to.have.property('string').that.is.ok()
   })
 })

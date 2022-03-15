@@ -8,16 +8,17 @@ import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
-import type { Message, PubSubOptions } from '@libp2p/interfaces/pubsub'
-import type { EventMap } from './index.js'
-import type { PeerId } from '@libp2p/interfaces/src/peer-id'
-import type { Registrar } from '@libp2p/interfaces/src/registrar'
-import type { PubsubBaseProtocol } from '@libp2p/pubsub'
+import type { Message } from '@libp2p/interfaces/pubsub'
+import type { EventMap, PubSubArgs } from './index.js'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { Registrar } from '@libp2p/interfaces/registrar'
+import type { PubSubBaseProtocol } from '@libp2p/pubsub'
+import { Components } from '@libp2p/interfaces/components'
 
-export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) => {
+export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => {
   describe('pubsub connection handlers', () => {
-    let psA: PubsubBaseProtocol<EventMap>
-    let psB: PubsubBaseProtocol<EventMap>
+    let psA: PubSubBaseProtocol<EventMap>
+    let psB: PubSubBaseProtocol<EventMap>
     let peerA: PeerId
     let peerB: PeerId
     let registrarA: Registrar
@@ -33,12 +34,18 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         registrarB = mockRegistrar()
 
         psA = await common.setup({
-          peerId: peerA,
-          registrar: registrarA
+          components: new Components({
+            peerId: peerA,
+            registrar: registrarA
+          }),
+          init: {}
         })
         psB = await common.setup({
-          peerId: peerB,
-          registrar: registrarB
+          components: new Components({
+            peerId: peerB,
+            registrar: registrarB
+          }),
+          init: {}
         })
 
         // Start pubsub
@@ -97,8 +104,8 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
     })
 
     describe('pubsub started before connect', () => {
-      let psA: PubsubBaseProtocol<EventMap>
-      let psB: PubsubBaseProtocol<EventMap>
+      let psA: PubSubBaseProtocol<EventMap>
+      let psB: PubSubBaseProtocol<EventMap>
       let peerA: PeerId
       let peerB: PeerId
       let registrarA: Registrar
@@ -113,12 +120,18 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         registrarB = mockRegistrar()
 
         psA = await common.setup({
-          peerId: peerA,
-          registrar: registrarA
+          components: new Components({
+            peerId: peerA,
+            registrar: registrarA
+          }),
+          init: {}
         })
         psB = await common.setup({
-          peerId: peerB,
-          registrar: registrarB
+          components: new Components({
+            peerId: peerB,
+            registrar: registrarB
+          }),
+          init: {}
         })
 
         await psA.start()
@@ -177,15 +190,15 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           const subscribedPeers = psB.getSubscribers(topic)
           return subscribedPeers.map(p => p.toString()).includes(peerA.toString())
         })
-        void psB.dispatchEvent(new CustomEvent(topic, { detail: data }))
+        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
 
         await defer.promise
       })
     })
 
     describe('pubsub started after connect', () => {
-      let psA: PubsubBaseProtocol<EventMap>
-      let psB: PubsubBaseProtocol<EventMap>
+      let psA: PubSubBaseProtocol<EventMap>
+      let psB: PubSubBaseProtocol<EventMap>
       let peerA: PeerId
       let peerB: PeerId
       let registrarA: Registrar
@@ -200,12 +213,18 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         registrarB = mockRegistrar()
 
         psA = await common.setup({
-          peerId: peerA,
-          registrar: registrarA
+          components: new Components({
+            peerId: peerA,
+            registrar: registrarA
+          }),
+          init: {}
         })
         psB = await common.setup({
-          peerId: peerB,
-          registrar: registrarB
+          components: new Components({
+            peerId: peerB,
+            registrar: registrarB
+          }),
+          init: {}
         })
       })
 
@@ -275,15 +294,15 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           const subscribedPeers = psB.getSubscribers(topic)
           return subscribedPeers.map(p => p.toString()).includes(peerA.toString())
         })
-        void psB.dispatchEvent(new CustomEvent(topic, { detail: data }))
+        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
 
         await defer.promise
       })
     })
 
     describe('pubsub with intermittent connections', () => {
-      let psA: PubsubBaseProtocol<EventMap>
-      let psB: PubsubBaseProtocol<EventMap>
+      let psA: PubSubBaseProtocol<EventMap>
+      let psB: PubSubBaseProtocol<EventMap>
       let peerA: PeerId
       let peerB: PeerId
       let registrarA: Registrar
@@ -298,12 +317,18 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         registrarB = mockRegistrar()
 
         psA = await common.setup({
-          peerId: peerA,
-          registrar: registrarA
+          components: new Components({
+            peerId: peerA,
+            registrar: registrarA
+          }),
+          init: {}
         })
         psB = await common.setup({
-          peerId: peerB,
-          registrar: registrarB
+          components: new Components({
+            peerId: peerB,
+            registrar: registrarB
+          }),
+          init: {}
         })
 
         await psA.start()
@@ -354,7 +379,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           const subscribedPeers = psB.getSubscribers(topic)
           return subscribedPeers.map(p => p.toString()).includes(peerA.toString())
         })
-        void psB.dispatchEvent(new CustomEvent(topic, { detail: data }))
+        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
 
         await defer1.promise
 
@@ -387,7 +412,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           return subscribedPeers.toString().includes(peerA.toString())
         })
 
-        void psB.dispatchEvent(new CustomEvent(topic, { detail: data }))
+        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
 
         await defer2.promise
       })
@@ -451,8 +476,8 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         })
 
         // Verify messages go both ways
-        void psA.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('message-from-a-1') }))
-        void psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('message-from-b-1') }))
+        void psA.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('message-from-a-1') }))
+        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('message-from-b-1') }))
         await pWaitFor(() => {
           return aReceivedFirstMessageFromB && bReceivedFirstMessageFromA
         })
@@ -465,8 +490,8 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         await pWaitFor(() => psAConnUpdateSpy.callCount === 1)
 
         // Verify messages go both ways after the disconnect
-        void psA.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('message-from-a-2') }))
-        void psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('message-from-b-2') }))
+        void psA.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('message-from-a-2') }))
+        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('message-from-b-2') }))
         await pWaitFor(() => {
           return aReceivedSecondMessageFromB && bReceivedSecondMessageFromA
         })

@@ -15,9 +15,9 @@ npm i libp2p-pubsub
 ```
 
 ```javascript
-import { PubsubBaseProtocol } from '@libp2p/pubsub'
+import { PubSubBaseProtocol } from '@libp2p/pubsub'
 
-class MyPubsubImplementation extends PubsubBaseProtocol {
+class MyPubsubImplementation extends PubSubBaseProtocol {
   // .. extra methods here
 }
 ```

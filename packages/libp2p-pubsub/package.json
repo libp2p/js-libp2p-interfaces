@@ -52,14 +52,6 @@
       "import": "./dist/src/errors.js",
       "types": "./dist/src/errors.d.ts"
     },
-    "./message/rpc": {
-      "import": "./dist/src/message/rpc.js",
-      "types": "./dist/src/message/rpc.d.ts"
-    },
-    "./message/topic-descriptor": {
-      "import": "./dist/src/message/topic-descriptor.js",
-      "types": "./dist/src/message/topic-descriptor.d.ts"
-    },
     "./peer-streams": {
       "import": "./dist/src/peer-streams.js",
       "types": "./dist/src/peer-streams.d.ts"
@@ -79,8 +71,8 @@
       "sourceType": "module"
     },
     "ignorePatterns": [
-      "src/message/*.d.ts",
-      "src/message/*.js"
+      "test/message/*.d.ts",
+      "tes/message/*.js"
     ]
   },
   "release": {
@@ -167,7 +159,12 @@
   "scripts": {
     "lint": "aegir lint",
     "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
-    "build": "tsc && npm run build:copy-proto-files",
+    "build": "tsc",
+    "postbuild": "npm run build:copy-proto-files",
+    "generate": "npm run generate:proto && npm run generate:proto-types",
+    "generate:proto": "pbjs -t static-module -w es6 -r libp2p-pubsub --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o test/message/rpc.js ./test/message/rpc.proto",
+    "generate:proto-types": "pbts -o test/message/rpc.d.ts test/message/rpc.js",
+    "build:copy-proto-files": "mkdirp dist/test/message && cp test/message/rpc.js test/message/rpc.d.ts dist/test/message",
     "pretest": "npm run build",
     "test": "aegir test -f ./dist/test/*.js -f ./dist/test/**/*.js",
     "test:chrome": "npm run test -- -t browser",
@@ -175,30 +172,26 @@
     "test:firefox": "npm run test -- -t browser -- --browser firefox",
     "test:firefox-webworker": "npm run test -- -t webworker -- --browser firefox",
     "test:node": "npm run test -- -t node --cov",
-    "test:electron-main": "npm run test -- -t electron-main",
-    "generate": "npm run generate:proto:rpc && npm run generate:proto-types:rpc",
-    "generate:proto:rpc": "pbjs -t static-module -w es6 -r libp2p-pubsub-rpc --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/message/rpc.js ./src/message/rpc.proto",
-    "generate:proto-types:rpc": "pbts -o src/message/rpc.d.ts src/message/rpc.js",
-    "build:copy-proto-files": "cp src/message/*.js dist/src/message && cp src/message/*.d.ts dist/src/message"
+    "test:electron-main": "npm run test -- -t electron-main"
   },
   "dependencies": {
-    "@libp2p/crypto": "^0.22.7",
-    "@libp2p/interfaces": "^1.3.12",
+    "@libp2p/crypto": "^0.22.8",
+    "@libp2p/interfaces": "^1.3.0",
     "@libp2p/logger": "^1.1.0",
-    "@libp2p/peer-id": "^1.1.6",
-    "@libp2p/peer-map": "^1.0.2",
-    "@libp2p/topology": "^1.1.4",
+    "@libp2p/peer-collections": "^0.0.0",
+    "@libp2p/peer-id": "^1.1.0",
+    "@libp2p/topology": "^1.1.0",
     "@multiformats/multiaddr": "^10.1.5",
     "err-code": "^3.0.1",
     "iso-random-stream": "^2.0.0",
-    "it-length-prefixed": "^7.0.0",
+    "it-length-prefixed": "^7.0.1",
     "it-pipe": "^2.0.3",
     "multiformats": "^9.6.3",
-    "p-queue": "^7.1.0",
+    "p-queue": "^7.2.0",
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@libp2p/peer-id-factory": "^1.0.6",
+    "@libp2p/peer-id-factory": "^1.0.0",
     "abortable-iterator": "^4.0.2",
     "aegir": "^36.1.3",
     "it-pair": "^2.0.2",

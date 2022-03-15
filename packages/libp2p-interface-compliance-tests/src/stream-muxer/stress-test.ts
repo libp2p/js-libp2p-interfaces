@@ -1,9 +1,13 @@
 import spawn from './spawner.js'
 import type { TestSetup } from '../index.js'
-import type { Muxer, MuxerInit } from '@libp2p/interfaces/stream-muxer'
+import type { StreamMuxerFactory, StreamMuxerInit, StreamMuxer } from '@libp2p/interfaces/stream-muxer'
+import { Components } from '@libp2p/interfaces/components'
 
-export default (common: TestSetup<Muxer, MuxerInit>) => {
-  const createMuxer = async (init?: MuxerInit) => await common.setup(init)
+export default (common: TestSetup<StreamMuxerFactory>) => {
+  const createMuxer = async (init?: StreamMuxerInit): Promise<StreamMuxer> => {
+    const factory = await common.setup()
+    return factory.createStreamMuxer(new Components(), init)
+  }
 
   describe('stress test', () => {
     it('1 stream with 1 msg', async () => await spawn(createMuxer, 1, 1))
