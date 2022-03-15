@@ -169,8 +169,8 @@ export default (common: TestSetup<TransportTestFixtures>) => {
           expect(evt.detail).to.be.an.instanceOf(Error)
           listener.close().then(done, done)
         })
-        listener.dispatchEvent(new ErrorEvent('error', {
-          error: new Error('my err')
+        listener.dispatchEvent(new CustomEvent('error', {
+          detail: new Error('my err')
         }))
       })
 
