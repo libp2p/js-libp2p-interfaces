@@ -7,19 +7,18 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { isValidTick } from '../utils/is-valid-tick.js'
 import { mockUpgrader } from '../mocks/upgrader.js'
 import defer from 'p-defer'
-import { CustomEvent } from '@libp2p/interfaces'
-import type { TestSetup } from '../index.js'
-import type { Transport } from '@libp2p/interfaces/transport'
-import type { TransportTestFixtures, SetupArgs } from './index.js'
-import type { Multiaddr } from '@multiformats/multiaddr'
-import type { Connection } from '@libp2p/interfaces/connection'
-import type { Registrar } from '@libp2p/interfaces/src/registrar'
 import { mockRegistrar } from '../mocks/registrar.js'
 import drain from 'it-drain'
+import type { TestSetup } from '../index.js'
+import type { Transport, Upgrader } from '@libp2p/interfaces/transport'
+import type { TransportTestFixtures } from './index.js'
+import type { Multiaddr } from '@multiformats/multiaddr'
+import type { Connection } from '@libp2p/interfaces/connection'
+import type { Registrar } from '@libp2p/interfaces/registrar'
 
-export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
+export default (common: TestSetup<TransportTestFixtures>) => {
   describe('listen', () => {
-    let upgrader = mockUpgrader()
+    let upgrader: Upgrader
     let addrs: Multiaddr[]
     let transport: Transport
     let registrar: Registrar
@@ -30,7 +29,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
         registrar
       });
 
-      ({ transport, addrs } = await common.setup({ upgrader }))
+      ({ transport, addrs } = await common.setup())
     })
 
     after(async () => {
@@ -42,7 +41,9 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
     })
 
     it('simple', async () => {
-      const listener = transport.createListener()
+      const listener = transport.createListener({
+        upgrader
+      })
       await listener.listen(addrs[0])
       await listener.close()
     })
@@ -52,11 +53,12 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       const listenerConns: Connection[] = []
 
       const protocol = '/test/protocol'
-      void registrar.handle(protocol, (evt) => {
-        void drain(evt.detail.stream.source)
+      void registrar.handle(protocol, (data) => {
+        void drain(data.stream.source)
       })
 
       const listener = transport.createListener({
+        upgrader,
         handler: (conn) => {
           listenerConns.push(conn)
         }
@@ -67,8 +69,12 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
 
       // Create two connections to the listener
       const [conn1] = await Promise.all([
-        transport.dial(addrs[0]),
-        transport.dial(addrs[0])
+        transport.dial(addrs[0], {
+          upgrader
+        }),
+        transport.dial(addrs[0], {
+          upgrader
+        })
       ])
 
       // Give the listener a chance to finish its upgrade
@@ -102,16 +108,16 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       sinon.stub(upgrader, 'upgradeInbound').throws()
 
       const listener = transport.createListener({
-        handler: () => {
-          throw new Error('should not handle the connection if upgradeInbound throws')
-        }
+        upgrader
       })
 
       // Listen
       await listener.listen(addrs[0])
 
       // Create a connection to the listener
-      const conn = await transport.dial(addrs[0])
+      const conn = await transport.dial(addrs[0], {
+        upgrader
+      })
 
       await pWaitFor(() => typeof conn.stat.timeline.close === 'number')
       await listener.close()
@@ -120,7 +126,9 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
     describe('events', () => {
       it('connection', async () => {
         const upgradeSpy = sinon.spy(upgrader, 'upgradeInbound')
-        const listener = transport.createListener()
+        const listener = transport.createListener({
+          upgrader
+        })
         const deferred = defer()
         let conn
 
@@ -131,7 +139,9 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
 
         void (async () => {
           await listener.listen(addrs[0])
-          await transport.dial(addrs[0])
+          await transport.dial(addrs[0], {
+            upgrader
+          })
         })()
 
         await deferred.promise
@@ -142,7 +152,9 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       })
 
       it('listening', (done) => {
-        const listener = transport.createListener()
+        const listener = transport.createListener({
+          upgrader
+        })
         listener.addEventListener('listening', () => {
           listener.close().then(done, done)
         })
@@ -150,18 +162,22 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       })
 
       it('error', (done) => {
-        const listener = transport.createListener()
+        const listener = transport.createListener({
+          upgrader
+        })
         listener.addEventListener('error', (evt) => {
           expect(evt.detail).to.be.an.instanceOf(Error)
           listener.close().then(done, done)
         })
-        listener.dispatchEvent(new CustomEvent('error', {
-          detail: new Error('my err')
+        listener.dispatchEvent(new ErrorEvent('error', {
+          error: new Error('my err')
         }))
       })
 
       it('close', (done) => {
-        const listener = transport.createListener()
+        const listener = transport.createListener({
+          upgrader
+        })
         listener.addEventListener('close', () => done())
 
         void (async () => {

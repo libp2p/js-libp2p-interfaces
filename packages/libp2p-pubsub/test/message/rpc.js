@@ -992,8 +992,8 @@ export const ControlIHave = $root.ControlIHave = (() => {
      * Properties of a ControlIHave.
      * @exports IControlIHave
      * @interface IControlIHave
-     * @property {string|null} [topicID] ControlIHave topicID
-     * @property {Array.<string>|null} [messageIDs] ControlIHave messageIDs
+     * @property {string|null} [topic] ControlIHave topic
+     * @property {Array.<Uint8Array>|null} [messageIDs] ControlIHave messageIDs
      */
 
     /**
@@ -1013,16 +1013,16 @@ export const ControlIHave = $root.ControlIHave = (() => {
     }
 
     /**
-     * ControlIHave topicID.
-     * @member {string|null|undefined} topicID
+     * ControlIHave topic.
+     * @member {string|null|undefined} topic
      * @memberof ControlIHave
      * @instance
      */
-    ControlIHave.prototype.topicID = null;
+    ControlIHave.prototype.topic = null;
 
     /**
      * ControlIHave messageIDs.
-     * @member {Array.<string>} messageIDs
+     * @member {Array.<Uint8Array>} messageIDs
      * @memberof ControlIHave
      * @instance
      */
@@ -1032,13 +1032,13 @@ export const ControlIHave = $root.ControlIHave = (() => {
     let $oneOfFields;
 
     /**
-     * ControlIHave _topicID.
-     * @member {"topicID"|undefined} _topicID
+     * ControlIHave _topic.
+     * @member {"topic"|undefined} _topic
      * @memberof ControlIHave
      * @instance
      */
-    Object.defineProperty(ControlIHave.prototype, "_topicID", {
-        get: $util.oneOfGetter($oneOfFields = ["topicID"]),
+    Object.defineProperty(ControlIHave.prototype, "_topic", {
+        get: $util.oneOfGetter($oneOfFields = ["topic"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -1054,11 +1054,11 @@ export const ControlIHave = $root.ControlIHave = (() => {
     ControlIHave.encode = function encode(m, w) {
         if (!w)
             w = $Writer.create();
-        if (m.topicID != null && Object.hasOwnProperty.call(m, "topicID"))
-            w.uint32(10).string(m.topicID);
+        if (m.topic != null && Object.hasOwnProperty.call(m, "topic"))
+            w.uint32(10).string(m.topic);
         if (m.messageIDs != null && m.messageIDs.length) {
             for (var i = 0; i < m.messageIDs.length; ++i)
-                w.uint32(18).string(m.messageIDs[i]);
+                w.uint32(18).bytes(m.messageIDs[i]);
         }
         return w;
     };
@@ -1082,12 +1082,12 @@ export const ControlIHave = $root.ControlIHave = (() => {
             var t = r.uint32();
             switch (t >>> 3) {
             case 1:
-                m.topicID = r.string();
+                m.topic = r.string();
                 break;
             case 2:
                 if (!(m.messageIDs && m.messageIDs.length))
                     m.messageIDs = [];
-                m.messageIDs.push(r.string());
+                m.messageIDs.push(r.bytes());
                 break;
             default:
                 r.skipType(t & 7);
@@ -1109,15 +1109,18 @@ export const ControlIHave = $root.ControlIHave = (() => {
         if (d instanceof $root.ControlIHave)
             return d;
         var m = new $root.ControlIHave();
-        if (d.topicID != null) {
-            m.topicID = String(d.topicID);
+        if (d.topic != null) {
+            m.topic = String(d.topic);
         }
         if (d.messageIDs) {
             if (!Array.isArray(d.messageIDs))
                 throw TypeError(".ControlIHave.messageIDs: array expected");
             m.messageIDs = [];
             for (var i = 0; i < d.messageIDs.length; ++i) {
-                m.messageIDs[i] = String(d.messageIDs[i]);
+                if (typeof d.messageIDs[i] === "string")
+                    $util.base64.decode(d.messageIDs[i], m.messageIDs[i] = $util.newBuffer($util.base64.length(d.messageIDs[i])), 0);
+                else if (d.messageIDs[i].length)
+                    m.messageIDs[i] = d.messageIDs[i];
             }
         }
         return m;
@@ -1139,15 +1142,15 @@ export const ControlIHave = $root.ControlIHave = (() => {
         if (o.arrays || o.defaults) {
             d.messageIDs = [];
         }
-        if (m.topicID != null && m.hasOwnProperty("topicID")) {
-            d.topicID = m.topicID;
+        if (m.topic != null && m.hasOwnProperty("topic")) {
+            d.topic = m.topic;
             if (o.oneofs)
-                d._topicID = "topicID";
+                d._topic = "topic";
         }
         if (m.messageIDs && m.messageIDs.length) {
             d.messageIDs = [];
             for (var j = 0; j < m.messageIDs.length; ++j) {
-                d.messageIDs[j] = m.messageIDs[j];
+                d.messageIDs[j] = o.bytes === String ? $util.base64.encode(m.messageIDs[j], 0, m.messageIDs[j].length) : o.bytes === Array ? Array.prototype.slice.call(m.messageIDs[j]) : m.messageIDs[j];
             }
         }
         return d;
@@ -1173,7 +1176,7 @@ export const ControlIWant = $root.ControlIWant = (() => {
      * Properties of a ControlIWant.
      * @exports IControlIWant
      * @interface IControlIWant
-     * @property {Array.<string>|null} [messageIDs] ControlIWant messageIDs
+     * @property {Array.<Uint8Array>|null} [messageIDs] ControlIWant messageIDs
      */
 
     /**
@@ -1194,7 +1197,7 @@ export const ControlIWant = $root.ControlIWant = (() => {
 
     /**
      * ControlIWant messageIDs.
-     * @member {Array.<string>} messageIDs
+     * @member {Array.<Uint8Array>} messageIDs
      * @memberof ControlIWant
      * @instance
      */
@@ -1214,7 +1217,7 @@ export const ControlIWant = $root.ControlIWant = (() => {
             w = $Writer.create();
         if (m.messageIDs != null && m.messageIDs.length) {
             for (var i = 0; i < m.messageIDs.length; ++i)
-                w.uint32(10).string(m.messageIDs[i]);
+                w.uint32(10).bytes(m.messageIDs[i]);
         }
         return w;
     };
@@ -1240,7 +1243,7 @@ export const ControlIWant = $root.ControlIWant = (() => {
             case 1:
                 if (!(m.messageIDs && m.messageIDs.length))
                     m.messageIDs = [];
-                m.messageIDs.push(r.string());
+                m.messageIDs.push(r.bytes());
                 break;
             default:
                 r.skipType(t & 7);
@@ -1267,7 +1270,10 @@ export const ControlIWant = $root.ControlIWant = (() => {
                 throw TypeError(".ControlIWant.messageIDs: array expected");
             m.messageIDs = [];
             for (var i = 0; i < d.messageIDs.length; ++i) {
-                m.messageIDs[i] = String(d.messageIDs[i]);
+                if (typeof d.messageIDs[i] === "string")
+                    $util.base64.decode(d.messageIDs[i], m.messageIDs[i] = $util.newBuffer($util.base64.length(d.messageIDs[i])), 0);
+                else if (d.messageIDs[i].length)
+                    m.messageIDs[i] = d.messageIDs[i];
             }
         }
         return m;
@@ -1292,7 +1298,7 @@ export const ControlIWant = $root.ControlIWant = (() => {
         if (m.messageIDs && m.messageIDs.length) {
             d.messageIDs = [];
             for (var j = 0; j < m.messageIDs.length; ++j) {
-                d.messageIDs[j] = m.messageIDs[j];
+                d.messageIDs[j] = o.bytes === String ? $util.base64.encode(m.messageIDs[j], 0, m.messageIDs[j].length) : o.bytes === Array ? Array.prototype.slice.call(m.messageIDs[j]) : m.messageIDs[j];
             }
         }
         return d;
@@ -1318,7 +1324,7 @@ export const ControlGraft = $root.ControlGraft = (() => {
      * Properties of a ControlGraft.
      * @exports IControlGraft
      * @interface IControlGraft
-     * @property {string|null} [topicID] ControlGraft topicID
+     * @property {string|null} [topic] ControlGraft topic
      */
 
     /**
@@ -1337,24 +1343,24 @@ export const ControlGraft = $root.ControlGraft = (() => {
     }
 
     /**
-     * ControlGraft topicID.
-     * @member {string|null|undefined} topicID
+     * ControlGraft topic.
+     * @member {string|null|undefined} topic
      * @memberof ControlGraft
      * @instance
      */
-    ControlGraft.prototype.topicID = null;
+    ControlGraft.prototype.topic = null;
 
     // OneOf field names bound to virtual getters and setters
     let $oneOfFields;
 
     /**
-     * ControlGraft _topicID.
-     * @member {"topicID"|undefined} _topicID
+     * ControlGraft _topic.
+     * @member {"topic"|undefined} _topic
      * @memberof ControlGraft
      * @instance
      */
-    Object.defineProperty(ControlGraft.prototype, "_topicID", {
-        get: $util.oneOfGetter($oneOfFields = ["topicID"]),
+    Object.defineProperty(ControlGraft.prototype, "_topic", {
+        get: $util.oneOfGetter($oneOfFields = ["topic"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -1370,8 +1376,8 @@ export const ControlGraft = $root.ControlGraft = (() => {
     ControlGraft.encode = function encode(m, w) {
         if (!w)
             w = $Writer.create();
-        if (m.topicID != null && Object.hasOwnProperty.call(m, "topicID"))
-            w.uint32(10).string(m.topicID);
+        if (m.topic != null && Object.hasOwnProperty.call(m, "topic"))
+            w.uint32(10).string(m.topic);
         return w;
     };
 
@@ -1394,7 +1400,7 @@ export const ControlGraft = $root.ControlGraft = (() => {
             var t = r.uint32();
             switch (t >>> 3) {
             case 1:
-                m.topicID = r.string();
+                m.topic = r.string();
                 break;
             default:
                 r.skipType(t & 7);
@@ -1416,8 +1422,8 @@ export const ControlGraft = $root.ControlGraft = (() => {
         if (d instanceof $root.ControlGraft)
             return d;
         var m = new $root.ControlGraft();
-        if (d.topicID != null) {
-            m.topicID = String(d.topicID);
+        if (d.topic != null) {
+            m.topic = String(d.topic);
         }
         return m;
     };
@@ -1435,10 +1441,10 @@ export const ControlGraft = $root.ControlGraft = (() => {
         if (!o)
             o = {};
         var d = {};
-        if (m.topicID != null && m.hasOwnProperty("topicID")) {
-            d.topicID = m.topicID;
+        if (m.topic != null && m.hasOwnProperty("topic")) {
+            d.topic = m.topic;
             if (o.oneofs)
-                d._topicID = "topicID";
+                d._topic = "topic";
         }
         return d;
     };
@@ -1463,7 +1469,7 @@ export const ControlPrune = $root.ControlPrune = (() => {
      * Properties of a ControlPrune.
      * @exports IControlPrune
      * @interface IControlPrune
-     * @property {string|null} [topicID] ControlPrune topicID
+     * @property {string|null} [topic] ControlPrune topic
      * @property {Array.<IPeerInfo>|null} [peers] ControlPrune peers
      * @property {number|null} [backoff] ControlPrune backoff
      */
@@ -1485,12 +1491,12 @@ export const ControlPrune = $root.ControlPrune = (() => {
     }
 
     /**
-     * ControlPrune topicID.
-     * @member {string|null|undefined} topicID
+     * ControlPrune topic.
+     * @member {string|null|undefined} topic
      * @memberof ControlPrune
      * @instance
      */
-    ControlPrune.prototype.topicID = null;
+    ControlPrune.prototype.topic = null;
 
     /**
      * ControlPrune peers.
@@ -1512,13 +1518,13 @@ export const ControlPrune = $root.ControlPrune = (() => {
     let $oneOfFields;
 
     /**
-     * ControlPrune _topicID.
-     * @member {"topicID"|undefined} _topicID
+     * ControlPrune _topic.
+     * @member {"topic"|undefined} _topic
      * @memberof ControlPrune
      * @instance
      */
-    Object.defineProperty(ControlPrune.prototype, "_topicID", {
-        get: $util.oneOfGetter($oneOfFields = ["topicID"]),
+    Object.defineProperty(ControlPrune.prototype, "_topic", {
+        get: $util.oneOfGetter($oneOfFields = ["topic"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -1545,8 +1551,8 @@ export const ControlPrune = $root.ControlPrune = (() => {
     ControlPrune.encode = function encode(m, w) {
         if (!w)
             w = $Writer.create();
-        if (m.topicID != null && Object.hasOwnProperty.call(m, "topicID"))
-            w.uint32(10).string(m.topicID);
+        if (m.topic != null && Object.hasOwnProperty.call(m, "topic"))
+            w.uint32(10).string(m.topic);
         if (m.peers != null && m.peers.length) {
             for (var i = 0; i < m.peers.length; ++i)
                 $root.PeerInfo.encode(m.peers[i], w.uint32(18).fork()).ldelim();
@@ -1575,7 +1581,7 @@ export const ControlPrune = $root.ControlPrune = (() => {
             var t = r.uint32();
             switch (t >>> 3) {
             case 1:
-                m.topicID = r.string();
+                m.topic = r.string();
                 break;
             case 2:
                 if (!(m.peers && m.peers.length))
@@ -1605,8 +1611,8 @@ export const ControlPrune = $root.ControlPrune = (() => {
         if (d instanceof $root.ControlPrune)
             return d;
         var m = new $root.ControlPrune();
-        if (d.topicID != null) {
-            m.topicID = String(d.topicID);
+        if (d.topic != null) {
+            m.topic = String(d.topic);
         }
         if (d.peers) {
             if (!Array.isArray(d.peers))
@@ -1647,10 +1653,10 @@ export const ControlPrune = $root.ControlPrune = (() => {
         if (o.arrays || o.defaults) {
             d.peers = [];
         }
-        if (m.topicID != null && m.hasOwnProperty("topicID")) {
-            d.topicID = m.topicID;
+        if (m.topic != null && m.hasOwnProperty("topic")) {
+            d.topic = m.topic;
             if (o.oneofs)
-                d._topicID = "topicID";
+                d._topic = "topic";
         }
         if (m.peers && m.peers.length) {
             d.peers = [];

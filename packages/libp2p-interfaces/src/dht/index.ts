@@ -1,7 +1,7 @@
 import type { PeerId } from '../peer-id/index.js'
 import type { CID } from 'multiformats/cid'
 import type { PeerData } from '../peer-data/index.js'
-import type { AbortOptions, Startable } from '../index.js'
+import type { AbortOptions } from '../index.js'
 import type { PeerDiscovery } from '../peer-discovery/index.js'
 
 /**
@@ -128,7 +128,11 @@ export interface DialingPeerEvent {
 
 export type QueryEvent = SendingQueryEvent | PeerResponseEvent | FinalPeerEvent | QueryErrorEvent | ProviderEvent | ValueEvent | AddingPeerEvent | DialingPeerEvent
 
-export interface DHT extends PeerDiscovery, Startable {
+export interface RoutingTable {
+  size: number
+}
+
+export interface DHT extends PeerDiscovery {
   /**
    * Get a value from the DHT, the final ValueEvent will be the best value
    */
@@ -173,6 +177,15 @@ export interface DHT extends PeerDiscovery, Startable {
    * Force a routing table refresh
    */
   refreshRoutingTable: () => Promise<void>
+}
+
+export interface SingleDHT extends DHT {
+  routingTable: RoutingTable
+}
+
+export interface DualDHT extends DHT {
+  wan: SingleDHT
+  lan: SingleDHT
 }
 
 export interface SelectFn { (key: Uint8Array, records: Uint8Array[]): number }

@@ -1,13 +1,19 @@
-import type { Startable } from '..'
 import type { PeerId } from '../peer-id'
-import type { MultiaddrConnection } from '../transport'
+import type { Duplex } from 'it-stream-types'
+
+export interface MetricsInit {
+  enabled: boolean
+  computeThrottleMaxQueueSize: number
+  computeThrottleTimeout: number
+  movingAverageIntervals: number[]
+  maxOldPeersRetention: number
+}
 
 export interface MovingAverage {
-  variance: () => number
-  movingAverage: () => number
-
-  deviation: () => number
-  forecast: () => number
+  variance: number
+  movingAverage: number
+  deviation: number
+  forecast: number
 
   push: (time: number, value: number) => void
 }
@@ -17,27 +23,21 @@ export interface MovingAverages {
   dataSent: MovingAverage[]
 }
 
-export interface StatsJSON {
-  dataReceived: string
-  dataSent: string
-  movingAverages: Record<string, Record<string, number>>
+export interface TransferStats {
+  dataReceived: BigInt
+  dataSent: BigInt
 }
 
-export interface Stats extends Startable {
+export interface Stats {
   /**
    * Returns a clone of the current stats.
    */
-  getSnapshot: Record<string, any>
+  getSnapshot: () => TransferStats
 
   /**
    * Returns a clone of the internal movingAverages
    */
   getMovingAverages: () => MovingAverages
-
-  /**
-   * Returns a plain JSON object of the stats
-   */
-  toJSON: () => StatsJSON
 
   /**
    * Pushes the given operation data to the queue, along with the
@@ -46,7 +46,24 @@ export interface Stats extends Startable {
   push: (counter: string, inc: number) => void
 }
 
-export interface Metrics extends Startable {
+export interface TrackStreamOptions <T extends Duplex<Uint8Array>> {
+  /**
+   * A duplex iterable stream
+   */
+  stream: T
+
+  /**
+   * The id of the remote peer that's connected
+   */
+  remotePeer: PeerId
+
+  /**
+   * The protocol the stream is running
+   */
+  protocol?: string
+}
+
+export interface StreamMetrics {
   /**
    * Returns the global `Stats` object
    */
@@ -61,7 +78,7 @@ export interface Metrics extends Startable {
    * Returns the `Stats` object for the given `PeerId` whether it
    * is a live peer, or in the disconnected peer LRU cache.
    */
-  forPeer: (peerId: PeerId) => Stats
+  forPeer: (peerId: PeerId) => Stats | undefined
 
   /**
    * Returns a list of all protocol strings currently being tracked.
@@ -69,12 +86,9 @@ export interface Metrics extends Startable {
   getProtocols: () => string[]
 
   /**
-   * Returns the `Stats` object for the given `protocol`.
-   *
-   * @param {string} protocol
-   * @returns {Stats}
+   * Returns the `Stats` object for the given `protocol`
    */
-  forProtocol: (protocol: string) => Stats
+  forProtocol: (protocol: string) => Stats | undefined
 
   /**
    * Should be called when all connections to a given peer
@@ -97,7 +111,7 @@ export interface Metrics extends Startable {
    * When the `PeerId` is known, `Metrics.updatePlaceholder` should be called
    * with the placeholder string returned from here, and the known `PeerId`.
    */
-  trackStream: (data: { stream: MultiaddrConnection, remotePeer: PeerId, protocol: string }) => MultiaddrConnection
+  trackStream: <T extends Duplex<Uint8Array>> (data: TrackStreamOptions<T>) => T
 }
 
 export interface ComponentMetricsUpdate {
@@ -117,4 +131,8 @@ export interface ComponentMetricsTracker {
    * Update the stored metric value for the given system and component
    */
   updateComponentMetric: (data: ComponentMetricsUpdate) => void
+}
+
+export interface Metrics extends StreamMetrics, ComponentMetricsTracker {
+
 }

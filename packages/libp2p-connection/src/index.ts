@@ -1,15 +1,12 @@
 import type { Multiaddr } from '@multiformats/multiaddr'
 import errCode from 'err-code'
 import { OPEN, CLOSING, CLOSED } from '@libp2p/interfaces/connection/status'
-import type { ConnectionStat, Metadata, ProtocolStream, Stream } from '@libp2p/interfaces/connection'
+import { symbol } from '@libp2p/interfaces/connection'
+import type { Connection, ConnectionStat, Metadata, ProtocolStream, Stream } from '@libp2p/interfaces/connection'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 
-const connectionSymbol = Symbol.for('@libp2p/interface-connection/connection')
-
 interface ConnectionInit {
-  localAddr: Multiaddr
   remoteAddr: Multiaddr
-  localPeer: PeerId
   remotePeer: PeerId
   newStream: (protocols: string[]) => Promise<ProtocolStream>
   close: () => Promise<void>
@@ -21,23 +18,15 @@ interface ConnectionInit {
  * An implementation of the js-libp2p connection.
  * Any libp2p transport should use an upgrader to return this connection.
  */
-export class Connection {
+export class ConnectionImpl implements Connection {
   /**
    * Connection identifier.
    */
   public readonly id: string
   /**
-   * Observed multiaddr of the local peer
-   */
-  public readonly localAddr: Multiaddr
-  /**
    * Observed multiaddr of the remote peer
    */
   public readonly remoteAddr: Multiaddr
-  /**
-   * Local peer id
-   */
-  public readonly localPeer: PeerId
   /**
    * Remote peer id
    */
@@ -75,12 +64,10 @@ export class Connection {
    * Any libp2p transport should use an upgrader to return this connection.
    */
   constructor (init: ConnectionInit) {
-    const { localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, stat } = init
+    const { remoteAddr, remotePeer, newStream, close, getStreams, stat } = init
 
     this.id = `${(parseInt(String(Math.random() * 1e9))).toString(36)}${Date.now()}`
-    this.localAddr = localAddr
     this.remoteAddr = remoteAddr
-    this.localPeer = localPeer
     this.remotePeer = remotePeer
     this.stat = {
       ...stat,
@@ -98,15 +85,8 @@ export class Connection {
     return 'Connection'
   }
 
-  get [connectionSymbol] () {
+  get [symbol] () {
     return true
-  }
-
-  /**
-   * Checks if the given value is a `Connection` instance
-   */
-  static isConnection (other: any) {
-    return Boolean(connectionSymbol in other)
   }
 
   /**
@@ -119,7 +99,7 @@ export class Connection {
   /**
    * Create a new stream from this connection
    */
-  async newStream (protocols: string[]) {
+  async newStream (protocols: string | string[]) {
     if (this.stat.status === CLOSING) {
       throw errCode(new Error('the connection is being closed'), 'ERR_CONNECTION_BEING_CLOSED')
     }
@@ -128,7 +108,9 @@ export class Connection {
       throw errCode(new Error('the connection is closed'), 'ERR_CONNECTION_CLOSED')
     }
 
-    if (!Array.isArray(protocols)) protocols = [protocols]
+    if (!Array.isArray(protocols)) {
+      protocols = [protocols]
+    }
 
     const { stream, protocol } = await this._newStream(protocols)
 
@@ -143,9 +125,12 @@ export class Connection {
   /**
    * Add a stream when it is opened to the registry
    */
-  addStream (stream: Stream, metadata: Metadata) {
+  addStream (stream: Stream, metadata: Partial<Metadata> = {}) {
     // Add metadata for the stream
-    this.registry.set(stream.id, metadata)
+    this.registry.set(stream.id, {
+      protocol: metadata.protocol ?? '',
+      metadata: metadata.metadata ?? {}
+    })
   }
 
   /**
@@ -173,4 +158,8 @@ export class Connection {
     this.stat.timeline.close = Date.now()
     this.stat.status = CLOSED
   }
+}
+
+export function createConnection (init: ConnectionInit): Connection {
+  return new ConnectionImpl(init)
 }

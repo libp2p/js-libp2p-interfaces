@@ -1,26 +1,17 @@
-import type { PeerId } from './peer-id/index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { ProtocolStream, Connection } from './connection/index.js'
 
 export interface AbortOptions {
   signal?: AbortSignal
 }
 
 export interface Startable {
+  isStarted: () => boolean
   start: () => void | Promise<void>
   stop: () => void | Promise<void>
-  isStarted: () => boolean
 }
 
-export interface Dialer {
-  dial: (peer: PeerId, options?: { signal?: AbortSignal }) => Promise<Connection>
-  dialProtocol: (peer: PeerId, protocol: string, options?: { signal?: AbortSignal }) => Promise<ProtocolStream>
-  getTokens: (count: number) => number[]
-  releaseToken: (token: number) => void
-}
-
-export interface Addressable {
-  multiaddrs: Multiaddr[]
+export function isStartable (obj: any): obj is Startable {
+  return obj != null && typeof obj.start === 'function' && typeof obj.stop === 'function'
 }
 
 export interface EventCallback<EventType> { (evt: EventType): void }
@@ -85,7 +76,7 @@ export class EventEmitter<EventMap> extends EventTarget {
     this.#listeners.set(type, list)
   }
 
-  dispatchEvent (event: CustomEvent): boolean {
+  dispatchEvent (event: Event): boolean {
     const result = super.dispatchEvent(event)
 
     let list = this.#listeners.get(event.type)
@@ -120,3 +111,42 @@ class CustomEventPolyfill<T = any> extends Event {
 }
 
 export const CustomEvent = globalThis.CustomEvent ?? CustomEventPolyfill
+
+export interface AddressManagerEvents {
+  /**
+   * Emitted when the current node's addresses change
+   */
+  'change:addresses': CustomEvent
+}
+
+export interface AddressManager extends EventEmitter<AddressManagerEvents> {
+  /**
+   * Get peer listen multiaddrs
+   */
+  getListenAddrs: () => Multiaddr[]
+
+  /**
+   * Get peer announcing multiaddrs
+   */
+  getAnnounceAddrs: () => Multiaddr[]
+
+  /**
+   * Get observed multiaddrs
+   */
+  getObservedAddrs: () => Multiaddr[]
+
+  /**
+   * Add peer observed addresses
+   */
+  addObservedAddr: (addr: Multiaddr) => void
+
+  /**
+   * Get the current node's addresses
+   */
+  getAddresses: () => Multiaddr[]
+}
+
+// Borrowed from the tsdef module
+export type RecursivePartial<T> = {
+  [P in keyof T]?: T[P] extends Array<infer I> ? Array<RecursivePartial<I>> : T[P] extends (...args: any[]) => any ? T[P] : RecursivePartial<T[P]>
+}

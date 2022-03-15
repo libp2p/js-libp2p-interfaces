@@ -10,11 +10,12 @@ import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { CustomEvent } from '@libp2p/interfaces'
 import { waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
-import type { Message, PubSubOptions } from '@libp2p/interfaces/pubsub'
-import type { EventMap } from './index.js'
-import type { PeerId } from '@libp2p/interfaces/src/peer-id'
-import type { Registrar } from '@libp2p/interfaces/src/registrar'
-import type { PubsubBaseProtocol } from '@libp2p/pubsub'
+import type { Message } from '@libp2p/interfaces/pubsub'
+import type { EventMap, PubSubArgs } from './index.js'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { Registrar } from '@libp2p/interfaces/registrar'
+import type { PubSubBaseProtocol } from '@libp2p/pubsub'
+import { Components } from '@libp2p/interfaces/components'
 
 const topic = 'foo'
 
@@ -22,10 +23,10 @@ function shouldNotHappen () {
   expect.fail()
 }
 
-export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) => {
+export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => {
   describe('pubsub with two nodes', () => {
-    let psA: PubsubBaseProtocol<EventMap>
-    let psB: PubsubBaseProtocol<EventMap>
+    let psA: PubSubBaseProtocol<EventMap>
+    let psB: PubSubBaseProtocol<EventMap>
     let peerIdA: PeerId
     let peerIdB: PeerId
     let registrarA: Registrar
@@ -40,14 +41,22 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
       registrarB = mockRegistrar()
 
       psA = await common.setup({
-        peerId: peerIdA,
-        registrar: registrarA,
-        emitSelf: true
+        components: new Components({
+          peerId: peerIdA,
+          registrar: registrarA
+        }),
+        init: {
+          emitSelf: true
+        }
       })
       psB = await common.setup({
-        peerId: peerIdB,
-        registrar: registrarB,
-        emitSelf: false
+        components: new Components({
+          peerId: peerIdB,
+          registrar: registrarB
+        }),
+        init: {
+          emitSelf: false
+        }
       })
 
       // Start pubsub and connect nodes
@@ -120,7 +129,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         waitForSubscriptionUpdate(psB, psA)
       ])
 
-      void psA.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('hey') }))
+      void psA.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('hey') }))
 
       return await defer.promise
     })
@@ -154,7 +163,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         waitForSubscriptionUpdate(psB, psA)
       ])
 
-      void psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('banana') }))
+      void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('banana') }))
 
       return await defer.promise
     })
@@ -172,7 +181,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         const msg = evt.detail
         expect(uint8ArrayToString(msg.data)).to.equal('banana')
         expect(msg.from.toString()).to.equal(peerIdB.toString())
-        expect(msg.seqno).to.be.a('BigInt')
+        expect(msg.sequenceNumber).to.be.a('BigInt')
         expect(msg.topic).to.be.equal(topic)
 
         if (++counter === 10) {
@@ -188,7 +197,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         waitForSubscriptionUpdate(psB, psA)
       ])
 
-      Array.from({ length: 10 }, (_, i) => psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('banana') })))
+      Array.from({ length: 10 }, (_, i) => psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('banana') })))
 
       return await defer.promise
     })
@@ -254,8 +263,8 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         defer.resolve()
       }, 100)
 
-      void psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('banana') }))
-      void psA.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('banana') }))
+      void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('banana') }))
+      void psA.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('banana') }))
 
       return await defer.promise
     })

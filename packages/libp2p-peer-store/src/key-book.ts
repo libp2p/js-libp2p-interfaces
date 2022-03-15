@@ -5,7 +5,7 @@ import { peerIdFromPeerId } from '@libp2p/peer-id'
 import { equals as uint8arrayEquals } from 'uint8arrays/equals'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { Store } from './store.js'
-import type { PeerStore, KeyBook } from '@libp2p/interfaces/src/peer-store'
+import type { PeerStore, KeyBook, PeerPublicKeyChangeData, Peer } from '@libp2p/interfaces/peer-store'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 const log = logger('libp2p:peer-store:key-book')
@@ -35,17 +35,18 @@ export class PeerStoreKeyBook implements KeyBook {
       throw errcode(new Error('publicKey must be an instance of PublicKey'), codes.ERR_INVALID_PARAMETERS)
     }
 
-    log('set await write lock')
+    log.trace('set await write lock')
     const release = await this.store.lock.writeLock()
-    log('set got write lock')
+    log.trace('set got write lock')
 
     let updatedKey = false
+    let peer: Peer | undefined
 
     try {
       try {
-        const existing = await this.store.load(peerId)
+        peer = await this.store.load(peerId)
 
-        if ((existing.pubKey != null) && uint8arrayEquals(existing.pubKey, publicKey)) {
+        if ((peer.pubKey != null) && uint8arrayEquals(peer.pubKey, publicKey)) {
           return
         }
       } catch (err: any) {
@@ -59,13 +60,17 @@ export class PeerStoreKeyBook implements KeyBook {
       })
       updatedKey = true
     } finally {
-      log('set release write lock')
+      log.trace('set release write lock')
       release()
     }
 
     if (updatedKey) {
-      this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-        detail: { peerId, pubKey: publicKey }
+      this.dispatchEvent(new CustomEvent<PeerPublicKeyChangeData>(EVENT_NAME, {
+        detail: {
+          peerId,
+          publicKey: publicKey,
+          oldPublicKey: peer == null ? undefined : peer.pubKey
+        }
       }))
     }
   }
@@ -76,9 +81,9 @@ export class PeerStoreKeyBook implements KeyBook {
   async get (peerId: PeerId) {
     peerId = peerIdFromPeerId(peerId)
 
-    log('get await write lock')
+    log.trace('get await write lock')
     const release = await this.store.lock.readLock()
-    log('get got write lock')
+    log.trace('get got write lock')
 
     try {
       const peer = await this.store.load(peerId)
@@ -97,21 +102,39 @@ export class PeerStoreKeyBook implements KeyBook {
   async delete (peerId: PeerId) {
     peerId = peerIdFromPeerId(peerId)
 
-    log('delete await write lock')
+    log.trace('delete await write lock')
     const release = await this.store.lock.writeLock()
-    log('delete got write lock')
+    log.trace('delete got write lock')
+
+    let peer: Peer | undefined
 
     try {
+      try {
+        peer = await this.store.load(peerId)
+      } catch (err: any) {
+        if (err.code !== codes.ERR_NOT_FOUND) {
+          throw err
+        }
+      }
+
       await this.store.patchOrCreate(peerId, {
         pubKey: undefined
       })
+    } catch (err: any) {
+      if (err.code !== codes.ERR_NOT_FOUND) {
+        throw err
+      }
     } finally {
-      log('delete release write lock')
+      log.trace('delete release write lock')
       release()
     }
 
-    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-      detail: { peerId, pubKey: undefined }
+    this.dispatchEvent(new CustomEvent<PeerPublicKeyChangeData>(EVENT_NAME, {
+      detail: {
+        peerId,
+        publicKey: undefined,
+        oldPublicKey: peer == null ? undefined : peer.pubKey
+      }
     }))
   }
 }

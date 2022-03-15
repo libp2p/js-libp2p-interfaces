@@ -1,36 +1,46 @@
 import { expect } from 'aegir/utils/chai.js'
 import { mockConnection } from './connection.js'
-import type { Upgrader, MultiaddrConnection } from '@libp2p/interfaces/transport'
+import type { Upgrader, MultiaddrConnection, UpgraderEvents } from '@libp2p/interfaces/transport'
 import type { Registrar } from '@libp2p/interfaces/registrar'
+import { EventEmitter } from '@libp2p/interfaces'
 
 export interface MockUpgraderInit {
   registrar?: Registrar
 }
 
-export function mockUpgrader (init: MockUpgraderInit = {}) {
-  const ensureProps = (multiaddrConnection: MultiaddrConnection) => {
-    ['sink', 'source', 'remoteAddr', 'timeline', 'close'].forEach(prop => {
-      expect(multiaddrConnection).to.have.property(prop)
+function ensureProps (multiaddrConnection: MultiaddrConnection) {
+  ['sink', 'source', 'remoteAddr', 'timeline', 'close'].forEach(prop => {
+    expect(multiaddrConnection).to.have.property(prop)
+  })
+  return multiaddrConnection
+}
+
+class MockUpgrader extends EventEmitter<UpgraderEvents> implements Upgrader {
+  private readonly registrar?: Registrar
+
+  constructor (init: MockUpgraderInit = {}) {
+    super()
+
+    this.registrar = init.registrar
+  }
+
+  async upgradeOutbound (multiaddrConnection: MultiaddrConnection) {
+    ensureProps(multiaddrConnection)
+    return mockConnection(multiaddrConnection, {
+      direction: 'outbound',
+      registrar: this.registrar
     })
-    return multiaddrConnection
   }
 
-  const upgrader: Upgrader = {
-    async upgradeOutbound (multiaddrConnection) {
-      ensureProps(multiaddrConnection)
-      return mockConnection(multiaddrConnection, {
-        direction: 'outbound',
-        registrar: init.registrar
-      })
-    },
-    async upgradeInbound (multiaddrConnection) {
-      ensureProps(multiaddrConnection)
-      return mockConnection(multiaddrConnection, {
-        direction: 'inbound',
-        registrar: init.registrar
-      })
-    }
+  async upgradeInbound (multiaddrConnection: MultiaddrConnection) {
+    ensureProps(multiaddrConnection)
+    return mockConnection(multiaddrConnection, {
+      direction: 'inbound',
+      registrar: this.registrar
+    })
   }
+}
 
-  return upgrader
+export function mockUpgrader (init: MockUpgraderInit = {}) {
+  return new MockUpgrader(init)
 }

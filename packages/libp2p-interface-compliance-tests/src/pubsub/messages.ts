@@ -10,23 +10,32 @@ import delay from 'delay'
 import pWaitFor from 'p-wait-for'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
-import type { PubSubOptions, RPC } from '@libp2p/interfaces/pubsub'
-import type { EventMap } from './index.js'
-import type { PubsubBaseProtocol } from '@libp2p/pubsub'
+import type { PubSubRPC } from '@libp2p/interfaces/pubsub'
+import type { EventMap, PubSubArgs } from './index.js'
+import type { PubSubBaseProtocol } from '@libp2p/pubsub'
+import { Components } from '@libp2p/interfaces/components'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 
-export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) => {
+export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => {
   describe('messages', () => {
-    let pubsub: PubsubBaseProtocol<EventMap>
+    let peerId: PeerId
+    let pubsub: PubSubBaseProtocol<EventMap>
 
     // Create pubsub router
     beforeEach(async () => {
+      peerId = await createEd25519PeerId()
+
       pubsub = await common.setup({
-        peerId: await createEd25519PeerId(),
-        registrar: mockRegistrar(),
-        emitSelf: true
+        components: new Components({
+          peerId,
+          registrar: mockRegistrar()
+        }),
+        init: {
+          emitSelf: true
+        }
       })
       await pubsub.start()
     })
@@ -42,7 +51,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
 
       const spy = sinon.spy(pubsub, 'publishMessage')
 
-      await pubsub.dispatchEvent(new CustomEvent(topic, { detail: data }))
+      await pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
 
       await pWaitFor(async () => {
         return spy.callCount === 1
@@ -52,8 +61,8 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
 
       const [from, messageToEmit] = spy.getCall(0).args
 
-      expect(from.toString()).to.equal(pubsub.peerId.toString())
-      expect(messageToEmit.seqno).to.not.eql(undefined)
+      expect(from.toString()).to.equal(peerId.toString())
+      expect(messageToEmit.sequenceNumber).to.not.eql(undefined)
       expect(messageToEmit.key).to.not.eql(undefined)
       expect(messageToEmit.signature).to.not.eql(undefined)
     })
@@ -66,12 +75,12 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         id: await createEd25519PeerId(),
         protocol: 'test'
       })
-      const rpc: RPC = {
+      const rpc: PubSubRPC = {
         subscriptions: [],
         messages: [{
           from: peerStream.id.toBytes(),
           data,
-          seqno: await noSignMsgId(data),
+          sequenceNumber: await noSignMsgId(data),
           topic: topic
         }]
       }
@@ -97,7 +106,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         protocol: 'test'
       })
 
-      const rpc: RPC = {
+      const rpc: PubSubRPC = {
         subscriptions: [],
         messages: [{
           from: peerStream.id.toBytes(),

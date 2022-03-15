@@ -3,8 +3,8 @@ import { mockMuxer } from '../../src/mocks/muxer.js'
 
 describe('compliance tests', () => {
   tests({
-    async setup (init) {
-      return mockMuxer(init)
+    async setup () {
+      return mockMuxer()
     },
     async teardown () {
 

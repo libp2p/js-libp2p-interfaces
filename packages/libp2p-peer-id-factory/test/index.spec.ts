@@ -46,7 +46,7 @@ describe('PeerId', () => {
 
   it('can get the public key from a Secp256k1 key', async () => {
     const original = await PeerIdFactory.createSecp256k1PeerId()
-    const newId = peerIdFromString(original.toString(base58btc))
+    const newId = peerIdFromString(original.toString())
     expect(original.publicKey).to.equalBytes(newId.publicKey)
   })
 
@@ -251,7 +251,7 @@ describe('PeerId', () => {
         privKey: id.privateKey != null ? uint8ArrayToString(id.privateKey, 'base64pad') : undefined,
         pubKey: uint8ArrayToString(id.publicKey, 'base64pad')
       })
-      expect(id.toString(base58btc)).to.equal(other.toString(base58btc))
+      expect(id.toString()).to.equal(other.toString())
       expect(id.privateKey).to.equalBytes(other.privateKey)
       expect(id.publicKey).to.equalBytes(other.publicKey)
     })
@@ -267,7 +267,7 @@ describe('PeerId', () => {
         privKey: id.privateKey != null ? uint8ArrayToString(id.privateKey, 'base64pad') : undefined,
         pubKey: id.publicKey != null ? uint8ArrayToString(id.publicKey, 'base64pad') : undefined
       })
-      expect(id.toString(base58btc)).to.equal(other.toString(base58btc))
+      expect(id.toString()).to.equal(other.toString())
     })
 
     it('go interop', async () => {
@@ -278,8 +278,8 @@ describe('PeerId', () => {
 
   it('keys are equal after one is stringified', async () => {
     const peerId = await PeerIdFactory.createEd25519PeerId()
-    const peerId1 = peerIdFromString(peerId.toString(base58btc))
-    const peerId2 = peerIdFromString(peerId.toString(base58btc))
+    const peerId1 = peerIdFromString(peerId.toString())
+    const peerId2 = peerIdFromString(peerId.toString())
 
     expect(peerId1).to.deep.equal(peerId2)
 

@@ -1,13 +1,12 @@
 import type { IncomingStreamData, Registrar, StreamHandler } from '@libp2p/interfaces/registrar'
-import type { Connection } from '@libp2p/interfaces/src/connection'
-import type { PeerId } from '@libp2p/interfaces/src/peer-id'
+import type { Connection } from '@libp2p/interfaces/connection'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Topology } from '@libp2p/interfaces/topology'
 import { connectionPair } from './connection.js'
-import { CustomEvent } from '@libp2p/interfaces'
 
 export class MockRegistrar implements Registrar {
   private readonly topologies: Map<string, { topology: Topology, protocols: string[] }> = new Map()
-  private readonly handlers: Map<string, { handler: StreamHandler, protocols: string[] }> = new Map()
+  private readonly handlers: Map<string, StreamHandler> = new Map()
 
   getProtocols () {
     const protocols = new Set<string>()
@@ -16,51 +15,44 @@ export class MockRegistrar implements Registrar {
       topology.protocols.forEach(protocol => protocols.add(protocol))
     }
 
-    for (const handler of this.handlers.values()) {
-      handler.protocols.forEach(protocol => protocols.add(protocol))
+    for (const protocol of this.handlers.keys()) {
+      protocols.add(protocol)
     }
 
     return Array.from(protocols).sort()
   }
 
-  async handle (protocols: string | string[], handler: StreamHandler) {
-    if (!Array.isArray(protocols)) {
-      protocols = [protocols]
-    }
+  async handle (protocols: string | string[], handler: StreamHandler): Promise<void> {
+    const protocolList = Array.isArray(protocols) ? protocols : [protocols]
 
-    for (const protocol of protocols) {
-      for (const { protocols } of this.handlers.values()) {
-        if (protocols.includes(protocol)) {
-          throw new Error(`Handler already registered for protocol ${protocol}`)
-        }
+    for (const protocol of protocolList) {
+      if (this.handlers.has(protocol)) {
+        throw new Error(`Handler already registered for protocol ${protocol}`)
       }
+
+      this.handlers.set(protocol, handler)
     }
-
-    const id = `handler-id-${Math.random()}`
-
-    this.handlers.set(id, {
-      handler,
-      protocols
-    })
-
-    return id
   }
 
-  async unhandle (id: string) {
-    this.handlers.delete(id)
+  async unhandle (protocols: string | string[]) {
+    const protocolList = Array.isArray(protocols) ? protocols : [protocols]
+
+    protocolList.forEach(protocol => {
+      this.handlers.delete(protocol)
+    })
   }
 
   getHandler (protocol: string) {
-    for (const { handler, protocols } of this.handlers.values()) {
-      if (protocols.includes(protocol)) {
-        return handler
-      }
+    const handler = this.handlers.get(protocol)
+
+    if (handler == null) {
+      throw new Error(`No handler registered for protocol ${protocol}`)
     }
 
-    throw new Error(`No handler registered for protocol ${protocol}`)
+    return handler
   }
 
-  register (protocols: string | string[], topology: Topology) {
+  async register (protocols: string | string[], topology: Topology) {
     if (!Array.isArray(protocols)) {
       protocols = [protocols]
     }
@@ -104,16 +96,14 @@ export function mockRegistrar () {
   return new MockRegistrar()
 }
 
-export async function mockIncomingStreamEvent (protocol: string, conn: Connection, remotePeer: PeerId): Promise<CustomEvent<IncomingStreamData>> {
-  // @ts-expect-error incomplete implementation
-  return new CustomEvent('incomingStream', {
-    detail: {
-      ...await conn.newStream([protocol]),
-      connection: {
-        remotePeer
-      }
+export async function mockIncomingStreamEvent (protocol: string, conn: Connection, remotePeer: PeerId): Promise<IncomingStreamData> {
+  return {
+    ...await conn.newStream([protocol]),
+    // @ts-expect-error incomplete implementation
+    connection: {
+      remotePeer
     }
-  })
+  }
 }
 
 export interface Peer {

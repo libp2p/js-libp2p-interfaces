@@ -16,7 +16,7 @@ class TopologyImpl implements Topology {
   public onConnect: onConnectHandler
   public onDisconnect: onDisconnectHandler
 
-  protected _registrar: Registrar | undefined
+  protected registrar: Registrar | undefined
 
   constructor (init: TopologyInit) {
     this.min = init.min ?? 0
@@ -33,6 +33,10 @@ class TopologyImpl implements Topology {
 
   get [symbol] () {
     return true
+  }
+
+  async setRegistrar (registrar: Registrar) {
+    this.registrar = registrar
   }
 
   /**

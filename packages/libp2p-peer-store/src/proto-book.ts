@@ -2,10 +2,9 @@ import { logger } from '@libp2p/logger'
 import errcode from 'err-code'
 import { codes } from './errors.js'
 import { peerIdFromPeerId } from '@libp2p/peer-id'
-import { base58btc } from 'multiformats/bases/base58'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { Store } from './store.js'
-import type { PeerStore, ProtoBook } from '@libp2p/interfaces/src/peer-store'
+import type { Peer, PeerProtocolsChangeData, PeerStore, ProtoBook } from '@libp2p/interfaces/peer-store'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 const log = logger('libp2p:peer-store:proto-book')
@@ -26,9 +25,9 @@ export class PeerStoreProtoBook implements ProtoBook {
   }
 
   async get (peerId: PeerId) {
-    log('get wait for read lock')
+    log.trace('get wait for read lock')
     const release = await this.store.lock.readLock()
-    log('get got read lock')
+    log.trace('get got read lock')
 
     try {
       const peer = await this.store.load(peerId)
@@ -39,7 +38,7 @@ export class PeerStoreProtoBook implements ProtoBook {
         throw err
       }
     } finally {
-      log('get release read lock')
+      log.trace('get release read lock')
       release()
     }
 
@@ -54,15 +53,16 @@ export class PeerStoreProtoBook implements ProtoBook {
       throw errcode(new Error('protocols must be provided'), codes.ERR_INVALID_PARAMETERS)
     }
 
-    log('set await write lock')
+    log.trace('set await write lock')
     const release = await this.store.lock.writeLock()
-    log('set got write lock')
+    log.trace('set got write lock')
 
+    let peer
     let updatedPeer
 
     try {
       try {
-        const peer = await this.store.load(peerId)
+        peer = await this.store.load(peerId)
 
         if (new Set([
           ...protocols
@@ -79,14 +79,18 @@ export class PeerStoreProtoBook implements ProtoBook {
         protocols
       })
 
-      log(`stored provided protocols for ${peerId.toString(base58btc)}`)
+      log('stored provided protocols for %p', peerId)
     } finally {
-      log('set release write lock')
+      log.trace('set release write lock')
       release()
     }
 
-    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-      detail: { peerId, protocols: updatedPeer.protocols }
+    this.dispatchEvent(new CustomEvent<PeerProtocolsChangeData>(EVENT_NAME, {
+      detail: {
+        peerId,
+        protocols: updatedPeer.protocols,
+        oldProtocols: peer == null ? [] : peer.protocols
+      }
     }))
   }
 
@@ -98,15 +102,16 @@ export class PeerStoreProtoBook implements ProtoBook {
       throw errcode(new Error('protocols must be provided'), codes.ERR_INVALID_PARAMETERS)
     }
 
-    log('add await write lock')
+    log.trace('add await write lock')
     const release = await this.store.lock.writeLock()
-    log('add got write lock')
+    log.trace('add got write lock')
 
+    let peer: Peer | undefined
     let updatedPeer
 
     try {
       try {
-        const peer = await this.store.load(peerId)
+        peer = await this.store.load(peerId)
 
         if (new Set([
           ...peer.protocols,
@@ -124,14 +129,18 @@ export class PeerStoreProtoBook implements ProtoBook {
         protocols
       })
 
-      log(`added provided protocols for ${peerId.toString(base58btc)}`)
+      log('added provided protocols for %p', peerId)
     } finally {
-      log('add release write lock')
+      log.trace('add release write lock')
       release()
     }
 
-    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-      detail: { peerId, protocols: updatedPeer.protocols }
+    this.dispatchEvent(new CustomEvent<PeerProtocolsChangeData>(EVENT_NAME, {
+      detail: {
+        peerId,
+        protocols: updatedPeer.protocols,
+        oldProtocols: peer == null ? [] : peer.protocols
+      }
     }))
   }
 
@@ -143,15 +152,16 @@ export class PeerStoreProtoBook implements ProtoBook {
       throw errcode(new Error('protocols must be provided'), codes.ERR_INVALID_PARAMETERS)
     }
 
-    log('remove await write lock')
+    log.trace('remove await write lock')
     const release = await this.store.lock.writeLock()
-    log('remove got write lock')
+    log.trace('remove got write lock')
 
-    let updatedPeer
+    let peer: Peer | undefined
+    let updatedPeer: Peer
 
     try {
       try {
-        const peer = await this.store.load(peerId)
+        peer = await this.store.load(peerId)
         const protocolSet = new Set(peer.protocols)
 
         for (const protocol of protocols) {
@@ -173,41 +183,51 @@ export class PeerStoreProtoBook implements ProtoBook {
         protocols
       })
     } finally {
-      log('remove release write lock')
+      log.trace('remove release write lock')
       release()
     }
 
-    this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-      detail: { peerId, protocols: updatedPeer.protocols }
+    this.dispatchEvent(new CustomEvent<PeerProtocolsChangeData>(EVENT_NAME, {
+      detail: {
+        peerId,
+        protocols: updatedPeer.protocols,
+        oldProtocols: peer == null ? [] : peer.protocols
+      }
     }))
   }
 
   async delete (peerId: PeerId) {
     peerId = peerIdFromPeerId(peerId)
 
-    log('delete await write lock')
+    log.trace('delete await write lock')
     const release = await this.store.lock.writeLock()
-    log('delete got write lock')
-    let has
+    log.trace('delete got write lock')
+    let peer: Peer | undefined
 
     try {
-      has = await this.store.has(peerId)
+      try {
+        peer = await this.store.load(peerId)
+      } catch (err: any) {
+        if (err.code !== codes.ERR_NOT_FOUND) {
+          throw err
+        }
+      }
 
       await this.store.patchOrCreate(peerId, {
         protocols: []
       })
-    } catch (err: any) {
-      if (err.code !== codes.ERR_NOT_FOUND) {
-        throw err
-      }
     } finally {
-      log('delete release write lock')
+      log.trace('delete release write lock')
       release()
     }
 
-    if (has === true) {
-      this.dispatchEvent(new CustomEvent(EVENT_NAME, {
-        detail: { peerId, protocols: [] }
+    if (peer != null) {
+      this.dispatchEvent(new CustomEvent<PeerProtocolsChangeData>(EVENT_NAME, {
+        detail: {
+          peerId,
+          protocols: [],
+          oldProtocols: peer.protocols
+        }
       }))
     }
   }

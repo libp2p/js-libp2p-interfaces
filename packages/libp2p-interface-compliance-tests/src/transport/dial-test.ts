@@ -10,16 +10,16 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import drain from 'it-drain'
 import type { TestSetup } from '../index.js'
 import type { Transport, Listener, Upgrader } from '@libp2p/interfaces/transport'
-import type { TransportTestFixtures, SetupArgs, Connector } from './index.js'
+import type { TransportTestFixtures, Connector } from './index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { Registrar } from '@libp2p/interfaces/src/registrar'
+import type { Registrar } from '@libp2p/interfaces/registrar'
 
-export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
+export default (common: TestSetup<TransportTestFixtures>) => {
   describe('dial', () => {
     let upgrader: Upgrader
     let registrar: Registrar
     let addrs: Multiaddr[]
-    let transport: Transport<any, any>
+    let transport: Transport
     let connector: Connector
     let listener: Listener
 
@@ -29,7 +29,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
         registrar
       });
 
-      ({ addrs, transport, connector } = await common.setup({ upgrader }))
+      ({ addrs, transport, connector } = await common.setup())
     })
 
     after(async () => {
@@ -37,7 +37,9 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
     })
 
     beforeEach(async () => {
-      listener = transport.createListener({})
+      listener = transport.createListener({
+        upgrader
+      })
       return await listener.listen(addrs[0])
     })
 
@@ -49,17 +51,19 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
 
     it('simple', async () => {
       const protocol = '/hello/1.0.0'
-      void registrar.handle(protocol, (evt) => {
+      void registrar.handle(protocol, (data) => {
         void pipe([
           uint8ArrayFromString('hey')
         ],
-        evt.detail.stream,
+        data.stream,
         drain
         )
       })
 
       const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
-      const conn = await transport.dial(addrs[0])
+      const conn = await transport.dial(addrs[0], {
+        upgrader
+      })
 
       const { stream } = await conn.newStream([protocol])
       const result = await all(stream.source)
@@ -73,7 +77,9 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
 
     it('can close connections', async () => {
       const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
-      const conn = await transport.dial(addrs[0])
+      const conn = await transport.dial(addrs[0], {
+        upgrader
+      })
 
       expect(upgradeSpy.callCount).to.equal(1)
       await expect(upgradeSpy.getCall(0).returnValue).to.eventually.equal(conn)
@@ -84,7 +90,9 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
     it('to non existent listener', async () => {
       const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
 
-      await expect(transport.dial(addrs[1])).to.eventually.be.rejected()
+      await expect(transport.dial(addrs[1], {
+        upgrader
+      })).to.eventually.be.rejected()
       expect(upgradeSpy.callCount).to.equal(0)
     })
 
@@ -92,7 +100,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       const upgradeSpy = sinon.spy(upgrader, 'upgradeOutbound')
       const controller = new AbortController()
       controller.abort()
-      const conn = transport.dial(addrs[0], { signal: controller.signal })
+      const conn = transport.dial(addrs[0], { signal: controller.signal, upgrader })
 
       await expect(conn).to.eventually.be.rejected().with.property('code', AbortError.code)
       expect(upgradeSpy.callCount).to.equal(0)
@@ -105,7 +113,7 @@ export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
       connector.delay(100)
 
       const controller = new AbortController()
-      const conn = transport.dial(addrs[0], { signal: controller.signal })
+      const conn = transport.dial(addrs[0], { signal: controller.signal, upgrader })
       setTimeout(() => controller.abort(), 50)
 
       await expect(conn).to.eventually.be.rejected().with.property('code', AbortError.code)

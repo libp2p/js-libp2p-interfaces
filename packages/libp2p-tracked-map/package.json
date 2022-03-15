@@ -132,7 +132,7 @@
     "test:electron-main": "npm run test -- -t electron-main"
   },
   "dependencies": {
-    "@libp2p/interfaces": "^1.3.12"
+    "@libp2p/interfaces": "^1.3.0"
   },
   "devDependencies": {
     "aegir": "^36.1.3",

@@ -1,10 +1,9 @@
-import { RPC } from './rpc.js'
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { toRpcMessage } from '../utils.js'
+import { toRpcMessage } from './utils.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import { keys } from '@libp2p/crypto'
-import type { Message } from '@libp2p/interfaces/pubsub'
+import type { Message, PubSubRPCMessage } from '@libp2p/interfaces/pubsub'
 import { peerIdFromKeys } from '@libp2p/peer-id'
 
 export const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
@@ -12,11 +11,11 @@ export const SignPrefix = uint8ArrayFromString('libp2p-pubsub:')
 /**
  * Signs the provided message with the given `peerId`
  */
-export async function signMessage (peerId: PeerId, message: Message) {
+export async function signMessage (peerId: PeerId, message: Message, encode: (rpc: PubSubRPCMessage) => Uint8Array) {
   // Get the message in bytes, and prepend with the pubsub prefix
   const bytes = uint8ArrayConcat([
     SignPrefix,
-    RPC.Message.encode(toRpcMessage(message)).finish()
+    encode(toRpcMessage(message))
   ])
 
   if (peerId.privateKey == null) {
@@ -42,7 +41,7 @@ export async function signMessage (peerId: PeerId, message: Message) {
 /**
  * Verifies the signature of the given message
  */
-export async function verifySignature (message: Message) {
+export async function verifySignature (message: Message, encode: (rpc: PubSubRPCMessage) => Uint8Array) {
   if (message.signature == null) {
     throw new Error('Message must contain a signature to be verified')
   }
@@ -54,11 +53,11 @@ export async function verifySignature (message: Message) {
   // Get message sans the signature
   const bytes = uint8ArrayConcat([
     SignPrefix,
-    RPC.Message.encode({
+    encode({
       ...toRpcMessage(message),
       signature: undefined,
       key: undefined
-    }).finish()
+    })
   ])
 
   // Get the public key

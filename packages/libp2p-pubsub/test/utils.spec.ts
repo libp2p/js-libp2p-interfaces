@@ -1,7 +1,7 @@
 import { expect } from 'aegir/utils/chai.js'
 import * as utils from '../src/utils.js'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import type { Message, RPCMessage } from '@libp2p/interfaces/src/pubsub'
+import type { Message, PubSubRPCMessage } from '@libp2p/interfaces/pubsub'
 import { peerIdFromBytes, peerIdFromString } from '@libp2p/peer-id'
 
 describe('utils', () => {
@@ -52,18 +52,18 @@ describe('utils', () => {
       topic: '',
       data: new Uint8Array()
     }]
-    const expected: RPCMessage[] = [{
+    const expected: PubSubRPCMessage[] = [{
       from: binaryId,
       topic: '',
       data: new Uint8Array(),
-      seqno: undefined,
+      sequenceNumber: undefined,
       signature: undefined,
       key: undefined
     }, {
       from: binaryId,
       topic: '',
       data: new Uint8Array(),
-      seqno: undefined,
+      sequenceNumber: undefined,
       signature: undefined,
       key: undefined
     }]

@@ -5,8 +5,9 @@ import connectionHandlersTest from './connection-handlers.js'
 import twoNodesTest from './two-nodes.js'
 import multipleNodesTest from './multiple-nodes.js'
 import type { TestSetup } from '../index.js'
-import type { Message, PubSubEvents, PubSubOptions } from '@libp2p/interfaces/pubsub'
-import type { PubsubBaseProtocol } from '@libp2p/pubsub'
+import type { Message, PubSubEvents, PubSubInit } from '@libp2p/interfaces/pubsub'
+import type { PubSubBaseProtocol } from '@libp2p/pubsub'
+import type { Components } from '@libp2p/interfaces/components'
 
 export interface EventMap extends PubSubEvents {
   'topic': CustomEvent<Message>
@@ -18,7 +19,12 @@ export interface EventMap extends PubSubEvents {
   'Zb': CustomEvent<Message>
 }
 
-export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) => {
+export interface PubSubArgs {
+  components: Components
+  init: PubSubInit
+}
+
+export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => {
   describe('interface-pubsub compliance tests', () => {
     apiTest(common)
     emitSelfTest(common)

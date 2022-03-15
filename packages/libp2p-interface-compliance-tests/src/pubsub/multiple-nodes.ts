@@ -10,22 +10,23 @@ import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
 import { CustomEvent } from '@libp2p/interfaces'
 import { waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
-import type { Message, PubSubOptions } from '@libp2p/interfaces/pubsub'
-import type { EventMap } from './index.js'
-import type { PeerId } from '@libp2p/interfaces/src/peer-id'
-import type { Registrar } from '@libp2p/interfaces/src/registrar'
-import type { PubsubBaseProtocol } from '@libp2p/pubsub'
+import type { Message } from '@libp2p/interfaces/pubsub'
+import type { EventMap, PubSubArgs } from './index.js'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { Registrar } from '@libp2p/interfaces/registrar'
+import type { PubSubBaseProtocol } from '@libp2p/pubsub'
+import { Components } from '@libp2p/interfaces/components'
 
-export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) => {
+export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => {
   describe('pubsub with multiple nodes', function () {
     describe('every peer subscribes to the topic', () => {
       describe('line', () => {
         // line
         // ◉────◉────◉
         // a    b    c
-        let psA: PubsubBaseProtocol<EventMap>
-        let psB: PubsubBaseProtocol<EventMap>
-        let psC: PubsubBaseProtocol<EventMap>
+        let psA: PubSubBaseProtocol<EventMap>
+        let psB: PubSubBaseProtocol<EventMap>
+        let psC: PubSubBaseProtocol<EventMap>
         let peerIdA: PeerId
         let peerIdB: PeerId
         let peerIdC: PeerId
@@ -44,19 +45,31 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           registrarC = mockRegistrar()
 
           psA = await common.setup({
-            peerId: peerIdA,
-            registrar: registrarA,
-            emitSelf: true
+            components: new Components({
+              peerId: peerIdA,
+              registrar: registrarA
+            }),
+            init: {
+              emitSelf: true
+            }
           })
           psB = await common.setup({
-            peerId: peerIdB,
-            registrar: registrarB,
-            emitSelf: true
+            components: new Components({
+              peerId: peerIdB,
+              registrar: registrarB
+            }),
+            init: {
+              emitSelf: true
+            }
           })
           psC = await common.setup({
-            peerId: peerIdC,
-            registrar: registrarC,
-            emitSelf: true
+            components: new Components({
+              peerId: peerIdC,
+              registrar: registrarC
+            }),
+            init: {
+              emitSelf: true
+            }
           })
 
           // Start pubsub modes
@@ -172,7 +185,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
             waitForSubscriptionUpdate(psC, psB)
           ])
 
-          void psA.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('hey') }))
+          void psA.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('hey') }))
 
           function incMsg (evt: CustomEvent<Message>) {
             const msg = evt.detail
@@ -233,7 +246,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
               waitForSubscriptionUpdate(psC, psB)
             ])
 
-            void psB.dispatchEvent(new CustomEvent(topic, { detail: uint8ArrayFromString('hey') }))
+            void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('hey') }))
 
             function incMsg (evt: CustomEvent<Message>) {
               const msg = evt.detail
@@ -263,11 +276,11 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
         //   │b     d│
         // ◉─┘       └─◉
         // a
-        let psA: PubsubBaseProtocol<EventMap>
-        let psB: PubsubBaseProtocol<EventMap>
-        let psC: PubsubBaseProtocol<EventMap>
-        let psD: PubsubBaseProtocol<EventMap>
-        let psE: PubsubBaseProtocol<EventMap>
+        let psA: PubSubBaseProtocol<EventMap>
+        let psB: PubSubBaseProtocol<EventMap>
+        let psC: PubSubBaseProtocol<EventMap>
+        let psD: PubSubBaseProtocol<EventMap>
+        let psE: PubSubBaseProtocol<EventMap>
         let peerIdA: PeerId
         let peerIdB: PeerId
         let peerIdC: PeerId
@@ -294,29 +307,49 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
           registrarE = mockRegistrar()
 
           psA = await common.setup({
-            peerId: peerIdA,
-            registrar: registrarA,
-            emitSelf: true
+            components: new Components({
+              peerId: peerIdA,
+              registrar: registrarA
+            }),
+            init: {
+              emitSelf: true
+            }
           })
           psB = await common.setup({
-            peerId: peerIdB,
-            registrar: registrarB,
-            emitSelf: true
+            components: new Components({
+              peerId: peerIdB,
+              registrar: registrarB
+            }),
+            init: {
+              emitSelf: true
+            }
           })
           psC = await common.setup({
-            peerId: peerIdC,
-            registrar: registrarC,
-            emitSelf: true
+            components: new Components({
+              peerId: peerIdC,
+              registrar: registrarC
+            }),
+            init: {
+              emitSelf: true
+            }
           })
           psD = await common.setup({
-            peerId: peerIdD,
-            registrar: registrarD,
-            emitSelf: true
+            components: new Components({
+              peerId: peerIdD,
+              registrar: registrarD
+            }),
+            init: {
+              emitSelf: true
+            }
           })
           psE = await common.setup({
-            peerId: peerIdE,
-            registrar: registrarE,
-            emitSelf: true
+            components: new Components({
+              peerId: peerIdE,
+              registrar: registrarE
+            }),
+            init: {
+              emitSelf: true
+            }
           })
 
           // Start pubsub nodes
@@ -409,7 +442,7 @@ export default (common: TestSetup<PubsubBaseProtocol<EventMap>, PubSubOptions>) 
             waitForSubscriptionUpdate(psE, psD)
           ])
 
-          void psC.dispatchEvent(new CustomEvent('Z', { detail: uint8ArrayFromString('hey from c') }))
+          void psC.dispatchEvent(new CustomEvent<Uint8Array>('Z', { detail: uint8ArrayFromString('hey from c') }))
 
           function incMsg (evt: CustomEvent<Message>) {
             const msg = evt.detail

@@ -10,8 +10,9 @@ import {
   MockRegistrar,
   PubsubImplementation
 } from './utils/index.js'
-import type { PeerId } from '@libp2p/interfaces/src/peer-id'
-import type { RPC } from '@libp2p/interfaces/src/pubsub'
+import type { PeerId } from '@libp2p/interfaces/peer-id'
+import type { PubSubRPC } from '@libp2p/interfaces/pubsub'
+import { Components } from '@libp2p/interfaces/components'
 
 const protocol = '/pubsub/1.0.0'
 
@@ -25,11 +26,13 @@ describe('topic validators', () => {
     otherPeerId = await createEd25519PeerId()
 
     pubsub = new PubsubImplementation({
-      peerId: peerId,
-      registrar: new MockRegistrar(),
       multicodecs: [protocol],
       globalSignaturePolicy: 'StrictNoSign'
     })
+    pubsub.init(new Components({
+      peerId: peerId,
+      registrar: new MockRegistrar()
+    }))
 
     await pubsub.start()
   })
@@ -54,7 +57,7 @@ describe('topic validators', () => {
     })
 
     // valid case
-    const validRpc: RPC = {
+    const validRpc: PubSubRPC = {
       subscriptions: [],
       messages: [{
         from: otherPeerId.multihash.bytes,
@@ -79,7 +82,6 @@ describe('topic validators', () => {
       }]
     }
 
-    // @ts-expect-error process invalid message
     void pubsub.processRpc(peer.id, peer, invalidRpc)
 
     // @ts-expect-error .callCount is a property added by sinon
@@ -89,7 +91,7 @@ describe('topic validators', () => {
     pubsub.topicValidators.delete(filteredTopic)
 
     // another invalid case
-    const invalidRpc2: RPC = {
+    const invalidRpc2: PubSubRPC = {
       subscriptions: [],
       messages: [{
         from: otherPeerId.multihash.bytes,

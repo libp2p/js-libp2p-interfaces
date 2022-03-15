@@ -48,6 +48,10 @@
       "import": "./dist/src/index.js",
       "types": "./dist/src/index.d.ts"
     },
+    "./components": {
+      "import": "./dist/src/components.js",
+      "types": "./dist/src/components.d.ts"
+    },
     "./connection": {
       "import": "./dist/src/connection/index.js",
       "types": "./dist/src/connection/index.d.ts"
@@ -219,6 +223,7 @@
   },
   "dependencies": {
     "@multiformats/multiaddr": "^10.1.5",
+    "interface-datastore": "^6.1.0",
     "multiformats": "^9.6.3"
   },
   "devDependencies": {

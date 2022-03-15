@@ -1,4 +1,4 @@
-# libp2p-peer-map <!-- omit in toc -->
+# libp2p-peer-connections <!-- omit in toc -->
 
 > store values against peer ids
 
@@ -12,24 +12,29 @@
 
 ## Description
 
- We can't use PeerIds as map keys because map keys are compared using same-value-zero equality, so this is just a map that stringifies the PeerIds before storing them.
+ We can't use PeerIds as collection keys because collection keys are compared using same-value-zero equality, so this is just a group of collections that stringifies PeerIds before storing them.
 
  PeerIds cache stringified versions of themselves so this should be a cheap operation.
 
 ## Example
 
 ```JavaScript
-import { peerMap } from '@libp2p/peer-map'
+import { peerMap, peerSet, peerList } from '@libp2p/peer-collections'
 
 const map = peerMap<string>()
-
 map.set(peerId, 'value')
+
+const set = peerSet()
+set.add(peerId)
+
+const list = peerList()
+list.push(peerId)
 ```
 
 ## Installation
 
 ```console
-$ npm i @libp2p/peer-map
+$ npm i @libp2p/peer-collections
 ```
 
 ## License

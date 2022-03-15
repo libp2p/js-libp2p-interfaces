@@ -3,8 +3,8 @@ export class AbortError extends Error {
   public readonly code: string
   public readonly type: string
 
-  constructor () {
-    super('The operation was aborted')
+  constructor (message: string = 'The operation was aborted') {
+    super(message)
     this.code = AbortError.code
     this.type = AbortError.type
   }

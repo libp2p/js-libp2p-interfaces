@@ -1,25 +1,31 @@
 import { expect } from 'aegir/utils/chai.js'
-import { PubsubBaseProtocol } from '../src/index.js'
-import {
-  createPeerId,
-  MockRegistrar
-} from './utils/index.js'
-import type { PeerId } from '@libp2p/interfaces/peer-id'
+import { PubSubBaseProtocol } from '../src/index.js'
+import type { PubSubRPC, PubSubRPCMessage } from '@libp2p/interfaces/pubsub'
 
-class PubsubProtocol extends PubsubBaseProtocol {
+class PubsubProtocol extends PubSubBaseProtocol {
+  decodeRpc (bytes: Uint8Array): PubSubRPC {
+    throw new Error('Method not implemented.')
+  }
+
+  encodeRpc (rpc: PubSubRPC): Uint8Array {
+    throw new Error('Method not implemented.')
+  }
+
+  decodeMessage (bytes: Uint8Array): PubSubRPCMessage {
+    throw new Error('Method not implemented.')
+  }
+
+  encodeMessage (rpc: PubSubRPCMessage): Uint8Array {
+    throw new Error('Method not implemented.')
+  }
+
   async publishMessage (): Promise<void> {
     throw new Error('Method not implemented.')
   }
 }
 
 describe('pubsub instance', () => {
-  let peerId: PeerId
-
-  before(async () => {
-    peerId = await createPeerId()
-  })
-
-  it('should throw if no debugName is provided', () => {
+  it('should throw if no init is provided', () => {
     expect(() => {
       // @ts-expect-error incorrect constructor args
       new PubsubProtocol() // eslint-disable-line no-new
@@ -29,10 +35,7 @@ describe('pubsub instance', () => {
   it('should accept valid parameters', () => {
     expect(() => {
       new PubsubProtocol({ // eslint-disable-line no-new
-        debugName: 'pubsub',
-        multicodecs: ['/pubsub/1.0.0'],
-        peerId: peerId,
-        registrar: new MockRegistrar()
+        multicodecs: ['/pubsub/1.0.0']
       })
     }).not.to.throw()
   })

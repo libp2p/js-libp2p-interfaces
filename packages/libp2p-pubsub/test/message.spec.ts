@@ -2,32 +2,28 @@
 import { expect } from 'aegir/utils/chai.js'
 import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { PubsubBaseProtocol } from '../src/index.js'
 import {
   createPeerId,
-  MockRegistrar
+  MockRegistrar,
+  PubsubImplementation
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Message } from '@libp2p/interfaces/src/pubsub'
-
-class PubsubProtocol extends PubsubBaseProtocol {
-  async publishMessage (): Promise<void> {
-    throw new Error('Method not implemented.')
-  }
-}
+import type { Message } from '@libp2p/interfaces/pubsub'
+import { Components } from '@libp2p/interfaces/components'
 
 describe('pubsub base messages', () => {
   let peerId: PeerId
-  let pubsub: PubsubProtocol
+  let pubsub: PubsubImplementation
 
   before(async () => {
     peerId = await createPeerId()
-    pubsub = new PubsubProtocol({
-      debugName: 'pubsub',
-      multicodecs: ['/pubsub/1.0.0'],
+    pubsub = new PubsubImplementation({
+      multicodecs: ['/pubsub/1.0.0']
+    })
+    pubsub.init(new Components({
       peerId: peerId,
       registrar: new MockRegistrar()
-    })
+    }))
   })
 
   afterEach(() => {
@@ -66,7 +62,7 @@ describe('pubsub base messages', () => {
     await expect(pubsub.validate(signedMessage)).to.eventually.be.rejected()
     delete signedMessage.key
     await expect(pubsub.validate(signedMessage)).to.eventually.be.rejected()
-    delete signedMessage.seqno
+    delete signedMessage.sequenceNumber
     await expect(pubsub.validate(signedMessage)).to.eventually.not.be.rejected()
   })
 

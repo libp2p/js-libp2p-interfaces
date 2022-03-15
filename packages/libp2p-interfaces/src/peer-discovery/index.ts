@@ -1,15 +1,10 @@
 import type { PeerData } from '../peer-data/index.js'
-import type { EventEmitter, Startable } from '../index.js'
-
-export interface PeerDiscoveryFactory<PeerDiscoveryInit> {
-  new (init?: PeerDiscoveryInit): PeerDiscovery
-  tag: string
-}
+import type { EventEmitter } from '../index.js'
 
 export interface PeerDiscoveryEvents {
   'peer': CustomEvent<PeerData>
 }
 
-export interface PeerDiscovery extends EventEmitter<PeerDiscoveryEvents>, Startable {
+export interface PeerDiscovery extends EventEmitter<PeerDiscoveryEvents> {
 
 }

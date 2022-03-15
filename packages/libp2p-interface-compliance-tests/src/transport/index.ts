@@ -2,7 +2,7 @@ import dial from './dial-test.js'
 import listen from './listen-test.js'
 import filter from './filter-test.js'
 import type { TestSetup } from '../index.js'
-import type { Transport, Upgrader } from '@libp2p/interfaces/transport'
+import type { Transport } from '@libp2p/interfaces/transport'
 import type { Multiaddr } from '@multiformats/multiaddr'
 
 export interface Connector {
@@ -12,15 +12,11 @@ export interface Connector {
 
 export interface TransportTestFixtures {
   addrs: Multiaddr[]
-  transport: Transport<{}, {}>
+  transport: Transport
   connector: Connector
 }
 
-export interface SetupArgs {
-  upgrader: Upgrader
-}
-
-export default (common: TestSetup<TransportTestFixtures, SetupArgs>) => {
+export default (common: TestSetup<TransportTestFixtures>) => {
   describe('interface-transport', () => {
     dial(common)
     listen(common)

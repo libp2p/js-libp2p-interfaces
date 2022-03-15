@@ -58,10 +58,16 @@ export interface Connection {
   tags: string[]
   streams: Stream[]
 
-  newStream: (multicodecs: string[]) => Promise<ProtocolStream>
-  addStream: (stream: Stream, data: Metadata) => void
+  newStream: (multicodecs: string | string[]) => Promise<ProtocolStream>
+  addStream: (stream: Stream, data: Partial<Metadata>) => void
   removeStream: (id: string) => void
   close: () => Promise<void>
+}
+
+export const symbol = Symbol.for('@libp2p/connection')
+
+export function isConnection (other: any): other is Connection {
+  return symbol in other
 }
 
 export interface ConnectionGater {
@@ -157,4 +163,14 @@ export interface ConnectionGater {
    * Return true to allow storing the passed multiaddr for the passed peer.
    */
   filterMultiaddrForPeer: (peer: PeerId, multiaddr: Multiaddr) => Promise<boolean>
+}
+
+export interface ConnectionProtector {
+
+  /**
+   * Takes a given Connection and creates a private encryption stream
+   * between its two peers from the PSK the Protector instance was
+   * created with.
+   */
+  protect: (connection: MultiaddrConnection) => Promise<MultiaddrConnection>
 }

@@ -7,7 +7,8 @@ import drain from 'it-drain'
 import { expect } from 'aegir/utils/chai.js'
 import delay from 'delay'
 import type { TestSetup } from '../index.js'
-import type { Muxer, MuxerInit } from '@libp2p/interfaces/stream-muxer'
+import type { StreamMuxerFactory } from '@libp2p/interfaces/stream-muxer'
+import { Components } from '@libp2p/interfaces/components'
 
 function randomBuffer () {
   return uint8ArrayFromString(Math.random().toString())
@@ -22,15 +23,17 @@ const infiniteRandom = {
   }
 }
 
-export default (common: TestSetup<Muxer, MuxerInit>) => {
+export default (common: TestSetup<StreamMuxerFactory>) => {
   describe('close', () => {
     it('closing underlying socket closes streams', async () => {
       let openedStreams = 0
       const expectedStreams = 5
-      const dialer = await common.setup()
+      const dialerFactory = await common.setup()
+      const dialer = dialerFactory.createStreamMuxer(new Components())
 
       // Listener is echo server :)
-      const listener = await common.setup({
+      const listenerFactory = await common.setup()
+      const listener = listenerFactory.createStreamMuxer(new Components(), {
         onIncomingStream: (stream) => {
           openedStreams++
           void pipe(stream, stream)
@@ -65,10 +68,12 @@ export default (common: TestSetup<Muxer, MuxerInit>) => {
 
     it('closing one of the muxed streams doesn\'t close others', async () => {
       const p = duplexPair<Uint8Array>()
-      const dialer = await common.setup()
+      const dialerFactory = await common.setup()
+      const dialer = dialerFactory.createStreamMuxer(new Components())
 
       // Listener is echo server :)
-      const listener = await common.setup({
+      const listenerFactory = await common.setup()
+      const listener = listenerFactory.createStreamMuxer(new Components(), {
         onIncomingStream: (stream) => {
           void pipe(stream, stream)
         }
