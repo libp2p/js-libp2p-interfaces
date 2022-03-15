@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.17](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.16...@libp2p/interface-compliance-tests-v1.1.17) (2022-03-15)
+
+
+### Bug Fixes
+
+* use custom event instead of error event ([#181](https://github.com/libp2p/js-libp2p-interfaces/issues/181)) ([71ab242](https://github.com/libp2p/js-libp2p-interfaces/commit/71ab2424dfbf6337111d6d9d994f27c7967c20f1))
+
 ## [@libp2p/interface-compliance-tests-v1.1.16](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.15...@libp2p/interface-compliance-tests-v1.1.16) (2022-03-15)
 
 
