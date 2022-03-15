@@ -115,7 +115,6 @@ export interface PubSub<EventMap = PubSubEvents> extends EventEmitter<EventMap &
   subscribe: (topic: string) => void
   unsubscribe: (topic: string) => void
   getSubscribers: (topic: string) => PeerId[]
-  validate: (message: Message) => Promise<void>
 
   dispatchEvent: (event: CustomEvent<Uint8Array | Message>) => boolean
 }
