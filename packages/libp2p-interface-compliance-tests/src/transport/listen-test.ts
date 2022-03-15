@@ -9,6 +9,7 @@ import { mockUpgrader } from '../mocks/upgrader.js'
 import defer from 'p-defer'
 import { mockRegistrar } from '../mocks/registrar.js'
 import drain from 'it-drain'
+import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
 import type { Transport, Upgrader } from '@libp2p/interfaces/transport'
 import type { TransportTestFixtures } from './index.js'
@@ -169,8 +170,8 @@ export default (common: TestSetup<TransportTestFixtures>) => {
           expect(evt.detail).to.be.an.instanceOf(Error)
           listener.close().then(done, done)
         })
-        listener.dispatchEvent(new ErrorEvent('error', {
-          error: new Error('my err')
+        listener.dispatchEvent(new CustomEvent('error', {
+          detail: new Error('my err')
         }))
       })
 
