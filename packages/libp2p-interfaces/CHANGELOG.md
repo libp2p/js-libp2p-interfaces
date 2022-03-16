@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.15](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.14...@libp2p/interfaces-v1.3.15) (2022-03-16)
+
+
+### Bug Fixes
+
+* update content routing get return type ([#182](https://github.com/libp2p/js-libp2p-interfaces/issues/182)) ([49da9d5](https://github.com/libp2p/js-libp2p-interfaces/commit/49da9d5883618a672d64542eee13972e603a5b3d))
+
 ## [@libp2p/interfaces-v1.3.14](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.13...@libp2p/interfaces-v1.3.14) (2022-03-15)
 
 
