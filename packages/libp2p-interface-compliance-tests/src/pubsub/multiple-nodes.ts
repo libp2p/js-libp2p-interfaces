@@ -11,22 +11,22 @@ import { CustomEvent } from '@libp2p/interfaces'
 import { waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { Message } from '@libp2p/interfaces/pubsub'
-import type { EventMap, PubSubArgs } from './index.js'
+import type { PubSubArgs } from './index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
 
-export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => {
+export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
   describe('pubsub with multiple nodes', function () {
     describe('every peer subscribes to the topic', () => {
       describe('line', () => {
         // line
         // ◉────◉────◉
         // a    b    c
-        let psA: PubSubBaseProtocol<EventMap>
-        let psB: PubSubBaseProtocol<EventMap>
-        let psC: PubSubBaseProtocol<EventMap>
+        let psA: PubSubBaseProtocol
+        let psB: PubSubBaseProtocol
+        let psC: PubSubBaseProtocol
         let peerIdA: PeerId
         let peerIdB: PeerId
         let peerIdC: PeerId
@@ -276,11 +276,11 @@ export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => 
         //   │b     d│
         // ◉─┘       └─◉
         // a
-        let psA: PubSubBaseProtocol<EventMap>
-        let psB: PubSubBaseProtocol<EventMap>
-        let psC: PubSubBaseProtocol<EventMap>
-        let psD: PubSubBaseProtocol<EventMap>
-        let psE: PubSubBaseProtocol<EventMap>
+        let psA: PubSubBaseProtocol
+        let psB: PubSubBaseProtocol
+        let psC: PubSubBaseProtocol
+        let psD: PubSubBaseProtocol
+        let psE: PubSubBaseProtocol
         let peerIdA: PeerId
         let peerIdB: PeerId
         let peerIdC: PeerId

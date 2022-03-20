@@ -11,7 +11,7 @@ import { CustomEvent } from '@libp2p/interfaces'
 import { waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { Message } from '@libp2p/interfaces/pubsub'
-import type { EventMap, PubSubArgs } from './index.js'
+import type { PubSubArgs } from './index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 import type { PubSubBaseProtocol } from '@libp2p/pubsub'
@@ -23,10 +23,10 @@ function shouldNotHappen () {
   expect.fail()
 }
 
-export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => {
+export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
   describe('pubsub with two nodes', () => {
-    let psA: PubSubBaseProtocol<EventMap>
-    let psB: PubSubBaseProtocol<EventMap>
+    let psA: PubSubBaseProtocol
+    let psB: PubSubBaseProtocol
     let peerIdA: PeerId
     let peerIdB: PeerId
     let registrarA: Registrar

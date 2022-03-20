@@ -11,7 +11,7 @@ import pWaitFor from 'p-wait-for'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
 import type { PubSubRPC } from '@libp2p/interfaces/pubsub'
-import type { EventMap, PubSubArgs } from './index.js'
+import type { PubSubArgs } from './index.js'
 import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
@@ -19,10 +19,10 @@ import type { PeerId } from '@libp2p/interfaces/peer-id'
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 
-export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => {
+export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
   describe('messages', () => {
     let peerId: PeerId
-    let pubsub: PubSubBaseProtocol<EventMap>
+    let pubsub: PubSubBaseProtocol
 
     // Create pubsub router
     beforeEach(async () => {

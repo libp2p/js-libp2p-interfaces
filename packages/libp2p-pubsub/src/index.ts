@@ -26,7 +26,7 @@ export interface TopicValidator { (topic: string, message: Message): Promise<voi
  * PubSubBaseProtocol handles the peers and connections logic for pubsub routers
  * and specifies the API that pubsub routers should have.
  */
-export abstract class PubSubBaseProtocol<EventMap extends PubSubEvents = PubSubEvents> extends EventEmitter<EventMap & PubSubEvents> implements PubSub<EventMap & PubSubEvents>, Initializable {
+export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> implements PubSub, Initializable {
   public started: boolean
   /**
    * Map of topics to which peers are subscribed to
@@ -703,13 +703,15 @@ export abstract class PubSubBaseProtocol<EventMap extends PubSubEvents = PubSubE
     return Array.from(this.peers.keys())
   }
 
-  addEventListener<U extends keyof EventMap> (type: U, callback: EventHandler<EventMap[U]>, options?: AddEventListenerOptions | boolean) {
+  addEventListener (type: string, callback: EventHandler<any>, options?: AddEventListenerOptions | boolean) {
     this.subscribe(type.toString())
 
+    // @ts-expect-error have to ignore types to accommodate custom string event names
     super.addEventListener(type, callback, options)
   }
 
-  removeEventListener<U extends keyof EventMap> (type: U, callback: EventHandler<EventMap[U]> | undefined, options?: EventListenerOptions | boolean) {
+  removeEventListener (type: string, callback: EventHandler<any> | undefined, options?: EventListenerOptions | boolean) {
+    // @ts-expect-error have to ignore types to accommodate custom string event names
     super.removeEventListener(type, callback, options)
 
     const topicStr = type.toString()
