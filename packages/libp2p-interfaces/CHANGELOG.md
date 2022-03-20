@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.16](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.15...@libp2p/interfaces-v1.3.16) (2022-03-20)
+
+
+### Bug Fixes
+
+* update pubsub types ([#183](https://github.com/libp2p/js-libp2p-interfaces/issues/183)) ([7ef4baa](https://github.com/libp2p/js-libp2p-interfaces/commit/7ef4baad0fe30f783f3eecd5199ef92af08b7f57))
+
 ## [@libp2p/interfaces-v1.3.15](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.14...@libp2p/interfaces-v1.3.15) (2022-03-16)
 
 
