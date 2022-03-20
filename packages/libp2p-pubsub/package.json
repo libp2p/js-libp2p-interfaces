@@ -72,7 +72,7 @@
     },
     "ignorePatterns": [
       "test/message/*.d.ts",
-      "tes/message/*.js"
+      "test/message/*.js"
     ]
   },
   "release": {

@@ -1,6 +1,6 @@
 import type { PeerId } from '../peer-id/index.js'
 import type { Pushable } from 'it-pushable'
-import type { EventEmitter, Startable } from '../index.js'
+import type { EventEmitter, EventHandler, Startable } from '../index.js'
 import type { Stream } from '../connection/index.js'
 
 /**
@@ -106,7 +106,7 @@ export interface PubSubEvents {
   'pubsub:subscription-change': CustomEvent<SubscriptionChangeData>
 }
 
-export interface PubSub<EventMap = PubSubEvents> extends EventEmitter<EventMap & PubSubEvents>, Startable {
+export interface PubSub extends Startable {
   globalSignaturePolicy: typeof StrictSign | typeof StrictNoSign
   multicodecs: string[]
 
@@ -117,6 +117,9 @@ export interface PubSub<EventMap = PubSubEvents> extends EventEmitter<EventMap &
   getSubscribers: (topic: string) => PeerId[]
 
   dispatchEvent: (event: CustomEvent<Uint8Array | Message>) => boolean
+  addEventListener: ((type: string, callback: EventHandler<CustomEvent<Message>>, options?: AddEventListenerOptions | boolean) => void) & ((type: 'pubsub:subscription-change', callback: EventHandler<CustomEvent<SubscriptionChangeData>>, options?: AddEventListenerOptions | boolean) => void)
+  removeEventListener: ((type: string, callback?: EventHandler<CustomEvent<Message>> | undefined, options?: EventListenerOptions | boolean) => void) & ((type: 'pubsub:subscription-change', callback?: EventHandler<CustomEvent<Message>> | undefined, options?: EventListenerOptions | boolean) => void)
+  listenerCount: (type: string) => number
 }
 
 export interface PeerStreamEvents {

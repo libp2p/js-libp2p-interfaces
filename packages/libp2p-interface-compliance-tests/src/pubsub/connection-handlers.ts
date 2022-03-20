@@ -9,16 +9,16 @@ import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
 import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
 import type { Message } from '@libp2p/interfaces/pubsub'
-import type { EventMap, PubSubArgs } from './index.js'
+import type { PubSubArgs } from './index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
 
-export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => {
+export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
   describe('pubsub connection handlers', () => {
-    let psA: PubSubBaseProtocol<EventMap>
-    let psB: PubSubBaseProtocol<EventMap>
+    let psA: PubSubBaseProtocol
+    let psB: PubSubBaseProtocol
     let peerA: PeerId
     let peerB: PeerId
     let registrarA: Registrar
@@ -104,8 +104,8 @@ export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => 
     })
 
     describe('pubsub started before connect', () => {
-      let psA: PubSubBaseProtocol<EventMap>
-      let psB: PubSubBaseProtocol<EventMap>
+      let psA: PubSubBaseProtocol
+      let psB: PubSubBaseProtocol
       let peerA: PeerId
       let peerB: PeerId
       let registrarA: Registrar
@@ -197,8 +197,8 @@ export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => 
     })
 
     describe('pubsub started after connect', () => {
-      let psA: PubSubBaseProtocol<EventMap>
-      let psB: PubSubBaseProtocol<EventMap>
+      let psA: PubSubBaseProtocol
+      let psB: PubSubBaseProtocol
       let peerA: PeerId
       let peerB: PeerId
       let registrarA: Registrar
@@ -301,8 +301,8 @@ export default (common: TestSetup<PubSubBaseProtocol<EventMap>, PubSubArgs>) => 
     })
 
     describe('pubsub with intermittent connections', () => {
-      let psA: PubSubBaseProtocol<EventMap>
-      let psB: PubSubBaseProtocol<EventMap>
+      let psA: PubSubBaseProtocol
+      let psB: PubSubBaseProtocol
       let peerA: PeerId
       let peerB: PeerId
       let registrarA: Registrar
