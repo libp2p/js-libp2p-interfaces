@@ -1,3 +1,10 @@
+## [@libp2p/pubsub-v1.2.11](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.10...@libp2p/pubsub-v1.2.11) (2022-03-20)
+
+
+### Bug Fixes
+
+* update pubsub types ([#183](https://github.com/libp2p/js-libp2p-interfaces/issues/183)) ([7ef4baa](https://github.com/libp2p/js-libp2p-interfaces/commit/7ef4baad0fe30f783f3eecd5199ef92af08b7f57))
+
 ## [@libp2p/pubsub-v1.2.10](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.9...@libp2p/pubsub-v1.2.10) (2022-03-15)
 
 
