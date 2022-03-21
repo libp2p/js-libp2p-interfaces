@@ -1,3 +1,10 @@
+## [@libp2p/pubsub-v1.2.12](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.11...@libp2p/pubsub-v1.2.12) (2022-03-21)
+
+
+### Bug Fixes
+
+* handle empty pubsub messages ([#185](https://github.com/libp2p/js-libp2p-interfaces/issues/185)) ([0db8d84](https://github.com/libp2p/js-libp2p-interfaces/commit/0db8d84dd98ff6e99776c01a6b5bab404033bffa))
+
 ## [@libp2p/pubsub-v1.2.11](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.10...@libp2p/pubsub-v1.2.11) (2022-03-20)
 
 
