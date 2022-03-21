@@ -33,5 +33,5 @@ export type PeerId = RSAPeerId | Ed25519PeerId | Secp256k1PeerId
 export const symbol = Symbol.for('@libp2p/peer-id')
 
 export function isPeerId (other: any): other is PeerId {
-  return symbol in other
+  return other != null && Boolean(other[symbol])
 }

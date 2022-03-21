@@ -67,7 +67,7 @@ export interface Connection {
 export const symbol = Symbol.for('@libp2p/connection')
 
 export function isConnection (other: any): other is Connection {
-  return symbol in other
+  return other != null && Boolean(other[symbol])
 }
 
 export interface ConnectionGater {

@@ -111,7 +111,7 @@ export interface ProtocolHandler {
 }
 
 export function isTransport (other: any): other is Transport {
-  return symbol in other
+  return other != null && Boolean(other[symbol])
 }
 
 export interface TransportManagerEvents {

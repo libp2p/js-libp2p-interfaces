@@ -37,5 +37,5 @@ export interface Topology {
 export const symbol = Symbol.for('@libp2p/topology')
 
 export function isTopology (other: any): other is Topology {
-  return symbol in other
+  return other != null && Boolean(other[symbol])
 }
