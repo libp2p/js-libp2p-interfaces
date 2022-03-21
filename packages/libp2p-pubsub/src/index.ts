@@ -589,8 +589,14 @@ export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> impl
         topic,
         data: event.detail
       }
-    } else {
+    } else if (event.detail != null) {
       message = event.detail
+    } else {
+      message = {
+        from: this.components.getPeerId(),
+        topic,
+        data: new Uint8Array(0)
+      }
     }
 
     log('publish topic: %s from: %p data: %m', topic, message.from, message.data)

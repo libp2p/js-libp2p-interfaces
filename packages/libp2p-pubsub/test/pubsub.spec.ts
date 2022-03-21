@@ -267,13 +267,12 @@ describe('pubsub base implementation', () => {
       })
 
       it('should send unsubscribe message to connected peers', async () => {
-        sinon.spy(pubsubA, 'send')
-        sinon.spy(pubsubB, 'processRpcSubOpt')
+        const pubsubASendSpy = sinon.spy(pubsubA, 'send')
+        const pubsubBProcessRpcSubOptSpy = sinon.spy(pubsubB, 'processRpcSubOpt')
 
         pubsubA.subscribe(topic)
         // Should send subscriptions to a peer
-        // @ts-expect-error .callCount is a property added by sinon
-        expect(pubsubA.send.callCount).to.eql(1)
+        expect(pubsubASendSpy.callCount).to.eql(1)
 
         // Other peer should receive subscription message
         await pWaitFor(() => {
@@ -282,15 +281,13 @@ describe('pubsub base implementation', () => {
           return subscribers.length === 1
         })
 
-        // @ts-expect-error .callCount is a property added by sinon
-        expect(pubsubB.processRpcSubOpt.callCount).to.eql(1)
+        expect(pubsubBProcessRpcSubOptSpy.callCount).to.eql(1)
 
         // Unsubscribe
         pubsubA.unsubscribe(topic)
 
         // Should send subscriptions to a peer
-        // @ts-expect-error .callCount is a property added by sinon
-        expect(pubsubA.send.callCount).to.eql(2)
+        expect(pubsubASendSpy.callCount).to.eql(2)
 
         // Other peer should receive subscription message
         await pWaitFor(() => {
@@ -304,15 +301,13 @@ describe('pubsub base implementation', () => {
       })
 
       it('should not send unsubscribe message to connected peers if not subscribed', () => {
-        sinon.spy(pubsubA, 'send')
-        sinon.spy(pubsubB, 'processRpcSubOpt')
+        const pubsubASendSpy = sinon.spy(pubsubA, 'send')
 
         // Unsubscribe
         pubsubA.unsubscribe(topic)
 
         // Should send subscriptions to a peer
-        // @ts-expect-error .callCount is a property added by sinon
-        expect(pubsubA.send.callCount).to.eql(0)
+        expect(pubsubASendSpy.callCount).to.eql(0)
       })
     })
   })

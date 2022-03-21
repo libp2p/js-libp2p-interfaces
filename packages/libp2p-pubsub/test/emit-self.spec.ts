@@ -47,6 +47,14 @@ describe('emitSelf', () => {
 
       return await promise
     })
+
+    it('should publish a message without data', async () => {
+      const promise = new Promise((resolve) => pubsub.addEventListener(topic, resolve))
+
+      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic))
+
+      return await promise
+    })
   })
 
   describe('disabled', () => {
