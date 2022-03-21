@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.17](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.16...@libp2p/interfaces-v1.3.17) (2022-03-21)
+
+
+### Bug Fixes
+
+* expand startable interface ([#184](https://github.com/libp2p/js-libp2p-interfaces/issues/184)) ([b8e1a0c](https://github.com/libp2p/js-libp2p-interfaces/commit/b8e1a0c77316265cc08eaaf9fcab6cfa05d59ae1))
+
 ## [@libp2p/interfaces-v1.3.16](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.15...@libp2p/interfaces-v1.3.16) (2022-03-20)
 
 
