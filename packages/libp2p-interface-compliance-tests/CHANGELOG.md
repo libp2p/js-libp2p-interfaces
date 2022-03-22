@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.19](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.18...@libp2p/interface-compliance-tests-v1.1.19) (2022-03-22)
+
+
+### Bug Fixes
+
+* add method for startable lifecyle ([#186](https://github.com/libp2p/js-libp2p-interfaces/issues/186)) ([2730e29](https://github.com/libp2p/js-libp2p-interfaces/commit/2730e2947bbd231db3f7f82951b51ee534733ab2))
+
 ## [@libp2p/interface-compliance-tests-v1.1.18](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.17...@libp2p/interface-compliance-tests-v1.1.18) (2022-03-20)
 
 
