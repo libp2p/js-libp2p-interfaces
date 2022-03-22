@@ -14,6 +14,7 @@ import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
+import { start, stop } from '../index.js'
 
 export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
   describe('pubsub connection handlers', () => {
@@ -49,8 +50,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         })
 
         // Start pubsub
-        await psA.start()
-        await psB.start()
+        await start(psA, psB)
 
         expect(psA.getPeers()).to.be.empty()
         expect(psB.getPeers()).to.be.empty()
@@ -134,8 +134,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           init: {}
         })
 
-        await psA.start()
-        await psB.start()
+        await start(psA, psB)
       })
 
       afterEach(async () => {
@@ -231,15 +230,13 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       afterEach(async () => {
         sinon.restore()
 
-        await psA.stop()
-        await psB.stop()
+        await stop(psA, psB)
 
         await common.teardown()
       })
 
       it('should get notified of connected peers after starting', async () => {
-        await psA.start()
-        await psB.start()
+        await start(psA, psB)
 
         await connectPeers(psA.multicodecs[0], {
           peerId: peerA,
@@ -260,8 +257,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         const topic = 'test-topic'
         const data = uint8ArrayFromString('hey!')
 
-        await psA.start()
-        await psB.start()
+        await start(psA, psB)
 
         await connectPeers(psA.multicodecs[0], {
           peerId: peerA,
@@ -331,15 +327,13 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           init: {}
         })
 
-        await psA.start()
-        await psB.start()
+        await start(psA, psB)
       })
 
       afterEach(async () => {
         sinon.restore()
 
-        await psA.stop()
-        await psB.stop()
+        await stop(psA, psB)
 
         await common.teardown()
       })

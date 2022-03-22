@@ -16,6 +16,7 @@ import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
 import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
+import { start, stop } from '../index.js'
 
 export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
   describe('pubsub with multiple nodes', function () {
@@ -73,9 +74,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           })
 
           // Start pubsub modes
-          await Promise.all(
-            [psA, psB, psC].map(async (p) => await p.start())
-          )
+          await start(psA, psB, psC)
         })
 
         // Connect nodes
@@ -106,9 +105,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         afterEach(async () => {
           sinon.restore()
 
-          await Promise.all(
-            [psA, psB, psC].map(async (p) => await p.stop())
-          )
+          await stop(psA, psB, psC)
 
           await common.teardown()
         })
@@ -353,9 +350,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           })
 
           // Start pubsub nodes
-          await Promise.all(
-            [psA, psB, psC, psD, psE].map(async (p) => await p.start())
-          )
+          await start(psA, psB, psC, psD, psE)
         })
 
         // connect nodes
@@ -400,9 +395,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         })
 
         afterEach(async () => {
-          await Promise.all(
-            [psA, psB, psC, psD, psE].map(async (p) => await p.stop())
-          )
+          await stop(psA, psB, psC, psD, psE)
           await common.teardown()
         })
 
