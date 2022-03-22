@@ -15,6 +15,7 @@ import type { PubSubArgs } from './index.js'
 import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
+import { start, stop } from '../index.js'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
@@ -37,12 +38,12 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           emitSelf: true
         }
       })
-      await pubsub.start()
+      await start(pubsub)
     })
 
     afterEach(async () => {
       sinon.restore()
-      await pubsub.stop()
+      await stop(pubsub)
       await common.teardown()
     })
 
