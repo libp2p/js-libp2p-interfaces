@@ -1,3 +1,10 @@
+## [@libp2p/peer-store-v1.0.7](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.6...@libp2p/peer-store-v1.0.7) (2022-03-24)
+
+
+### Bug Fixes
+
+* rename peer data to peer info ([#187](https://github.com/libp2p/js-libp2p-interfaces/issues/187)) ([dfea342](https://github.com/libp2p/js-libp2p-interfaces/commit/dfea3429bad57abde040397e4e7a58539829e9c2))
+
 ## [@libp2p/peer-store-v1.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.5...@libp2p/peer-store-v1.0.6) (2022-03-15)
 
 
