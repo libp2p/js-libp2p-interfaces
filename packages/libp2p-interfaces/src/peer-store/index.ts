@@ -2,7 +2,7 @@ import type { PeerId } from '../peer-id/index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { EventEmitter } from '../index.js'
 import type { Envelope } from '../record/index.js'
-import type { PeerData } from '../peer-data/index.js'
+import type { PeerInfo } from '../peer-info/index.js'
 
 export interface Address {
   /**
@@ -204,7 +204,7 @@ export interface PeerMetadataChangeData {
 export type EventName = 'peer' | 'change:protocols' | 'change:multiaddrs' | 'change:pubkey' | 'change:metadata'
 
 export interface PeerStoreEvents {
-  'peer': CustomEvent<PeerData>
+  'peer': CustomEvent<PeerInfo>
   'change:protocols': CustomEvent<PeerProtocolsChangeData>
   'change:multiaddrs': CustomEvent<PeerMultiaddrsChangeData>
   'change:pubkey': CustomEvent<PeerPublicKeyChangeData>
