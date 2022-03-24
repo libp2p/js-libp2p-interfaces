@@ -14,7 +14,7 @@ import type { AddressFilter, Peer, PeerMultiaddrsChangeData, PeerStore } from '@
 import type { Store } from './store.js'
 import type { Envelope } from '@libp2p/interfaces/record'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { PeerData } from '@libp2p/interfaces/peer-data'
+import type { PeerInfo } from '@libp2p/interfaces/peer-info'
 
 const log = logger('libp2p:peer-store:address-book')
 const EVENT_NAME = 'change:multiaddrs'
@@ -228,7 +228,7 @@ export class PeerStoreAddressBook {
 
     // Notify the existence of a new peer
     if (!hasPeer) {
-      this.dispatchEvent(new CustomEvent<PeerData>('peer', {
+      this.dispatchEvent(new CustomEvent<PeerInfo>('peer', {
         detail: {
           id: peerId,
           multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr),
@@ -296,7 +296,7 @@ export class PeerStoreAddressBook {
 
     // Notify the existence of a new peer
     if (hasPeer === true) {
-      this.dispatchEvent(new CustomEvent<PeerData>('peer', {
+      this.dispatchEvent(new CustomEvent<PeerInfo>('peer', {
         detail: {
           id: peerId,
           multiaddrs: updatedPeer.addresses.map(addr => addr.multiaddr),

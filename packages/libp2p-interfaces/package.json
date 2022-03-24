@@ -96,6 +96,10 @@
       "import": "./dist/src/peer-id/index.js",
       "types": "./dist/src/peer-id/index.d.ts"
     },
+    "./peer-info": {
+      "import": "./dist/src/peer-info/index.js",
+      "types": "./dist/src/peer-info/index.d.ts"
+    },
     "./peer-routing": {
       "import": "./dist/src/peer-routing/index.js",
       "types": "./dist/src/peer-routing/index.d.ts"

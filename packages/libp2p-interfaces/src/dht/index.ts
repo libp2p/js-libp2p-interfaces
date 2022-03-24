@@ -1,6 +1,6 @@
 import type { PeerId } from '../peer-id/index.js'
 import type { CID } from 'multiformats/cid'
-import type { PeerData } from '../peer-data/index.js'
+import type { PeerInfo } from '../peer-info/index.js'
 import type { AbortOptions } from '../index.js'
 import type { PeerDiscovery } from '../peer-discovery/index.js'
 
@@ -63,8 +63,8 @@ export interface PeerResponseEvent {
   name: 'PEER_RESPONSE'
   messageName: keyof typeof MessageType
   messageType: MessageType
-  closer: PeerData[]
-  providers: PeerData[]
+  closer: PeerInfo[]
+  providers: PeerInfo[]
   record?: DHTRecord
 }
 
@@ -73,7 +73,7 @@ export interface PeerResponseEvent {
  */
 export interface FinalPeerEvent {
   from: PeerId
-  peer: PeerData
+  peer: PeerInfo
   type: EventTypes.FINAL_PEER
   name: 'FINAL_PEER'
 }
@@ -95,7 +95,7 @@ export interface ProviderEvent {
   from: PeerId
   type: EventTypes.PROVIDER
   name: 'PROVIDER'
-  providers: PeerData[]
+  providers: PeerInfo[]
 }
 
 /**
