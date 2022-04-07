@@ -1,5 +1,5 @@
 /* eslint max-nested-callbacks: ["error", 6] */
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import sinon from 'sinon'
 import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'

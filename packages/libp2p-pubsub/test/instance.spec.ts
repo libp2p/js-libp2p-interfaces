@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { PubSubBaseProtocol } from '../src/index.js'
 import type { PubSubRPC, PubSubRPCMessage } from '@libp2p/interfaces/pubsub'
 

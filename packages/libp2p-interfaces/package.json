@@ -221,8 +221,9 @@
     ]
   },
   "scripts": {
+    "clean": "aegir clean",
     "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
+    "dep-check": "aegir dep-check",
     "build": "tsc"
   },
   "dependencies": {
@@ -231,6 +232,6 @@
     "multiformats": "^9.6.3"
   },
   "devDependencies": {
-    "aegir": "^36.1.3"
+    "aegir": "^37.0.4"
   }
 }

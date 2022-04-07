@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { trackedMap } from '../src/index.js'
 import sinon from 'sinon'
 import type { ComponentMetricsTracker, ComponentMetricsUpdate } from '@libp2p/interfaces/metrics'

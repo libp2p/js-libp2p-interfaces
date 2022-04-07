@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { Multiaddr } from '@multiformats/multiaddr'
 import delay from 'delay'
 import pDefer from 'p-defer'

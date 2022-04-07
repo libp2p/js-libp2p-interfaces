@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { pipe } from 'it-pipe'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import all from 'it-all'

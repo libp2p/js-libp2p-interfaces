@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 /* eslint max-nested-callbacks: ["error", 6] */
 
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { arrayEquals } from '@libp2p/utils/array-equals'
 import type { PeerId } from '@libp2p/interfaces/peer-id'

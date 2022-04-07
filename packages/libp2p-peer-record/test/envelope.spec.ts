@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { fromString as uint8arrayFromString } from 'uint8arrays/from-string'
 import { equals as uint8arrayEquals } from 'uint8arrays/equals'
 import { RecordEnvelope } from '../src/envelope/index.js'

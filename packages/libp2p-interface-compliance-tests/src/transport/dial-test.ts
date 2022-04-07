@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { isValidTick } from '../utils/is-valid-tick.js'
 import { mockUpgrader } from '../mocks/upgrader.js'
 import { mockRegistrar } from '../mocks/registrar.js'

@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import tests from '@libp2p/interface-compliance-tests/record'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { peerIdFromKeys } from '@libp2p/peer-id'
