@@ -152,7 +152,7 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "aegir": "^36.1.3",
+    "aegir": "^37.0.0",
     "iso-random-stream": "^2.0.2",
     "it-all": "^1.0.6",
     "it-map": "^1.0.6",
