@@ -140,6 +140,6 @@
   },
   "devDependencies": {
     "@types/debug": "^4.1.7",
-    "aegir": "^37.0.6"
+    "aegir": "^37.0.7"
   }
 }

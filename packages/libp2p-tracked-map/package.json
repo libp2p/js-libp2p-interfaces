@@ -136,7 +136,7 @@
     "@libp2p/interfaces": "^1.3.0"
   },
   "devDependencies": {
-    "aegir": "^37.0.6",
+    "aegir": "^37.0.7",
     "sinon": "^13.0.1"
   }
 }

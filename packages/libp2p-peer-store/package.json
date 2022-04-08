@@ -156,7 +156,7 @@
     "@libp2p/peer-id": "^1.1.0",
     "@libp2p/peer-id-factory": "^1.0.0",
     "@libp2p/utils": "^1.0.9",
-    "aegir": "^37.0.6",
+    "aegir": "^37.0.7",
     "datastore-core": "^7.0.1",
     "err-code": "^3.0.1",
     "p-defer": "^4.0.0",
