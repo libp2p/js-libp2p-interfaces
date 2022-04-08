@@ -161,7 +161,7 @@
     "@libp2p/interface-compliance-tests": "^1.1.0",
     "@libp2p/peer-id-factory": "^1.0.0",
     "@types/varint": "^6.0.0",
-    "aegir": "^37.0.6",
+    "aegir": "^37.0.7",
     "protons": "^3.0.2",
     "sinon": "^13.0.1"
   }
