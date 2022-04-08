@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { duplexPair } from 'it-pair/duplex'
 import { pipe } from 'it-pipe'
 import pLimit from 'p-limit'

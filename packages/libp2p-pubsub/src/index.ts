@@ -174,19 +174,24 @@ export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> impl
   /**
    * Registrar notifies an established connection with pubsub protocol
    */
-  protected async _onPeerConnected (peerId: PeerId, conn: Connection) {
+  protected _onPeerConnected (peerId: PeerId, conn: Connection) {
     log('connected %p', peerId)
 
-    try {
-      const { stream, protocol } = await conn.newStream(this.multicodecs)
-      const peer = this.addPeer(peerId, protocol)
-      await peer.attachOutboundStream(stream)
-    } catch (err: any) {
-      log.error(err)
-    }
+    void Promise.resolve().then(async () => {
+      try {
+        const { stream, protocol } = await conn.newStream(this.multicodecs)
+        const peer = this.addPeer(peerId, protocol)
+        await peer.attachOutboundStream(stream)
+      } catch (err: any) {
+        log.error(err)
+      }
 
-    // Immediately send my own subscriptions to the newly established conn
-    this.send(peerId, { subscriptions: Array.from(this.subscriptions).map(sub => sub.toString()), subscribe: true })
+      // Immediately send my own subscriptions to the newly established conn
+      this.send(peerId, { subscriptions: Array.from(this.subscriptions).map(sub => sub.toString()), subscribe: true })
+    })
+      .catch(err => {
+        log.error(err)
+      })
   }
 
   /**

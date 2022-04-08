@@ -35,22 +35,22 @@ export interface Message {
 }
 
 export interface PubSubRPCMessage {
-  from?: Uint8Array | null
-  topic?: string | null
-  data?: Uint8Array | null
-  sequenceNumber?: Uint8Array | null
-  signature?: Uint8Array | null
-  key?: Uint8Array | null
+  from?: Uint8Array
+  topic?: string
+  data?: Uint8Array
+  sequenceNumber?: Uint8Array
+  signature?: Uint8Array
+  key?: Uint8Array
 }
 
 export interface PubSubRPCSubscription {
-  subscribe?: boolean | null
-  topic?: string | null
+  subscribe?: boolean
+  topic?: string
 }
 
 export interface PubSubRPC {
-  subscriptions?: PubSubRPCSubscription[] | null
-  messages?: PubSubRPCMessage[] | null
+  subscriptions: PubSubRPCSubscription[]
+  messages: PubSubRPCMessage[]
 }
 
 export interface PeerStreams extends EventEmitter<PeerStreamEvents> {

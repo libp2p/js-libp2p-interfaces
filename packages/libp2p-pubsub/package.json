@@ -157,22 +157,19 @@
     ]
   },
   "scripts": {
+    "clean": "aegir clean",
     "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
-    "build": "tsc",
-    "postbuild": "npm run build:copy-proto-files",
-    "generate": "npm run generate:proto && npm run generate:proto-types",
-    "generate:proto": "pbjs -t static-module -w es6 -r libp2p-pubsub --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o test/message/rpc.js ./test/message/rpc.proto",
-    "generate:proto-types": "pbts -o test/message/rpc.d.ts test/message/rpc.js",
-    "build:copy-proto-files": "mkdirp dist/test/message && cp test/message/rpc.js test/message/rpc.d.ts dist/test/message",
-    "pretest": "npm run build",
-    "test": "aegir test -f ./dist/test/*.js -f ./dist/test/**/*.js",
-    "test:chrome": "npm run test -- -t browser",
-    "test:chrome-webworker": "npm run test -- -t webworker",
-    "test:firefox": "npm run test -- -t browser -- --browser firefox",
-    "test:firefox-webworker": "npm run test -- -t webworker -- --browser firefox",
-    "test:node": "npm run test -- -t node --cov",
-    "test:electron-main": "npm run test -- -t electron-main"
+    "dep-check": "aegir dep-check",
+    "build": "aegir build",
+    "generate": "protons test/message/rpc.proto",
+    "test": "aegir test",
+    "test:chrome": "aegir test -t browser --cov",
+    "test:chrome-webworker": "aegir test -t webworker",
+    "test:firefox": "aegir test -t browser -- --browser firefox",
+    "test:firefox-webworker": "aegir test -t webworker -- --browser firefox",
+    "test:node": "aegir test -t node --cov",
+    "test:electron-main": "aegir test -t electron-main",
+    "release": "aegir release"
   },
   "dependencies": {
     "@libp2p/crypto": "^0.22.8",
@@ -193,10 +190,14 @@
   "devDependencies": {
     "@libp2p/peer-id-factory": "^1.0.0",
     "abortable-iterator": "^4.0.2",
-    "aegir": "^36.1.3",
+    "aegir": "^37.0.6",
+    "delay": "^5.0.0",
     "it-pair": "^2.0.2",
     "it-pushable": "^2.0.1",
-    "protobufjs": "^6.10.2",
+    "p-wait-for": "^4.1.0",
+    "protons": "^3.0.2",
+    "protons-runtime": "^1.0.2",
+    "sinon": "^13.0.1",
     "util": "^0.12.4"
   }
 }

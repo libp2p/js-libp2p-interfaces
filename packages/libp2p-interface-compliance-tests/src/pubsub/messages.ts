@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import sinon from 'sinon'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'

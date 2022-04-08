@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { logger } from '../src/index.js'
 
 describe('logger', () => {

@@ -19,7 +19,7 @@ export interface PeerRecordInit {
   /**
    * Monotonically-increasing sequence counter that's used to order PeerRecords in time.
    */
-  seqNumber?: number
+  seqNumber?: bigint
 }
 
 /**
@@ -34,7 +34,7 @@ export class PeerRecord {
     const peerRecord = Protobuf.decode(buf)
     const peerId = peerIdFromBytes(peerRecord.peerId)
     const multiaddrs = (peerRecord.addresses ?? []).map((a) => new Multiaddr(a.multiaddr))
-    const seqNumber = Number(peerRecord.seq)
+    const seqNumber = peerRecord.seq
 
     return new PeerRecord({ peerId, multiaddrs, seqNumber })
   }
@@ -44,7 +44,7 @@ export class PeerRecord {
 
   public peerId: PeerId
   public multiaddrs: Multiaddr[]
-  public seqNumber: number
+  public seqNumber: bigint
   public domain = PeerRecord.DOMAIN
   public codec = PeerRecord.CODEC
   private marshaled?: Uint8Array
@@ -54,7 +54,7 @@ export class PeerRecord {
 
     this.peerId = peerId
     this.multiaddrs = multiaddrs ?? []
-    this.seqNumber = seqNumber ?? Date.now()
+    this.seqNumber = seqNumber ?? BigInt(Date.now())
   }
 
   /**
@@ -64,11 +64,11 @@ export class PeerRecord {
     if (this.marshaled == null) {
       this.marshaled = Protobuf.encode({
         peerId: this.peerId.toBytes(),
-        seq: this.seqNumber,
+        seq: BigInt(this.seqNumber),
         addresses: this.multiaddrs.map((m) => ({
           multiaddr: m.bytes
         }))
-      }).finish()
+      })
     }
 
     return this.marshaled

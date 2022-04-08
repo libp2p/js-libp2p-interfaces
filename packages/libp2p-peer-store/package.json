@@ -123,21 +123,18 @@
     ]
   },
   "scripts": {
+    "clean": "aegir clean",
     "lint": "aegir lint",
-    "dep-check": "aegir dep-check dist/src/**/*.js dist/test/**/*.js",
-    "build": "tsc && npm run build:copy-proto-files",
-    "generate": "npm run generate:proto && npm run generate:proto-types && tsc",
-    "generate:proto": "pbjs -t static-module -w es6 -r libp2p-peer-store --force-number --no-verify --no-delimited --no-create --no-beautify --no-defaults --lint eslint-disable -o src/pb/peer.js ./src/pb/peer.proto",
-    "generate:proto-types": "pbts -o src/pb/peer.d.ts src/pb/peer.js",
-    "build:copy-proto-files": "mkdirp dist/src/pb && cp src/pb/*.js dist/src/pb && cp src/pb/*.d.ts dist/src/pb",
-    "pretest": "npm run build",
-    "test": "aegir test -f ./dist/test/*.js -f ./dist/test/**/*.js",
-    "test:chrome": "npm run test -- -t browser",
-    "test:chrome-webworker": "npm run test -- -t webworker",
-    "test:firefox": "npm run test -- -t browser -- --browser firefox",
-    "test:firefox-webworker": "npm run test -- -t webworker -- --browser firefox",
-    "test:node": "npm run test -- -t node --cov",
-    "test:electron-main": "npm run test -- -t electron-main"
+    "dep-check": "aegir dep-check",
+    "build": "aegir build",
+    "test": "aegir test",
+    "test:chrome": "aegir test -t browser --cov",
+    "test:chrome-webworker": "aegir test -t webworker",
+    "test:firefox": "aegir test -t browser -- --browser firefox",
+    "test:firefox-webworker": "aegir test -t webworker -- --browser firefox",
+    "test:node": "aegir test -t node --cov",
+    "test:electron-main": "aegir test -t electron-main",
+    "release": "aegir release"
   },
   "dependencies": {
     "@libp2p/interfaces": "^1.3.0",
@@ -152,18 +149,19 @@
     "it-pipe": "^2.0.3",
     "mortice": "^3.0.0",
     "multiformats": "^9.6.3",
-    "protobufjs": "^6.11.2"
+    "protons-runtime": "^1.0.2"
   },
   "devDependencies": {
     "@libp2p/interface-compliance-tests": "^1.1.0",
     "@libp2p/peer-id": "^1.1.0",
     "@libp2p/peer-id-factory": "^1.0.0",
     "@libp2p/utils": "^1.0.9",
-    "aegir": "^36.1.3",
+    "aegir": "^37.0.6",
     "datastore-core": "^7.0.1",
     "err-code": "^3.0.1",
     "p-defer": "^4.0.0",
     "p-wait-for": "^4.1.0",
+    "protons": "^3.0.2",
     "sinon": "^13.0.1",
     "uint8arrays": "^3.0.0"
   }

@@ -97,13 +97,17 @@ export class RecordEnvelope implements Envelope {
    * Marshal the envelope content
    */
   marshal () {
+    if (this.peerId.publicKey == null) {
+      throw new Error('Missing public key')
+    }
+
     if (this.marshaled == null) {
       this.marshaled = Protobuf.encode({
         publicKey: this.peerId.publicKey,
         payloadType: this.payloadType,
         payload: this.payload,
         signature: this.signature
-      }).finish()
+      })
     }
 
     return this.marshaled

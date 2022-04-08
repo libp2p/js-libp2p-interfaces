@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 /* eslint max-nested-callbacks: ["error", 5] */
 
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { pipe } from 'it-pipe'
 import all from 'it-all'
 import { Uint8ArrayList } from 'uint8arraylist'

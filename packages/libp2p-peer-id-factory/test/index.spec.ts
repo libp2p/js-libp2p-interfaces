@@ -1,7 +1,7 @@
 /* eslint max-nested-callbacks: ["error", 8] */
 /* eslint-env mocha */
 
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { keys } from '@libp2p/crypto'
 import { CID } from 'multiformats/cid'
 import * as Digest from 'multiformats/hashes/digest'

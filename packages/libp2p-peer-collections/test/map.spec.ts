@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { PeerMap } from '../src/index.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { peerIdFromBytes } from '@libp2p/peer-id'

@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 /* eslint max-nested-callbacks: ["error", 6] */
 
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { Multiaddr } from '@multiformats/multiaddr'
 import { arrayEquals } from '@libp2p/utils/array-equals'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
@@ -645,12 +645,12 @@ describe('addressBook', () => {
         const peerRecord1 = new PeerRecord({
           peerId,
           multiaddrs,
-          seqNumber: Date.now()
+          seqNumber: BigInt(Date.now())
         })
         const peerRecord2 = new PeerRecord({
           peerId,
           multiaddrs,
-          seqNumber: Date.now() - 1
+          seqNumber: BigInt(Date.now() - 1)
         })
         const envelope1 = await RecordEnvelope.seal(peerRecord1, peerId)
         const envelope2 = await RecordEnvelope.seal(peerRecord2, peerId)

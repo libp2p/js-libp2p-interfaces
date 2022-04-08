@@ -1,4 +1,4 @@
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import { mockConnection } from './connection.js'
 import type { Upgrader, MultiaddrConnection, UpgraderEvents } from '@libp2p/interfaces/transport'
 import type { Registrar } from '@libp2p/interfaces/registrar'

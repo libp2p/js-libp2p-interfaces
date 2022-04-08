@@ -5,7 +5,7 @@ import { codes } from './errors.js'
 import { Key } from 'interface-datastore/key'
 import { base32 } from 'multiformats/bases/base32'
 import { Multiaddr } from '@multiformats/multiaddr'
-import { Peer as PeerPB } from './pb/peer.js'
+import { Metadata, Peer as PeerPB } from './pb/peer.js'
 import mortice from 'mortice'
 import { equals as uint8arrayEquals } from 'uint8arrays/equals'
 import type { Peer } from '@libp2p/interfaces/peer-store'
@@ -75,10 +75,12 @@ export class PersistentStore {
     return {
       ...peer,
       id: peerId,
-      addresses: peer.addresses.map(({ multiaddr, isCertified }) => ({
-        multiaddr: new Multiaddr(multiaddr),
-        isCertified: isCertified ?? false
-      })),
+      addresses: peer.addresses.map(({ multiaddr, isCertified }) => {
+        return {
+          multiaddr: new Multiaddr(multiaddr),
+          isCertified: isCertified ?? false
+        }
+      }),
       metadata,
       pubKey: peer.pubKey ?? undefined,
       peerRecordEnvelope: peer.peerRecordEnvelope ?? undefined
@@ -110,13 +112,23 @@ export class PersistentStore {
         isCertified
       }))
 
+    const metadata: Metadata[] = []
+
+    ;[...peer.metadata.keys()].sort().forEach(key => {
+      const value = peer.metadata.get(key)
+
+      if (value != null) {
+        metadata.push({ key, value })
+      }
+    })
+
     const buf = PeerPB.encode({
       addresses,
       protocols: peer.protocols.sort(),
       pubKey: peer.pubKey,
-      metadata: [...peer.metadata.keys()].sort().map(key => ({ key, value: peer.metadata.get(key) })),
+      metadata,
       peerRecordEnvelope: peer.peerRecordEnvelope
-    }).finish()
+    })
 
     await this.datastore.put(this._peerIdToDatastoreKey(peer.id), buf)
 
