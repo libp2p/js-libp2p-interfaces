@@ -1,3 +1,15 @@
+## [@libp2p/peer-id-factory-v1.0.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-factory-v1.0.8...@libp2p/peer-id-factory-v1.0.9) (2022-04-08)
+
+
+### Bug Fixes
+
+* swap protobufjs for protons ([#191](https://github.com/libp2p/js-libp2p-interfaces/issues/191)) ([d72b30c](https://github.com/libp2p/js-libp2p-interfaces/commit/d72b30cfca4b9145e0b31db28e8fa3329a180e83))
+
+
+### Trivial Changes
+
+* update aegir ([#192](https://github.com/libp2p/js-libp2p-interfaces/issues/192)) ([41c1494](https://github.com/libp2p/js-libp2p-interfaces/commit/41c14941e8b67d6601a90b4d48a2776573d55e60))
+
 ## [@libp2p/peer-id-factory-v1.0.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-factory-v1.0.7...@libp2p/peer-id-factory-v1.0.8) (2022-03-15)
 
 
