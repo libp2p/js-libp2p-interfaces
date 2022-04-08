@@ -24,7 +24,7 @@ export class PubsubImplementation extends PubSubBaseProtocol {
   }
 
   encodeRpc (rpc: PubSubRPC): Uint8Array {
-    return RPC.encode(rpc).finish()
+    return RPC.encode(rpc)
   }
 
   decodeMessage (bytes: Uint8Array): PubSubRPCMessage {
@@ -32,7 +32,7 @@ export class PubsubImplementation extends PubSubBaseProtocol {
   }
 
   encodeMessage (rpc: PubSubRPCMessage): Uint8Array {
-    return RPC.Message.encode(rpc).finish()
+    return RPC.Message.encode(rpc)
   }
 }
 

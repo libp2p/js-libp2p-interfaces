@@ -122,14 +122,15 @@
     "clean": "aegir clean",
     "lint": "aegir lint",
     "dep-check": "aegir dep-check",
-    "build": "tsc",
+    "build": "aegir build",
     "test": "aegir test",
     "test:chrome": "aegir test -t browser --cov",
     "test:chrome-webworker": "aegir test -t webworker",
     "test:firefox": "aegir test -t browser -- --browser firefox",
     "test:firefox-webworker": "aegir test -t webworker -- --browser firefox",
     "test:node": "aegir test -t node --cov",
-    "test:electron-main": "aegir test -t electron-main"
+    "test:electron-main": "aegir test -t electron-main",
+    "release": "aegir release"
   },
   "dependencies": {
     "@libp2p/interfaces": "^1.3.0",
@@ -138,6 +139,6 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "aegir": "^37.0.4"
+    "aegir": "^37.0.6"
   }
 }

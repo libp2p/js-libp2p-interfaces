@@ -14,7 +14,7 @@ import type { Message, PubSubRPCMessage } from '@libp2p/interfaces/pubsub'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 
 function encodeMessage (message: PubSubRPCMessage) {
-  return RPC.Message.encode(message).finish()
+  return RPC.Message.encode(message)
 }
 
 describe('message signing', () => {
@@ -34,7 +34,7 @@ describe('message signing', () => {
       topic: 'test-topic'
     }
 
-    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message)).finish()])
+    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message))])
 
     if (peerId.privateKey == null) {
       throw new Error('No private key found on PeerId')
@@ -67,7 +67,7 @@ describe('message signing', () => {
       topic: 'test-topic'
     }
 
-    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message)).finish()])
+    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message))])
 
     if (secPeerId.privateKey == null) {
       throw new Error('No private key found on PeerId')
@@ -98,7 +98,7 @@ describe('message signing', () => {
       topic: 'test-topic'
     }
 
-    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message)).finish()])
+    const bytesToSign = uint8ArrayConcat([SignPrefix, RPC.Message.encode(toRpcMessage(message))])
 
     if (peerId.privateKey == null) {
       throw new Error('No private key found on PeerId')

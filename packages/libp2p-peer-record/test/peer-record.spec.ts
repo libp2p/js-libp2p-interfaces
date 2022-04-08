@@ -61,7 +61,7 @@ describe('PeerRecord', () => {
     const multiaddrs = [
       new Multiaddr('/ip4/127.0.0.1/tcp/2000')
     ]
-    const seqNumber = Date.now()
+    const seqNumber = BigInt(Date.now())
     const peerRecord = new PeerRecord({ peerId, multiaddrs, seqNumber })
 
     expect(peerRecord).to.exist()
@@ -76,7 +76,7 @@ describe('PeerRecord', () => {
     const multiaddrs = [
       new Multiaddr('/ip4/127.0.0.1/tcp/2000')
     ]
-    const seqNumber = Date.now()
+    const seqNumber = BigInt(Date.now())
     const peerRecord = new PeerRecord({ peerId, multiaddrs, seqNumber })
 
     // Marshal
@@ -102,10 +102,10 @@ describe('PeerRecord', () => {
   })
 
   it('equals returns false if the peer record has a different seqNumber', () => {
-    const ts0 = Date.now()
+    const ts0 = BigInt(Date.now())
     const peerRecord0 = new PeerRecord({ peerId, seqNumber: ts0 })
 
-    const ts1 = ts0 + 20
+    const ts1 = ts0 + 20n
     const peerRecord1 = new PeerRecord({ peerId, seqNumber: ts1 })
 
     const equals = peerRecord0.equals(peerRecord1)
@@ -137,7 +137,7 @@ describe('PeerRecord inside Envelope', () => {
     const multiaddrs = [
       new Multiaddr('/ip4/127.0.0.1/tcp/2000')
     ]
-    const seqNumber = Date.now()
+    const seqNumber = BigInt(Date.now())
     peerRecord = new PeerRecord({ peerId, multiaddrs, seqNumber })
   })
 

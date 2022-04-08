@@ -51,7 +51,7 @@ export function exportToProtobuf (peerId: RSAPeerId | Ed25519PeerId | Secp256k1P
     id: peerId.multihash.bytes,
     pubKey: peerId.publicKey,
     privKey: excludePrivateKey === true || peerId.privateKey == null ? undefined : peerId.privateKey
-  }).finish()
+  })
 }
 
 export async function createFromProtobuf (buf: Uint8Array) {

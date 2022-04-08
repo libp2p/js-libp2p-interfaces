@@ -188,14 +188,15 @@
     "clean": "aegir clean",
     "lint": "aegir lint",
     "dep-check": "aegir dep-check",
-    "build": "tsc",
+    "build": "aegir build",
     "test": "aegir test",
     "test:chrome": "aegir test -t browser --cov",
     "test:chrome-webworker": "aegir test -t webworker",
     "test:firefox": "aegir test -t browser -- --browser firefox",
     "test:firefox-webworker": "aegir test -t webworker -- --browser firefox",
     "test:node": "aegir test -t node --cov",
-    "test:electron-main": "aegir test -t electron-main"
+    "test:electron-main": "aegir test -t electron-main",
+    "release": "aegir release"
   },
   "dependencies": {
     "@libp2p/crypto": "^0.22.8",
@@ -207,7 +208,7 @@
     "@libp2p/pubsub": "^1.2.0",
     "@multiformats/multiaddr": "^10.1.5",
     "abortable-iterator": "^4.0.2",
-    "aegir": "^37.0.4",
+    "aegir": "^37.0.6",
     "any-signal": "^3.0.0",
     "delay": "^5.0.0",
     "err-code": "^3.0.1",

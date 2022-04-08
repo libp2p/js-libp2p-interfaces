@@ -645,12 +645,12 @@ describe('addressBook', () => {
         const peerRecord1 = new PeerRecord({
           peerId,
           multiaddrs,
-          seqNumber: Date.now()
+          seqNumber: BigInt(Date.now())
         })
         const peerRecord2 = new PeerRecord({
           peerId,
           multiaddrs,
-          seqNumber: Date.now() - 1
+          seqNumber: BigInt(Date.now() - 1)
         })
         const envelope1 = await RecordEnvelope.seal(peerRecord1, peerId)
         const envelope2 = await RecordEnvelope.seal(peerRecord2, peerId)

@@ -224,14 +224,16 @@
     "clean": "aegir clean",
     "lint": "aegir lint",
     "dep-check": "aegir dep-check",
-    "build": "tsc"
+    "build": "aegir build",
+    "release": "aegir release"
   },
   "dependencies": {
     "@multiformats/multiaddr": "^10.1.5",
+    "err-code": "^3.0.1",
     "interface-datastore": "^6.1.0",
     "multiformats": "^9.6.3"
   },
   "devDependencies": {
-    "aegir": "^37.0.4"
+    "aegir": "^37.0.6"
   }
 }

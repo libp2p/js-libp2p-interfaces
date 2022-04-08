@@ -35,9 +35,12 @@ describe('compliance tests', () => {
           const id = `${streamId++}`
           const stream: Stream = {
             ...pair(),
-            close: async () => {
-              await stream.sink(async function * () {}())
-              connection.removeStream(stream.id)
+            close: () => {
+              void stream.sink(async function * () {}())
+                .then(() => {
+                  connection.removeStream(stream.id)
+                })
+                .catch()
             },
             id,
             abort: () => {},
