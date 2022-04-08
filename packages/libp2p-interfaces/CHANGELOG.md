@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.19](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.18...@libp2p/interfaces-v1.3.19) (2022-04-08)
+
+
+### Bug Fixes
+
+* swap protobufjs for protons ([#191](https://github.com/libp2p/js-libp2p-interfaces/issues/191)) ([d72b30c](https://github.com/libp2p/js-libp2p-interfaces/commit/d72b30cfca4b9145e0b31db28e8fa3329a180e83))
+
 ## [@libp2p/interfaces-v1.3.18](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.17...@libp2p/interfaces-v1.3.18) (2022-03-24)
 
 
