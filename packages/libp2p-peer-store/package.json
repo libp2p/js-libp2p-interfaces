@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/peer-store",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Stores information about peers libp2p knows on the network",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/libp2p-peer-store#readme",
