@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.20](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.19...@libp2p/interfaces-v1.3.20) (2022-04-08)
+
+
+### Trivial Changes
+
+* update aegir ([#192](https://github.com/libp2p/js-libp2p-interfaces/issues/192)) ([41c1494](https://github.com/libp2p/js-libp2p-interfaces/commit/41c14941e8b67d6601a90b4d48a2776573d55e60))
+
 ## [@libp2p/interfaces-v1.3.19](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.18...@libp2p/interfaces-v1.3.19) (2022-04-08)
 
 
