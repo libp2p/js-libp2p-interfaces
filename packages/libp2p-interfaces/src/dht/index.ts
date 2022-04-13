@@ -188,8 +188,24 @@ export interface DualDHT extends DHT {
   lan: SingleDHT
 }
 
+/**
+ * A selector function takes a DHT key and a list of records and returns the
+ * index of the best record in the list
+ */
 export interface SelectFn { (key: Uint8Array, records: Uint8Array[]): number }
-export interface ValidateFn { (a: Uint8Array, b: Uint8Array): Promise<void> }
 
-export interface Selectors { [key: string]: SelectFn }
-export interface Validators { [key: string]: { func: ValidateFn } }
+/**
+ * A validator function takes a DHT key and the value of the record for that key
+ * and throws if the record is invalid
+ */
+export interface ValidateFn { (key: Uint8Array, value: Uint8Array): Promise<void> }
+
+/**
+ * Selectors are a map of key prefixes to selector functions
+ */
+export type Selectors = Record<string, SelectFn>
+
+/**
+ * Validators are a map of key prefixes to validator functions
+ */
+export type Validators = Record<string, ValidateFn>
