@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.21](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.20...@libp2p/interfaces-v1.3.21) (2022-04-13)
+
+
+### Bug Fixes
+
+* add keychain types, fix bigint types ([#193](https://github.com/libp2p/js-libp2p-interfaces/issues/193)) ([9ceadf9](https://github.com/libp2p/js-libp2p-interfaces/commit/9ceadf9d5c42a12d88d74ddd9140e34f7fa63537))
+
 ## [@libp2p/interfaces-v1.3.20](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.19...@libp2p/interfaces-v1.3.20) (2022-04-08)
 
 
