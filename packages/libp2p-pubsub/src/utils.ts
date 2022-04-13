@@ -10,14 +10,14 @@ import errcode from 'err-code'
 /**
  * Generate a random sequence number
  */
-export function randomSeqno (): BigInt {
+export function randomSeqno (): bigint {
   return BigInt(`0x${uint8ArrayToString(randomBytes(8), 'base16')}`)
 }
 
 /**
  * Generate a message id, based on the `key` and `seqno`
  */
-export const msgId = (key: Uint8Array, seqno: BigInt) => {
+export const msgId = (key: Uint8Array, seqno: bigint) => {
   const seqnoBytes = uint8ArrayFromString(seqno.toString(16).padStart(16, '0'), 'base16')
 
   const msgId = new Uint8Array(key.length + seqnoBytes.length)

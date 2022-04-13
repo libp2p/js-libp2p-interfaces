@@ -24,8 +24,8 @@ export interface MovingAverages {
 }
 
 export interface TransferStats {
-  dataReceived: BigInt
-  dataSent: BigInt
+  dataReceived: bigint
+  dataSent: bigint
 }
 
 export interface Stats {

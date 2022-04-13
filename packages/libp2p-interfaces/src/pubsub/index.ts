@@ -29,7 +29,7 @@ export interface Message {
   from: PeerId
   topic: string
   data: Uint8Array
-  sequenceNumber?: BigInt
+  sequenceNumber?: bigint
   signature?: Uint8Array
   key?: Uint8Array
 }
