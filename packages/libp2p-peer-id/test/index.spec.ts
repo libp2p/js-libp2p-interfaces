@@ -15,6 +15,14 @@ describe('PeerId', () => {
     expect(id.equals(buf)).to.be.true()
   })
 
+  it('parses a v1 CID with the libp2p-key codec', async () => {
+    const str = 'bafzaajaiaejca24q7uhr7adt3rtai4ixtn2r3q72kccwvwzg6wnfetwqyvrs5n2d'
+    const id = peerIdFromString(str)
+    expect(id.type).to.equal('Ed25519')
+    expect(id.toString()).to.equal('12D3KooWH4G2B3x5BZHH3j2ccMsBLhzR8u1uzrAQshg429xGFGPk')
+    expect(id.toCID().toString()).to.equal('bafzaajaiaejca24q7uhr7adt3rtai4ixtn2r3q72kccwvwzg6wnfetwqyvrs5n2d')
+  })
+
   it('defaults to base58btc when stringifying', async () => {
     const buf = uint8ArrayFromString('12D3KooWbtp1AcgweFSArD7dbKWYpAr8MZR1tofwNwLFLjeNGLWa', 'base58btc')
     const id = peerIdFromBytes(buf)
@@ -81,5 +89,14 @@ describe('PeerId', () => {
     id.toString()
 
     expect(id).to.have.property('string').that.is.ok()
+  })
+
+  it('stringifies as JSON', () => {
+    const buf = uint8ArrayFromString('16Uiu2HAkxSnqYGDU5iZTQrZyAcQDQHKrZqSNPBmKFifEagS2XfrL', 'base58btc')
+    const id = peerIdFromBytes(buf)
+
+    const res = JSON.parse(JSON.stringify({ id }))
+
+    expect(res).to.have.property('id', id.toString())
   })
 })

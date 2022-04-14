@@ -51,7 +51,7 @@ export class PersistentStore {
       throw errcode(new Error('peerId must be an instance of peer-id'), codes.ERR_INVALID_PARAMETERS)
     }
 
-    const b32key = base32.encode(peerId.toBytes())
+    const b32key = peerId.toCID().toString()
     return new Key(`${NAMESPACE_COMMON}${b32key}`)
   }
 

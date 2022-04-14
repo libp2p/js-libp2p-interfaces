@@ -49,3 +49,15 @@ export function logger (name: string): Logger {
     trace: debug(`${name}:trace`)
   })
 }
+
+export function disable () {
+  debug.disable()
+}
+
+export function enable (namespaces: string) {
+  debug.enable(namespaces)
+}
+
+export function enabled (namespaces: string) {
+  return debug.enabled(namespaces)
+}
