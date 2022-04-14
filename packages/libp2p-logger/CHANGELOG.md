@@ -1,3 +1,10 @@
+## [@libp2p/logger-v1.1.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/logger-v1.1.3...@libp2p/logger-v1.1.4) (2022-04-14)
+
+
+### Bug Fixes
+
+* add logger methods, fix peer id deserialization ([#194](https://github.com/libp2p/js-libp2p-interfaces/issues/194)) ([f0e1fad](https://github.com/libp2p/js-libp2p-interfaces/commit/f0e1fad42701d73eef4233ec2b9a8aafa0b2ab96))
+
 ## [@libp2p/logger-v1.1.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/logger-v1.1.2...@libp2p/logger-v1.1.3) (2022-04-08)
 
 
