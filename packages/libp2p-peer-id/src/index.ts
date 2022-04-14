@@ -91,6 +91,13 @@ class PeerIdImpl {
   }
 
   /**
+   * Returns Multiaddr as a JSON encoded object
+   */
+  toJSON () {
+    return this.toString()
+  }
+
+  /**
    * Checks the equality of `this` peer against a given PeerId
    */
   equals (id: PeerId | Uint8Array | string): boolean {
@@ -213,9 +220,9 @@ export function peerIdFromCID (cid: CID): PeerId {
   if (multihash.code === sha256.code) {
     return new RSAPeerIdImpl({ multihash: cid.multihash })
   } else if (multihash.code === identity.code) {
-    if (multihash.bytes.length === MARSHALLED_ED225519_PUBLIC_KEY_LENGTH) {
+    if (multihash.digest.length === MARSHALLED_ED225519_PUBLIC_KEY_LENGTH) {
       return new Ed25519PeerIdImpl({ multihash: cid.multihash })
-    } else if (multihash.bytes.length === MARSHALLED_SECP258K1_PUBLIC_KEY_LENGTH) {
+    } else if (multihash.digest.length === MARSHALLED_SECP258K1_PUBLIC_KEY_LENGTH) {
       return new Secp256k1PeerIdImpl({ multihash: cid.multihash })
     }
   }
