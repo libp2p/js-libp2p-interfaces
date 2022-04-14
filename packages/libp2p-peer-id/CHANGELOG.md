@@ -1,3 +1,10 @@
+## [@libp2p/peer-id-v1.1.10](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-v1.1.9...@libp2p/peer-id-v1.1.10) (2022-04-14)
+
+
+### Bug Fixes
+
+* add logger methods, fix peer id deserialization ([#194](https://github.com/libp2p/js-libp2p-interfaces/issues/194)) ([f0e1fad](https://github.com/libp2p/js-libp2p-interfaces/commit/f0e1fad42701d73eef4233ec2b9a8aafa0b2ab96))
+
 ## [@libp2p/peer-id-v1.1.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-id-v1.1.8...@libp2p/peer-id-v1.1.9) (2022-04-08)
 
 
