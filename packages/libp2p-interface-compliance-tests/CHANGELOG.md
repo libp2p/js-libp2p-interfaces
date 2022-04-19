@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.22](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.21...@libp2p/interface-compliance-tests-v1.1.22) (2022-04-19)
+
+
+### Bug Fixes
+
+* move dev deps to prod ([#195](https://github.com/libp2p/js-libp2p-interfaces/issues/195)) ([3e1ffc7](https://github.com/libp2p/js-libp2p-interfaces/commit/3e1ffc7b174e74be483943ad4e5fcab823ae3f6d))
+
 ## [@libp2p/interface-compliance-tests-v1.1.21](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.20...@libp2p/interface-compliance-tests-v1.1.21) (2022-04-08)
 
 
