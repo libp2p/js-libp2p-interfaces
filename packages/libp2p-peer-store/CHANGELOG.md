@@ -1,3 +1,10 @@
+## [@libp2p/peer-store-v1.0.10](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.9...@libp2p/peer-store-v1.0.10) (2022-04-19)
+
+
+### Bug Fixes
+
+* move dev deps to prod ([#195](https://github.com/libp2p/js-libp2p-interfaces/issues/195)) ([3e1ffc7](https://github.com/libp2p/js-libp2p-interfaces/commit/3e1ffc7b174e74be483943ad4e5fcab823ae3f6d))
+
 ## [@libp2p/peer-store-v1.0.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.8...@libp2p/peer-store-v1.0.9) (2022-04-14)
 
 
