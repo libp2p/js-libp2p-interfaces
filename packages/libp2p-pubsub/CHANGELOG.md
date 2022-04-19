@@ -1,3 +1,10 @@
+## [@libp2p/pubsub-v1.2.17](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.16...@libp2p/pubsub-v1.2.17) (2022-04-19)
+
+
+### Trivial Changes
+
+* remove extraneous readme ([#196](https://github.com/libp2p/js-libp2p-interfaces/issues/196)) ([ee1d00c](https://github.com/libp2p/js-libp2p-interfaces/commit/ee1d00cc209909836f12f17d62f1165f11689488))
+
 ## [@libp2p/pubsub-v1.2.16](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.15...@libp2p/pubsub-v1.2.16) (2022-04-19)
 
 
