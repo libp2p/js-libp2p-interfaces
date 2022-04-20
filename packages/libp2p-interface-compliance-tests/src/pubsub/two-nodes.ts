@@ -7,7 +7,6 @@ import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { CustomEvent } from '@libp2p/interfaces'
 import { waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { Message } from '@libp2p/interfaces/pubsub'
@@ -128,7 +127,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         waitForSubscriptionUpdate(psB, psA)
       ])
 
-      void psA.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('hey') }))
+      void psA.publish(topic, uint8ArrayFromString('hey'))
 
       return await defer.promise
     })
@@ -162,7 +161,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         waitForSubscriptionUpdate(psB, psA)
       ])
 
-      void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('banana') }))
+      void psB.publish(topic, uint8ArrayFromString('banana'))
 
       return await defer.promise
     })
@@ -196,7 +195,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         waitForSubscriptionUpdate(psB, psA)
       ])
 
-      Array.from({ length: 10 }, (_, i) => psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('banana') })))
+      Array.from({ length: 10 }, (_, i) => psB.publish(topic, uint8ArrayFromString('banana')))
 
       return await defer.promise
     })
@@ -262,8 +261,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         defer.resolve()
       }, 100)
 
-      void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('banana') }))
-      void psA.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('banana') }))
+      void psB.publish(topic, uint8ArrayFromString('banana'))
+      void psA.publish(topic, uint8ArrayFromString('banana'))
 
       return await defer.promise
     })

@@ -6,7 +6,6 @@ import {
 } from './utils/index.js'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import delay from 'delay'
-import { CustomEvent } from '@libp2p/interfaces'
 import { Components } from '@libp2p/interfaces/components'
 
 const protocol = '/pubsub/1.0.0'
@@ -43,7 +42,7 @@ describe('emitSelf', () => {
     it('should emit to self on publish', async () => {
       const promise = new Promise((resolve) => pubsub.addEventListener(topic, resolve))
 
-      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+      pubsub.publish(topic, data)
 
       return await promise
     })
@@ -51,7 +50,7 @@ describe('emitSelf', () => {
     it('should publish a message without data', async () => {
       const promise = new Promise((resolve) => pubsub.addEventListener(topic, resolve))
 
-      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic))
+      pubsub.publish(topic)
 
       return await promise
     })
@@ -85,7 +84,7 @@ describe('emitSelf', () => {
         once: true
       })
 
-      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+      pubsub.publish(topic, data)
 
       // Wait 1 second to guarantee that self is not noticed
       await delay(1000)

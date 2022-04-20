@@ -580,40 +580,27 @@ export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> impl
   /**
    * Publishes messages to all subscribed peers
    */
-  dispatchEvent (event: CustomEvent<Uint8Array | Message>): boolean {
+  publish (topic: string, data?: Uint8Array): boolean {
     if (!this.started) {
       throw new Error('Pubsub has not started')
     }
 
-    const topic = event.type
-    let message: Message
-
-    if (event.detail instanceof Uint8Array) {
-      message = {
-        from: this.components.getPeerId(),
-        topic,
-        data: event.detail
-      }
-    } else if (event.detail != null) {
-      message = event.detail
-    } else {
-      message = {
-        from: this.components.getPeerId(),
-        topic,
-        data: new Uint8Array(0)
-      }
+    const message: Message = {
+      from: this.components.getPeerId(),
+      topic,
+      data: data ?? new Uint8Array(0)
     }
 
     log('publish topic: %s from: %p data: %m', topic, message.from, message.data)
 
     Promise.resolve().then(async () => {
-      message = await this.buildMessage(message)
+      const rpcMessage = await this.buildMessage(message)
 
       // dispatch the event if we are interested
       if (this.emitSelf) {
         if (this.subscriptions.has(topic)) {
           super.dispatchEvent(new CustomEvent<Message>(topic, {
-            detail: message
+            detail: rpcMessage
           }))
 
           if (this.listenerCount(topic) === 0) {
@@ -623,7 +610,7 @@ export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> impl
       }
 
       // send to all the other peers
-      await this.publishMessage(this.components.getPeerId(), message)
+      await this.publishMessage(this.components.getPeerId(), rpcMessage)
     })
       .catch(err => {
         log.error(err)

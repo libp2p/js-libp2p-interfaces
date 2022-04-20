@@ -7,7 +7,6 @@ import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
-import { CustomEvent } from '@libp2p/interfaces'
 import { waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { Message } from '@libp2p/interfaces/pubsub'
@@ -182,7 +181,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
             waitForSubscriptionUpdate(psC, psB)
           ])
 
-          void psA.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('hey') }))
+          void psA.publish(topic, uint8ArrayFromString('hey'))
 
           function incMsg (evt: CustomEvent<Message>) {
             const msg = evt.detail
@@ -243,7 +242,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
               waitForSubscriptionUpdate(psC, psB)
             ])
 
-            void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('hey') }))
+            void psB.publish(topic, uint8ArrayFromString('hey'))
 
             function incMsg (evt: CustomEvent<Message>) {
               const msg = evt.detail
@@ -435,7 +434,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
             waitForSubscriptionUpdate(psE, psD)
           ])
 
-          void psC.dispatchEvent(new CustomEvent<Uint8Array>('Z', { detail: uint8ArrayFromString('hey from c') }))
+          void psC.publish('Z', uint8ArrayFromString('hey from c'))
 
           function incMsg (evt: CustomEvent<Message>) {
             const msg = evt.detail

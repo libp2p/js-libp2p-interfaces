@@ -6,7 +6,6 @@ import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
-import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
 import type { Message } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
@@ -189,7 +188,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           const subscribedPeers = psB.getSubscribers(topic)
           return subscribedPeers.map(p => p.toString()).includes(peerA.toString())
         })
-        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+        psB.publish(topic, data)
 
         await defer.promise
       })
@@ -290,7 +289,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           const subscribedPeers = psB.getSubscribers(topic)
           return subscribedPeers.map(p => p.toString()).includes(peerA.toString())
         })
-        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+        psB.publish(topic, data)
 
         await defer.promise
       })
@@ -373,7 +372,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           const subscribedPeers = psB.getSubscribers(topic)
           return subscribedPeers.map(p => p.toString()).includes(peerA.toString())
         })
-        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+        psB.publish(topic, data)
 
         await defer1.promise
 
@@ -406,7 +405,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           return subscribedPeers.toString().includes(peerA.toString())
         })
 
-        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+        psB.publish(topic, data)
 
         await defer2.promise
       })
@@ -470,8 +469,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         })
 
         // Verify messages go both ways
-        void psA.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('message-from-a-1') }))
-        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('message-from-b-1') }))
+        void psA.publish(topic, uint8ArrayFromString('message-from-a-1'))
+        void psB.publish(topic, uint8ArrayFromString('message-from-b-1'))
         await pWaitFor(() => {
           return aReceivedFirstMessageFromB && bReceivedFirstMessageFromA
         })
@@ -484,8 +483,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         await pWaitFor(() => psAConnUpdateSpy.callCount === 1)
 
         // Verify messages go both ways after the disconnect
-        void psA.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('message-from-a-2') }))
-        void psB.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: uint8ArrayFromString('message-from-b-2') }))
+        void psA.publish(topic, uint8ArrayFromString('message-from-a-2'))
+        void psB.publish(topic, uint8ArrayFromString('message-from-b-2'))
         await pWaitFor(() => {
           return aReceivedSecondMessageFromB && bReceivedSecondMessageFromA
         })
