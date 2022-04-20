@@ -6,7 +6,6 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { mockRegistrar } from '../mocks/registrar.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import delay from 'delay'
-import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
 import type { PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
@@ -68,19 +67,21 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       }
 
       await pubsub.start()
-      pubsub.addEventListener(topic, handler)
+      pubsub.subscribe(topic)
+      pubsub.addEventListener('message', handler)
 
       await pWaitFor(() => {
         const topics = pubsub.getTopics()
         return topics.length === 1 && topics[0] === topic
       })
 
-      pubsub.removeEventListener(topic, handler)
+      pubsub.removeEventListener('message', handler)
+      pubsub.unsubscribe(topic)
 
       await pWaitFor(() => pubsub.getTopics().length === 0)
 
       // Publish to guarantee the handler is not called
-      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+      pubsub.publish(topic, data)
 
       // handlers are called async
       await delay(100)
@@ -93,12 +94,13 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
 
       await pubsub.start()
 
-      pubsub.addEventListener(topic, (evt) => {
-        const msg = evt.detail
-        expect(msg).to.not.eql(undefined)
+      pubsub.subscribe(topic)
+      pubsub.addEventListener('message', (evt) => {
+        expect(evt).to.have.nested.property('detail.topic', topic)
+        expect(evt).to.have.deep.nested.property('detail.data', data)
         defer.resolve()
       })
-      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+      pubsub.publish(topic, data)
       await defer.promise
 
       await pubsub.stop()

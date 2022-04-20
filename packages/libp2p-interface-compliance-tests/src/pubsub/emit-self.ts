@@ -3,7 +3,6 @@ import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { mockRegistrar } from '../mocks/registrar.js'
-import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
 import type { PubSubArgs } from './index.js'
 import type { PubSubBaseProtocol } from '@libp2p/pubsub'
@@ -43,11 +42,17 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       })
 
       it('should emit to self on publish', async () => {
-        const promise = new Promise((resolve) => pubsub.addEventListener(topic, resolve, {
-          once: true
-        }))
+        const promise = new Promise<void>((resolve) => {
+          pubsub.addEventListener('message', (evt) => {
+            if (evt.detail.topic === topic) {
+              resolve()
+            }
+          }, {
+            once: true
+          })
+        })
 
-        void pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+        pubsub.publish(topic, data)
 
         return await promise
       })
@@ -78,11 +83,11 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       })
 
       it('should not emit to self on publish', async () => {
-        pubsub.addEventListener(topic, () => shouldNotHappen, {
+        pubsub.addEventListener('message', shouldNotHappen, {
           once: true
         })
 
-        void pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+        pubsub.publish(topic, data)
 
         // Wait 1 second to guarantee that self is not noticed
         return await new Promise((resolve) => setTimeout(resolve, 1000))

@@ -12,7 +12,6 @@ import {
   mockIncomingStreamEvent
 } from './utils/index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import { CustomEvent } from '@libp2p/interfaces'
 import { PeerSet } from '@libp2p/peer-collections'
 import { Components } from '@libp2p/interfaces/components'
 
@@ -41,7 +40,7 @@ describe('pubsub base implementation', () => {
       sinon.spy(pubsub, 'publishMessage')
 
       await pubsub.start()
-      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: message }))
+      pubsub.publish(topic, message)
 
       // event dispatch is async
       await pWaitFor(() => {
@@ -58,7 +57,7 @@ describe('pubsub base implementation', () => {
 
       await pubsub.start()
 
-      pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: message }))
+      pubsub.publish(topic, message)
 
       // event dispatch is async
       await pWaitFor(() => {

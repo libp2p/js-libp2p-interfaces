@@ -8,7 +8,6 @@ import { mockRegistrar } from '../mocks/registrar.js'
 import pDefer from 'p-defer'
 import delay from 'delay'
 import pWaitFor from 'p-wait-for'
-import { CustomEvent } from '@libp2p/interfaces'
 import type { TestSetup } from '../index.js'
 import type { PubSubRPC } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
@@ -52,7 +51,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
 
       const spy = sinon.spy(pubsub, 'publishMessage')
 
-      await pubsub.dispatchEvent(new CustomEvent<Uint8Array>(topic, { detail: data }))
+      await pubsub.publish(topic, data)
 
       await pWaitFor(async () => {
         return spy.callCount === 1
@@ -120,8 +119,10 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
 
       const deferred = pDefer()
 
-      pubsub.addEventListener(topic, () => {
-        deferred.resolve()
+      pubsub.addEventListener('message', (evt) => {
+        if (evt.detail.topic === topic) {
+          deferred.resolve()
+        }
       })
 
       await pubsub.processRpc(peerStream.id, peerStream, rpc)
