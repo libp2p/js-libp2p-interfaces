@@ -42,9 +42,15 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       })
 
       it('should emit to self on publish', async () => {
-        const promise = new Promise((resolve) => pubsub.addEventListener(topic, resolve, {
-          once: true
-        }))
+        const promise = new Promise<void>((resolve) => {
+          pubsub.addEventListener('message', (evt) => {
+            if (evt.detail.topic === topic) {
+              resolve()
+            }
+          }, {
+            once: true
+          })
+        })
 
         pubsub.publish(topic, data)
 
@@ -77,7 +83,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       })
 
       it('should not emit to self on publish', async () => {
-        pubsub.addEventListener(topic, () => shouldNotHappen, {
+        pubsub.addEventListener('message', shouldNotHappen, {
           once: true
         })
 

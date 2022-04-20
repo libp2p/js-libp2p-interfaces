@@ -148,7 +148,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           psC.subscribe(topic)
           expect(psC.getTopics()).to.deep.equal([topic])
 
-          psB.addEventListener('pubsub:subscription-change', () => {
+          psB.addEventListener('subscription-change', () => {
             expect(psA.getPeers().length).to.equal(1)
             expect(psB.getPeers().length).to.equal(2)
             expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([peerIdC.toString()])
@@ -171,9 +171,21 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
 
           let counter = 0
 
-          psA.addEventListener(topic, incMsg)
-          psB.addEventListener(topic, incMsg)
-          psC.addEventListener(topic, incMsg)
+          psA.addEventListener('message', (evt) => {
+            if (evt.detail.topic === topic) {
+              incMsg(evt)
+            }
+          })
+          psB.addEventListener('message', (evt) => {
+            if (evt.detail.topic === topic) {
+              incMsg(evt)
+            }
+          })
+          psC.addEventListener('message', (evt) => {
+            if (evt.detail.topic === topic) {
+              incMsg(evt)
+            }
+          })
 
           await Promise.all([
             waitForSubscriptionUpdate(psA, psB),
@@ -181,7 +193,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
             waitForSubscriptionUpdate(psC, psB)
           ])
 
-          void psA.publish(topic, uint8ArrayFromString('hey'))
+          psA.publish(topic, uint8ArrayFromString('hey'))
 
           function incMsg (evt: CustomEvent<Message>) {
             const msg = evt.detail
@@ -191,9 +203,21 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
 
           function check () {
             if (++counter === 3) {
-              psA.removeEventListener(topic, incMsg)
-              psB.removeEventListener(topic, incMsg)
-              psC.removeEventListener(topic, incMsg)
+              psA.removeEventListener('message', (evt) => {
+                if (evt.detail.topic === topic) {
+                  incMsg(evt)
+                }
+              })
+              psB.removeEventListener('message', (evt) => {
+                if (evt.detail.topic === topic) {
+                  incMsg(evt)
+                }
+              })
+              psC.removeEventListener('message', (evt) => {
+                if (evt.detail.topic === topic) {
+                  incMsg(evt)
+                }
+              })
               defer.resolve()
             }
           }
@@ -215,26 +239,25 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
             const defer = pDefer()
             let counter = 0
 
+            psA.addEventListener('message', (evt) => {
+              if (evt.detail.topic === topic) {
+                incMsg(evt)
+              }
+            })
+            psB.addEventListener('message', (evt) => {
+              if (evt.detail.topic === topic) {
+                incMsg(evt)
+              }
+            })
+            psC.addEventListener('message', (evt) => {
+              if (evt.detail.topic === topic) {
+                incMsg(evt)
+              }
+            })
+
             psA.subscribe(topic)
             psB.subscribe(topic)
             psC.subscribe(topic)
-
-            // await subscription change
-            await Promise.all([
-              new Promise(resolve => psA.addEventListener('pubsub:subscription-change', () => resolve(null), {
-                once: true
-              })),
-              new Promise(resolve => psB.addEventListener('pubsub:subscription-change', () => resolve(null), {
-                once: true
-              })),
-              new Promise(resolve => psC.addEventListener('pubsub:subscription-change', () => resolve(null), {
-                once: true
-              }))
-            ])
-
-            psA.addEventListener(topic, incMsg)
-            psB.addEventListener(topic, incMsg)
-            psC.addEventListener(topic, incMsg)
 
             await Promise.all([
               waitForSubscriptionUpdate(psA, psB),
@@ -242,7 +265,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
               waitForSubscriptionUpdate(psC, psB)
             ])
 
-            void psB.publish(topic, uint8ArrayFromString('hey'))
+            psB.publish(topic, uint8ArrayFromString('hey'))
 
             function incMsg (evt: CustomEvent<Message>) {
               const msg = evt.detail
@@ -252,9 +275,21 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
 
             function check () {
               if (++counter === 3) {
-                psA.removeEventListener(topic, incMsg)
-                psB.removeEventListener(topic, incMsg)
-                psC.removeEventListener(topic, incMsg)
+                psA.removeEventListener('message', (evt) => {
+                  if (evt.detail.topic === topic) {
+                    incMsg(evt)
+                  }
+                })
+                psB.removeEventListener('message', (evt) => {
+                  if (evt.detail.topic === topic) {
+                    incMsg(evt)
+                  }
+                })
+                psC.removeEventListener('message', (evt) => {
+                  if (evt.detail.topic === topic) {
+                    incMsg(evt)
+                  }
+                })
                 defer.resolve()
               }
             }
@@ -414,17 +449,38 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         it('publishes from c', async function () {
           const defer = pDefer()
           let counter = 0
+          const topic = 'Z'
 
-          psA.subscribe('Z')
-          psA.addEventListener('Z', incMsg)
-          psB.subscribe('Z')
-          psB.addEventListener('Z', incMsg)
-          psC.subscribe('Z')
-          psC.addEventListener('Z', incMsg)
-          psD.subscribe('Z')
-          psD.addEventListener('Z', incMsg)
-          psE.subscribe('Z')
-          psE.addEventListener('Z', incMsg)
+          psA.subscribe(topic)
+          psA.addEventListener('message', (evt) => {
+            if (evt.detail.topic === topic) {
+              incMsg(evt)
+            }
+          })
+          psB.subscribe(topic)
+          psB.addEventListener('message', (evt) => {
+            if (evt.detail.topic === topic) {
+              incMsg(evt)
+            }
+          })
+          psC.subscribe(topic)
+          psC.addEventListener('message', (evt) => {
+            if (evt.detail.topic === topic) {
+              incMsg(evt)
+            }
+          })
+          psD.subscribe(topic)
+          psD.addEventListener('message', (evt) => {
+            if (evt.detail.topic === topic) {
+              incMsg(evt)
+            }
+          })
+          psE.subscribe(topic)
+          psE.addEventListener('message', (evt) => {
+            if (evt.detail.topic === topic) {
+              incMsg(evt)
+            }
+          })
 
           await Promise.all([
             waitForSubscriptionUpdate(psA, psB),
@@ -434,7 +490,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
             waitForSubscriptionUpdate(psE, psD)
           ])
 
-          void psC.publish('Z', uint8ArrayFromString('hey from c'))
+          psC.publish('Z', uint8ArrayFromString('hey from c'))
 
           function incMsg (evt: CustomEvent<Message>) {
             const msg = evt.detail

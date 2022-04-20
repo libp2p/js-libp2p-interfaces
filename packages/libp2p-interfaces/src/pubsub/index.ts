@@ -103,7 +103,7 @@ export interface SubscriptionChangeData {
 }
 
 export interface PubSubEvents {
-  'pubsub:subscription-change': CustomEvent<SubscriptionChangeData>
+  'subscription-change': CustomEvent<SubscriptionChangeData>
   'message': CustomEvent<Message>
 }
 

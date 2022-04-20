@@ -119,8 +119,10 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
 
       const deferred = pDefer()
 
-      pubsub.addEventListener(topic, () => {
-        deferred.resolve()
+      pubsub.addEventListener('message', (evt) => {
+        if (evt.detail.topic === topic) {
+          deferred.resolve()
+        }
       })
 
       await pubsub.processRpc(peerStream.id, peerStream, rpc)

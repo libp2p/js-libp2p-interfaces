@@ -40,7 +40,15 @@ describe('emitSelf', () => {
     })
 
     it('should emit to self on publish', async () => {
-      const promise = new Promise((resolve) => pubsub.addEventListener(topic, resolve))
+      pubsub.subscribe(topic)
+
+      const promise = new Promise<void>((resolve) => {
+        pubsub.addEventListener('message', (evt) => {
+          if (evt.detail.topic === topic) {
+            resolve()
+          }
+        })
+      })
 
       pubsub.publish(topic, data)
 
@@ -48,7 +56,15 @@ describe('emitSelf', () => {
     })
 
     it('should publish a message without data', async () => {
-      const promise = new Promise((resolve) => pubsub.addEventListener(topic, resolve))
+      pubsub.subscribe(topic)
+
+      const promise = new Promise<void>((resolve) => {
+        pubsub.addEventListener('message', (evt) => {
+          if (evt.detail.topic === topic) {
+            resolve()
+          }
+        })
+      })
 
       pubsub.publish(topic)
 
@@ -80,9 +96,8 @@ describe('emitSelf', () => {
     })
 
     it('should not emit to self on publish', async () => {
-      pubsub.addEventListener(topic, () => shouldNotHappen, {
-        once: true
-      })
+      pubsub.subscribe(topic)
+      pubsub.addEventListener('message', shouldNotHappen)
 
       pubsub.publish(topic, data)
 

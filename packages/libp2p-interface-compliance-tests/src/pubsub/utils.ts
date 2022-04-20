@@ -5,7 +5,7 @@ import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 
 export async function waitForSubscriptionUpdate (a: PubSubBaseProtocol, b: PubSubBaseProtocol) {
   await pWaitFor(async () => {
-    const event = await pEvent<'pubsub:subscription-change', CustomEvent<SubscriptionChangeData>>(a, 'pubsub:subscription-change')
+    const event = await pEvent<'subscription-change', CustomEvent<SubscriptionChangeData>>(a, 'subscription-change')
 
     return event.detail.peerId.equals(b.components.getPeerId())
   })

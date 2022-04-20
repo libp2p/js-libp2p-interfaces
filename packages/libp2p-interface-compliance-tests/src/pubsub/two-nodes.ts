@@ -88,7 +88,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
     it('Subscribe to a topic in nodeA', async () => {
       const defer = pDefer()
 
-      psB.addEventListener('pubsub:subscription-change', (evt) => {
+      psB.addEventListener('subscription-change', (evt) => {
         const { peerId: changedPeerId, subscriptions: changedSubs } = evt.detail
         expect(psA.getTopics()).to.deep.equal([topic])
         expect(psB.getPeers()).to.have.lengthOf(1)
@@ -109,25 +109,26 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
     it('Publish to a topic in nodeA', async () => {
       const defer = pDefer()
 
-      psA.addEventListener(topic, (evt) => {
-        const msg = evt.detail
-        expect(uint8ArrayToString(msg.data)).to.equal('hey')
-        psB.removeEventListener(topic, shouldNotHappen)
-        defer.resolve()
+      psA.addEventListener('message', (evt) => {
+        if (evt.detail.topic === topic) {
+          const msg = evt.detail
+          expect(uint8ArrayToString(msg.data)).to.equal('hey')
+          psB.removeEventListener('message', shouldNotHappen)
+          defer.resolve()
+        }
       }, {
         once: true
       })
 
-      psB.addEventListener(topic, shouldNotHappen, {
-        once: true
-      })
+      psA.subscribe(topic)
+      psB.subscribe(topic)
 
       await Promise.all([
         waitForSubscriptionUpdate(psA, psB),
         waitForSubscriptionUpdate(psB, psA)
       ])
 
-      void psA.publish(topic, uint8ArrayFromString('hey'))
+      psA.publish(topic, uint8ArrayFromString('hey'))
 
       return await defer.promise
     })
@@ -135,16 +136,24 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
     it('Publish to a topic in nodeB', async () => {
       const defer = pDefer()
 
-      psA.addEventListener(topic, (evt) => {
+      psA.addEventListener('message', (evt) => {
+        if (evt.detail.topic !== topic) {
+          return
+        }
+
         const msg = evt.detail
-        psA.addEventListener(topic, shouldNotHappen, {
+        psA.addEventListener('message', (evt) => {
+          if (evt.detail.topic === topic) {
+            shouldNotHappen()
+          }
+        }, {
           once: true
         })
         expect(uint8ArrayToString(msg.data)).to.equal('banana')
 
         setTimeout(() => {
-          psA.removeEventListener(topic, shouldNotHappen)
-          psB.removeEventListener(topic, shouldNotHappen)
+          psA.removeEventListener('message')
+          psB.removeEventListener('message')
 
           defer.resolve()
         }, 100)
@@ -152,16 +161,17 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         once: true
       })
 
-      psB.addEventListener(topic, shouldNotHappen, {
-        once: true
-      })
+      psB.addEventListener('message', shouldNotHappen)
+
+      psA.subscribe(topic)
+      psB.subscribe(topic)
 
       await Promise.all([
         waitForSubscriptionUpdate(psA, psB),
         waitForSubscriptionUpdate(psB, psA)
       ])
 
-      void psB.publish(topic, uint8ArrayFromString('banana'))
+      psB.publish(topic, uint8ArrayFromString('banana'))
 
       return await defer.promise
     })
@@ -170,10 +180,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       const defer = pDefer()
       let counter = 0
 
-      psB.addEventListener(topic, shouldNotHappen, {
-        once: true
-      })
-      psA.addEventListener(topic, receivedMsg)
+      psB.addEventListener('message', shouldNotHappen)
+      psA.addEventListener('message', receivedMsg)
 
       function receivedMsg (evt: CustomEvent<Message>) {
         const msg = evt.detail
@@ -183,12 +191,15 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         expect(msg.topic).to.be.equal(topic)
 
         if (++counter === 10) {
-          psA.removeEventListener(topic, receivedMsg)
-          psB.removeEventListener(topic, shouldNotHappen)
+          psA.removeEventListener('message', receivedMsg)
+          psB.removeEventListener('message', shouldNotHappen)
 
           defer.resolve()
         }
       }
+
+      psA.subscribe(topic)
+      psB.subscribe(topic)
 
       await Promise.all([
         waitForSubscriptionUpdate(psA, psB),
@@ -204,7 +215,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       const defer = pDefer()
       let callCount = 0
 
-      psB.addEventListener('pubsub:subscription-change', (evt) => {
+      psB.addEventListener('subscription-change', (evt) => {
         callCount++
 
         if (callCount === 1) {
@@ -235,34 +246,6 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
 
       psA.unsubscribe(topic)
       expect(psA.getTopics()).to.be.empty()
-
-      return await defer.promise
-    })
-
-    it.skip('Publish to a topic:Z in nodeA nodeB', async () => {
-      const defer = pDefer()
-      const topic = 'Z'
-
-      psA.addEventListener(topic, shouldNotHappen, {
-        once: true
-      })
-      psB.addEventListener(topic, shouldNotHappen, {
-        once: true
-      })
-
-      await Promise.all([
-        waitForSubscriptionUpdate(psA, psB),
-        waitForSubscriptionUpdate(psB, psA)
-      ])
-
-      setTimeout(() => {
-        psA.removeEventListener(topic, shouldNotHappen)
-        psB.removeEventListener(topic, shouldNotHappen)
-        defer.resolve()
-      }, 100)
-
-      void psB.publish(topic, uint8ArrayFromString('banana'))
-      void psA.publish(topic, uint8ArrayFromString('banana'))
 
       return await defer.promise
     })

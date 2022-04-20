@@ -1,5 +1,5 @@
 import { logger } from '@libp2p/logger'
-import { EventEmitter, CustomEvent, EventHandler } from '@libp2p/interfaces'
+import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
 import errcode from 'err-code'
 import { pipe } from 'it-pipe'
 import Queue from 'p-queue'
@@ -326,7 +326,7 @@ export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> impl
         this.processRpcSubOpt(from, subOpt)
       })
 
-      super.dispatchEvent(new CustomEvent<SubscriptionChangeData>('pubsub:subscription-change', {
+      super.dispatchEvent(new CustomEvent<SubscriptionChangeData>('subscription-change', {
         detail: {
           peerId: peerStreams.id,
           subscriptions: subscriptions.map(({ topic, subscribe }) => ({
@@ -405,7 +405,7 @@ export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> impl
       const isFromSelf = this.components.getPeerId().equals(from)
 
       if (!isFromSelf || this.emitSelf) {
-        super.dispatchEvent(new CustomEvent<Message>(msg.topic, {
+        super.dispatchEvent(new CustomEvent<Message>('message', {
           detail: msg
         }))
       }
@@ -599,7 +599,7 @@ export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> impl
       // dispatch the event if we are interested
       if (this.emitSelf) {
         if (this.subscriptions.has(topic)) {
-          super.dispatchEvent(new CustomEvent<Message>(topic, {
+          super.dispatchEvent(new CustomEvent<Message>('message', {
             detail: rpcMessage
           }))
 
@@ -636,17 +636,11 @@ export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> impl
       throw new Error('Pubsub has not started')
     }
 
-    const topicStr = topic.toString()
-
-    if (topicStr === 'pubsub:subscription-change') {
-      return
-    }
-
-    if (!this.subscriptions.has(topicStr)) {
-      this.subscriptions.add(topicStr)
+    if (!this.subscriptions.has(topic)) {
+      this.subscriptions.add(topic)
 
       for (const peerId of this.peers.keys()) {
-        this.send(peerId, { subscriptions: [topicStr], subscribe: true })
+        this.send(peerId, { subscriptions: [topic], subscribe: true })
       }
     }
   }
@@ -662,22 +656,16 @@ export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> impl
     // @ts-expect-error topic should be a key of the event map
     super.removeEventListener(topic)
 
-    const topicStr = topic.toString()
-
-    if (topicStr === 'pubsub:subscription-change') {
-      return
-    }
-
-    const wasSubscribed = this.subscriptions.has(topicStr)
-    const listeners = this.listenerCount(topicStr)
+    const wasSubscribed = this.subscriptions.has(topic)
+    const listeners = this.listenerCount(topic)
 
     log('unsubscribe from %s - am subscribed %s, listeners %d', topic, wasSubscribed, listeners)
 
     if (wasSubscribed && listeners === 0) {
-      this.subscriptions.delete(topicStr)
+      this.subscriptions.delete(topic)
 
       for (const peerId of this.peers.keys()) {
-        this.send(peerId, { subscriptions: [topicStr], subscribe: false })
+        this.send(peerId, { subscriptions: [topic], subscribe: false })
       }
     }
   }
@@ -699,23 +687,5 @@ export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> impl
     }
 
     return Array.from(this.peers.keys())
-  }
-
-  addEventListener (type: string, callback: EventHandler<any>, options?: AddEventListenerOptions | boolean) {
-    this.subscribe(type.toString())
-
-    // @ts-expect-error have to ignore types to accommodate custom string event names
-    super.addEventListener(type, callback, options)
-  }
-
-  removeEventListener (type: string, callback: EventHandler<any> | undefined, options?: EventListenerOptions | boolean) {
-    // @ts-expect-error have to ignore types to accommodate custom string event names
-    super.removeEventListener(type, callback, options)
-
-    const topicStr = type.toString()
-
-    if (this.listenerCount(topicStr) === 0) {
-      this.unsubscribe(topicStr)
-    }
   }
 }

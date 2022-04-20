@@ -67,6 +67,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       }
 
       await pubsub.start()
+      pubsub.subscribe(topic)
       pubsub.addEventListener('message', handler)
 
       await pWaitFor(() => {
@@ -75,6 +76,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       })
 
       pubsub.removeEventListener('message', handler)
+      pubsub.unsubscribe(topic)
 
       await pWaitFor(() => pubsub.getTopics().length === 0)
 
@@ -92,10 +94,10 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
 
       await pubsub.start()
 
+      pubsub.subscribe(topic)
       pubsub.addEventListener('message', (evt) => {
-        expect(evt.type).to.equal(topic)
-        const msg = evt.detail
-        expect(msg).to.not.eql(undefined)
+        expect(evt).to.have.nested.property('detail.topic', topic)
+        expect(evt).to.have.deep.nested.property('detail.data', data)
         defer.resolve()
       })
       pubsub.publish(topic, data)
