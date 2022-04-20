@@ -1,3 +1,10 @@
+## [@libp2p/pubsub-v1.2.18](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.17...@libp2p/pubsub-v1.2.18) (2022-04-20)
+
+
+### Bug Fixes
+
+* emit pubsub messages using 'message' event ([#197](https://github.com/libp2p/js-libp2p-interfaces/issues/197)) ([df9b685](https://github.com/libp2p/js-libp2p-interfaces/commit/df9b685cea30653109f2fa2cb5583a3bca7b09bb))
+
 ## [@libp2p/pubsub-v1.2.17](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.16...@libp2p/pubsub-v1.2.17) (2022-04-19)
 
 
