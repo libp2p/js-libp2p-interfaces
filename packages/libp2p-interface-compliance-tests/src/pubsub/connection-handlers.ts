@@ -7,18 +7,17 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
 import type { TestSetup } from '../index.js'
-import type { Message } from '@libp2p/interfaces/pubsub'
+import type { Message, PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
-import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
 
-export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub connection handlers', () => {
-    let psA: PubSubBaseProtocol
-    let psB: PubSubBaseProtocol
+    let psA: PubSub
+    let psB: PubSub
     let peerA: PeerId
     let peerB: PeerId
     let registrarA: Registrar
@@ -103,8 +102,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
     })
 
     describe('pubsub started before connect', () => {
-      let psA: PubSubBaseProtocol
-      let psB: PubSubBaseProtocol
+      let psA: PubSub
+      let psB: PubSub
       let peerA: PeerId
       let peerB: PeerId
       let registrarA: Registrar
@@ -198,8 +197,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
     })
 
     describe('pubsub started after connect', () => {
-      let psA: PubSubBaseProtocol
-      let psB: PubSubBaseProtocol
+      let psA: PubSub
+      let psB: PubSub
       let peerA: PeerId
       let peerB: PeerId
       let registrarA: Registrar
@@ -302,8 +301,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
     })
 
     describe('pubsub with intermittent connections', () => {
-      let psA: PubSubBaseProtocol
-      let psB: PubSubBaseProtocol
+      let psA: PubSub
+      let psB: PubSub
       let peerA: PeerId
       let peerB: PeerId
       let registrarA: Registrar

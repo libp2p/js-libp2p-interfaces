@@ -10,13 +10,12 @@ import type { TestSetup } from '../index.js'
 import type { PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
 import type { Registrar } from '@libp2p/interfaces/registrar'
-import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 
-export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub api', () => {
     let pubsub: PubSub
     let registrar: Registrar

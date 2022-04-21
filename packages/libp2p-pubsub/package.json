@@ -194,6 +194,7 @@
     "aegir": "^37.0.7",
     "delay": "^5.0.0",
     "it-pair": "^2.0.2",
+    "p-defer": "^4.0.0",
     "p-wait-for": "^4.1.0",
     "protons": "^3.0.2",
     "protons-runtime": "^1.0.2",

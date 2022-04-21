@@ -107,7 +107,7 @@ export interface PubSubEvents {
   'message': CustomEvent<Message>
 }
 
-export interface PubSub extends EventEmitter<PubSubEvents>, Startable {
+export interface PubSub<Events = PubSubEvents> extends EventEmitter<Events>, Startable {
   globalSignaturePolicy: typeof StrictSign | typeof StrictNoSign
   multicodecs: string[]
 

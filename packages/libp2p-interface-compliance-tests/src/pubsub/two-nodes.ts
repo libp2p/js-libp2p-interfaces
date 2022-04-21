@@ -9,11 +9,10 @@ import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
-import type { Message } from '@libp2p/interfaces/pubsub'
+import type { Message, PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
-import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
 
@@ -23,10 +22,10 @@ function shouldNotHappen () {
   expect.fail()
 }
 
-export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub with two nodes', () => {
-    let psA: PubSubBaseProtocol
-    let psB: PubSubBaseProtocol
+    let psA: PubSub
+    let psB: PubSub
     let peerIdA: PeerId
     let peerIdB: PeerId
     let registrarA: Registrar
@@ -124,8 +123,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       psB.subscribe(topic)
 
       await Promise.all([
-        waitForSubscriptionUpdate(psA, psB),
-        waitForSubscriptionUpdate(psB, psA)
+        waitForSubscriptionUpdate(psA, peerIdB),
+        waitForSubscriptionUpdate(psB, peerIdA)
       ])
 
       psA.publish(topic, uint8ArrayFromString('hey'))
@@ -167,8 +166,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       psB.subscribe(topic)
 
       await Promise.all([
-        waitForSubscriptionUpdate(psA, psB),
-        waitForSubscriptionUpdate(psB, psA)
+        waitForSubscriptionUpdate(psA, peerIdB),
+        waitForSubscriptionUpdate(psB, peerIdA)
       ])
 
       psB.publish(topic, uint8ArrayFromString('banana'))
@@ -202,8 +201,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
       psB.subscribe(topic)
 
       await Promise.all([
-        waitForSubscriptionUpdate(psA, psB),
-        waitForSubscriptionUpdate(psB, psA)
+        waitForSubscriptionUpdate(psA, peerIdB),
+        waitForSubscriptionUpdate(psB, peerIdA)
       ])
 
       Array.from({ length: 10 }, (_, i) => psB.publish(topic, uint8ArrayFromString('banana')))
