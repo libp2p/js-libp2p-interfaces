@@ -14,6 +14,11 @@ import {
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import { PeerSet } from '@libp2p/peer-collections'
 import { Components } from '@libp2p/interfaces/components'
+import { createEd25519PeerId } from '@libp2p/peer-id-factory'
+import { noSignMsgId } from '../src/utils.js'
+import type { PubSubRPC } from '@libp2p/interfaces/src/pubsub'
+import delay from 'delay'
+import pDefer from 'p-defer'
 
 const protocol = '/pubsub/1.0.0'
 const topic = 'test-topic'
@@ -409,6 +414,93 @@ describe('pubsub base implementation', () => {
 
       expect(peersSubscribed).to.not.be.empty()
       expect(id.equals(peersSubscribed[0])).to.be.true()
+    })
+  })
+
+  describe('verification', () => {
+    let peerId: PeerId
+    let pubsub: PubsubImplementation
+    const data = uint8ArrayFromString('bar')
+
+    beforeEach(async () => {
+      peerId = await createPeerId()
+      pubsub = new PubsubImplementation({
+        multicodecs: [protocol]
+      })
+      pubsub.init(new Components({
+        peerId: peerId,
+        registrar: new MockRegistrar()
+      }))
+      await pubsub.start()
+    })
+
+    afterEach(async () => await pubsub.stop())
+
+    it('should drop unsigned messages', async () => {
+      const publishSpy = sinon.spy(pubsub, 'publishMessage')
+      sinon.spy(pubsub, 'validate')
+
+      const peerStream = new PeerStreams({
+        id: await createEd25519PeerId(),
+        protocol: 'test'
+      })
+      const rpc: PubSubRPC = {
+        subscriptions: [],
+        messages: [{
+          from: peerStream.id.toBytes(),
+          data,
+          sequenceNumber: await noSignMsgId(data),
+          topic: topic
+        }]
+      }
+
+      pubsub.subscribe(topic)
+
+      await pubsub.processRpc(peerStream.id, peerStream, rpc)
+
+      // message should not be delivered
+      await delay(1000)
+
+      expect(publishSpy).to.have.property('called', false)
+    })
+
+    it('should not drop unsigned messages if strict signing is disabled', async () => {
+      pubsub.globalSignaturePolicy = 'StrictNoSign'
+
+      const publishSpy = sinon.spy(pubsub, 'publishMessage')
+      sinon.spy(pubsub, 'validate')
+
+      const peerStream = new PeerStreams({
+        id: await createEd25519PeerId(),
+        protocol: 'test'
+      })
+
+      const rpc: PubSubRPC = {
+        subscriptions: [],
+        messages: [{
+          from: peerStream.id.toBytes(),
+          data,
+          topic
+        }]
+      }
+
+      pubsub.subscribe(topic)
+
+      const deferred = pDefer()
+
+      pubsub.addEventListener('message', (evt) => {
+        if (evt.detail.topic === topic) {
+          deferred.resolve()
+        }
+      })
+
+      await pubsub.processRpc(peerStream.id, peerStream, rpc)
+
+      // await message delivery
+      await deferred.promise
+
+      expect(pubsub.validate).to.have.property('callCount', 1)
+      expect(publishSpy).to.have.property('callCount', 1)
     })
   })
 })

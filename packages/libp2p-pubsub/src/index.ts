@@ -26,7 +26,7 @@ export interface TopicValidator { (topic: string, message: Message): Promise<voi
  * PubSubBaseProtocol handles the peers and connections logic for pubsub routers
  * and specifies the API that pubsub routers should have.
  */
-export abstract class PubSubBaseProtocol extends EventEmitter<PubSubEvents> implements PubSub, Initializable {
+export abstract class PubSubBaseProtocol<Events = PubSubEvents> extends EventEmitter<Events> implements PubSub<Events>, Initializable {
   public started: boolean
   /**
    * Map of topics to which peers are subscribed to

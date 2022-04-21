@@ -9,24 +9,23 @@ import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
 import { waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
-import type { Message } from '@libp2p/interfaces/pubsub'
+import type { Message, PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Registrar } from '@libp2p/interfaces/registrar'
-import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
 
-export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub with multiple nodes', function () {
     describe('every peer subscribes to the topic', () => {
       describe('line', () => {
         // line
         // ◉────◉────◉
         // a    b    c
-        let psA: PubSubBaseProtocol
-        let psB: PubSubBaseProtocol
-        let psC: PubSubBaseProtocol
+        let psA: PubSub
+        let psB: PubSub
+        let psC: PubSub
         let peerIdA: PeerId
         let peerIdB: PeerId
         let peerIdC: PeerId
@@ -115,7 +114,7 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           psA.subscribe(topic)
           expect(psA.getTopics()).to.deep.equal([topic])
 
-          await waitForSubscriptionUpdate(psB, psA)
+          await waitForSubscriptionUpdate(psB, peerIdA)
 
           expect(psB.getPeers().length).to.equal(2)
           expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([peerIdA.toString()])
@@ -130,8 +129,8 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           expect(psB.getTopics()).to.deep.equal([topic])
 
           await Promise.all([
-            waitForSubscriptionUpdate(psA, psB),
-            waitForSubscriptionUpdate(psC, psB)
+            waitForSubscriptionUpdate(psA, peerIdB),
+            waitForSubscriptionUpdate(psC, peerIdB)
           ])
 
           expect(psA.getPeers().length).to.equal(1)
@@ -188,9 +187,9 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           })
 
           await Promise.all([
-            waitForSubscriptionUpdate(psA, psB),
-            waitForSubscriptionUpdate(psB, psA),
-            waitForSubscriptionUpdate(psC, psB)
+            waitForSubscriptionUpdate(psA, peerIdB),
+            waitForSubscriptionUpdate(psB, peerIdA),
+            waitForSubscriptionUpdate(psC, peerIdB)
           ])
 
           psA.publish(topic, uint8ArrayFromString('hey'))
@@ -260,9 +259,9 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
             psC.subscribe(topic)
 
             await Promise.all([
-              waitForSubscriptionUpdate(psA, psB),
-              waitForSubscriptionUpdate(psB, psA),
-              waitForSubscriptionUpdate(psC, psB)
+              waitForSubscriptionUpdate(psA, peerIdB),
+              waitForSubscriptionUpdate(psB, peerIdA),
+              waitForSubscriptionUpdate(psC, peerIdB)
             ])
 
             psB.publish(topic, uint8ArrayFromString('hey'))
@@ -307,11 +306,11 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
         //   │b     d│
         // ◉─┘       └─◉
         // a
-        let psA: PubSubBaseProtocol
-        let psB: PubSubBaseProtocol
-        let psC: PubSubBaseProtocol
-        let psD: PubSubBaseProtocol
-        let psE: PubSubBaseProtocol
+        let psA: PubSub
+        let psB: PubSub
+        let psC: PubSub
+        let psD: PubSub
+        let psE: PubSub
         let peerIdA: PeerId
         let peerIdB: PeerId
         let peerIdC: PeerId
@@ -483,11 +482,11 @@ export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
           })
 
           await Promise.all([
-            waitForSubscriptionUpdate(psA, psB),
-            waitForSubscriptionUpdate(psB, psA),
-            waitForSubscriptionUpdate(psC, psB),
-            waitForSubscriptionUpdate(psD, psC),
-            waitForSubscriptionUpdate(psE, psD)
+            waitForSubscriptionUpdate(psA, peerIdB),
+            waitForSubscriptionUpdate(psB, peerIdA),
+            waitForSubscriptionUpdate(psC, peerIdB),
+            waitForSubscriptionUpdate(psD, peerIdC),
+            waitForSubscriptionUpdate(psE, peerIdD)
           ])
 
           psC.publish('Z', uint8ArrayFromString('hey from c'))

@@ -5,17 +5,17 @@ import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { mockRegistrar } from '../mocks/registrar.js'
 import type { TestSetup } from '../index.js'
 import type { PubSubArgs } from './index.js'
-import type { PubSubBaseProtocol } from '@libp2p/pubsub'
 import { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
+import type { PubSub } from '@libp2p/interfaces/pubsub'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 const shouldNotHappen = () => expect.fail()
 
-export default (common: TestSetup<PubSubBaseProtocol, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('emit self', () => {
-    let pubsub: PubSubBaseProtocol
+    let pubsub: PubSub
 
     describe('enabled', () => {
       before(async () => {
