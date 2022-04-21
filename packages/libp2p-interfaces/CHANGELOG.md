@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.23](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.22...@libp2p/interfaces-v1.3.23) (2022-04-21)
+
+
+### Bug Fixes
+
+* test PubSub interface and not PubSubBaseProtocol ([#198](https://github.com/libp2p/js-libp2p-interfaces/issues/198)) ([96c15c9](https://github.com/libp2p/js-libp2p-interfaces/commit/96c15c9780821a3cb763e48854d64377bf562692))
+
 ## [@libp2p/interfaces-v1.3.22](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.21...@libp2p/interfaces-v1.3.22) (2022-04-20)
 
 
