@@ -45,7 +45,7 @@ describe('pubsub base implementation', () => {
       sinon.spy(pubsub, 'publishMessage')
 
       await pubsub.start()
-      pubsub.publish(topic, message)
+      await pubsub.publish(topic, message)
 
       // event dispatch is async
       await pWaitFor(() => {
@@ -61,8 +61,7 @@ describe('pubsub base implementation', () => {
       sinon.spy(pubsub, 'publishMessage')
 
       await pubsub.start()
-
-      pubsub.publish(topic, message)
+      await pubsub.publish(topic, message)
 
       // event dispatch is async
       await pWaitFor(() => {

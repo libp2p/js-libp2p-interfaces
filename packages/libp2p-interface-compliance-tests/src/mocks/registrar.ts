@@ -3,6 +3,7 @@ import type { Connection } from '@libp2p/interfaces/connection'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Topology } from '@libp2p/interfaces/topology'
 import { connectionPair } from './connection.js'
+import type { Components } from '@libp2p/interfaces/src/components'
 
 export class MockRegistrar implements Registrar {
   private readonly topologies: Map<string, { topology: Topology, protocols: string[] }> = new Map()
@@ -106,20 +107,15 @@ export async function mockIncomingStreamEvent (protocol: string, conn: Connectio
   }
 }
 
-export interface Peer {
-  peerId: PeerId
-  registrar: Registrar
-}
-
-export async function connectPeers (protocol: string, a: Peer, b: Peer) {
+export async function connectPeers (protocol: string, a: Components, b: Components) {
   // Notify peers of connection
   const [aToB, bToA] = connectionPair(a, b)
 
-  for (const topology of a.registrar.getTopologies(protocol)) {
-    await topology.onConnect(b.peerId, aToB)
+  for (const topology of a.getRegistrar().getTopologies(protocol)) {
+    await topology.onConnect(b.getPeerId(), aToB)
   }
 
-  for (const topology of b.registrar.getTopologies(protocol)) {
-    await topology.onConnect(a.peerId, bToA)
+  for (const topology of b.getRegistrar().getTopologies(protocol)) {
+    await topology.onConnect(a.getPeerId(), bToA)
   }
 }

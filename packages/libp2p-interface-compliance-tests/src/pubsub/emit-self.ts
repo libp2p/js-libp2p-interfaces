@@ -8,6 +8,7 @@ import type { PubSubArgs } from './index.js'
 import { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
 import type { PubSub } from '@libp2p/interfaces/pubsub'
+import { createComponents } from './utils.js'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
@@ -16,14 +17,14 @@ const shouldNotHappen = () => expect.fail()
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('emit self', () => {
     let pubsub: PubSub
+    let components: Components
 
     describe('enabled', () => {
       before(async () => {
+        components = await createComponents()
+
         pubsub = await common.setup({
-          components: new Components({
-            peerId: await createEd25519PeerId(),
-            registrar: mockRegistrar()
-          }),
+          components,
           init: {
             emitSelf: true
           }
@@ -52,9 +53,11 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           })
         })
 
-        pubsub.publish(topic, data)
+        const result = await pubsub.publish(topic, data)
 
-        return await promise
+        await promise
+
+        expect(result).to.have.property('recipients').with.lengthOf(1)
       })
     })
 
@@ -87,7 +90,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           once: true
         })
 
-        pubsub.publish(topic, data)
+        await pubsub.publish(topic, data)
 
         // Wait 1 second to guarantee that self is not noticed
         return await new Promise((resolve) => setTimeout(resolve, 1000))

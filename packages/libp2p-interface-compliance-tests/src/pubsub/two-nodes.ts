@@ -5,15 +5,12 @@ import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { waitForSubscriptionUpdate } from './utils.js'
+import { connectPeers } from '../mocks/registrar.js'
+import { createComponents, waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { Message, PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
-import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Registrar } from '@libp2p/interfaces/registrar'
-import { Components } from '@libp2p/interfaces/components'
+import type { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
 
 const topic = 'foo'
@@ -26,33 +23,22 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub with two nodes', () => {
     let psA: PubSub
     let psB: PubSub
-    let peerIdA: PeerId
-    let peerIdB: PeerId
-    let registrarA: Registrar
-    let registrarB: Registrar
+    let componentsA: Components
+    let componentsB: Components
 
     // Create pubsub nodes and connect them
     beforeEach(async () => {
-      peerIdA = await createEd25519PeerId()
-      peerIdB = await createEd25519PeerId()
-
-      registrarA = mockRegistrar()
-      registrarB = mockRegistrar()
+      componentsA = await createComponents()
+      componentsB = await createComponents()
 
       psA = await common.setup({
-        components: new Components({
-          peerId: peerIdA,
-          registrar: registrarA
-        }),
+        components: componentsA,
         init: {
           emitSelf: true
         }
       })
       psB = await common.setup({
-        components: new Components({
-          peerId: peerIdB,
-          registrar: registrarB
-        }),
+        components: componentsB,
         init: {
           emitSelf: false
         }
@@ -64,13 +50,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       expect(psA.getPeers()).to.be.empty()
       expect(psB.getPeers()).to.be.empty()
 
-      await connectPeers(psA.multicodecs[0], {
-        peerId: peerIdA,
-        registrar: registrarA
-      }, {
-        peerId: peerIdB,
-        registrar: registrarB
-      })
+      await connectPeers(psA.multicodecs[0], componentsA, componentsB)
 
       // Wait for peers to be ready in pubsub
       await pWaitFor(() => psA.getPeers().length === 1 && psB.getPeers().length === 1)
@@ -91,7 +71,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         const { peerId: changedPeerId, subscriptions: changedSubs } = evt.detail
         expect(psA.getTopics()).to.deep.equal([topic])
         expect(psB.getPeers()).to.have.lengthOf(1)
-        expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([peerIdA.toString()])
+        expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsA.getPeerId().toString()])
         expect(changedPeerId).to.deep.equal(psB.getPeers()[0])
         expect(changedSubs).to.have.lengthOf(1)
         expect(changedSubs[0].topic).to.equal(topic)
@@ -123,11 +103,11 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       psB.subscribe(topic)
 
       await Promise.all([
-        waitForSubscriptionUpdate(psA, peerIdB),
-        waitForSubscriptionUpdate(psB, peerIdA)
+        waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
+        waitForSubscriptionUpdate(psB, componentsA.getPeerId())
       ])
 
-      psA.publish(topic, uint8ArrayFromString('hey'))
+      await psA.publish(topic, uint8ArrayFromString('hey'))
 
       return await defer.promise
     })
@@ -166,11 +146,11 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       psB.subscribe(topic)
 
       await Promise.all([
-        waitForSubscriptionUpdate(psA, peerIdB),
-        waitForSubscriptionUpdate(psB, peerIdA)
+        waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
+        waitForSubscriptionUpdate(psB, componentsA.getPeerId())
       ])
 
-      psB.publish(topic, uint8ArrayFromString('banana'))
+      await psB.publish(topic, uint8ArrayFromString('banana'))
 
       return await defer.promise
     })
@@ -185,7 +165,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       function receivedMsg (evt: CustomEvent<Message>) {
         const msg = evt.detail
         expect(uint8ArrayToString(msg.data)).to.equal('banana')
-        expect(msg.from.toString()).to.equal(peerIdB.toString())
+        expect(msg.from.toString()).to.equal(componentsB.getPeerId().toString())
         expect(msg.sequenceNumber).to.be.a('BigInt')
         expect(msg.topic).to.be.equal(topic)
 
@@ -201,11 +181,13 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       psB.subscribe(topic)
 
       await Promise.all([
-        waitForSubscriptionUpdate(psA, peerIdB),
-        waitForSubscriptionUpdate(psB, peerIdA)
+        waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
+        waitForSubscriptionUpdate(psB, componentsA.getPeerId())
       ])
 
-      Array.from({ length: 10 }, (_, i) => psB.publish(topic, uint8ArrayFromString('banana')))
+      await Promise.all(
+        Array.from({ length: 10 }, async (_, i) => await psB.publish(topic, uint8ArrayFromString('banana')))
+      )
 
       return await defer.promise
     })

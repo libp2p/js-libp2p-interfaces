@@ -3,14 +3,12 @@ import sinon from 'sinon'
 import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { mockRegistrar } from '../mocks/registrar.js'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import delay from 'delay'
 import type { TestSetup } from '../index.js'
 import type { PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
-import type { Registrar } from '@libp2p/interfaces/registrar'
-import { Components } from '@libp2p/interfaces/components'
+import type { Components } from '@libp2p/interfaces/components'
+import { createComponents } from './utils.js'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
@@ -18,17 +16,14 @@ const data = uint8ArrayFromString('bar')
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub api', () => {
     let pubsub: PubSub
-    let registrar: Registrar
+    let components: Components
 
     // Create pubsub router
     beforeEach(async () => {
-      registrar = mockRegistrar()
+      components = await createComponents()
 
       pubsub = await common.setup({
-        components: new Components({
-          peerId: await createEd25519PeerId(),
-          registrar
-        }),
+        components,
         init: {
           emitSelf: true
         }
@@ -42,22 +37,22 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
     })
 
     it('can start correctly', async () => {
-      sinon.spy(registrar, 'register')
+      sinon.spy(components.getRegistrar(), 'register')
 
       await pubsub.start()
 
       expect(pubsub.isStarted()).to.equal(true)
-      expect(registrar.register).to.have.property('callCount', 1)
+      expect(components.getRegistrar().register).to.have.property('callCount', 1)
     })
 
     it('can stop correctly', async () => {
-      sinon.spy(registrar, 'unregister')
+      sinon.spy(components.getRegistrar(), 'unregister')
 
       await pubsub.start()
       await pubsub.stop()
 
       expect(pubsub.isStarted()).to.equal(false)
-      expect(registrar.unregister).to.have.property('callCount', 1)
+      expect(components.getRegistrar().unregister).to.have.property('callCount', 1)
     })
 
     it('can subscribe and unsubscribe correctly', async () => {
@@ -80,7 +75,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       await pWaitFor(() => pubsub.getTopics().length === 0)
 
       // Publish to guarantee the handler is not called
-      pubsub.publish(topic, data)
+      await pubsub.publish(topic, data)
 
       // handlers are called async
       await delay(100)
@@ -99,7 +94,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         expect(evt).to.have.deep.nested.property('detail.data', data)
         defer.resolve()
       })
-      pubsub.publish(topic, data)
+      await pubsub.publish(topic, data)
       await defer.promise
 
       await pubsub.stop()

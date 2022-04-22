@@ -50,7 +50,7 @@ describe('emitSelf', () => {
         })
       })
 
-      pubsub.publish(topic, data)
+      await pubsub.publish(topic, data)
 
       return await promise
     })
@@ -66,7 +66,7 @@ describe('emitSelf', () => {
         })
       })
 
-      pubsub.publish(topic)
+      await pubsub.publish(topic)
 
       return await promise
     })
@@ -99,7 +99,7 @@ describe('emitSelf', () => {
       pubsub.subscribe(topic)
       pubsub.addEventListener('message', shouldNotHappen)
 
-      pubsub.publish(topic, data)
+      await pubsub.publish(topic, data)
 
       // Wait 1 second to guarantee that self is not noticed
       await delay(1000)

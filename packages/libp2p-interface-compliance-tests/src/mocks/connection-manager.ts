@@ -5,35 +5,19 @@ import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interfa
 
 class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager {
   getConnectionMap (): Map<string, Connection[]> {
-    throw new Error('Method not implemented.')
+    return new Map<string, Connection[]>()
   }
 
   getConnectionList (): Connection[] {
-    throw new Error('Method not implemented.')
+    return []
   }
 
   getConnections (): Connection[] {
-    throw new Error('Method not implemented.')
+    return []
   }
 
   getConnection (peerId: PeerId): Connection | undefined {
-    throw new Error('Method not implemented.')
-  }
-
-  listenerCount (type: string): number {
-    throw new Error('Method not implemented.')
-  }
-
-  addEventListener<U extends keyof ConnectionManagerEvents>(type: U, callback: ((evt: ConnectionManagerEvents[U]) => void) | { handleEvent: (evt: ConnectionManagerEvents[U]) => void } | null, options?: boolean | AddEventListenerOptions): void {
-    throw new Error('Method not implemented.')
-  }
-
-  removeEventListener<U extends keyof ConnectionManagerEvents>(type: U, callback: (((evt: ConnectionManagerEvents[U]) => void) | { handleEvent: (evt: ConnectionManagerEvents[U]) => void } | null) | undefined, options?: boolean | EventListenerOptions): void {
-    throw new Error('Method not implemented.')
-  }
-
-  dispatchEvent (event: Event): boolean {
-    throw new Error('Method not implemented.')
+    return undefined
   }
 }
 
