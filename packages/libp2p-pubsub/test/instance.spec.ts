@@ -1,6 +1,6 @@
 import { expect } from 'aegir/chai'
 import { PubSubBaseProtocol } from '../src/index.js'
-import type { PubSubRPC, PubSubRPCMessage } from '@libp2p/interfaces/pubsub'
+import type { PublishResult, PubSubRPC, PubSubRPCMessage } from '@libp2p/interfaces/pubsub'
 
 class PubsubProtocol extends PubSubBaseProtocol {
   decodeRpc (bytes: Uint8Array): PubSubRPC {
@@ -19,7 +19,7 @@ class PubsubProtocol extends PubSubBaseProtocol {
     throw new Error('Method not implemented.')
   }
 
-  async publishMessage (): Promise<void> {
+  async publishMessage (): Promise<PublishResult> {
     throw new Error('Method not implemented.')
   }
 }

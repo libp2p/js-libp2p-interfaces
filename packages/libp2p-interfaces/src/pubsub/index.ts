@@ -25,6 +25,8 @@ export const StrictSign = 'StrictSign'
  */
 export const StrictNoSign = 'StrictNoSign'
 
+export type SignaturePolicy = typeof StrictSign | typeof StrictNoSign
+
 export interface Message {
   from: PeerId
   topic: string
@@ -74,7 +76,7 @@ export interface PubSubInit {
   /**
    * defines how signatures should be handled
    */
-  globalSignaturePolicy?: typeof StrictSign | typeof StrictNoSign
+  globalSignaturePolicy?: SignaturePolicy
 
   /**
    * if can relay messages not subscribed
@@ -107,6 +109,10 @@ export interface PubSubEvents {
   'message': CustomEvent<Message>
 }
 
+export interface PublishResult {
+  recipients: PeerId[]
+}
+
 export interface PubSub<Events = PubSubEvents> extends EventEmitter<Events>, Startable {
   globalSignaturePolicy: typeof StrictSign | typeof StrictNoSign
   multicodecs: string[]
@@ -116,7 +122,7 @@ export interface PubSub<Events = PubSubEvents> extends EventEmitter<Events>, Sta
   subscribe: (topic: string) => void
   unsubscribe: (topic: string) => void
   getSubscribers: (topic: string) => PeerId[]
-  publish: (topic: string, data: Uint8Array) => void
+  publish: (topic: string, data: Uint8Array) => Promise<PublishResult>
 }
 
 export interface PeerStreamEvents {

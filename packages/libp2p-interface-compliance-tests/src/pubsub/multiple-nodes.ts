@@ -5,15 +5,12 @@ import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { connectPeers, mockRegistrar } from '../mocks/registrar.js'
-import { waitForSubscriptionUpdate } from './utils.js'
+import { connectPeers } from '../mocks/registrar.js'
+import { createComponents, waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { Message, PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
-import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Registrar } from '@libp2p/interfaces/registrar'
-import { Components } from '@libp2p/interfaces/components'
+import type { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
 
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
@@ -26,46 +23,30 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         let psA: PubSub
         let psB: PubSub
         let psC: PubSub
-        let peerIdA: PeerId
-        let peerIdB: PeerId
-        let peerIdC: PeerId
-        let registrarA: Registrar
-        let registrarB: Registrar
-        let registrarC: Registrar
+        let componentsA: Components
+        let componentsB: Components
+        let componentsC: Components
 
         // Create and start pubsub nodes
         beforeEach(async () => {
-          peerIdA = await createEd25519PeerId()
-          peerIdB = await createEd25519PeerId()
-          peerIdC = await createEd25519PeerId()
-
-          registrarA = mockRegistrar()
-          registrarB = mockRegistrar()
-          registrarC = mockRegistrar()
+          componentsA = await createComponents()
+          componentsB = await createComponents()
+          componentsC = await createComponents()
 
           psA = await common.setup({
-            components: new Components({
-              peerId: peerIdA,
-              registrar: registrarA
-            }),
+            components: componentsA,
             init: {
               emitSelf: true
             }
           })
           psB = await common.setup({
-            components: new Components({
-              peerId: peerIdB,
-              registrar: registrarB
-            }),
+            components: componentsB,
             init: {
               emitSelf: true
             }
           })
           psC = await common.setup({
-            components: new Components({
-              peerId: peerIdC,
-              registrar: registrarC
-            }),
+            components: componentsC,
             init: {
               emitSelf: true
             }
@@ -77,20 +58,8 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
         // Connect nodes
         beforeEach(async () => {
-          await connectPeers(psA.multicodecs[0], {
-            peerId: peerIdA,
-            registrar: registrarA
-          }, {
-            peerId: peerIdB,
-            registrar: registrarB
-          })
-          await connectPeers(psA.multicodecs[0], {
-            peerId: peerIdB,
-            registrar: registrarB
-          }, {
-            peerId: peerIdC,
-            registrar: registrarC
-          })
+          await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+          await connectPeers(psB.multicodecs[0], componentsB, componentsC)
 
           // Wait for peers to be ready in pubsub
           await pWaitFor(() =>
@@ -114,10 +83,10 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           psA.subscribe(topic)
           expect(psA.getTopics()).to.deep.equal([topic])
 
-          await waitForSubscriptionUpdate(psB, peerIdA)
+          await waitForSubscriptionUpdate(psB, componentsA.getPeerId())
 
           expect(psB.getPeers().length).to.equal(2)
-          expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([peerIdA.toString()])
+          expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsA.getPeerId().toString()])
 
           expect(psC.getPeers().length).to.equal(1)
           expect(psC.getSubscribers(topic)).to.be.empty()
@@ -129,15 +98,15 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           expect(psB.getTopics()).to.deep.equal([topic])
 
           await Promise.all([
-            waitForSubscriptionUpdate(psA, peerIdB),
-            waitForSubscriptionUpdate(psC, peerIdB)
+            waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
+            waitForSubscriptionUpdate(psC, componentsB.getPeerId())
           ])
 
           expect(psA.getPeers().length).to.equal(1)
-          expect(psA.getSubscribers(topic).map(p => p.toString())).to.deep.equal([peerIdB.toString()])
+          expect(psA.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsB.getPeerId().toString()])
 
           expect(psC.getPeers().length).to.equal(1)
-          expect(psC.getSubscribers(topic).map(p => p.toString())).to.deep.equal([peerIdB.toString()])
+          expect(psC.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsB.getPeerId().toString()])
         })
 
         it('subscribe to the topic on node c', async () => {
@@ -150,7 +119,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           psB.addEventListener('subscription-change', () => {
             expect(psA.getPeers().length).to.equal(1)
             expect(psB.getPeers().length).to.equal(2)
-            expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([peerIdC.toString()])
+            expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsC.getPeerId().toString()])
 
             defer.resolve()
           }, {
@@ -170,53 +139,36 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
           let counter = 0
 
-          psA.addEventListener('message', (evt) => {
-            if (evt.detail.topic === topic) {
-              incMsg(evt)
-            }
-          })
-          psB.addEventListener('message', (evt) => {
-            if (evt.detail.topic === topic) {
-              incMsg(evt)
-            }
-          })
-          psC.addEventListener('message', (evt) => {
-            if (evt.detail.topic === topic) {
-              incMsg(evt)
-            }
-          })
+          psA.addEventListener('message', incMsg)
+          psB.addEventListener('message', incMsg)
+          psC.addEventListener('message', incMsg)
 
           await Promise.all([
-            waitForSubscriptionUpdate(psA, peerIdB),
-            waitForSubscriptionUpdate(psB, peerIdA),
-            waitForSubscriptionUpdate(psC, peerIdB)
+            waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
+            waitForSubscriptionUpdate(psB, componentsA.getPeerId()),
+            waitForSubscriptionUpdate(psC, componentsB.getPeerId())
           ])
 
-          psA.publish(topic, uint8ArrayFromString('hey'))
+          const result = await psA.publish(topic, uint8ArrayFromString('hey'))
+
+          expect(result).to.have.property('recipients').with.property('length').greaterThanOrEqual(1)
 
           function incMsg (evt: CustomEvent<Message>) {
             const msg = evt.detail
+
+            if (msg.topic !== topic) {
+              return
+            }
+
             expect(uint8ArrayToString(msg.data)).to.equal('hey')
             check()
           }
 
           function check () {
             if (++counter === 3) {
-              psA.removeEventListener('message', (evt) => {
-                if (evt.detail.topic === topic) {
-                  incMsg(evt)
-                }
-              })
-              psB.removeEventListener('message', (evt) => {
-                if (evt.detail.topic === topic) {
-                  incMsg(evt)
-                }
-              })
-              psC.removeEventListener('message', (evt) => {
-                if (evt.detail.topic === topic) {
-                  incMsg(evt)
-                }
-              })
+              psA.removeEventListener('message', incMsg)
+              psB.removeEventListener('message', incMsg)
+              psC.removeEventListener('message', incMsg)
               defer.resolve()
             }
           }
@@ -238,57 +190,38 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
             const defer = pDefer()
             let counter = 0
 
-            psA.addEventListener('message', (evt) => {
-              if (evt.detail.topic === topic) {
-                incMsg(evt)
-              }
-            })
-            psB.addEventListener('message', (evt) => {
-              if (evt.detail.topic === topic) {
-                incMsg(evt)
-              }
-            })
-            psC.addEventListener('message', (evt) => {
-              if (evt.detail.topic === topic) {
-                incMsg(evt)
-              }
-            })
+            psA.addEventListener('message', incMsg)
+            psB.addEventListener('message', incMsg)
+            psC.addEventListener('message', incMsg)
 
             psA.subscribe(topic)
             psB.subscribe(topic)
             psC.subscribe(topic)
 
             await Promise.all([
-              waitForSubscriptionUpdate(psA, peerIdB),
-              waitForSubscriptionUpdate(psB, peerIdA),
-              waitForSubscriptionUpdate(psC, peerIdB)
+              waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
+              waitForSubscriptionUpdate(psB, componentsA.getPeerId()),
+              waitForSubscriptionUpdate(psC, componentsB.getPeerId())
             ])
 
-            psB.publish(topic, uint8ArrayFromString('hey'))
+            await psB.publish(topic, uint8ArrayFromString('hey'))
 
             function incMsg (evt: CustomEvent<Message>) {
               const msg = evt.detail
+
+              if (msg.topic !== topic) {
+                return
+              }
+
               expect(uint8ArrayToString(msg.data)).to.equal('hey')
               check()
             }
 
             function check () {
               if (++counter === 3) {
-                psA.removeEventListener('message', (evt) => {
-                  if (evt.detail.topic === topic) {
-                    incMsg(evt)
-                  }
-                })
-                psB.removeEventListener('message', (evt) => {
-                  if (evt.detail.topic === topic) {
-                    incMsg(evt)
-                  }
-                })
-                psC.removeEventListener('message', (evt) => {
-                  if (evt.detail.topic === topic) {
-                    incMsg(evt)
-                  }
-                })
+                psA.removeEventListener('message', incMsg)
+                psB.removeEventListener('message', incMsg)
+                psC.removeEventListener('message', incMsg)
                 defer.resolve()
               }
             }
@@ -311,72 +244,46 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         let psC: PubSub
         let psD: PubSub
         let psE: PubSub
-        let peerIdA: PeerId
-        let peerIdB: PeerId
-        let peerIdC: PeerId
-        let peerIdD: PeerId
-        let peerIdE: PeerId
-        let registrarA: Registrar
-        let registrarB: Registrar
-        let registrarC: Registrar
-        let registrarD: Registrar
-        let registrarE: Registrar
+        let componentsA: Components
+        let componentsB: Components
+        let componentsC: Components
+        let componentsD: Components
+        let componentsE: Components
 
         // Create and start pubsub nodes
         beforeEach(async () => {
-          peerIdA = await createEd25519PeerId()
-          peerIdB = await createEd25519PeerId()
-          peerIdC = await createEd25519PeerId()
-          peerIdD = await createEd25519PeerId()
-          peerIdE = await createEd25519PeerId()
-
-          registrarA = mockRegistrar()
-          registrarB = mockRegistrar()
-          registrarC = mockRegistrar()
-          registrarD = mockRegistrar()
-          registrarE = mockRegistrar()
+          componentsA = await createComponents()
+          componentsB = await createComponents()
+          componentsC = await createComponents()
+          componentsD = await createComponents()
+          componentsE = await createComponents()
 
           psA = await common.setup({
-            components: new Components({
-              peerId: peerIdA,
-              registrar: registrarA
-            }),
+            components: componentsA,
             init: {
               emitSelf: true
             }
           })
           psB = await common.setup({
-            components: new Components({
-              peerId: peerIdB,
-              registrar: registrarB
-            }),
+            components: componentsB,
             init: {
               emitSelf: true
             }
           })
           psC = await common.setup({
-            components: new Components({
-              peerId: peerIdC,
-              registrar: registrarC
-            }),
+            components: componentsC,
             init: {
               emitSelf: true
             }
           })
           psD = await common.setup({
-            components: new Components({
-              peerId: peerIdD,
-              registrar: registrarD
-            }),
+            components: componentsD,
             init: {
               emitSelf: true
             }
           })
           psE = await common.setup({
-            components: new Components({
-              peerId: peerIdE,
-              registrar: registrarE
-            }),
+            components: componentsE,
             init: {
               emitSelf: true
             }
@@ -388,34 +295,10 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
         // connect nodes
         beforeEach(async () => {
-          await connectPeers(psA.multicodecs[0], {
-            peerId: peerIdA,
-            registrar: registrarA
-          }, {
-            peerId: peerIdB,
-            registrar: registrarB
-          })
-          await connectPeers(psA.multicodecs[0], {
-            peerId: peerIdB,
-            registrar: registrarB
-          }, {
-            peerId: peerIdC,
-            registrar: registrarC
-          })
-          await connectPeers(psA.multicodecs[0], {
-            peerId: peerIdC,
-            registrar: registrarC
-          }, {
-            peerId: peerIdD,
-            registrar: registrarD
-          })
-          await connectPeers(psA.multicodecs[0], {
-            peerId: peerIdD,
-            registrar: registrarD
-          }, {
-            peerId: peerIdE,
-            registrar: registrarE
-          })
+          await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+          await connectPeers(psA.multicodecs[0], componentsB, componentsC)
+          await connectPeers(psA.multicodecs[0], componentsC, componentsD)
+          await connectPeers(psA.multicodecs[0], componentsD, componentsE)
 
           // Wait for peers to be ready in pubsub
           await pWaitFor(() =>
@@ -451,48 +334,33 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           const topic = 'Z'
 
           psA.subscribe(topic)
-          psA.addEventListener('message', (evt) => {
-            if (evt.detail.topic === topic) {
-              incMsg(evt)
-            }
-          })
+          psA.addEventListener('message', incMsg)
           psB.subscribe(topic)
-          psB.addEventListener('message', (evt) => {
-            if (evt.detail.topic === topic) {
-              incMsg(evt)
-            }
-          })
+          psB.addEventListener('message', incMsg)
           psC.subscribe(topic)
-          psC.addEventListener('message', (evt) => {
-            if (evt.detail.topic === topic) {
-              incMsg(evt)
-            }
-          })
+          psC.addEventListener('message', incMsg)
           psD.subscribe(topic)
-          psD.addEventListener('message', (evt) => {
-            if (evt.detail.topic === topic) {
-              incMsg(evt)
-            }
-          })
+          psD.addEventListener('message', incMsg)
           psE.subscribe(topic)
-          psE.addEventListener('message', (evt) => {
-            if (evt.detail.topic === topic) {
-              incMsg(evt)
-            }
-          })
+          psE.addEventListener('message', incMsg)
 
           await Promise.all([
-            waitForSubscriptionUpdate(psA, peerIdB),
-            waitForSubscriptionUpdate(psB, peerIdA),
-            waitForSubscriptionUpdate(psC, peerIdB),
-            waitForSubscriptionUpdate(psD, peerIdC),
-            waitForSubscriptionUpdate(psE, peerIdD)
+            waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
+            waitForSubscriptionUpdate(psB, componentsA.getPeerId()),
+            waitForSubscriptionUpdate(psC, componentsB.getPeerId()),
+            waitForSubscriptionUpdate(psD, componentsC.getPeerId()),
+            waitForSubscriptionUpdate(psE, componentsD.getPeerId())
           ])
 
-          psC.publish('Z', uint8ArrayFromString('hey from c'))
+          await psC.publish('Z', uint8ArrayFromString('hey from c'))
 
           function incMsg (evt: CustomEvent<Message>) {
             const msg = evt.detail
+
+            if (msg.topic !== topic) {
+              return
+            }
+
             expect(uint8ArrayToString(msg.data)).to.equal('hey from c')
             check()
           }

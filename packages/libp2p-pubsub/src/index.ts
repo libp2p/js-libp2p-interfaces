@@ -14,7 +14,7 @@ import {
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { IncomingStreamData } from '@libp2p/interfaces/registrar'
 import type { Connection } from '@libp2p/interfaces/connection'
-import type { PubSub, Message, StrictNoSign, StrictSign, PubSubInit, PubSubEvents, PeerStreams, PubSubRPCMessage, PubSubRPC, PubSubRPCSubscription, SubscriptionChangeData } from '@libp2p/interfaces/pubsub'
+import type { PubSub, Message, StrictNoSign, StrictSign, PubSubInit, PubSubEvents, PeerStreams, PubSubRPCMessage, PubSubRPC, PubSubRPCSubscription, SubscriptionChangeData, PublishResult } from '@libp2p/interfaces/pubsub'
 import { PeerMap, PeerSet } from '@libp2p/peer-collections'
 import { Components, Initializable } from '@libp2p/interfaces/components'
 
@@ -459,12 +459,6 @@ export abstract class PubSubBaseProtocol<Events = PubSubEvents> extends EventEmi
   abstract encodeRpc (rpc: PubSubRPC): Uint8Array
 
   /**
-   * Decode Uint8Array into an RPC object.
-   * This can be override to use a custom router protobuf.
-   */
-  abstract decodeMessage (bytes: Uint8Array): PubSubRPCMessage
-
-  /**
    * Encode RPC object into a Uint8Array.
    * This can be override to use a custom router protobuf.
    */
@@ -580,7 +574,7 @@ export abstract class PubSubBaseProtocol<Events = PubSubEvents> extends EventEmi
   /**
    * Publishes messages to all subscribed peers
    */
-  publish (topic: string, data?: Uint8Array): boolean {
+  async publish (topic: string, data?: Uint8Array): Promise<PublishResult> {
     if (!this.started) {
       throw new Error('Pubsub has not started')
     }
@@ -593,30 +587,31 @@ export abstract class PubSubBaseProtocol<Events = PubSubEvents> extends EventEmi
 
     log('publish topic: %s from: %p data: %m', topic, message.from, message.data)
 
-    Promise.resolve().then(async () => {
-      const rpcMessage = await this.buildMessage(message)
+    const rpcMessage = await this.buildMessage(message)
+    let emittedToSelf = false
 
-      // dispatch the event if we are interested
-      if (this.emitSelf) {
-        if (this.subscriptions.has(topic)) {
-          super.dispatchEvent(new CustomEvent<Message>('message', {
-            detail: rpcMessage
-          }))
+    // dispatch the event if we are interested
+    if (this.emitSelf) {
+      if (this.subscriptions.has(topic)) {
+        emittedToSelf = true
+        super.dispatchEvent(new CustomEvent<Message>('message', {
+          detail: rpcMessage
+        }))
 
-          if (this.listenerCount(topic) === 0) {
-            this.unsubscribe(topic)
-          }
+        if (this.listenerCount(topic) === 0) {
+          this.unsubscribe(topic)
         }
       }
+    }
 
-      // send to all the other peers
-      await this.publishMessage(this.components.getPeerId(), rpcMessage)
-    })
-      .catch(err => {
-        log.error(err)
-      })
+    // send to all the other peers
+    const result = await this.publishMessage(this.components.getPeerId(), rpcMessage)
 
-    return true
+    if (emittedToSelf) {
+      result.recipients = [...result.recipients, this.components.getPeerId()]
+    }
+
+    return result
   }
 
   /**
@@ -626,7 +621,7 @@ export abstract class PubSubBaseProtocol<Events = PubSubEvents> extends EventEmi
    * `sender` might be this peer, or we might be forwarding a message on behalf of another peer, in which case sender
    * is the peer we received the message from, which may not be the peer the message was created by.
    */
-  abstract publishMessage (sender: PeerId, message: Message): Promise<void>
+  abstract publishMessage (sender: PeerId, message: Message): Promise<PublishResult>
 
   /**
    * Subscribes to a given topic.
