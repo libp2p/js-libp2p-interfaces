@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.25](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.24...@libp2p/interface-compliance-tests-v1.1.25) (2022-04-22)
+
+
+### Bug Fixes
+
+* update pubsub interface in line with gossipsub ([#199](https://github.com/libp2p/js-libp2p-interfaces/issues/199)) ([3f55596](https://github.com/libp2p/js-libp2p-interfaces/commit/3f555965cddea3ef03e7217b755c82aa4107e093))
+
 ## [@libp2p/interface-compliance-tests-v1.1.24](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.23...@libp2p/interface-compliance-tests-v1.1.24) (2022-04-21)
 
 
