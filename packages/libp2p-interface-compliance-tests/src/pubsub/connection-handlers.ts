@@ -55,7 +55,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       afterEach(async () => {
         sinon.restore()
-        await stop(psA, psB);
+        await stop(psA, psB)
         await common.teardown()
       })
 
@@ -105,7 +105,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       afterEach(async () => {
         sinon.restore()
-        await stop(psA, psB);
+        await stop(psA, psB)
         await common.teardown()
       })
 
