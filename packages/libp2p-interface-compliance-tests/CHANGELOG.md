@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.26](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.25...@libp2p/interface-compliance-tests-v1.1.26) (2022-04-25)
+
+
+### Bug Fixes
+
+* stop pubsub after test ([#200](https://github.com/libp2p/js-libp2p-interfaces/issues/200)) ([2d2650c](https://github.com/libp2p/js-libp2p-interfaces/commit/2d2650cb8cabce137665aafd55a2fb14cbd5dacd))
+
 ## [@libp2p/interface-compliance-tests-v1.1.25](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.24...@libp2p/interface-compliance-tests-v1.1.25) (2022-04-22)
 
 
