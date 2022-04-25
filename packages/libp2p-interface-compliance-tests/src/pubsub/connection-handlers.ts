@@ -22,7 +22,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
     describe('nodes send state on connection', () => {
       // Create pubsub nodes and connect them
-      before(async () => {
+      beforeEach(async () => {
         componentsA = await createComponents()
         componentsB = await createComponents()
 
@@ -43,7 +43,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       })
 
       // Make subscriptions prior to nodes connected
-      before(() => {
+      beforeEach(() => {
         psA.subscribe('Za')
         psB.subscribe('Zb')
 
@@ -53,8 +53,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         expect(psB.getTopics()).to.deep.equal(['Zb'])
       })
 
-      after(async () => {
+      afterEach(async () => {
         sinon.restore()
+        await stop(psA, psB)
         await common.teardown()
       })
 
@@ -104,7 +105,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       afterEach(async () => {
         sinon.restore()
-
+        await stop(psA, psB)
         await common.teardown()
       })
 
@@ -174,9 +175,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       afterEach(async () => {
         sinon.restore()
-
         await stop(psA, psB)
-
         await common.teardown()
       })
 
@@ -257,9 +256,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       afterEach(async () => {
         sinon.restore()
-
         await stop(psA, psB)
-
         await common.teardown()
       })
 
