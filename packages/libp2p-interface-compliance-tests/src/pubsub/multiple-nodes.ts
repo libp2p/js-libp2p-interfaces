@@ -12,6 +12,7 @@ import type { Message, PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
 import type { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
+import delay from 'delay'
 
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub with multiple nodes', function () {
@@ -137,17 +138,20 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           psB.subscribe(topic)
           psC.subscribe(topic)
 
-          let counter = 0
-
-          psA.addEventListener('message', incMsg)
-          psB.addEventListener('message', incMsg)
-          psC.addEventListener('message', incMsg)
-
           await Promise.all([
             waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
             waitForSubscriptionUpdate(psB, componentsA.getPeerId()),
             waitForSubscriptionUpdate(psC, componentsB.getPeerId())
           ])
+
+          // GossipSub needs time to build the mesh overlay
+          await delay(1000)
+
+          let counter = 0
+
+          psA.addEventListener('message', incMsg)
+          psB.addEventListener('message', incMsg)
+          psC.addEventListener('message', incMsg)
 
           const result = await psA.publish(topic, uint8ArrayFromString('hey'))
 
@@ -190,10 +194,6 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
             const defer = pDefer()
             let counter = 0
 
-            psA.addEventListener('message', incMsg)
-            psB.addEventListener('message', incMsg)
-            psC.addEventListener('message', incMsg)
-
             psA.subscribe(topic)
             psB.subscribe(topic)
             psC.subscribe(topic)
@@ -203,6 +203,13 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
               waitForSubscriptionUpdate(psB, componentsA.getPeerId()),
               waitForSubscriptionUpdate(psC, componentsB.getPeerId())
             ])
+
+            // GossipSub needs time to build the mesh overlay
+            await delay(1000)
+
+            psA.addEventListener('message', incMsg)
+            psB.addEventListener('message', incMsg)
+            psC.addEventListener('message', incMsg)
 
             await psB.publish(topic, uint8ArrayFromString('hey'))
 
@@ -351,6 +358,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
             waitForSubscriptionUpdate(psD, componentsC.getPeerId()),
             waitForSubscriptionUpdate(psE, componentsD.getPeerId())
           ])
+
+          // GossipSub needs time to build the mesh overlay
+          await delay(1000)
 
           await psC.publish('Z', uint8ArrayFromString('hey from c'))
 
