@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.27](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.26...@libp2p/interface-compliance-tests-v1.1.27) (2022-04-26)
+
+
+### Bug Fixes
+
+* add delays for gossipsub ([#202](https://github.com/libp2p/js-libp2p-interfaces/issues/202)) ([cf85799](https://github.com/libp2p/js-libp2p-interfaces/commit/cf85799fdd0d4848ad2187bbbb0dd6ac5e8cb254))
+
 ## [@libp2p/interface-compliance-tests-v1.1.26](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.25...@libp2p/interface-compliance-tests-v1.1.26) (2022-04-25)
 
 
