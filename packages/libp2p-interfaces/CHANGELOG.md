@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.25](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.24...@libp2p/interfaces-v1.3.25) (2022-04-28)
+
+
+### Bug Fixes
+
+* pubsub and dht are always set ([#203](https://github.com/libp2p/js-libp2p-interfaces/issues/203)) ([86860c1](https://github.com/libp2p/js-libp2p-interfaces/commit/86860c1836a2464b2ad380b09542e3f3271ae287))
+
 ## [@libp2p/interfaces-v1.3.24](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.23...@libp2p/interfaces-v1.3.24) (2022-04-22)
 
 
