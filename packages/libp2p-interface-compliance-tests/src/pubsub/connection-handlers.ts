@@ -296,9 +296,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
         await defer1.promise
 
-        await psB.stop()
-        // @ts-expect-error protected fields
-        await psB._libp2p.stop()
+        await stop(psB)
         await pWaitFor(() => {
           // @ts-expect-error protected fields
           const aHasConnectionToB = psA._libp2p.connectionManager.get(psB.peerId)
@@ -307,9 +305,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
           return aHasConnectionToB != null && bHasConnectionToA != null
         })
-        // @ts-expect-error protected fields
-        await psB._libp2p.start()
-        await psB.start()
+        await start(psB)
 
         await connectPeers(psA.multicodecs[0], componentsA, componentsB)
 
