@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.26](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.25...@libp2p/interfaces-v1.3.26) (2022-04-28)
+
+
+### Bug Fixes
+
+* pubsub should not be startable ([#204](https://github.com/libp2p/js-libp2p-interfaces/issues/204)) ([59bd924](https://github.com/libp2p/js-libp2p-interfaces/commit/59bd9245a207268525bdd26a05c5306fe436fcc4))
+
 ## [@libp2p/interfaces-v1.3.25](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.24...@libp2p/interfaces-v1.3.25) (2022-04-28)
 
 
