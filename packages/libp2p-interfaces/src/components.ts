@@ -271,7 +271,11 @@ export class Components {
     return dht
   }
 
-  getDHT (): DualDHT | undefined {
+  getDHT (): DualDHT {
+    if (this.dht == null) {
+      throw errCode(new Error('dht not set'), 'ERR_SERVICE_MISSING')
+    }
+
     return this.dht
   }
 
@@ -281,7 +285,11 @@ export class Components {
     return pubsub
   }
 
-  getPubSub (): PubSub | undefined {
+  getPubSub (): PubSub {
+    if (this.pubsub == null) {
+      throw errCode(new Error('pubsub not set'), 'ERR_SERVICE_MISSING')
+    }
+
     return this.pubsub
   }
 }

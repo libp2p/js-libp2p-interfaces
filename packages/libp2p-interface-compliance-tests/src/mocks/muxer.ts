@@ -260,7 +260,7 @@ class MockMuxer implements StreamMuxer {
         ndjson.parse,
         async (source) => {
           for await (const message of source) {
-            this.log('-> %s %s %s', message.type, message.direction, message.id)
+            this.log.trace('-> %s %s %s', message.type, message.direction, message.id)
             this.handleMessage(message)
           }
         }
