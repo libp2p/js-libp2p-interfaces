@@ -1,11 +1,19 @@
-import type { Startable } from '@libp2p/interfaces'
+import { isStartable, Startable } from '@libp2p/interfaces'
 
 export interface TestSetup<T, SetupArgs = {}> {
   setup: (args?: SetupArgs) => Promise<T>
   teardown: () => Promise<void>
 }
 
-export async function start (...startables: Startable[]) {
+export async function start (...objs: any[]) {
+  const startables: Startable[] = []
+
+  for (const obj of objs) {
+    if (isStartable(obj)) {
+      startables.push(obj)
+    }
+  }
+
   await Promise.all(
     startables.map(async s => {
       if (s.beforeStart != null) {
@@ -29,7 +37,15 @@ export async function start (...startables: Startable[]) {
   )
 }
 
-export async function stop (...startables: Startable[]) {
+export async function stop (...objs: any[]) {
+  const startables: Startable[] = []
+
+  for (const obj of objs) {
+    if (isStartable(obj)) {
+      startables.push(obj)
+    }
+  }
+
   await Promise.all(
     startables.map(async s => {
       if (s.beforeStop != null) {

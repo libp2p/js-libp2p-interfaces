@@ -9,6 +9,8 @@ import type { PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
 import type { Components } from '@libp2p/interfaces/components'
 import { createComponents } from './utils.js'
+import { start, stop } from '../index.js'
+import { isStartable } from '@libp2p/interfaces'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
@@ -32,11 +34,15 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
     afterEach(async () => {
       sinon.restore()
-      await pubsub.stop()
+      await stop(pubsub)
       await common.teardown()
     })
 
     it('can start correctly', async () => {
+      if (!isStartable(pubsub)) {
+        return
+      }
+
       sinon.spy(components.getRegistrar(), 'register')
 
       await pubsub.start()
@@ -46,6 +52,10 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
     })
 
     it('can stop correctly', async () => {
+      if (!isStartable(pubsub)) {
+        return
+      }
+
       sinon.spy(components.getRegistrar(), 'unregister')
 
       await pubsub.start()
@@ -60,7 +70,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         throw new Error('a message should not be received')
       }
 
-      await pubsub.start()
+      await start(pubsub)
       pubsub.subscribe(topic)
       pubsub.addEventListener('message', handler)
 
@@ -80,13 +90,13 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       // handlers are called async
       await delay(100)
 
-      await pubsub.stop()
+      await stop(pubsub)
     })
 
     it('can subscribe and publish correctly', async () => {
       const defer = pDefer()
 
-      await pubsub.start()
+      await start(pubsub)
 
       pubsub.subscribe(topic)
       pubsub.addEventListener('message', (evt) => {
@@ -97,7 +107,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       await pubsub.publish(topic, data)
       await defer.promise
 
-      await pubsub.stop()
+      await stop(pubsub)
     })
   })
 }

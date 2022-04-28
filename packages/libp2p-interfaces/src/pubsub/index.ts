@@ -1,6 +1,6 @@
 import type { PeerId } from '../peer-id/index.js'
 import type { Pushable } from 'it-pushable'
-import type { EventEmitter, Startable } from '../index.js'
+import type { EventEmitter } from '../index.js'
 import type { Stream } from '../connection/index.js'
 
 /**
@@ -113,7 +113,7 @@ export interface PublishResult {
   recipients: PeerId[]
 }
 
-export interface PubSub<Events = PubSubEvents> extends EventEmitter<Events>, Startable {
+export interface PubSub<Events = PubSubEvents> extends EventEmitter<Events> {
   globalSignaturePolicy: typeof StrictSign | typeof StrictNoSign
   multicodecs: string[]
 
