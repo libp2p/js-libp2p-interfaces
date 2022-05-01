@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.30](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.29...@libp2p/interface-compliance-tests-v1.1.30) (2022-05-01)
+
+
+### Bug Fixes
+
+* move connection manager mock to connection manager module ([#205](https://github.com/libp2p/js-libp2p-interfaces/issues/205)) ([a367375](https://github.com/libp2p/js-libp2p-interfaces/commit/a367375accc690d7b4608c9a3313f91df700efd8))
+
 ## [@libp2p/interface-compliance-tests-v1.1.29](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.28...@libp2p/interface-compliance-tests-v1.1.29) (2022-04-28)
 
 
