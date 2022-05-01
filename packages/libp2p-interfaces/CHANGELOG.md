@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.28](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.27...@libp2p/interfaces-v1.3.28) (2022-05-01)
+
+
+### Bug Fixes
+
+* add abort options to open connection ([#206](https://github.com/libp2p/js-libp2p-interfaces/issues/206)) ([b32234f](https://github.com/libp2p/js-libp2p-interfaces/commit/b32234f97b6e5cf93ea103b9650bea2119ce6025))
+
 ## [@libp2p/interfaces-v1.3.27](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.26...@libp2p/interfaces-v1.3.27) (2022-05-01)
 
 
