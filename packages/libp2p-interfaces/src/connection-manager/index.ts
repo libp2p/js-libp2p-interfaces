@@ -1,4 +1,4 @@
-import type { EventEmitter } from '../index.js'
+import type { AbortOptions, EventEmitter } from '../index.js'
 import type { Connection } from '../connection/index.js'
 import type { PeerId } from '../peer-id/index.js'
 import type { AddressSorter } from '../peer-store/index.js'
@@ -71,7 +71,7 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
   /**
    * Open a connection to a remote peer
    */
-  openConnection: (peer: PeerId) => Promise<Connection>
+  openConnection: (peer: PeerId, options?: AbortOptions) => Promise<Connection>
 
   /**
    * Close our connection to a peer
