@@ -1,3 +1,10 @@
+## [@libp2p/peer-store-v1.0.11](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.10...@libp2p/peer-store-v1.0.11) (2022-05-01)
+
+
+### Bug Fixes
+
+* move connection manager mock to connection manager module ([#205](https://github.com/libp2p/js-libp2p-interfaces/issues/205)) ([a367375](https://github.com/libp2p/js-libp2p-interfaces/commit/a367375accc690d7b4608c9a3313f91df700efd8))
+
 ## [@libp2p/peer-store-v1.0.10](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.9...@libp2p/peer-store-v1.0.10) (2022-04-19)
 
 
