@@ -64,6 +64,10 @@
       "import": "./dist/src/connection-encrypter/errors.js",
       "types": "./dist/src/connection-encrypter/errors.d.ts"
     },
+    "./connection-manager": {
+      "import": "./dist/src/connection-manager/index.js",
+      "types": "./dist/src/connection-manager/index.d.ts"
+    },
     "./connection/status": {
       "import": "./dist/src/connection/status.js",
       "types": "./dist/src/connection/status.d.ts"
@@ -115,6 +119,10 @@
     "./record": {
       "import": "./dist/src/record/index.js",
       "types": "./dist/src/record/index.d.ts"
+    },
+    "./registrar": {
+      "import": "./dist/src/registrar/index.js",
+      "types": "./dist/src/registrar/index.d.ts"
     },
     "./stream-muxer": {
       "import": "./dist/src/stream-muxer/index.js",

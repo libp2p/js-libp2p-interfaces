@@ -11,6 +11,7 @@ import type { Components } from '@libp2p/interfaces/components'
 import { createComponents } from './utils.js'
 import { start, stop } from '../index.js'
 import { isStartable } from '@libp2p/interfaces'
+import { mockNetwork } from '../mocks/connection-manager.js'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
@@ -22,20 +23,22 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
     // Create pubsub router
     beforeEach(async () => {
+      mockNetwork.reset()
       components = await createComponents()
 
-      pubsub = await common.setup({
+      pubsub = components.setPubSub(await common.setup({
         components,
         init: {
           emitSelf: true
         }
-      })
+      }))
     })
 
     afterEach(async () => {
       sinon.restore()
-      await stop(pubsub)
+      await stop(common)
       await common.teardown()
+      mockNetwork.reset()
     })
 
     it('can start correctly', async () => {
@@ -45,7 +48,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       sinon.spy(components.getRegistrar(), 'register')
 
-      await pubsub.start()
+      await start(components)
 
       expect(pubsub.isStarted()).to.equal(true)
       expect(components.getRegistrar().register).to.have.property('callCount', 1)
@@ -58,8 +61,8 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       sinon.spy(components.getRegistrar(), 'unregister')
 
-      await pubsub.start()
-      await pubsub.stop()
+      await start(components)
+      await stop(components)
 
       expect(pubsub.isStarted()).to.equal(false)
       expect(components.getRegistrar().unregister).to.have.property('callCount', 1)
@@ -70,7 +73,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         throw new Error('a message should not be received')
       }
 
-      await start(pubsub)
+      await start(components)
       pubsub.subscribe(topic)
       pubsub.addEventListener('message', handler)
 
@@ -90,13 +93,13 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       // handlers are called async
       await delay(100)
 
-      await stop(pubsub)
+      await stop(components)
     })
 
     it('can subscribe and publish correctly', async () => {
       const defer = pDefer()
 
-      await start(pubsub)
+      await start(components)
 
       pubsub.subscribe(topic)
       pubsub.addEventListener('message', (evt) => {
@@ -107,7 +110,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       await pubsub.publish(topic, data)
       await defer.promise
 
-      await stop(pubsub)
+      await stop(components)
     })
   })
 }

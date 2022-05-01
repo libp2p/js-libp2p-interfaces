@@ -8,6 +8,7 @@ import type { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
 import { pEvent } from 'p-event'
 import { createComponents } from './utils.js'
+import { mockNetwork } from '../mocks/connection-manager.js'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
@@ -19,21 +20,23 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
     // Create pubsub router
     beforeEach(async () => {
+      mockNetwork.reset()
       components = await createComponents()
 
-      pubsub = await common.setup({
+      pubsub = components.setPubSub(await common.setup({
         components,
         init: {
           emitSelf: true
         }
-      })
-      await start(pubsub)
+      }))
+      await start(components)
     })
 
     afterEach(async () => {
       sinon.restore()
-      await stop(pubsub)
+      await stop(components)
       await common.teardown()
+      mockNetwork.reset()
     })
 
     it('should emit normalized signed messages on publish', async () => {

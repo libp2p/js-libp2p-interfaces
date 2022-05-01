@@ -4,7 +4,6 @@ import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { connectPeers } from '../mocks/registrar.js'
 import type { TestSetup } from '../index.js'
 import type { Message, PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
@@ -12,6 +11,7 @@ import type { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
 import { createComponents } from './utils.js'
 import { pEvent } from 'p-event'
+import { mockNetwork } from '../mocks/connection-manager.js'
 
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub connection handlers', () => {
@@ -23,27 +23,28 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
     describe('nodes send state on connection', () => {
       // Create pubsub nodes and connect them
       beforeEach(async () => {
+        mockNetwork.reset()
+
         componentsA = await createComponents()
         componentsB = await createComponents()
 
-        psA = await common.setup({
+        psA = componentsA.setPubSub(await common.setup({
           components: componentsA,
           init: {}
-        })
-        psB = await common.setup({
+        }))
+
+        psB = componentsB.setPubSub(await common.setup({
           components: componentsB,
           init: {}
-        })
+        }))
 
         // Start pubsub
-        await start(psA, psB)
+        await start(componentsA, componentsB)
 
         expect(psA.getPeers()).to.be.empty()
         expect(psB.getPeers()).to.be.empty()
-      })
 
-      // Make subscriptions prior to nodes connected
-      beforeEach(() => {
+        // Make subscriptions prior to nodes connected
         psA.subscribe('Za')
         psB.subscribe('Zb')
 
@@ -55,8 +56,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       afterEach(async () => {
         sinon.restore()
-        await stop(psA, psB)
+        await stop(componentsA, componentsB)
         await common.teardown()
+        mockNetwork.reset()
       })
 
       it('existing subscriptions are sent upon peer connection', async function () {
@@ -65,7 +67,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           pEvent(psB, 'subscription-change')
         ])
 
-        await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
 
         await subscriptionsChanged
 
@@ -88,29 +90,31 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       // Create pubsub nodes and start them
       beforeEach(async () => {
+        mockNetwork.reset()
         componentsA = await createComponents()
         componentsB = await createComponents()
 
-        psA = await common.setup({
+        psA = componentsA.setPubSub(await common.setup({
           components: componentsA,
           init: {}
-        })
-        psB = await common.setup({
+        }))
+        psB = componentsB.setPubSub(await common.setup({
           components: componentsB,
           init: {}
-        })
+        }))
 
-        await start(psA, psB)
+        await start(componentsA, componentsB)
       })
 
       afterEach(async () => {
         sinon.restore()
-        await stop(psA, psB)
+        await stop(componentsA, componentsB)
         await common.teardown()
+        mockNetwork.reset()
       })
 
       it('should get notified of connected peers on dial', async () => {
-        await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
 
         return await Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
@@ -123,7 +127,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         const topic = 'test-topic'
         const data = uint8ArrayFromString('hey!')
 
-        await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
 
         let subscribedTopics = psA.getTopics()
         expect(subscribedTopics).to.not.include(topic)
@@ -160,29 +164,31 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       // Create pubsub nodes
       beforeEach(async () => {
+        mockNetwork.reset()
         componentsA = await createComponents()
         componentsB = await createComponents()
 
-        psA = await common.setup({
+        psA = componentsA.setPubSub(await common.setup({
           components: componentsA,
           init: {}
-        })
-        psB = await common.setup({
+        }))
+        psB = componentsB.setPubSub(await common.setup({
           components: componentsB,
           init: {}
-        })
+        }))
       })
 
       afterEach(async () => {
         sinon.restore()
-        await stop(psA, psB)
+        await stop(componentsA, componentsB)
         await common.teardown()
+        mockNetwork.reset()
       })
 
       it('should get notified of connected peers after starting', async () => {
-        await start(psA, psB)
+        await start(componentsA, componentsB)
 
-        await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
 
         return await Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
@@ -195,9 +201,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         const topic = 'test-topic'
         const data = uint8ArrayFromString('hey!')
 
-        await start(psA, psB)
+        await start(componentsA, componentsB)
 
-        await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
 
         await Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
@@ -239,25 +245,27 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       // Create pubsub nodes and start them
       beforeEach(async () => {
+        mockNetwork.reset()
         componentsA = await createComponents()
         componentsB = await createComponents()
 
-        psA = await common.setup({
+        psA = componentsA.setPubSub(await common.setup({
           components: componentsA,
           init: {}
-        })
-        psB = await common.setup({
+        }))
+        psB = componentsB.setPubSub(await common.setup({
           components: componentsB,
           init: {}
-        })
+        }))
 
-        await start(psA, psB)
+        await start(componentsA, componentsB)
       })
 
       afterEach(async () => {
         sinon.restore()
-        await stop(psA, psB)
+        await stop(componentsA, componentsB)
         await common.teardown()
+        mockNetwork.reset()
       })
 
       it.skip('should receive pubsub messages after a node restart', async function () {
@@ -268,7 +276,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         const defer1 = pDefer()
         const defer2 = pDefer()
 
-        await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
 
         let subscribedTopics = psA.getTopics()
         expect(subscribedTopics).to.not.include(topic)
@@ -307,7 +315,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         })
         await start(psB)
 
-        await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
 
         // wait for remoteLibp2p to know about libp2p subscription
         await pWaitFor(() => {
@@ -371,7 +379,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         const originalConnection = await psA._libp2p.dialer.connectToPeer(psB.peerId)
 
         // second connection
-        await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
 
         // Wait for subscriptions to occur
         await pWaitFor(() => {
