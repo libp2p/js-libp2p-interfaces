@@ -1,17 +1,17 @@
 import errCode from 'err-code'
 import type { ConnectionGater, ConnectionProtector } from './connection/index.js'
 import type { ContentRouting } from './content-routing/index.js'
-import type { Dialer } from './dialer/index.js'
-import type { AddressManager } from './index.js'
+import { AddressManager, isStartable, Startable } from './index.js'
 import type { Metrics } from './metrics/index.js'
 import type { PeerId } from './peer-id/index.js'
 import type { PeerRouting } from './peer-routing/index.js'
 import type { PeerStore } from './peer-store/index.js'
-import type { ConnectionManager, Registrar } from './registrar/index.js'
+import type { Registrar } from './registrar/index.js'
 import type { TransportManager, Upgrader } from './transport/index.js'
 import type { Datastore } from 'interface-datastore'
 import type { PubSub } from './pubsub/index.js'
 import type { DualDHT } from './dht/index.js'
+import type { ConnectionManager } from './connection-manager/index.js'
 
 export interface Initializable {
   init: (components: Components) => void
@@ -27,7 +27,6 @@ export interface ComponentsInit {
   peerStore?: PeerStore
   upgrader?: Upgrader
   metrics?: Metrics
-  dialer?: Dialer
   registrar?: Registrar
   connectionManager?: ConnectionManager
   transportManager?: TransportManager
@@ -40,13 +39,12 @@ export interface ComponentsInit {
   pubsub?: PubSub
 }
 
-export class Components {
+export class Components implements Startable {
   private peerId?: PeerId
   private addressManager?: AddressManager
   private peerStore?: PeerStore
   private upgrader?: Upgrader
   private metrics?: Metrics
-  private dialer?: Dialer
   private registrar?: Registrar
   private connectionManager?: ConnectionManager
   private transportManager?: TransportManager
@@ -57,24 +55,132 @@ export class Components {
   private connectionProtector?: ConnectionProtector
   private dht?: DualDHT
   private pubsub?: PubSub
+  private started = false
 
   constructor (init: ComponentsInit = {}) {
-    this.peerId = init.peerId
-    this.addressManager = init.addressManager
-    this.peerStore = init.peerStore
-    this.upgrader = init.upgrader
-    this.metrics = init.metrics
-    this.dialer = init.dialer
-    this.registrar = init.registrar
-    this.connectionManager = init.connectionManager
-    this.transportManager = init.transportManager
-    this.connectionGater = init.connectionGater
-    this.contentRouting = init.contentRouting
-    this.peerRouting = init.peerRouting
-    this.datastore = init.datastore
-    this.connectionProtector = init.connectionProtector
-    this.dht = init.dht
-    this.pubsub = init.pubsub
+    if (init.peerId != null) {
+      this.setPeerId(init.peerId)
+    }
+
+    if (init.addressManager != null) {
+      this.setAddressManager(init.addressManager)
+    }
+
+    if (init.peerStore != null) {
+      this.setPeerStore(init.peerStore)
+    }
+
+    if (init.upgrader != null) {
+      this.setUpgrader(init.upgrader)
+    }
+
+    if (init.metrics != null) {
+      this.setMetrics(init.metrics)
+    }
+
+    if (init.registrar != null) {
+      this.setRegistrar(init.registrar)
+    }
+
+    if (init.connectionManager != null) {
+      this.setConnectionManager(init.connectionManager)
+    }
+
+    if (init.transportManager != null) {
+      this.setTransportManager(init.transportManager)
+    }
+
+    if (init.connectionGater != null) {
+      this.setConnectionGater(init.connectionGater)
+    }
+
+    if (init.contentRouting != null) {
+      this.setContentRouting(init.contentRouting)
+    }
+
+    if (init.peerRouting != null) {
+      this.setPeerRouting(init.peerRouting)
+    }
+
+    if (init.datastore != null) {
+      this.setDatastore(init.datastore)
+    }
+
+    if (init.connectionProtector != null) {
+      this.setConnectionProtector(init.connectionProtector)
+    }
+
+    if (init.dht != null) {
+      this.setDHT(init.dht)
+    }
+
+    if (init.pubsub != null) {
+      this.setPubSub(init.pubsub)
+    }
+  }
+
+  isStarted () {
+    return this.started
+  }
+
+  async beforeStart () {
+    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
+      const startable = obj as Startable
+
+      if (startable.beforeStart != null) {
+        await startable.beforeStart()
+      }
+    }
+  }
+
+  async start () {
+    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
+      const startable = obj as Startable
+
+      await startable.start()
+    }
+
+    this.started = true
+  }
+
+  async afterStart () {
+    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
+      const startable = obj as Startable
+
+      if (startable.afterStart != null) {
+        await startable.afterStart()
+      }
+    }
+  }
+
+  async beforeStop () {
+    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
+      const startable = obj as Startable
+
+      if (startable.beforeStop != null) {
+        await startable.beforeStop()
+      }
+    }
+  }
+
+  async stop () {
+    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
+      const startable = obj as Startable
+
+      await startable.stop()
+    }
+
+    this.started = false
+  }
+
+  async afterStop () {
+    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
+      const startable = obj as Startable
+
+      if (startable.afterStop != null) {
+        await startable.afterStop()
+      }
+    }
   }
 
   setPeerId (peerId: PeerId) {
@@ -94,6 +200,10 @@ export class Components {
   setMetrics (metrics: Metrics) {
     this.metrics = metrics
 
+    if (isInitializable(metrics)) {
+      metrics.init(this)
+    }
+
     return metrics
   }
 
@@ -103,6 +213,10 @@ export class Components {
 
   setAddressManager (addressManager: AddressManager) {
     this.addressManager = addressManager
+
+    if (isInitializable(addressManager)) {
+      addressManager.init(this)
+    }
 
     return addressManager
   }
@@ -118,6 +232,10 @@ export class Components {
   setPeerStore (peerStore: PeerStore) {
     this.peerStore = peerStore
 
+    if (isInitializable(peerStore)) {
+      peerStore.init(this)
+    }
+
     return peerStore
   }
 
@@ -132,6 +250,10 @@ export class Components {
   setUpgrader (upgrader: Upgrader) {
     this.upgrader = upgrader
 
+    if (isInitializable(upgrader)) {
+      upgrader.init(this)
+    }
+
     return upgrader
   }
 
@@ -143,22 +265,12 @@ export class Components {
     return this.upgrader
   }
 
-  setDialer (dialer: Dialer) {
-    this.dialer = dialer
-
-    return dialer
-  }
-
-  getDialer (): Dialer {
-    if (this.dialer == null) {
-      throw errCode(new Error('dialer not set'), 'ERR_SERVICE_MISSING')
-    }
-
-    return this.dialer
-  }
-
   setRegistrar (registrar: Registrar) {
     this.registrar = registrar
+
+    if (isInitializable(registrar)) {
+      registrar.init(this)
+    }
 
     return registrar
   }
@@ -174,6 +286,10 @@ export class Components {
   setConnectionManager (connectionManager: ConnectionManager) {
     this.connectionManager = connectionManager
 
+    if (isInitializable(connectionManager)) {
+      connectionManager.init(this)
+    }
+
     return connectionManager
   }
 
@@ -187,6 +303,10 @@ export class Components {
 
   setTransportManager (transportManager: TransportManager) {
     this.transportManager = transportManager
+
+    if (isInitializable(transportManager)) {
+      transportManager.init(this)
+    }
 
     return transportManager
   }
@@ -202,6 +322,10 @@ export class Components {
   setConnectionGater (connectionGater: ConnectionGater) {
     this.connectionGater = connectionGater
 
+    if (isInitializable(connectionGater)) {
+      connectionGater.init(this)
+    }
+
     return connectionGater
   }
 
@@ -215,6 +339,10 @@ export class Components {
 
   setContentRouting (contentRouting: ContentRouting) {
     this.contentRouting = contentRouting
+
+    if (isInitializable(contentRouting)) {
+      contentRouting.init(this)
+    }
 
     return contentRouting
   }
@@ -230,6 +358,10 @@ export class Components {
   setPeerRouting (peerRouting: PeerRouting) {
     this.peerRouting = peerRouting
 
+    if (isInitializable(peerRouting)) {
+      peerRouting.init(this)
+    }
+
     return peerRouting
   }
 
@@ -243,6 +375,10 @@ export class Components {
 
   setDatastore (datastore: Datastore) {
     this.datastore = datastore
+
+    if (isInitializable(datastore)) {
+      datastore.init(this)
+    }
 
     return datastore
   }
@@ -258,6 +394,10 @@ export class Components {
   setConnectionProtector (connectionProtector: ConnectionProtector) {
     this.connectionProtector = connectionProtector
 
+    if (isInitializable(connectionProtector)) {
+      connectionProtector.init(this)
+    }
+
     return connectionProtector
   }
 
@@ -267,6 +407,10 @@ export class Components {
 
   setDHT (dht: DualDHT) {
     this.dht = dht
+
+    if (isInitializable(dht)) {
+      dht.init(this)
+    }
 
     return dht
   }
@@ -281,6 +425,10 @@ export class Components {
 
   setPubSub (pubsub: PubSub) {
     this.pubsub = pubsub
+
+    if (isInitializable(pubsub)) {
+      pubsub.init(this)
+    }
 
     return pubsub
   }

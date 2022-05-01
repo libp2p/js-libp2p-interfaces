@@ -9,10 +9,9 @@ import pDefer from 'p-defer'
 import { MemoryDatastore } from 'datastore-core/memory'
 import { PersistentPeerStore } from '../src/index.js'
 import { RecordEnvelope, PeerRecord } from '@libp2p/peer-record'
-import { mockConnectionGater } from '@libp2p/interface-compliance-tests/mocks'
 import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import type { PeerStore, AddressBook } from '@libp2p/interfaces/peer-store'
+import type { AddressBook } from '@libp2p/interfaces/peer-store'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { Components } from '@libp2p/interfaces/components'
 
@@ -21,7 +20,6 @@ const addr2 = new Multiaddr('/ip4/20.0.0.1/tcp/8001')
 const addr3 = new Multiaddr('/ip4/127.0.0.1/tcp/8002')
 
 describe('addressBook', () => {
-  const connectionGater = mockConnectionGater()
   let peerId: PeerId
 
   before(async () => {
@@ -29,13 +27,12 @@ describe('addressBook', () => {
   })
 
   describe('addressBook.set', () => {
-    let peerStore: PeerStore
+    let peerStore: PersistentPeerStore
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
-        addressFilter: connectionGater.filterMultiaddrForPeer
-      })
+      peerStore = new PersistentPeerStore()
+      peerStore.init(new Components({ peerId, datastore: new MemoryDatastore() }))
       ab = peerStore.addressBook
     })
 
@@ -148,13 +145,12 @@ describe('addressBook', () => {
   })
 
   describe('addressBook.add', () => {
-    let peerStore: PeerStore
+    let peerStore: PersistentPeerStore
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
-        addressFilter: connectionGater.filterMultiaddrForPeer
-      })
+      peerStore = new PersistentPeerStore()
+      peerStore.init(new Components({ peerId, datastore: new MemoryDatastore() }))
       ab = peerStore.addressBook
     })
 
@@ -304,13 +300,12 @@ describe('addressBook', () => {
   })
 
   describe('addressBook.get', () => {
-    let peerStore: PeerStore
+    let peerStore: PersistentPeerStore
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
-        addressFilter: connectionGater.filterMultiaddrForPeer
-      })
+      peerStore = new PersistentPeerStore()
+      peerStore.init(new Components({ peerId, datastore: new MemoryDatastore() }))
       ab = peerStore.addressBook
     })
 
@@ -343,13 +338,12 @@ describe('addressBook', () => {
   })
 
   describe('addressBook.delete', () => {
-    let peerStore: PeerStore
+    let peerStore: PersistentPeerStore
     let ab: AddressBook
 
     beforeEach(() => {
-      peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
-        addressFilter: connectionGater.filterMultiaddrForPeer
-      })
+      peerStore = new PersistentPeerStore()
+      peerStore.init(new Components({ peerId, datastore: new MemoryDatastore() }))
       ab = peerStore.addressBook
     })
 
@@ -401,14 +395,13 @@ describe('addressBook', () => {
   })
 
   describe('certified records', () => {
-    let peerStore: PeerStore
+    let peerStore: PersistentPeerStore
     let ab: AddressBook
 
     describe('consumes a valid peer record and stores its data', () => {
       beforeEach(() => {
-        peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
-          addressFilter: connectionGater.filterMultiaddrForPeer
-        })
+        peerStore = new PersistentPeerStore()
+        peerStore.init(new Components({ peerId, datastore: new MemoryDatastore() }))
         ab = peerStore.addressBook
       })
 
@@ -609,9 +602,8 @@ describe('addressBook', () => {
 
     describe('fails to consume invalid peer records', () => {
       beforeEach(() => {
-        peerStore = new PersistentPeerStore(new Components({ peerId, datastore: new MemoryDatastore() }), {
-          addressFilter: connectionGater.filterMultiaddrForPeer
-        })
+        peerStore = new PersistentPeerStore()
+        peerStore.init(new Components({ peerId, datastore: new MemoryDatastore() }))
         ab = peerStore.addressBook
       })
 

@@ -7,8 +7,6 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { MemoryDatastore } from 'datastore-core/memory'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { PeerStore } from '@libp2p/interfaces/peer-store'
-import { mockConnectionGater } from '@libp2p/interface-compliance-tests/mocks'
 import { Components } from '@libp2p/interfaces/components'
 
 const addr1 = new Multiaddr('/ip4/127.0.0.1/tcp/8000')
@@ -21,7 +19,6 @@ const proto2 = '/protocol2'
 const proto3 = '/protocol3'
 
 describe('peer-store', () => {
-  const connectionGater = mockConnectionGater()
   let peerIds: PeerId[]
   before(async () => {
     peerIds = await Promise.all([
@@ -34,12 +31,11 @@ describe('peer-store', () => {
   })
 
   describe('empty books', () => {
-    let peerStore: PeerStore
+    let peerStore: PersistentPeerStore
 
     beforeEach(() => {
-      peerStore = new PersistentPeerStore(new Components({ peerId: peerIds[4], datastore: new MemoryDatastore() }), {
-        addressFilter: connectionGater.filterMultiaddrForPeer
-      })
+      peerStore = new PersistentPeerStore()
+      peerStore.init(new Components({ peerId: peerIds[4], datastore: new MemoryDatastore() }))
     })
 
     it('has an empty map of peers', async () => {
@@ -65,12 +61,11 @@ describe('peer-store', () => {
   })
 
   describe('previously populated books', () => {
-    let peerStore: PeerStore
+    let peerStore: PersistentPeerStore
 
     beforeEach(async () => {
-      peerStore = new PersistentPeerStore(new Components({ peerId: peerIds[4], datastore: new MemoryDatastore() }), {
-        addressFilter: connectionGater.filterMultiaddrForPeer
-      })
+      peerStore = new PersistentPeerStore()
+      peerStore.init(new Components({ peerId: peerIds[4], datastore: new MemoryDatastore() }))
 
       // Add peer0 with { addr1, addr2 } and { proto1 }
       await peerStore.addressBook.set(peerIds[0], [addr1, addr2])
@@ -167,12 +162,11 @@ describe('peer-store', () => {
   })
 
   describe('peerStore.getPeers', () => {
-    let peerStore: PeerStore
+    let peerStore: PersistentPeerStore
 
     beforeEach(() => {
-      peerStore = new PersistentPeerStore(new Components({ peerId: peerIds[4], datastore: new MemoryDatastore() }), {
-        addressFilter: connectionGater.filterMultiaddrForPeer
-      })
+      peerStore = new PersistentPeerStore()
+      peerStore.init(new Components({ peerId: peerIds[4], datastore: new MemoryDatastore() }))
     })
 
     it('returns peers if only addresses are known', async () => {

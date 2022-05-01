@@ -1,6 +1,6 @@
 
 export { mockConnectionGater } from './connection-gater.js'
-export { mockConnectionManager } from './connection-manager.js'
+export { mockConnectionManager, mockNetwork } from './connection-manager.js'
 export { mockConnection, mockStream, connectionPair } from './connection.js'
 export { mockMultiaddrConnection, mockMultiaddrConnPair } from './multiaddr-connection.js'
 export { mockMuxer } from './muxer.js'

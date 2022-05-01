@@ -5,7 +5,6 @@ import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { connectPeers } from '../mocks/registrar.js'
 import { createComponents, waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { Message, PubSub } from '@libp2p/interfaces/pubsub'
@@ -13,6 +12,7 @@ import type { PubSubArgs } from './index.js'
 import type { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
 import delay from 'delay'
+import { mockNetwork } from '../mocks/connection-manager.js'
 
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub with multiple nodes', function () {
@@ -30,37 +30,37 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
         // Create and start pubsub nodes
         beforeEach(async () => {
+          mockNetwork.reset()
+
           componentsA = await createComponents()
           componentsB = await createComponents()
           componentsC = await createComponents()
 
-          psA = await common.setup({
+          psA = componentsA.setPubSub(await common.setup({
             components: componentsA,
             init: {
               emitSelf: true
             }
-          })
-          psB = await common.setup({
+          }))
+          psB = componentsB.setPubSub(await common.setup({
             components: componentsB,
             init: {
               emitSelf: true
             }
-          })
-          psC = await common.setup({
+          }))
+          psC = componentsC.setPubSub(await common.setup({
             components: componentsC,
             init: {
               emitSelf: true
             }
-          })
+          }))
 
           // Start pubsub modes
-          await start(psA, psB, psC)
-        })
+          await start(componentsA, componentsB, componentsC)
 
-        // Connect nodes
-        beforeEach(async () => {
-          await connectPeers(psA.multicodecs[0], componentsA, componentsB)
-          await connectPeers(psB.multicodecs[0], componentsB, componentsC)
+          // Connect nodes
+          await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
+          await componentsB.getConnectionManager().openConnection(componentsC.getPeerId())
 
           // Wait for peers to be ready in pubsub
           await pWaitFor(() =>
@@ -72,10 +72,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
         afterEach(async () => {
           sinon.restore()
-
-          await stop(psA, psB, psC)
-
+          await stop(componentsA, componentsB, componentsC)
           await common.teardown()
+          mockNetwork.reset()
         })
 
         it('subscribe to the topic on node a', async () => {
@@ -259,53 +258,53 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
         // Create and start pubsub nodes
         beforeEach(async () => {
+          mockNetwork.reset()
+
           componentsA = await createComponents()
           componentsB = await createComponents()
           componentsC = await createComponents()
           componentsD = await createComponents()
           componentsE = await createComponents()
 
-          psA = await common.setup({
+          psA = componentsA.setPubSub(await common.setup({
             components: componentsA,
             init: {
               emitSelf: true
             }
-          })
-          psB = await common.setup({
+          }))
+          psB = componentsB.setPubSub(await common.setup({
             components: componentsB,
             init: {
               emitSelf: true
             }
-          })
-          psC = await common.setup({
+          }))
+          psC = componentsC.setPubSub(await common.setup({
             components: componentsC,
             init: {
               emitSelf: true
             }
-          })
-          psD = await common.setup({
+          }))
+          psD = componentsD.setPubSub(await common.setup({
             components: componentsD,
             init: {
               emitSelf: true
             }
-          })
-          psE = await common.setup({
+          }))
+          psE = componentsE.setPubSub(await common.setup({
             components: componentsE,
             init: {
               emitSelf: true
             }
-          })
+          }))
 
           // Start pubsub nodes
-          await start(psA, psB, psC, psD, psE)
-        })
+          await start(componentsA, componentsB, componentsC, componentsD, componentsE)
 
-        // connect nodes
-        beforeEach(async () => {
-          await connectPeers(psA.multicodecs[0], componentsA, componentsB)
-          await connectPeers(psA.multicodecs[0], componentsB, componentsC)
-          await connectPeers(psA.multicodecs[0], componentsC, componentsD)
-          await connectPeers(psA.multicodecs[0], componentsD, componentsE)
+          // connect nodes
+          await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
+          await componentsB.getConnectionManager().openConnection(componentsC.getPeerId())
+          await componentsC.getConnectionManager().openConnection(componentsD.getPeerId())
+          await componentsD.getConnectionManager().openConnection(componentsE.getPeerId())
 
           // Wait for peers to be ready in pubsub
           await pWaitFor(() =>
@@ -318,8 +317,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         })
 
         afterEach(async () => {
-          await stop(psA, psB, psC, psD, psE)
+          await stop(componentsA, componentsB, componentsC, componentsD, componentsE)
           await common.teardown()
+          mockNetwork.reset()
         })
 
         it('subscribes', () => {

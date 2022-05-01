@@ -7,32 +7,35 @@ import { PeerStoreProtoBook } from './proto-book.js'
 import { PersistentStore, Store } from './store.js'
 import type { PeerStore, AddressBook, KeyBook, MetadataBook, ProtoBook, PeerStoreEvents, PeerStoreInit, Peer } from '@libp2p/interfaces/peer-store'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { Components } from '@libp2p/interfaces/components'
+import { Components, Initializable } from '@libp2p/interfaces/components'
 
 const log = logger('libp2p:peer-store')
 
 /**
  * An implementation of PeerStore that stores data in a Datastore
  */
-export class PersistentPeerStore extends EventEmitter<PeerStoreEvents> implements PeerStore {
+export class PersistentPeerStore extends EventEmitter<PeerStoreEvents> implements PeerStore, Initializable {
   public addressBook: AddressBook
   public keyBook: KeyBook
   public metadataBook: MetadataBook
   public protoBook: ProtoBook
 
-  private readonly components: Components
+  private components: Components = new Components()
   private readonly store: Store
 
-  constructor (components: Components, init: PeerStoreInit = {}) {
+  constructor (init: PeerStoreInit = {}) {
     super()
 
-    this.components = components
-    this.store = new PersistentStore(components.getDatastore())
-
-    this.addressBook = new PeerStoreAddressBook(this.dispatchEvent.bind(this), this.store, init.addressFilter ?? components.getConnectionGater().filterMultiaddrForPeer)
+    this.store = new PersistentStore()
+    this.addressBook = new PeerStoreAddressBook(this.dispatchEvent.bind(this), this.store, init.addressFilter)
     this.keyBook = new PeerStoreKeyBook(this.dispatchEvent.bind(this), this.store)
     this.metadataBook = new PeerStoreMetadataBook(this.dispatchEvent.bind(this), this.store)
     this.protoBook = new PeerStoreProtoBook(this.dispatchEvent.bind(this), this.store)
+  }
+
+  init (components: Components) {
+    this.components = components
+    ;(this.store as PersistentStore).init(components)
   }
 
   async forEach (fn: (peer: Peer) => void) {

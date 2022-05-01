@@ -5,13 +5,13 @@ import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { connectPeers } from '../mocks/registrar.js'
 import { createComponents, waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '../index.js'
 import type { Message, PubSub } from '@libp2p/interfaces/pubsub'
 import type { PubSubArgs } from './index.js'
 import type { Components } from '@libp2p/interfaces/components'
 import { start, stop } from '../index.js'
+import { mockNetwork } from '../mocks/connection-manager.js'
 
 const topic = 'foo'
 
@@ -28,29 +28,31 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
     // Create pubsub nodes and connect them
     beforeEach(async () => {
+      mockNetwork.reset()
+
       componentsA = await createComponents()
       componentsB = await createComponents()
 
-      psA = await common.setup({
+      psA = componentsA.setPubSub(await common.setup({
         components: componentsA,
         init: {
           emitSelf: true
         }
-      })
-      psB = await common.setup({
+      }))
+      psB = componentsB.setPubSub(await common.setup({
         components: componentsB,
         init: {
           emitSelf: false
         }
-      })
+      }))
 
       // Start pubsub and connect nodes
-      await start(psA, psB)
+      await start(componentsA, componentsB)
 
       expect(psA.getPeers()).to.be.empty()
       expect(psB.getPeers()).to.be.empty()
 
-      await connectPeers(psA.multicodecs[0], componentsA, componentsB)
+      await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
 
       // Wait for peers to be ready in pubsub
       await pWaitFor(() => psA.getPeers().length === 1 && psB.getPeers().length === 1)
@@ -58,10 +60,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
     afterEach(async () => {
       sinon.restore()
-
-      await stop(psA, psB)
-
+      await stop(componentsA, componentsB)
       await common.teardown()
+      mockNetwork.reset()
     })
 
     it('Subscribe to a topic in nodeA', async () => {

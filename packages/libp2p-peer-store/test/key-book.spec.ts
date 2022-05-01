@@ -8,24 +8,20 @@ import pDefer from 'p-defer'
 import { codes } from '../src/errors.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
-import type { PeerStore, KeyBook } from '@libp2p/interfaces/peer-store'
+import type { KeyBook } from '@libp2p/interfaces/peer-store'
 import { Components } from '@libp2p/interfaces/components'
-import { mockConnectionGater } from '@libp2p/interface-compliance-tests/mocks'
 
 describe('keyBook', () => {
   let peerId: PeerId
-  let peerStore: PeerStore
+  let peerStore: PersistentPeerStore
   let kb: KeyBook
   let datastore: MemoryDatastore
 
   beforeEach(async () => {
     peerId = await createEd25519PeerId()
     datastore = new MemoryDatastore()
-    peerStore = new PersistentPeerStore(new Components({
-      peerId,
-      datastore,
-      connectionGater: mockConnectionGater()
-    }))
+    peerStore = new PersistentPeerStore()
+    peerStore.init(new Components({ peerId, datastore }))
     kb = peerStore.keyBook
   })
 
