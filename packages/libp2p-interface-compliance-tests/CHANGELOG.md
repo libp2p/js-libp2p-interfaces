@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v1.1.31](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.30...@libp2p/interface-compliance-tests-v1.1.31) (2022-05-03)
+
+
+### Bug Fixes
+
+* only send handled protocols ([#207](https://github.com/libp2p/js-libp2p-interfaces/issues/207)) ([1f7afc2](https://github.com/libp2p/js-libp2p-interfaces/commit/1f7afc29d72fde708064ec6479011dbc0a225962))
+
 ## [@libp2p/interface-compliance-tests-v1.1.30](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.29...@libp2p/interface-compliance-tests-v1.1.30) (2022-05-01)
 
 
