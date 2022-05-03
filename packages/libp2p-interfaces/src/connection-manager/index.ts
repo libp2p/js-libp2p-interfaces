@@ -74,7 +74,7 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
   openConnection: (peer: PeerId, options?: AbortOptions) => Promise<Connection>
 
   /**
-   * Close our connection to a peer
+   * Close our connections to a peer
    */
   closeConnections: (peer: PeerId) => Promise<void>
 }

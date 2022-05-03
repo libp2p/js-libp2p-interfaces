@@ -8,17 +8,7 @@ export class MockRegistrar implements Registrar {
   private readonly handlers: Map<string, StreamHandler> = new Map()
 
   getProtocols () {
-    const protocols = new Set<string>()
-
-    for (const topology of this.topologies.values()) {
-      topology.protocols.forEach(protocol => protocols.add(protocol))
-    }
-
-    for (const protocol of this.handlers.keys()) {
-      protocols.add(protocol)
-    }
-
-    return Array.from(protocols).sort()
+    return Array.from(this.handlers.keys()).sort()
   }
 
   async handle (protocols: string | string[], handler: StreamHandler): Promise<void> {
