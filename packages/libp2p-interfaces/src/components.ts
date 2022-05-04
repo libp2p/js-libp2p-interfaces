@@ -124,63 +124,63 @@ export class Components implements Startable {
   }
 
   async beforeStart () {
-    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
-      const startable = obj as Startable
-
-      if (startable.beforeStart != null) {
-        await startable.beforeStart()
-      }
-    }
+    await Promise.all(
+      Object.values(this).filter(obj => isStartable(obj)).map(async (startable: Startable) => {
+        if (startable.beforeStart != null) {
+          await startable.beforeStart()
+        }
+      })
+    )
   }
 
   async start () {
-    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
-      const startable = obj as Startable
-
-      await startable.start()
-    }
+    await Promise.all(
+      Object.values(this).filter(obj => isStartable(obj)).map(async (startable: Startable) => {
+        await startable.start()
+      })
+    )
 
     this.started = true
   }
 
   async afterStart () {
-    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
-      const startable = obj as Startable
-
-      if (startable.afterStart != null) {
-        await startable.afterStart()
-      }
-    }
+    await Promise.all(
+      Object.values(this).filter(obj => isStartable(obj)).map(async (startable: Startable) => {
+        if (startable.afterStart != null) {
+          await startable.afterStart()
+        }
+      })
+    )
   }
 
   async beforeStop () {
-    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
-      const startable = obj as Startable
-
-      if (startable.beforeStop != null) {
-        await startable.beforeStop()
-      }
-    }
+    await Promise.all(
+      Object.values(this).filter(obj => isStartable(obj)).map(async (startable: Startable) => {
+        if (startable.beforeStop != null) {
+          await startable.beforeStop()
+        }
+      })
+    )
   }
 
   async stop () {
-    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
-      const startable = obj as Startable
-
-      await startable.stop()
-    }
+    await Promise.all(
+      Object.values(this).filter(obj => isStartable(obj)).map(async (startable: Startable) => {
+        await startable.stop()
+      })
+    )
 
     this.started = false
   }
 
   async afterStop () {
-    for (const obj of Object.values(this).filter(obj => isStartable(obj))) {
-      const startable = obj as Startable
-
-      if (startable.afterStop != null) {
-        await startable.afterStop()
-      }
-    }
+    await Promise.all(
+      Object.values(this).filter(obj => isStartable(obj)).map(async (startable: Startable) => {
+        if (startable.afterStop != null) {
+          await startable.afterStop()
+        }
+      })
+    )
   }
 
   setPeerId (peerId: PeerId) {
