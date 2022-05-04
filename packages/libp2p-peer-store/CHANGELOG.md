@@ -1,3 +1,10 @@
+## [@libp2p/peer-store-v1.0.12](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.11...@libp2p/peer-store-v1.0.12) (2022-05-04)
+
+
+### Bug Fixes
+
+* move startable and events interfaces ([#209](https://github.com/libp2p/js-libp2p-interfaces/issues/209)) ([8ce8a08](https://github.com/libp2p/js-libp2p-interfaces/commit/8ce8a08c94b0738aa32da516558977b195ddd8ed))
+
 ## [@libp2p/peer-store-v1.0.11](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.10...@libp2p/peer-store-v1.0.11) (2022-05-01)
 
 
