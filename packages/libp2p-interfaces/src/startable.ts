@@ -2,7 +2,7 @@
 /**
  * Implemented by components that have a lifecycle
  */
- export interface Startable {
+export interface Startable {
   isStarted: () => boolean
 
   /**
