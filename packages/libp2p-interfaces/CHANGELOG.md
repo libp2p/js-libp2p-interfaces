@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.31](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.30...@libp2p/interfaces-v1.3.31) (2022-05-04)
+
+
+### Bug Fixes
+
+* move startable and events interfaces ([#209](https://github.com/libp2p/js-libp2p-interfaces/issues/209)) ([8ce8a08](https://github.com/libp2p/js-libp2p-interfaces/commit/8ce8a08c94b0738aa32da516558977b195ddd8ed))
+
 ## [@libp2p/interfaces-v1.3.30](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.29...@libp2p/interfaces-v1.3.30) (2022-05-04)
 
 
