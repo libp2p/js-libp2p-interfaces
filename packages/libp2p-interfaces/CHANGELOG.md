@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.30](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.29...@libp2p/interfaces-v1.3.30) (2022-05-04)
+
+
+### Bug Fixes
+
+* remove connection manager options ([#208](https://github.com/libp2p/js-libp2p-interfaces/issues/208)) ([b93d051](https://github.com/libp2p/js-libp2p-interfaces/commit/b93d051cb889b175f324f589546033d6723b1298))
+
 ## [@libp2p/interfaces-v1.3.29](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.28...@libp2p/interfaces-v1.3.29) (2022-05-03)
 
 
