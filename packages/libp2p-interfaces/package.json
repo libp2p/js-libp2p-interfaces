@@ -80,10 +80,6 @@
       "import": "./dist/src/content-routing/index.js",
       "types": "./dist/src/content-routing/index.d.ts"
     },
-    "./events": {
-      "import": "./dist/src/events.js",
-      "types": "./dist/src/events.d.ts"
-    },
     "./dht": {
       "import": "./dist/src/dht/index.js",
       "types": "./dist/src/dht/index.d.ts"
@@ -91,6 +87,10 @@
     "./errors": {
       "import": "./dist/src/errors.js",
       "types": "./dist/src/errors.d.ts"
+    },
+    "./events": {
+      "import": "./dist/src/events.js",
+      "types": "./dist/src/events.d.ts"
     },
     "./keys": {
       "import": "./dist/src/keys/index.js",
