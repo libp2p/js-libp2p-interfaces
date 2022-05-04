@@ -6,11 +6,6 @@ import type { Resolver } from '@multiformats/multiaddr'
 
 export interface ConnectionManagerInit {
   /**
-   * If true, try to connect to all discovered peers up to the connection manager limit
-   */
-  autoDial?: boolean
-
-  /**
    * The maximum number of connections to keep open
    */
   maxConnections: number
@@ -19,6 +14,46 @@ export interface ConnectionManagerInit {
    * The minimum number of connections to keep open
    */
   minConnections: number
+
+  /**
+   * The max data (in and out), per average interval to allow
+   */
+   maxData?: number
+
+   /**
+    * The max outgoing data, per average interval to allow
+    */
+   maxSentData?: number
+
+   /**
+    * The max incoming data, per average interval to allow
+    */
+   maxReceivedData?: number
+
+   /**
+    * The upper limit the event loop can take to run
+    */
+   maxEventLoopDelay?: number
+
+   /**
+    * How often, in milliseconds, metrics and latency should be checked
+    */
+   pollInterval?: number
+
+   /**
+    * How often, in milliseconds, to compute averages
+    */
+   movingAverageInterval?: number
+
+   /**
+    * The value of the peer
+    */
+   defaultPeerValue?: number
+
+   /**
+    * If true, try to connect to all discovered peers up to the connection manager limit
+    */
+   autoDial?: boolean
 
   /**
    * How long to wait between attempting to keep our number of concurrent connections
