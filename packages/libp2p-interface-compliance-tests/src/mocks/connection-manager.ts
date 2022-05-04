@@ -1,4 +1,5 @@
-import { CustomEvent, EventEmitter, Startable } from '@libp2p/interfaces'
+import { CustomEvent, EventEmitter } from '@libp2p/interfaces/events'
+import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interfaces/connection'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interfaces/connection-manager'

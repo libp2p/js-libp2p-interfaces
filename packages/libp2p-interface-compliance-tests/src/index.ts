@@ -1,4 +1,4 @@
-import { isStartable, Startable } from '@libp2p/interfaces'
+import { isStartable, Startable } from '@libp2p/interfaces/startable'
 
 export interface TestSetup<T, SetupArgs = {}> {
   setup: (args?: SetupArgs) => Promise<T>

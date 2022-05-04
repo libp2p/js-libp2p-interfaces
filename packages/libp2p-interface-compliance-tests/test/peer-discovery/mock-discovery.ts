@@ -1,6 +1,6 @@
 import { Multiaddr } from '@multiformats/multiaddr'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
-import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
+import { EventEmitter, CustomEvent } from '@libp2p/interfaces/events'
 import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interfaces/peer-discovery'
 import type { PeerInfo } from '@libp2p/interfaces/peer-info'
 

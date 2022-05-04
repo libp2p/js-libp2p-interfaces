@@ -1,6 +1,6 @@
 import type { PeerId } from '../peer-id/index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { EventEmitter } from '../index.js'
+import type { EventEmitter } from '../events.js'
 import type { Envelope } from '../record/index.js'
 import type { PeerInfo } from '../peer-info/index.js'
 

@@ -1,5 +1,5 @@
 import { logger } from '@libp2p/logger'
-import { EventEmitter } from '@libp2p/interfaces'
+import { EventEmitter } from '@libp2p/interfaces/events'
 import { PeerStoreAddressBook } from './address-book.js'
 import { PeerStoreKeyBook } from './key-book.js'
 import { PeerStoreMetadataBook } from './metadata-book.js'

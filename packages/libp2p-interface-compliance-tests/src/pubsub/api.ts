@@ -10,7 +10,7 @@ import type { PubSubArgs } from './index.js'
 import type { Components } from '@libp2p/interfaces/components'
 import { createComponents } from './utils.js'
 import { start, stop } from '../index.js'
-import { isStartable } from '@libp2p/interfaces'
+import { isStartable } from '@libp2p/interfaces/startable'
 import { mockNetwork } from '../mocks/connection-manager.js'
 
 const topic = 'foo'
@@ -36,7 +36,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
     afterEach(async () => {
       sinon.restore()
-      await stop(common)
+      await stop(components)
       await common.teardown()
       mockNetwork.reset()
     })

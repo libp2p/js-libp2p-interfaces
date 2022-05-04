@@ -5,7 +5,7 @@ import pDefer from 'p-defer'
 import { start, stop } from '../index.js'
 import type { TestSetup } from '../index.js'
 import type { PeerDiscovery } from '@libp2p/interfaces/peer-discovery'
-import type { Startable } from '@libp2p/interfaces'
+import type { Startable } from '@libp2p/interfaces/startable'
 
 export default (common: TestSetup<PeerDiscovery & Startable>) => {
   describe('interface-peer-discovery compliance tests', () => {

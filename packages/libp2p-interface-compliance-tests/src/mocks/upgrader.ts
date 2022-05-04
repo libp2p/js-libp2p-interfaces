@@ -2,7 +2,7 @@ import { expect } from 'aegir/chai'
 import { mockConnection } from './connection.js'
 import type { Upgrader, MultiaddrConnection, UpgraderEvents } from '@libp2p/interfaces/transport'
 import type { Registrar } from '@libp2p/interfaces/registrar'
-import { EventEmitter } from '@libp2p/interfaces'
+import { EventEmitter } from '@libp2p/interfaces/events'
 
 export interface MockUpgraderInit {
   registrar?: Registrar

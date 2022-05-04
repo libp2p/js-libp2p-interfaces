@@ -1,5 +1,5 @@
 import { logger } from '@libp2p/logger'
-import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
+import { EventEmitter, CustomEvent } from '@libp2p/interfaces/events'
 import errcode from 'err-code'
 import { pipe } from 'it-pipe'
 import Queue from 'p-queue'
