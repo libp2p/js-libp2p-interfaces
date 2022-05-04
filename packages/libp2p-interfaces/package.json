@@ -48,6 +48,10 @@
       "import": "./dist/src/index.js",
       "types": "./dist/src/index.d.ts"
     },
+    "./address-manager": {
+      "import": "./dist/src/address-manager.js",
+      "types": "./dist/src/address-manager.d.ts"
+    },
     "./components": {
       "import": "./dist/src/components.js",
       "types": "./dist/src/components.d.ts"
@@ -83,6 +87,10 @@
     "./errors": {
       "import": "./dist/src/errors.js",
       "types": "./dist/src/errors.d.ts"
+    },
+    "./events": {
+      "import": "./dist/src/events.js",
+      "types": "./dist/src/events.d.ts"
     },
     "./keys": {
       "import": "./dist/src/keys/index.js",
@@ -123,6 +131,10 @@
     "./registrar": {
       "import": "./dist/src/registrar/index.js",
       "types": "./dist/src/registrar/index.d.ts"
+    },
+    "./startable": {
+      "import": "./dist/src/startable.js",
+      "types": "./dist/src/startable.d.ts"
     },
     "./stream-muxer": {
       "import": "./dist/src/stream-muxer/index.js",

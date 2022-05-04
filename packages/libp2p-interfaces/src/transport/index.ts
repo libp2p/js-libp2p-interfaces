@@ -1,4 +1,5 @@
-import type { EventEmitter, AbortOptions } from '../index.js'
+import type { AbortOptions } from '../index.js'
+import type { EventEmitter } from '../events.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Connection } from '../connection/index.js'
 import type { Duplex } from 'it-stream-types'

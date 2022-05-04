@@ -1,5 +1,5 @@
 import { logger } from '@libp2p/logger'
-import { EventEmitter, CustomEvent } from '@libp2p/interfaces'
+import { EventEmitter, CustomEvent } from '@libp2p/interfaces/events'
 import * as lp from 'it-length-prefixed'
 import { pushable } from 'it-pushable'
 import { pipe } from 'it-pipe'

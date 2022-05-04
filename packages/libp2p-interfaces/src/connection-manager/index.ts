@@ -1,4 +1,5 @@
-import type { AbortOptions, EventEmitter } from '../index.js'
+import type { AbortOptions } from '../index.js'
+import type { EventEmitter } from '../events.js'
 import type { Connection } from '../connection/index.js'
 import type { PeerId } from '../peer-id/index.js'
 
