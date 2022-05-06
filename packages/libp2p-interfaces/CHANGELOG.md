@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v1.3.32](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.31...@libp2p/interfaces-v1.3.32) (2022-05-06)
+
+
+### Bug Fixes
+
+* add tag to peer discovery interface ([#210](https://github.com/libp2p/js-libp2p-interfaces/issues/210)) ([f99c833](https://github.com/libp2p/js-libp2p-interfaces/commit/f99c833c8436f8434f380d890ec5d267279312d7))
+
 ## [@libp2p/interfaces-v1.3.31](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v1.3.30...@libp2p/interfaces-v1.3.31) (2022-05-04)
 
 
