@@ -11,12 +11,12 @@ export interface PeerDiscovery extends EventEmitter<PeerDiscoveryEvents> {
   /**
    * Used to identify the peer discovery mechanism
    */
-   [Symbol.toStringTag]: string
+  [Symbol.toStringTag]: string
 
-   /**
-    * Used by the isPeerDiscovery function
-    */
-   [symbol]: true
+  /**
+   * Used by the isPeerDiscovery function
+   */
+  [symbol]: true
 }
 
 export function isPeerDiscovery (other: any): other is PeerDiscovery {
