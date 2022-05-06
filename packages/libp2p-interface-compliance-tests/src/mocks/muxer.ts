@@ -297,10 +297,6 @@ class MockMuxer implements StreamMuxer {
     if (muxedStream == null) {
       this.log.error(`No stream found for ${message.id}`)
 
-      // send a reset, don't know if we were initiator or recipient so send both
-      this.streamInput.push({ id: message.id, type: 'reset', direction: 'initiator' })
-      this.streamInput.push({ id: message.id, type: 'reset', direction: 'recipient' })
-
       return
     }
 
