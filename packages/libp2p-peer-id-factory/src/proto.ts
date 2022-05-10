@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { encodeMessage, decodeMessage, message, bytes } from 'protons-runtime'
+import type { Codec } from 'protons-runtime'
 
 export interface PeerIdProto {
   id: Uint8Array
@@ -10,7 +11,7 @@ export interface PeerIdProto {
 }
 
 export namespace PeerIdProto {
-  export const codec = () => {
+  export const codec = (): Codec<PeerIdProto> => {
     return message<PeerIdProto>({
       1: { name: 'id', codec: bytes },
       2: { name: 'pubKey', codec: bytes, optional: true },

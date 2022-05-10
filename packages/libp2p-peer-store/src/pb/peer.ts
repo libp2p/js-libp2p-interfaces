@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { encodeMessage, decodeMessage, message, string, bytes, bool } from 'protons-runtime'
+import type { Codec } from 'protons-runtime'
 
 export interface Peer {
   addresses: Address[]
@@ -12,7 +13,7 @@ export interface Peer {
 }
 
 export namespace Peer {
-  export const codec = () => {
+  export const codec = (): Codec<Peer> => {
     return message<Peer>({
       1: { name: 'addresses', codec: Address.codec(), repeats: true },
       2: { name: 'protocols', codec: string, repeats: true },
@@ -37,7 +38,7 @@ export interface Address {
 }
 
 export namespace Address {
-  export const codec = () => {
+  export const codec = (): Codec<Address> => {
     return message<Address>({
       1: { name: 'multiaddr', codec: bytes },
       2: { name: 'isCertified', codec: bool, optional: true }
@@ -59,7 +60,7 @@ export interface Metadata {
 }
 
 export namespace Metadata {
-  export const codec = () => {
+  export const codec = (): Codec<Metadata> => {
     return message<Metadata>({
       1: { name: 'key', codec: string },
       2: { name: 'value', codec: bytes }

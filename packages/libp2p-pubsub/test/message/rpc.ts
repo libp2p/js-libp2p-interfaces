@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { encodeMessage, decodeMessage, message, bool, string, bytes, uint64 } from 'protons-runtime'
+import type { Codec } from 'protons-runtime'
 
 export interface RPC {
   subscriptions: RPC.SubOpts[]
@@ -16,7 +17,7 @@ export namespace RPC {
   }
 
   export namespace SubOpts {
-    export const codec = () => {
+    export const codec = (): Codec<SubOpts> => {
       return message<SubOpts>({
         1: { name: 'subscribe', codec: bool, optional: true },
         2: { name: 'topic', codec: string, optional: true }
@@ -31,6 +32,7 @@ export namespace RPC {
       return decodeMessage(buf, SubOpts.codec())
     }
   }
+
   export interface Message {
     from?: Uint8Array
     data?: Uint8Array
@@ -41,7 +43,7 @@ export namespace RPC {
   }
 
   export namespace Message {
-    export const codec = () => {
+    export const codec = (): Codec<Message> => {
       return message<Message>({
         1: { name: 'from', codec: bytes, optional: true },
         2: { name: 'data', codec: bytes, optional: true },
@@ -61,7 +63,7 @@ export namespace RPC {
     }
   }
 
-  export const codec = () => {
+  export const codec = (): Codec<RPC> => {
     return message<RPC>({
       1: { name: 'subscriptions', codec: RPC.SubOpts.codec(), repeats: true },
       2: { name: 'messages', codec: RPC.Message.codec(), repeats: true },
@@ -86,7 +88,7 @@ export interface ControlMessage {
 }
 
 export namespace ControlMessage {
-  export const codec = () => {
+  export const codec = (): Codec<ControlMessage> => {
     return message<ControlMessage>({
       1: { name: 'ihave', codec: ControlIHave.codec(), repeats: true },
       2: { name: 'iwant', codec: ControlIWant.codec(), repeats: true },
@@ -110,7 +112,7 @@ export interface ControlIHave {
 }
 
 export namespace ControlIHave {
-  export const codec = () => {
+  export const codec = (): Codec<ControlIHave> => {
     return message<ControlIHave>({
       1: { name: 'topic', codec: string, optional: true },
       2: { name: 'messageIDs', codec: bytes, repeats: true }
@@ -131,7 +133,7 @@ export interface ControlIWant {
 }
 
 export namespace ControlIWant {
-  export const codec = () => {
+  export const codec = (): Codec<ControlIWant> => {
     return message<ControlIWant>({
       1: { name: 'messageIDs', codec: bytes, repeats: true }
     })
@@ -151,7 +153,7 @@ export interface ControlGraft {
 }
 
 export namespace ControlGraft {
-  export const codec = () => {
+  export const codec = (): Codec<ControlGraft> => {
     return message<ControlGraft>({
       1: { name: 'topic', codec: string, optional: true }
     })
@@ -173,7 +175,7 @@ export interface ControlPrune {
 }
 
 export namespace ControlPrune {
-  export const codec = () => {
+  export const codec = (): Codec<ControlPrune> => {
     return message<ControlPrune>({
       1: { name: 'topic', codec: string, optional: true },
       2: { name: 'peers', codec: PeerInfo.codec(), repeats: true },
@@ -196,7 +198,7 @@ export interface PeerInfo {
 }
 
 export namespace PeerInfo {
-  export const codec = () => {
+  export const codec = (): Codec<PeerInfo> => {
     return message<PeerInfo>({
       1: { name: 'peerID', codec: bytes, optional: true },
       2: { name: 'signedPeerRecord', codec: bytes, optional: true }
