@@ -1,3 +1,10 @@
+## [@libp2p/peer-record-v1.0.10](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-record-v1.0.9...@libp2p/peer-record-v1.0.10) (2022-05-10)
+
+
+### Trivial Changes
+
+* **deps:** bump sinon from 13.0.2 to 14.0.0 ([#211](https://github.com/libp2p/js-libp2p-interfaces/issues/211)) ([8859f70](https://github.com/libp2p/js-libp2p-interfaces/commit/8859f70943c0bcdb210f54a338ae901739e5e6f2))
+
 ## [@libp2p/peer-record-v1.0.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-record-v1.0.8...@libp2p/peer-record-v1.0.9) (2022-05-10)
 
 
