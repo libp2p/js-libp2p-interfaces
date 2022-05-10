@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { encodeMessage, decodeMessage, message, bytes } from 'protons-runtime'
+import type { Codec } from 'protons-runtime'
 
 export interface Envelope {
   publicKey: Uint8Array
@@ -11,7 +12,7 @@ export interface Envelope {
 }
 
 export namespace Envelope {
-  export const codec = () => {
+  export const codec = (): Codec<Envelope> => {
     return message<Envelope>({
       1: { name: 'publicKey', codec: bytes },
       2: { name: 'payloadType', codec: bytes },

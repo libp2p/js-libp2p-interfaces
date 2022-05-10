@@ -126,6 +126,7 @@
     "clean": "aegir clean",
     "lint": "aegir lint",
     "dep-check": "aegir dep-check",
+    "generate": "protons src/pb/peer.proto",
     "build": "aegir build",
     "test": "aegir test",
     "test:chrome": "aegir test -t browser --cov",
@@ -151,7 +152,7 @@
     "it-pipe": "^2.0.3",
     "mortice": "^3.0.0",
     "multiformats": "^9.6.3",
-    "protons-runtime": "^1.0.2",
+    "protons-runtime": "^1.0.4",
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
@@ -162,7 +163,7 @@
     "datastore-core": "^7.0.1",
     "p-defer": "^4.0.0",
     "p-wait-for": "^4.1.0",
-    "protons": "^3.0.2",
+    "protons": "^3.0.4",
     "sinon": "^13.0.1"
   }
 }
