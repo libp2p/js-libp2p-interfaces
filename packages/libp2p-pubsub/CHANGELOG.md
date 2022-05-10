@@ -1,3 +1,10 @@
+## [@libp2p/pubsub-v1.2.22](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.21...@libp2p/pubsub-v1.2.22) (2022-05-10)
+
+
+### Bug Fixes
+
+* regenerate protobuf code ([#212](https://github.com/libp2p/js-libp2p-interfaces/issues/212)) ([3cf210e](https://github.com/libp2p/js-libp2p-interfaces/commit/3cf210e230863f8049ac6c3ed2e73abb180fb8b2))
+
 ## [@libp2p/pubsub-v1.2.21](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.20...@libp2p/pubsub-v1.2.21) (2022-05-04)
 
 
