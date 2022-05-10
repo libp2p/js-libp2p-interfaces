@@ -1,3 +1,10 @@
+## [@libp2p/peer-store-v1.0.13](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.12...@libp2p/peer-store-v1.0.13) (2022-05-10)
+
+
+### Bug Fixes
+
+* regenerate protobuf code ([#212](https://github.com/libp2p/js-libp2p-interfaces/issues/212)) ([3cf210e](https://github.com/libp2p/js-libp2p-interfaces/commit/3cf210e230863f8049ac6c3ed2e73abb180fb8b2))
+
 ## [@libp2p/peer-store-v1.0.12](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.11...@libp2p/peer-store-v1.0.12) (2022-05-04)
 
 
