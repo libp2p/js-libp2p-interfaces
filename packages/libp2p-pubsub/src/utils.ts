@@ -74,7 +74,7 @@ export const toMessage = (message: PubSubRPCMessage): Message => {
   return {
     from: peerIdFromBytes(message.from),
     topic: message.topic ?? '',
-    sequenceNumber: message.sequenceNumber == null ? undefined : BigInt(`0x${uint8ArrayToString(message.sequenceNumber, 'base16')}`),
+    sequenceNumber: message.sequenceNumber == null ? undefined : bigIntFromBytes(message.sequenceNumber),
     data: message.data ?? new Uint8Array(0),
     signature: message.signature ?? undefined,
     key: message.key ?? undefined
@@ -85,9 +85,23 @@ export const toRpcMessage = (message: Message): PubSubRPCMessage => {
   return {
     from: message.from.multihash.bytes,
     data: message.data,
-    sequenceNumber: message.sequenceNumber == null ? undefined : uint8ArrayFromString(message.sequenceNumber.toString(16).padStart(16, '0'), 'base16'),
+    sequenceNumber: message.sequenceNumber == null ? undefined : bigIntToBytes(message.sequenceNumber),
     topic: message.topic,
     signature: message.signature,
     key: message.key
   }
+}
+
+export const bigIntToBytes = (num: bigint): Uint8Array => {
+  let str = num.toString(16)
+
+  if (str.length % 2 !== 0) {
+    str = `0${str}`
+  }
+
+  return uint8ArrayFromString(str, 'base16')
+}
+
+export const bigIntFromBytes = (num: Uint8Array): bigint => {
+  return BigInt(`0x${uint8ArrayToString(num, 'base16')}`)
 }
