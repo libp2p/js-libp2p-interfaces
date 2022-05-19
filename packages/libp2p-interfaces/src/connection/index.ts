@@ -34,7 +34,7 @@ export interface Stream extends Duplex<Uint8Array> {
   close: () => Promise<void>
   closeRead: () => Promise<void>
   closeWrite: () => Promise<void>
-  abort: (err?: Error) => void
+  abort: (err: Error) => void
   reset: () => void
   timeline: Timeline
   id: string
