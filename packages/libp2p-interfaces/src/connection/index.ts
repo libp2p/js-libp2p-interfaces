@@ -31,7 +31,9 @@ export interface Metadata {
  * configuration of the nodes.
  */
 export interface Stream extends Duplex<Uint8Array> {
-  close: () => void
+  close: () => Promise<void>
+  closeRead: () => Promise<void>
+  closeWrite: () => Promise<void>
   abort: (err?: Error) => void
   reset: () => void
   timeline: Timeline

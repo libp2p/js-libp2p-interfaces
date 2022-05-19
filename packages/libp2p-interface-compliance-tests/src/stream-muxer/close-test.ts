@@ -9,6 +9,8 @@ import delay from 'delay'
 import type { TestSetup } from '../index.js'
 import type { StreamMuxerFactory } from '@libp2p/interfaces/stream-muxer'
 import { Components } from '@libp2p/interfaces/components'
+import pDefer from 'p-defer'
+import all from 'it-all'
 
 function randomBuffer () {
   return uint8ArrayFromString(Math.random().toString())
@@ -112,6 +114,114 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
       // These should now all resolve without error
       await Promise.all(streamResults)
+    })
+
+    it('can close a stream for writing', async () => {
+      const deferred = pDefer<any>()
+
+      const p = duplexPair<Uint8Array>()
+      const dialerFactory = await common.setup()
+      const dialer = dialerFactory.createStreamMuxer(new Components())
+      const data = [randomBuffer(), randomBuffer()]
+
+      const listenerFactory = await common.setup()
+      const listener = listenerFactory.createStreamMuxer(new Components(), {
+        onIncomingStream: (stream) => {
+          void Promise.resolve().then(async () => {
+            // Immediate close for write
+            await stream.closeWrite()
+
+            const results = await pipe(stream, async (source) => {
+              const data = []
+              for await (const chunk of source) {
+                data.push(chunk.slice())
+              }
+              return data
+            })
+            expect(results).to.eql(data)
+
+            try {
+              await stream.sink([randomBuffer()])
+            } catch (err) {
+              deferred.resolve(err)
+            }
+
+            deferred.reject(new Error('should not support writing to closed writer'))
+          })
+        }
+      })
+
+      void pipe(p[0], dialer, p[0])
+      void pipe(p[1], listener, p[1])
+
+      const stream = dialer.newStream()
+      await stream.sink(data)
+
+      const err = await deferred.promise
+      expect(err).to.have.property('message').that.matches(/stream closed for writing/)
+    })
+
+    it('can close a stream for reading', async () => {
+      const deferred = pDefer<any>()
+
+      const p = duplexPair<Uint8Array>()
+      const dialerFactory = await common.setup()
+      const dialer = dialerFactory.createStreamMuxer(new Components())
+      const data = [randomBuffer(), randomBuffer()]
+
+      const listenerFactory = await common.setup()
+      const listener = listenerFactory.createStreamMuxer(new Components(), {
+        onIncomingStream: (stream) => {
+          void all(stream.source).then(deferred.resolve, deferred.reject)
+        }
+      })
+
+      void pipe(p[0], dialer, p[0])
+      void pipe(p[1], listener, p[1])
+
+      const stream = dialer.newStream()
+      await stream.closeRead()
+
+      // Source should be done
+      void Promise.resolve().then(async () => {
+        // @ts-expect-error next is part of the iterable protocol
+        expect(await stream.source.next()).to.have.property('done', true)
+        await stream.sink(data)
+      })
+
+      const results = await deferred.promise
+      expect(results).to.eql(data)
+    })
+
+    it('calls onStreamEnd for closed streams not previously written', async () => {
+      const deferred = pDefer()
+
+      const onStreamEnd = () => deferred.resolve()
+      const dialerFactory = await common.setup()
+      const dialer = dialerFactory.createStreamMuxer(new Components(), {
+        onStreamEnd
+      })
+
+      const stream = await dialer.newStream()
+
+      await stream.close()
+      await deferred.promise
+    })
+
+    it('calls onStreamEnd for read and write closed streams not previously written', async () => {
+      const deferred = pDefer()
+
+      const onStreamEnd = () => deferred.resolve()
+      const dialerFactory = await common.setup()
+      const dialer = dialerFactory.createStreamMuxer(new Components(), {
+        onStreamEnd
+      })
+
+      const stream = await dialer.newStream()
+
+      await stream.closeWrite()
+      await stream.closeRead()
+      await deferred.promise
     })
   })
 }

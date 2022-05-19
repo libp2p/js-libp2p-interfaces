@@ -54,8 +54,12 @@ describe('connection tests', () => {
         const id = `${streamId++}`
         const stream: Stream = {
           ...pair<Uint8Array>(),
-          close: () => {
-            void stream.sink(async function * () {}()).catch()
+          close: async () => {
+            await stream.sink(async function * () {}()).catch()
+          },
+          closeRead: async () => {},
+          closeWrite: async () => {
+            await stream.sink(async function * () {}())
           },
           id,
           abort: () => {},
