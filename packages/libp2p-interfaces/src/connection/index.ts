@@ -31,12 +31,39 @@ export interface Metadata {
  * configuration of the nodes.
  */
 export interface Stream extends Duplex<Uint8Array> {
+  /**
+   * Close a stream for reading and writing
+   */
   close: () => Promise<void>
+
+  /**
+   * Close a stream for reading only
+   */
   closeRead: () => Promise<void>
+
+  /**
+   * Close a stream for writing only
+   */
   closeWrite: () => Promise<void>
+
+  /**
+   * Call when a local error occurs, should close the stream for reading and writing
+   */
   abort: (err: Error) => void
+
+  /**
+   * Call when a remote error occurs, should close the stream for reading and writing
+   */
   reset: () => void
+
+  /**
+   * Records stream lifecycle event timings
+   */
   timeline: Timeline
+
+  /**
+   * Unique identifier for a stream
+   */
   id: string
 }
 
