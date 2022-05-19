@@ -250,7 +250,11 @@ class MockMuxer implements StreamMuxer {
       onEnd: (err) => {
         this.log('closing muxed streams')
         for (const stream of this.streams) {
-          stream.abort(err)
+          if (err == null) {
+            void stream.close().catch()
+          } else {
+            stream.abort(err)
+          }
         }
       }
     })
