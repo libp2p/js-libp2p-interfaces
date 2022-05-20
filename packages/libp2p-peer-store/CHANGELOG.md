@@ -1,3 +1,10 @@
+## [@libp2p/peer-store-v1.0.16](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.15...@libp2p/peer-store-v1.0.16) (2022-05-20)
+
+
+### Bug Fixes
+
+* update sibling deps ([#216](https://github.com/libp2p/js-libp2p-interfaces/issues/216)) ([0ceca65](https://github.com/libp2p/js-libp2p-interfaces/commit/0ceca658901e92de554c828105b328b88a1416f8))
+
 ## [@libp2p/peer-store-v1.0.15](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-store-v1.0.14...@libp2p/peer-store-v1.0.15) (2022-05-20)
 
 
