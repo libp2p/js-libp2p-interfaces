@@ -191,7 +191,15 @@ class MuxedStream {
       source: this.input,
 
       // Close for reading
-      close: () => {
+      close: async () => {
+        this.input.end()
+      },
+
+      closeRead: async () => {
+        this.input.end()
+      },
+
+      closeWrite: async () => {
         this.input.end()
       },
 
@@ -242,7 +250,11 @@ class MockMuxer implements StreamMuxer {
       onEnd: (err) => {
         this.log('closing muxed streams')
         for (const stream of this.streams) {
-          stream.abort(err)
+          if (err == null) {
+            void stream.close().catch()
+          } else {
+            stream.abort(err)
+          }
         }
       }
     })
@@ -307,7 +319,7 @@ class MockMuxer implements StreamMuxer {
       muxedStream.stream.reset()
     } else if (message.type === 'close') {
       this.log('-> closing stream %s %s', muxedStream.type, muxedStream.stream.id)
-      muxedStream.stream.close()
+      void muxedStream.stream.close()
     }
   }
 

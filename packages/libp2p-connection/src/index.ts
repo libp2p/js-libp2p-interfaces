@@ -4,6 +4,9 @@ import { OPEN, CLOSING, CLOSED } from '@libp2p/interfaces/connection/status'
 import { symbol } from '@libp2p/interfaces/connection'
 import type { Connection, ConnectionStat, Metadata, ProtocolStream, Stream } from '@libp2p/interfaces/connection'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
+import { logger } from '@libp2p/logger'
+
+const log = logger('libp2p:connection')
 
 interface ConnectionInit {
   remoteAddr: Multiaddr
@@ -149,6 +152,17 @@ export class ConnectionImpl implements Connection {
     }
 
     this.stat.status = CLOSING
+
+    // close all streams - this can throw if we're not multiplexed
+    try {
+      await Promise.all(
+        this.streams.map(async s => await s.close().catch(err => {
+          log.error(err)
+        }))
+      )
+    } catch (err) {
+      log.error(err)
+    }
 
     // Close raw connection
     this._closing = true
