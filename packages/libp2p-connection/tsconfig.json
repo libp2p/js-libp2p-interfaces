@@ -15,6 +15,9 @@
       "path": "../libp2p-interfaces"
     },
     {
+      "path": "../libp2p-logger"
+    },
+    {
       "path": "../libp2p-peer-id-factory"
     }
   ]
