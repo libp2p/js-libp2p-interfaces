@@ -1,3 +1,15 @@
+## [@libp2p/interface-compliance-tests-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.34...@libp2p/interface-compliance-tests-v2.0.0) (2022-05-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* This adds closeWrite and closeRead checks in the tests, which will cause test failures for muxers that don't implement those
+
+### Bug Fixes
+
+* close streams when connection is closed ([#214](https://github.com/libp2p/js-libp2p-interfaces/issues/214)) ([88fcd58](https://github.com/libp2p/js-libp2p-interfaces/commit/88fcd586276e03dd740c7095f05e21754ac1f3b5)), closes [#90](https://github.com/libp2p/js-libp2p-interfaces/issues/90)
+* update interfaces ([#215](https://github.com/libp2p/js-libp2p-interfaces/issues/215)) ([72e6890](https://github.com/libp2p/js-libp2p-interfaces/commit/72e6890826dadbd6e7cbba5536bde350ca4286e6))
+
 ## [@libp2p/interface-compliance-tests-v1.1.34](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v1.1.33...@libp2p/interface-compliance-tests-v1.1.34) (2022-05-10)
 
 
