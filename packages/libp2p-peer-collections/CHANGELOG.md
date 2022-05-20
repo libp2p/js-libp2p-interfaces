@@ -1,3 +1,10 @@
+## [@libp2p/peer-collections-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-collections-v1.0.2...@libp2p/peer-collections-v1.0.3) (2022-05-20)
+
+
+### Bug Fixes
+
+* update interfaces ([#215](https://github.com/libp2p/js-libp2p-interfaces/issues/215)) ([72e6890](https://github.com/libp2p/js-libp2p-interfaces/commit/72e6890826dadbd6e7cbba5536bde350ca4286e6))
+
 ## [@libp2p/peer-collections-v1.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/peer-collections-v1.0.1...@libp2p/peer-collections-v1.0.2) (2022-04-19)
 
 
