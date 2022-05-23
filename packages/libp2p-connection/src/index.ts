@@ -155,11 +155,7 @@ export class ConnectionImpl implements Connection {
 
     // close all streams - this can throw if we're not multiplexed
     try {
-      await Promise.all(
-        this.streams.map(async s => await s.close().catch(err => {
-          log.error(err)
-        }))
-      )
+      this.streams.forEach(s => s.close())
     } catch (err) {
       log.error(err)
     }

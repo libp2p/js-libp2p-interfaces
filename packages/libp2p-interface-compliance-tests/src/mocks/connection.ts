@@ -169,9 +169,9 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
 export function mockStream (stream: Duplex<Uint8Array>): Stream {
   return {
     ...stream,
-    close: async () => {},
-    closeRead: async () => {},
-    closeWrite: async () => {},
+    close: () => {},
+    closeRead: () => {},
+    closeWrite: () => {},
     abort: () => {},
     reset: () => {},
     timeline: {
