@@ -34,17 +34,17 @@ export interface Stream extends Duplex<Uint8Array> {
   /**
    * Close a stream for reading and writing
    */
-  close: () => Promise<void>
+  close: () => void
 
   /**
    * Close a stream for reading only
    */
-  closeRead: () => Promise<void>
+  closeRead: () => void
 
   /**
    * Close a stream for writing only
    */
-  closeWrite: () => Promise<void>
+  closeWrite: () => void
 
   /**
    * Call when a local error occurs, should close the stream for reading and writing
