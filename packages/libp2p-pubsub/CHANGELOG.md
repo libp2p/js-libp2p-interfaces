@@ -1,3 +1,10 @@
+## [@libp2p/pubsub-v1.3.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.24...@libp2p/pubsub-v1.3.0) (2022-05-23)
+
+
+### Features
+
+* expose utility methods to convert bigint to bytes and back ([#213](https://github.com/libp2p/js-libp2p-interfaces/issues/213)) ([3d2e59c](https://github.com/libp2p/js-libp2p-interfaces/commit/3d2e59c8fd8af5d618df904ae9d40518a13de547))
+
 ## [@libp2p/pubsub-v1.2.24](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/pubsub-v1.2.23...@libp2p/pubsub-v1.2.24) (2022-05-20)
 
 
