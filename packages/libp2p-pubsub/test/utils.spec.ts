@@ -71,4 +71,19 @@ describe('utils', () => {
       expect(utils.toRpcMessage(m[i])).to.deep.equal(expected[i])
     }
   })
+
+  it('converts non-negative BigInts to bytes and back', () => {
+    expect(utils.bigIntFromBytes(utils.bigIntToBytes(1n))).to.equal(1n)
+
+    const values = [
+      0n,
+      1n,
+      100n,
+      192832190818383818719287373223131n
+    ]
+
+    values.forEach(val => {
+      expect(utils.bigIntFromBytes(utils.bigIntToBytes(val))).to.equal(val)
+    })
+  })
 })
