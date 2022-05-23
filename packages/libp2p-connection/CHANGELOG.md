@@ -1,3 +1,10 @@
+## [@libp2p/connection-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/connection-v2.0.1...@libp2p/connection-v2.0.2) (2022-05-23)
+
+
+### Bug Fixes
+
+* make stream return types synchronous ([#217](https://github.com/libp2p/js-libp2p-interfaces/issues/217)) ([2fe61b7](https://github.com/libp2p/js-libp2p-interfaces/commit/2fe61b7fbeda2e549edf095a927d623aa8eb476b))
+
 ## [@libp2p/connection-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/connection-v2.0.0...@libp2p/connection-v2.0.1) (2022-05-20)
 
 
