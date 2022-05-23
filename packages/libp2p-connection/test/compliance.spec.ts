@@ -34,14 +34,14 @@ describe('compliance tests', () => {
         newStream: async (protocols) => {
           const id = `${streamId++}`
           const stream: Stream = {
-            ...pair(),
-            close: async () => {
-              await stream.sink(async function * () {}())
+            ...pair<Uint8Array>(),
+            close: () => {
+              void stream.sink(async function * () {}())
               connection.removeStream(stream.id)
             },
-            closeRead: async () => {},
-            closeWrite: async () => {
-              await stream.sink(async function * () {}())
+            closeRead: () => {},
+            closeWrite: () => {
+              void stream.sink(async function * () {}())
             },
             id,
             abort: () => {},

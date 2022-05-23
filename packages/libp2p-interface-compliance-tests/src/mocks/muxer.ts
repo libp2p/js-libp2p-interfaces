@@ -191,22 +191,22 @@ class MuxedStream {
       source: this.input,
 
       // Close for reading
-      close: async () => {
+      close: () => {
         this.input.end()
       },
 
-      closeRead: async () => {
+      closeRead: () => {
         this.input.end()
       },
 
-      closeWrite: async () => {
+      closeWrite: () => {
         this.input.end()
       },
 
       // Close for reading and writing (local error)
       abort: (err?: Error) => {
         // End the source with the passed error
-        this.input.end()
+        this.input.end(err)
         this.abortController.abort()
         onSinkEnd(err)
       },
