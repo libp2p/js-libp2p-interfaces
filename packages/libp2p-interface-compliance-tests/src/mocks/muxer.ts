@@ -12,9 +12,11 @@ import type { Source } from 'it-stream-types'
 import { pipe } from 'it-pipe'
 import map from 'it-map'
 import type { Components } from '@libp2p/interfaces/components'
+import { Uint8ArrayList } from 'uint8arraylist'
 
 let muxers = 0
 let streams = 0
+const MAX_MESSAGE_SIZE = 1024 * 1024
 
 interface DataMessage {
   id: string
@@ -53,6 +55,7 @@ class MuxedStream {
   private sourceEnded: boolean
   private readonly abortController: AbortController
   private readonly resetController: AbortController
+  private readonly closeController: AbortController
   private readonly log: Logger
 
   constructor (init: { id: string, type: 'initiator' | 'recipient', push: Pushable<StreamMessage>, onEnd: (err?: Error) => void }) {
@@ -64,6 +67,7 @@ class MuxedStream {
     this.type = type
     this.abortController = new AbortController()
     this.resetController = new AbortController()
+    this.closeController = new AbortController()
 
     this.sourceEnded = false
     this.sinkEnded = false
@@ -121,9 +125,14 @@ class MuxedStream {
     this.stream = {
       id,
       sink: async (source) => {
+        if (this.sinkEnded) {
+          throw errCode(new Error('stream closed for writing'), 'ERR_SINK_ENDED')
+        }
+
         source = abortableSource(source, anySignal([
           this.abortController.signal,
-          this.resetController.signal
+          this.resetController.signal,
+          this.closeController.signal
         ]))
 
         try {
@@ -137,18 +146,31 @@ class MuxedStream {
             push.push(createMsg)
           }
 
-          for await (const chunk of source) {
-            const dataMsg: DataMessage = {
-              id,
-              type: 'data',
-              chunk: uint8ArrayToString(chunk, 'base64'),
-              direction: this.type
-            }
+          const list = new Uint8ArrayList()
 
-            push.push(dataMsg)
+          for await (const chunk of source) {
+            list.append(chunk)
+
+            while (list.length > 0) {
+              const available = Math.min(list.length, MAX_MESSAGE_SIZE)
+              const subList = list.subarray(0, available)
+              const dataMsg: DataMessage = {
+                id,
+                type: 'data',
+                chunk: uint8ArrayToString(subList.slice(), 'base64'),
+                direction: this.type
+              }
+
+              push.push(dataMsg)
+              list.consume(available)
+            }
           }
         } catch (err: any) {
           if (err.type === 'aborted' && err.message === 'The operation was aborted') {
+            if (this.closeController.signal.aborted) {
+              return
+            }
+
             if (this.resetController.signal.aborted) {
               err.message = 'stream reset'
               err.code = 'ERR_STREAM_RESET'
@@ -192,7 +214,8 @@ class MuxedStream {
 
       // Close for reading
       close: () => {
-        this.input.end()
+        this.stream.closeRead()
+        this.stream.closeWrite()
       },
 
       closeRead: () => {
@@ -200,11 +223,19 @@ class MuxedStream {
       },
 
       closeWrite: () => {
-        this.input.end()
+        this.closeController.abort()
+
+        const closeMsg: CloseMessage = {
+          id,
+          type: 'close',
+          direction: this.type
+        }
+        push.push(closeMsg)
+        onSinkEnd()
       },
 
       // Close for reading and writing (local error)
-      abort: (err?: Error) => {
+      abort: (err: Error) => {
         // End the source with the passed error
         this.input.end(err)
         this.abortController.abort()
