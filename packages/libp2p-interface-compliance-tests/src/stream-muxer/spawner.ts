@@ -17,7 +17,7 @@ export default async (createMuxer: (init?: StreamMuxerInit) => Promise<StreamMux
       void pipe(
         stream,
         drain
-      ).then(async () => await pipe([], stream))
+      )
     }
   })
   const dialer = await createMuxer()

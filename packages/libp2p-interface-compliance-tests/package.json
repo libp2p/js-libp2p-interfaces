@@ -228,6 +228,7 @@
     "p-limit": "^4.0.0",
     "p-wait-for": "^4.1.0",
     "sinon": "^14.0.0",
+    "uint8arraylist": "^1.5.1",
     "uint8arrays": "^3.0.0",
     "util": "^0.12.4"
   }
