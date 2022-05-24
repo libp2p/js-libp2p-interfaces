@@ -1,3 +1,10 @@
+## [@libp2p/connection-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/connection-v2.0.2...@libp2p/connection-v2.0.3) (2022-05-24)
+
+
+### Bug Fixes
+
+* accept abort options in connection.newStream ([#219](https://github.com/libp2p/js-libp2p-interfaces/issues/219)) ([8bfcbc9](https://github.com/libp2p/js-libp2p-interfaces/commit/8bfcbc9ee883336f213cdfc83e477549ca368df5))
+
 ## [@libp2p/connection-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/connection-v2.0.1...@libp2p/connection-v2.0.2) (2022-05-23)
 
 
