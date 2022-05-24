@@ -1,3 +1,10 @@
+## [@libp2p/multistream-select-v1.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/multistream-select-v1.0.5...@libp2p/multistream-select-v1.0.6) (2022-05-24)
+
+
+### Bug Fixes
+
+* chunk data in mock muxer ([#218](https://github.com/libp2p/js-libp2p-interfaces/issues/218)) ([14604f6](https://github.com/libp2p/js-libp2p-interfaces/commit/14604f69a858bf8c16ce118420c5e49f3f5331ea))
+
 ## [@libp2p/multistream-select-v1.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/multistream-select-v1.0.4...@libp2p/multistream-select-v1.0.5) (2022-05-20)
 
 
