@@ -1,3 +1,11 @@
+## [@libp2p/interface-compliance-tests-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v2.0.1...@libp2p/interface-compliance-tests-v2.0.2) (2022-05-24)
+
+
+### Bug Fixes
+
+* accept abort options in connection.newStream ([#219](https://github.com/libp2p/js-libp2p-interfaces/issues/219)) ([8bfcbc9](https://github.com/libp2p/js-libp2p-interfaces/commit/8bfcbc9ee883336f213cdfc83e477549ca368df5))
+* chunk data in mock muxer ([#218](https://github.com/libp2p/js-libp2p-interfaces/issues/218)) ([14604f6](https://github.com/libp2p/js-libp2p-interfaces/commit/14604f69a858bf8c16ce118420c5e49f3f5331ea))
+
 ## [@libp2p/interface-compliance-tests-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v2.0.0...@libp2p/interface-compliance-tests-v2.0.1) (2022-05-23)
 
 
