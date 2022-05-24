@@ -1,3 +1,10 @@
+## [@libp2p/interface-compliance-tests-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v2.0.2...@libp2p/interface-compliance-tests-v2.0.3) (2022-05-24)
+
+
+### Bug Fixes
+
+* only close muxed stream for reading ([#220](https://github.com/libp2p/js-libp2p-interfaces/issues/220)) ([f2f7141](https://github.com/libp2p/js-libp2p-interfaces/commit/f2f7141f01af715e600201ac9e7e52fbbb5c7e1b))
+
 ## [@libp2p/interface-compliance-tests-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v2.0.1...@libp2p/interface-compliance-tests-v2.0.2) (2022-05-24)
 
 
