@@ -15,6 +15,7 @@ import * as STATUS from '@libp2p/interfaces/connection/status'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { StreamMuxer } from '@libp2p/interfaces/stream-muxer'
 import { Components } from '@libp2p/interfaces/components'
+import type { AbortOptions } from '@libp2p/interfaces'
 
 const log = logger('libp2p:mock-connection')
 
@@ -65,7 +66,7 @@ class MockConnection implements Connection {
     this.maConn = maConn
   }
 
-  async newStream (protocols: string | string[]) {
+  async newStream (protocols: string | string[], options?: AbortOptions) {
     if (!Array.isArray(protocols)) {
       protocols = [protocols]
     }
@@ -77,7 +78,7 @@ class MockConnection implements Connection {
     const id = `${Math.random()}`
     const stream: Stream = this.muxer.newStream(id)
     const mss = new Dialer(stream)
-    const result = await mss.select(protocols)
+    const result = await mss.select(protocols, options)
 
     const streamData: ProtocolStream = {
       protocol: result.protocol,

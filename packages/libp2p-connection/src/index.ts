@@ -5,13 +5,14 @@ import { symbol } from '@libp2p/interfaces/connection'
 import type { Connection, ConnectionStat, Metadata, ProtocolStream, Stream } from '@libp2p/interfaces/connection'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import { logger } from '@libp2p/logger'
+import type { AbortOptions } from '@libp2p/interfaces'
 
 const log = logger('libp2p:connection')
 
 interface ConnectionInit {
   remoteAddr: Multiaddr
   remotePeer: PeerId
-  newStream: (protocols: string[]) => Promise<ProtocolStream>
+  newStream: (protocols: string[], options?: AbortOptions) => Promise<ProtocolStream>
   close: () => Promise<void>
   getStreams: () => Stream[]
   stat: ConnectionStat
@@ -47,7 +48,7 @@ export class ConnectionImpl implements Connection {
   /**
    * Reference to the new stream function of the multiplexer
    */
-  private readonly _newStream: (protocols: string[]) => Promise<ProtocolStream>
+  private readonly _newStream: (protocols: string[], options?: AbortOptions) => Promise<ProtocolStream>
   /**
    * Reference to the close function of the raw connection
    */
@@ -102,7 +103,7 @@ export class ConnectionImpl implements Connection {
   /**
    * Create a new stream from this connection
    */
-  async newStream (protocols: string | string[]) {
+  async newStream (protocols: string | string[], options?: AbortOptions) {
     if (this.stat.status === CLOSING) {
       throw errCode(new Error('the connection is being closed'), 'ERR_CONNECTION_BEING_CLOSED')
     }
@@ -115,7 +116,7 @@ export class ConnectionImpl implements Connection {
       protocols = [protocols]
     }
 
-    const { stream, protocol } = await this._newStream(protocols)
+    const { stream, protocol } = await this._newStream(protocols, options)
 
     this.addStream(stream, { protocol, metadata: {} })
 
