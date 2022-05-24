@@ -3,6 +3,7 @@ import type { PeerId } from '../peer-id'
 import type * as Status from './status.js'
 import type { Duplex } from 'it-stream-types'
 import type { MultiaddrConnection } from '../transport'
+import type { AbortOptions } from '..'
 
 export interface Timeline {
   open: number
@@ -87,7 +88,7 @@ export interface Connection {
   tags: string[]
   streams: Stream[]
 
-  newStream: (multicodecs: string | string[]) => Promise<ProtocolStream>
+  newStream: (multicodecs: string | string[], options?: AbortOptions) => Promise<ProtocolStream>
   addStream: (stream: Stream, data: Partial<Metadata>) => void
   removeStream: (id: string) => void
   close: () => Promise<void>
