@@ -350,7 +350,7 @@ class MockMuxer implements StreamMuxer {
       muxedStream.stream.reset()
     } else if (message.type === 'close') {
       this.log('-> closing stream %s %s', muxedStream.type, muxedStream.stream.id)
-      void muxedStream.stream.close()
+      void muxedStream.stream.closeRead()
     }
   }
 
