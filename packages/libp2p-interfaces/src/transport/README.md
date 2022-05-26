@@ -23,7 +23,7 @@ The purpose of this interface is not to reinvent any wheels when it comes to dia
 
 Include this badge in your readme if you make a module that is compatible with the interface-transport API. You can validate this by running the tests.
 
-![](https://raw.githubusercontent.com/diasdavid/interface-transport/master/img/badge.png)
+![](img/badge.png)
 
 # How to use the battery of tests
 
