@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v2.0.2...@libp2p/interfaces-v2.0.3) (2022-05-31)
+
+
+### Bug Fixes
+
+* dead badge ([#221](https://github.com/libp2p/js-libp2p-interfaces/issues/221)) ([2b7fa07](https://github.com/libp2p/js-libp2p-interfaces/commit/2b7fa07935f800b2438b054b9678e9b16694bf45))
+
 ## [@libp2p/interfaces-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v2.0.1...@libp2p/interfaces-v2.0.2) (2022-05-24)
 
 
