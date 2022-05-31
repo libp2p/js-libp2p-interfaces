@@ -24,7 +24,7 @@ Send a PR to add a new one if you happen to find or write one.
 
 Include this badge in your readme if you make a new module that uses interface-peer-discovery API.
 
-![](/img/badge.png)
+![](img/badge.png)
 
 ## Usage
 

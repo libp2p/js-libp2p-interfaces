@@ -18,7 +18,7 @@ Publishing a test suite as a module lets multiple modules all ensure compatibili
 
 Include this badge in your readme if you make a module that is compatible with the interface-content-routing API. You can validate this by running the tests.
 
-![](https://raw.githubusercontent.com/libp2p/interface-content-routing/master/img/badge.png)
+![](img/badge.png)
 
 # How to use the battery of tests
 
