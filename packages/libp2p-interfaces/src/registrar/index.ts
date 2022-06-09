@@ -11,11 +11,21 @@ export interface StreamHandler {
   (data: IncomingStreamData): void
 }
 
+export interface StreamHandlerOptions {
+  connectionStreamLimit?: number
+  hostStreamLimit?: number
+}
+
+export interface StreamHandlerRecord {
+  handler: StreamHandler
+  options: StreamHandlerOptions
+}
+
 export interface Registrar {
   getProtocols: () => string[]
-  handle: (protocol: string | string[], handler: StreamHandler) => Promise<void>
+  handle: (protocol: string | string[], handler: StreamHandler, options?: StreamHandlerOptions) => Promise<void>
   unhandle: (protocol: string | string[]) => Promise<void>
-  getHandler: (protocol: string) => StreamHandler
+  getHandler: (protocol: string) => StreamHandlerRecord
 
   register: (protocols: string | string[], topology: Topology) => Promise<string>
   unregister: (id: string) => void

@@ -2,7 +2,7 @@ import { duplexPair } from 'it-pair/duplex'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { PubSubBaseProtocol } from '../../src/index.js'
 import { RPC } from '../message/rpc.js'
-import type { IncomingStreamData, Registrar, StreamHandler } from '@libp2p/interfaces/registrar'
+import type { IncomingStreamData, Registrar, StreamHandler, StreamHandlerOptions, StreamHandlerRecord } from '@libp2p/interfaces/registrar'
 import type { Topology } from '@libp2p/interfaces/topology'
 import type { Connection } from '@libp2p/interfaces/connection'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
@@ -40,7 +40,7 @@ export class PubsubImplementation extends PubSubBaseProtocol {
 
 export class MockRegistrar implements Registrar {
   private readonly topologies: Map<string, { topology: Topology, protocols: string[] }> = new Map()
-  private readonly handlers: Map<string, StreamHandler> = new Map()
+  private readonly handlers: Map<string, StreamHandlerRecord> = new Map()
 
   getProtocols () {
     const protocols = new Set<string>()
@@ -56,7 +56,7 @@ export class MockRegistrar implements Registrar {
     return Array.from(protocols).sort()
   }
 
-  async handle (protocols: string | string[], handler: StreamHandler): Promise<void> {
+  async handle (protocols: string | string[], handler: StreamHandler, options: StreamHandlerOptions = {}): Promise<void> {
     const protocolList = Array.isArray(protocols) ? protocols : [protocols]
 
     for (const protocol of protocolList) {
@@ -64,7 +64,10 @@ export class MockRegistrar implements Registrar {
         throw new Error(`Handler already registered for protocol ${protocol}`)
       }
 
-      this.handlers.set(protocol, handler)
+      this.handlers.set(protocol, {
+        handler,
+        options
+      })
     }
   }
 

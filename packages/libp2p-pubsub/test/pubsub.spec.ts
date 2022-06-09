@@ -139,7 +139,7 @@ describe('pubsub base implementation', () => {
           pubsubB.start()
         ])
         const topologyA = registrarA.getTopologies(protocol)[0]
-        const handlerB = registrarB.getHandler(protocol)
+        const { handler: handlerB } = registrarB.getHandler(protocol)
 
         if (topologyA == null || handlerB == null) {
           throw new Error(`No handler registered for ${protocol}`)
@@ -249,7 +249,7 @@ describe('pubsub base implementation', () => {
         ])
 
         const topologyA = registrarA.getTopologies(protocol)[0]
-        const handlerB = registrarB.getHandler(protocol)
+        const { handler: handlerB } = registrarB.getHandler(protocol)
 
         if (topologyA == null || handlerB == null) {
           throw new Error(`No handler registered for ${protocol}`)

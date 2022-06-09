@@ -1,17 +1,17 @@
-import type { IncomingStreamData, Registrar, StreamHandler } from '@libp2p/interfaces/registrar'
+import type { IncomingStreamData, Registrar, StreamHandler, StreamHandlerOptions, StreamHandlerRecord } from '@libp2p/interfaces/registrar'
 import type { Connection } from '@libp2p/interfaces/connection'
 import type { PeerId } from '@libp2p/interfaces/peer-id'
 import type { Topology } from '@libp2p/interfaces/topology'
 
 export class MockRegistrar implements Registrar {
   private readonly topologies: Map<string, { topology: Topology, protocols: string[] }> = new Map()
-  private readonly handlers: Map<string, StreamHandler> = new Map()
+  private readonly handlers: Map<string, StreamHandlerRecord> = new Map()
 
   getProtocols () {
     return Array.from(this.handlers.keys()).sort()
   }
 
-  async handle (protocols: string | string[], handler: StreamHandler): Promise<void> {
+  async handle (protocols: string | string[], handler: StreamHandler, options: StreamHandlerOptions = {}): Promise<void> {
     const protocolList = Array.isArray(protocols) ? protocols : [protocols]
 
     for (const protocol of protocolList) {
@@ -19,7 +19,10 @@ export class MockRegistrar implements Registrar {
         throw new Error(`Handler already registered for protocol ${protocol}`)
       }
 
-      this.handlers.set(protocol, handler)
+      this.handlers.set(protocol, {
+        handler,
+        options
+      })
     }
   }
 
