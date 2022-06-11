@@ -250,9 +250,9 @@
   "dependencies": {
     "@multiformats/multiaddr": "^10.1.5",
     "err-code": "^3.0.1",
+    "interface-datastore": "^6.1.0",
     "it-pushable": "^2.0.1",
     "it-stream-types": "^1.0.4",
-    "interface-datastore": "^6.1.0",
     "multiformats": "^9.6.3"
   },
   "devDependencies": {
