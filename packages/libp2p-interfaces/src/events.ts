@@ -29,8 +29,8 @@ export class EventEmitter<EventMap extends { [s: string]: any }> extends EventTa
     return listeners.length
   }
 
-  addEventListener<K extends keyof EventMap>(type: K, listener: EventHandler<EventMap[K]> | null, options?: boolean | AddEventListenerOptions): void;
-  addEventListener(type: string, listener: EventHandler<Event>, options?: boolean | AddEventListenerOptions): void {
+  addEventListener<K extends keyof EventMap>(type: K, listener: EventHandler<EventMap[K]> | null, options?: boolean | AddEventListenerOptions): void
+  addEventListener (type: string, listener: EventHandler<Event>, options?: boolean | AddEventListenerOptions): void {
     super.addEventListener(type, listener, options)
 
     let list = this.#listeners.get(type)
@@ -46,8 +46,8 @@ export class EventEmitter<EventMap extends { [s: string]: any }> extends EventTa
     })
   }
 
-  removeEventListener<K extends keyof EventMap>(type: K, listener?: EventHandler<EventMap[K]> | null, options?: boolean | EventListenerOptions): void;
-  removeEventListener(type: string, listener?: EventHandler<Event>, options?: boolean | EventListenerOptions): void {
+  removeEventListener<K extends keyof EventMap>(type: K, listener?: EventHandler<EventMap[K]> | null, options?: boolean | EventListenerOptions): void
+  removeEventListener (type: string, listener?: EventHandler<Event>, options?: boolean | EventListenerOptions): void {
     super.removeEventListener(type.toString(), listener ?? null, options)
 
     let list = this.#listeners.get(type)
