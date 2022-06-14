@@ -1,11 +1,10 @@
 import type { Duplex } from 'it-stream-types'
-import type { Components } from '@libp2p/components'
 import type { Stream } from '@libp2p/interface-connection'
 import type { AbortOptions } from '@libp2p/interfaces'
 
 export interface StreamMuxerFactory {
   protocol: string
-  createStreamMuxer: (components: Components, init?: StreamMuxerInit) => StreamMuxer
+  createStreamMuxer: (init?: StreamMuxerInit) => StreamMuxer
 }
 
 /**
