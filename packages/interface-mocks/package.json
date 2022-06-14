@@ -159,7 +159,7 @@
     "it-ndjson": "^0.1.1",
     "it-pair": "^2.0.2",
     "it-pipe": "^2.0.3",
-    "it-pushable": "^2.0.2",
+    "it-pushable": "^3.0.0",
     "it-stream-types": "^1.0.4",
     "uint8arraylist": "^1.5.1",
     "uint8arrays": "^3.0.0"
