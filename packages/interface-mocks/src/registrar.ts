@@ -1,33 +1,28 @@
-import type { IncomingStreamData, Registrar, StreamHandler, Topology } from '@libp2p/interface-registrar'
+import type { IncomingStreamData, Registrar, StreamHandler, Topology, StreamHandlerOptions, StreamHandlerRecord } from '@libp2p/interface-registrar'
 import type { Connection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
 
 export class MockRegistrar implements Registrar {
-  private readonly topologies: Map<string, { topology: Topology, protocols: string[] }> = new Map()
-  private readonly handlers: Map<string, StreamHandler> = new Map()
+  private readonly topologies: Map<string, Array<{ id: string, topology: Topology }>> = new Map()
+  private readonly handlers: Map<string, StreamHandlerRecord> = new Map()
 
   getProtocols () {
     return Array.from(this.handlers.keys()).sort()
   }
 
-  async handle (protocols: string | string[], handler: StreamHandler): Promise<void> {
-    const protocolList = Array.isArray(protocols) ? protocols : [protocols]
-
-    for (const protocol of protocolList) {
-      if (this.handlers.has(protocol)) {
-        throw new Error(`Handler already registered for protocol ${protocol}`)
-      }
-
-      this.handlers.set(protocol, handler)
+  async handle (protocol: string, handler: StreamHandler, options: StreamHandlerOptions = { maxConcurrentStreams: 1 }): Promise<void> {
+    if (this.handlers.has(protocol)) {
+      throw new Error(`Handler already registered for protocol ${protocol}`)
     }
+
+    this.handlers.set(protocol, {
+      handler,
+      options
+    })
   }
 
-  async unhandle (protocols: string | string[]) {
-    const protocolList = Array.isArray(protocols) ? protocols : [protocols]
-
-    protocolList.forEach(protocol => {
-      this.handlers.delete(protocol)
-    })
+  async unhandle (protocol: string) {
+    this.handlers.delete(protocol)
   }
 
   getHandler (protocol: string) {
@@ -40,17 +35,20 @@ export class MockRegistrar implements Registrar {
     return handler
   }
 
-  async register (protocols: string | string[], topology: Topology) {
-    if (!Array.isArray(protocols)) {
-      protocols = [protocols]
+  async register (protocol: string, topology: Topology) {
+    const id = `topology-id-${Math.random()}`
+    let topologies = this.topologies.get(protocol)
+
+    if (topologies == null) {
+      topologies = []
     }
 
-    const id = `topology-id-${Math.random()}`
-
-    this.topologies.set(id, {
-      topology,
-      protocols
+    topologies.push({
+      id,
+      topology
     })
+
+    this.topologies.set(protocol, topologies)
 
     return id
   }
@@ -64,19 +62,7 @@ export class MockRegistrar implements Registrar {
   }
 
   getTopologies (protocol: string) {
-    const output: Topology[] = []
-
-    for (const { topology, protocols } of this.topologies.values()) {
-      if (protocols.includes(protocol)) {
-        output.push(topology)
-      }
-    }
-
-    if (output.length > 0) {
-      return output
-    }
-
-    return []
+    return (this.topologies.get(protocol) ?? []).map(t => t.topology)
   }
 }
 

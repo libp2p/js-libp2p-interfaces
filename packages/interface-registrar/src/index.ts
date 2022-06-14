@@ -11,13 +11,25 @@ export interface StreamHandler {
   (data: IncomingStreamData): void
 }
 
+export interface StreamHandlerOptions {
+  /**
+   * How many streams can be open for this protocol at the same time on each connection (default: 1)
+   */
+  maxConcurrentStreams?: number
+}
+
+export interface StreamHandlerRecord {
+  handler: StreamHandler
+  options: StreamHandlerOptions
+}
+
 export interface Registrar {
   getProtocols: () => string[]
-  handle: (protocol: string | string[], handler: StreamHandler) => Promise<void>
-  unhandle: (protocol: string | string[]) => Promise<void>
-  getHandler: (protocol: string) => StreamHandler
+  handle: (protocol: string, handler: StreamHandler, options?: StreamHandlerOptions) => Promise<void>
+  unhandle: (protocol: string) => Promise<void>
+  getHandler: (protocol: string) => StreamHandlerRecord
 
-  register: (protocols: string | string[], topology: Topology) => Promise<string>
+  register: (protocol: string, topology: Topology) => Promise<string>
   unregister: (id: string) => void
   getTopologies: (protocol: string) => Topology[]
 }

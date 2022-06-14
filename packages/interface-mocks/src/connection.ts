@@ -136,7 +136,7 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
             muxedStream = { ...muxedStream, ...stream }
 
             connection.addStream(muxedStream, { protocol, metadata: {} })
-            const handler = registrar.getHandler(protocol)
+            const { handler } = registrar.getHandler(protocol)
 
             handler({ connection, stream: muxedStream, protocol })
           }).catch(err => {
