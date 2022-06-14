@@ -1,3 +1,10 @@
+## [@libp2p/interface-content-routing-v1.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-content-routing-v1.0.0...@libp2p/interface-content-routing-v1.0.1) (2022-06-14)
+
+
+### Trivial Changes
+
+* **release:** 1.0.0 [skip ci] ([1211753](https://github.com/libp2p/js-libp2p-interfaces/commit/121175364dc47cd683bee7bc40b645f193f33528)), closes [#226](https://github.com/libp2p/js-libp2p-interfaces/issues/226) [#234](https://github.com/libp2p/js-libp2p-interfaces/issues/234) [#233](https://github.com/libp2p/js-libp2p-interfaces/issues/233)
+
 ## @libp2p/interface-content-routing-v1.0.0 (2022-06-14)
 
 
