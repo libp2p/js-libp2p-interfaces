@@ -11,7 +11,6 @@ import type { StreamMuxer, StreamMuxerFactory, StreamMuxerInit } from '@libp2p/i
 import type { Source } from 'it-stream-types'
 import { pipe } from 'it-pipe'
 import map from 'it-map'
-import type { Components } from '@libp2p/components'
 import { Uint8ArrayList } from 'uint8arraylist'
 
 let muxers = 0
@@ -401,7 +400,7 @@ class MockMuxer implements StreamMuxer {
 class MockMuxerFactory implements StreamMuxerFactory {
   public protocol: string = '/mock-muxer/1.0.0'
 
-  createStreamMuxer (c: Components, init?: StreamMuxerInit): StreamMuxer {
+  createStreamMuxer (init?: StreamMuxerInit): StreamMuxer {
     const mockMuxer = new MockMuxer(init)
 
     void Promise.resolve().then(async () => {

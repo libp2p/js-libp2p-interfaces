@@ -13,7 +13,7 @@ import { logger } from '@libp2p/logger'
 import * as STATUS from '@libp2p/interface-connection/status'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { StreamMuxer } from '@libp2p/interface-stream-muxer'
-import { Components } from '@libp2p/components'
+import type { Components } from '@libp2p/components'
 import type { AbortOptions } from '@libp2p/interfaces'
 
 const log = logger('libp2p:mock-connection')
@@ -126,7 +126,7 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
   const registrar = opts.registrar ?? mockRegistrar()
   const muxerFactory = mockMuxer()
 
-  const muxer = muxerFactory.createStreamMuxer(new Components(), {
+  const muxer = muxerFactory.createStreamMuxer({
     onIncomingStream: (muxedStream) => {
       const mss = new Listener(muxedStream)
       try {
