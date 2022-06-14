@@ -134,6 +134,6 @@
     "it-pushable": "^2.0.2"
   },
   "devDependencies": {
-    "aegir": "^37.0.17"
+    "aegir": "^37.2.0"
   }
 }
