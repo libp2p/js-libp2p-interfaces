@@ -1,7 +1,7 @@
 {
   "name": "js-libp2p-interfaces",
   "version": "1.0.0",
-  "description": "Interfaces for JS Libp2p",
+  "description": "Contains test suites and interfaces you can use to implement the various components of libp2p",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces#readme",
   "repository": {
