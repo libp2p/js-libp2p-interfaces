@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-metrics",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Metrics interface for libp2p",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-metrics#readme",
