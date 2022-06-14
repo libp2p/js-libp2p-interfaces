@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-registrar",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Registrar interface for libp2p",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-registrar#readme",
@@ -128,7 +128,7 @@
     "release": "aegir release"
   },
   "dependencies": {
-    "@libp2p/interface-connection": "~0.0.0",
+    "@libp2p/interface-connection": "^1.0.0",
     "@libp2p/interface-peer-id": "^1.0.0"
   },
   "devDependencies": {

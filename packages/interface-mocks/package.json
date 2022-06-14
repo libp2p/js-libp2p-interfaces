@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-mocks",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Mock implementations of several libp2p interfaces",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-mocks#readme",
@@ -136,15 +136,15 @@
   },
   "dependencies": {
     "@libp2p/components": "~0.0.0",
-    "@libp2p/interface-connection": "~0.0.0",
+    "@libp2p/interface-connection": "^1.0.0",
     "@libp2p/interface-connection-encrypter": "^1.0.0",
-    "@libp2p/interface-connection-manager": "~0.0.0",
-    "@libp2p/interface-peer-discovery": "~0.0.0",
+    "@libp2p/interface-connection-manager": "^1.0.0",
+    "@libp2p/interface-peer-discovery": "^1.0.0",
     "@libp2p/interface-peer-id": "^1.0.0",
     "@libp2p/interface-peer-info": "^1.0.0",
-    "@libp2p/interface-registrar": "~0.0.0",
-    "@libp2p/interface-stream-muxer": "~0.0.0",
-    "@libp2p/interface-transport": "~0.0.0",
+    "@libp2p/interface-registrar": "^1.0.0",
+    "@libp2p/interface-stream-muxer": "^1.0.0",
+    "@libp2p/interface-transport": "^1.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@libp2p/logger": "^1.1.6",
     "@libp2p/multistream-select": "^1.0.6",
@@ -165,9 +165,9 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@libp2p/interface-connection-encrypter-compliance-tests": "~0.0.0",
-    "@libp2p/interface-peer-discovery-compliance-tests": "~0.0.0",
-    "@libp2p/interface-stream-muxer-compliance-tests": "~0.0.0",
+    "@libp2p/interface-connection-encrypter-compliance-tests": "^1.0.0",
+    "@libp2p/interface-peer-discovery-compliance-tests": "^1.0.0",
+    "@libp2p/interface-stream-muxer-compliance-tests": "^1.0.0",
     "aegir": "^37.2.0"
   }
 }
