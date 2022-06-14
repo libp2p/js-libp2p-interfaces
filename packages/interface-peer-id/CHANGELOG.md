@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-id-v1.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-id-v1.0.1...@libp2p/interface-peer-id-v1.0.2) (2022-06-14)
+
+
+### Trivial Changes
+
+* update aegir ([#234](https://github.com/libp2p/js-libp2p-interfaces/issues/234)) ([3e03895](https://github.com/libp2p/js-libp2p-interfaces/commit/3e038959ecab6cfa3585df9ee179c0af7a61eda5))
+
 ## [@libp2p/interface-peer-id-v1.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-id-v1.0.0...@libp2p/interface-peer-id-v1.0.1) (2022-06-14)
 
 
