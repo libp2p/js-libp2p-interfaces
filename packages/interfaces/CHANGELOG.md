@@ -1,3 +1,14 @@
+## [@libp2p/interfaces-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v2.0.4...@libp2p/interfaces-v3.0.0) (2022-06-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* most modules have been split out of the `@libp2p/interfaces` and `@libp2p/interface-compliance-tests` packages
+
+### Trivial Changes
+
+* break modules apart ([#232](https://github.com/libp2p/js-libp2p-interfaces/issues/232)) ([385614e](https://github.com/libp2p/js-libp2p-interfaces/commit/385614e772329052ab17415c8bd421f65b01a61b)), closes [#226](https://github.com/libp2p/js-libp2p-interfaces/issues/226)
+
 ## [@libp2p/interfaces-v2.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v2.0.3...@libp2p/interfaces-v2.0.4) (2022-06-14)
 
 
