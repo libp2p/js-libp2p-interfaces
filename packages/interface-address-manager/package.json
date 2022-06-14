@@ -129,7 +129,7 @@
   },
   "dependencies": {
     "@libp2p/interfaces": "^2.0.0",
-    "multiformats": "^9.6.3"
+    "@multiformats/multiaddr": "^10.2.0"
   },
   "devDependencies": {
     "aegir": "^37.0.17"

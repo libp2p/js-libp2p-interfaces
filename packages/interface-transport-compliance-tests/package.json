@@ -129,6 +129,7 @@
   },
   "dependencies": {
     "@libp2p/interface-compliance-tests": "^2.0.0",
+    "@libp2p/interface-connection": "~0.0.0",
     "@libp2p/interface-mocks": "~0.0.0",
     "@libp2p/interface-registrar": "~0.0.0",
     "@libp2p/interface-transport": "~0.0.0",

@@ -12,13 +12,13 @@
       "path": "../interface-compliance-tests"
     },
     {
+      "path": "../interface-connection"
+    },
+    {
       "path": "../interface-connection-encrypter"
     },
     {
       "path": "../interface-peer-id"
-    },
-    {
-      "path": "../interface-transport"
     }
   ]
 }

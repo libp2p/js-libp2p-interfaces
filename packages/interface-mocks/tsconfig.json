@@ -31,7 +31,19 @@
       "path": "../interface-peer-id"
     },
     {
+      "path": "../interface-peer-info"
+    },
+    {
+      "path": "../interface-registrar"
+    },
+    {
+      "path": "../interface-stream-muxer"
+    },
+    {
       "path": "../interface-stream-muxer-compliance-tests"
+    },
+    {
+      "path": "../interface-transport"
     },
     {
       "path": "../interfaces"

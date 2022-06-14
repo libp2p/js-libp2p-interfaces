@@ -132,7 +132,6 @@
     "@libp2p/interface-peer-id": "~0.0.0",
     "@libp2p/interface-peer-info": "~0.0.0",
     "@libp2p/interfaces": "^2.0.0",
-    "@multiformats/multiaddr": "^10.2.0",
     "multiformats": "^9.6.3"
   },
   "devDependencies": {
