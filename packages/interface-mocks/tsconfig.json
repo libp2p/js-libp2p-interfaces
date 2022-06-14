@@ -1,0 +1,52 @@
+{
+  "extends": "aegir/src/config/tsconfig.aegir.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": [
+    "src",
+    "test",
+    "../libp2p-interfaces-connection-encrypter-compliance-tests/connection-encrypter"
+  ],
+  "references": [
+    {
+      "path": "../interface-connection"
+    },
+    {
+      "path": "../interface-connection-encrypter"
+    },
+    {
+      "path": "../interface-connection-encrypter-compliance-tests"
+    },
+    {
+      "path": "../interface-connection-manager"
+    },
+    {
+      "path": "../interface-peer-discovery"
+    },
+    {
+      "path": "../interface-peer-discovery-compliance-tests"
+    },
+    {
+      "path": "../interface-peer-id"
+    },
+    {
+      "path": "../interface-peer-info"
+    },
+    {
+      "path": "../interface-registrar"
+    },
+    {
+      "path": "../interface-stream-muxer"
+    },
+    {
+      "path": "../interface-stream-muxer-compliance-tests"
+    },
+    {
+      "path": "../interface-transport"
+    },
+    {
+      "path": "../interfaces"
+    }
+  ]
+}
