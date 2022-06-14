@@ -1,6 +1,7 @@
 
 export interface EventCallback<EventType> { (evt: EventType): void }
-export type EventHandler<EventType> = EventCallback<EventType> | ({ handleEvent: EventCallback<EventType> }) | null
+export interface EventObject<EventType> { handleEvent: EventCallback<EventType> }
+export type EventHandler<EventType> = EventCallback<EventType> | EventObject<EventType>
 
 interface Listener {
   once: boolean
@@ -15,7 +16,7 @@ interface Listener {
  * https://github.com/microsoft/TypeScript/issues/299
  * etc
  */
-export class EventEmitter<EventMap> extends EventTarget {
+export class EventEmitter<EventMap extends { [s: string]: any }> extends EventTarget {
   #listeners: Map<any, Listener[]> = new Map()
 
   listenerCount (type: string) {
@@ -28,10 +29,9 @@ export class EventEmitter<EventMap> extends EventTarget {
     return listeners.length
   }
 
-  // @ts-expect-error EventTarget is not typed
-  addEventListener<U extends keyof EventMap> (type: U, callback: EventHandler<EventMap[U]>, options?: AddEventListenerOptions | boolean) {
-    // @ts-expect-error EventTarget is not typed
-    super.addEventListener(type, callback, options)
+  addEventListener<K extends keyof EventMap>(type: K, listener: EventHandler<EventMap[K]> | null, options?: boolean | AddEventListenerOptions): void
+  addEventListener (type: string, listener: EventHandler<Event>, options?: boolean | AddEventListenerOptions): void {
+    super.addEventListener(type, listener, options)
 
     let list = this.#listeners.get(type)
 
@@ -41,15 +41,14 @@ export class EventEmitter<EventMap> extends EventTarget {
     }
 
     list.push({
-      callback,
+      callback: listener,
       once: (options !== true && options !== false && options?.once) ?? false
     })
   }
 
-  // @ts-expect-error EventTarget is not typed
-  removeEventListener<U extends keyof EventMap> (type: U, callback?: EventHandler<EventMap[U]> | undefined, options?: EventListenerOptions | boolean) {
-    // @ts-expect-error EventTarget is not typed
-    super.removeEventListener(type, callback, options)
+  removeEventListener<K extends keyof EventMap>(type: K, listener?: EventHandler<EventMap[K]> | null, options?: boolean | EventListenerOptions): void
+  removeEventListener (type: string, listener?: EventHandler<Event>, options?: boolean | EventListenerOptions): void {
+    super.removeEventListener(type.toString(), listener ?? null, options)
 
     let list = this.#listeners.get(type)
 
@@ -57,7 +56,7 @@ export class EventEmitter<EventMap> extends EventTarget {
       return
     }
 
-    list = list.filter(({ callback: cb }) => cb !== callback)
+    list = list.filter(({ callback }) => callback !== listener)
     this.#listeners.set(type, list)
   }
 
