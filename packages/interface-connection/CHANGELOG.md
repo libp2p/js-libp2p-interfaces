@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-v1.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v1.0.0...@libp2p/interface-connection-v1.0.1) (2022-06-14)
+
+
+### Trivial Changes
+
+* **release:** 1.0.0 [skip ci] ([0005492](https://github.com/libp2p/js-libp2p-interfaces/commit/0005492cc5958d261017f6db5fe1073b83b46265)), closes [#226](https://github.com/libp2p/js-libp2p-interfaces/issues/226) [#234](https://github.com/libp2p/js-libp2p-interfaces/issues/234) [#233](https://github.com/libp2p/js-libp2p-interfaces/issues/233)
+
 ## @libp2p/interface-connection-v1.0.0 (2022-06-14)
 
 
