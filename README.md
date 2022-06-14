@@ -6,7 +6,7 @@
 [![codecov](https://img.shields.io/codecov/c/github/libp2p/js-libp2p-interfaces.svg?style=flat-square)](https://codecov.io/gh/libp2p/js-libp2p-interfaces)
 [![CI](https://img.shields.io/github/workflow/status/libp2p/js-libp2p-interfaces/test%20&%20maybe%20release/master?style=flat-square)](https://github.com/libp2p/js-libp2p-interfaces/actions/workflows/js-test-and-release.yml)
 
-> Interfaces for JS Libp2p
+> Contains test suites and interfaces you can use to implement the various components of libp2p
 
 ## Table of contents <!-- omit in toc -->
 

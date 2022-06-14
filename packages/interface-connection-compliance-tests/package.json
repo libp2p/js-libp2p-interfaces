@@ -128,7 +128,7 @@
     "release": "aegir release"
   },
   "dependencies": {
-    "@libp2p/interface-compliance-tests": "^2.0.0",
+    "@libp2p/interface-compliance-tests": "^3.0.0",
     "@libp2p/interface-connection": "~0.0.0",
     "aegir": "^37.0.17",
     "sinon": "^14.0.0"

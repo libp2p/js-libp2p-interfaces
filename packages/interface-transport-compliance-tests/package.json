@@ -128,12 +128,12 @@
     "release": "aegir release"
   },
   "dependencies": {
-    "@libp2p/interface-compliance-tests": "^2.0.0",
+    "@libp2p/interface-compliance-tests": "^3.0.0",
     "@libp2p/interface-connection": "~0.0.0",
     "@libp2p/interface-mocks": "~0.0.0",
     "@libp2p/interface-registrar": "~0.0.0",
     "@libp2p/interface-transport": "~0.0.0",
-    "@libp2p/interfaces": "^2.0.0",
+    "@libp2p/interfaces": "^3.0.0",
     "@multiformats/multiaddr": "^10.2.0",
     "aegir": "^37.0.17",
     "it-all": "^1.0.6",
