@@ -118,7 +118,7 @@ class MuxedStream {
       }
     }
 
-    this.input = pushable<Uint8Array>({
+    this.input = pushable({
       onEnd: onSourceEnd
     })
 
@@ -277,7 +277,7 @@ class MockMuxer implements StreamMuxer {
     this.log('create muxer')
     this.options = init ?? {}
     // receives data from the muxer at the other end of the stream
-    this.source = this.input = pushable<Uint8Array>({
+    this.source = this.input = pushable({
       onEnd: (err) => {
         this.log('closing muxed streams')
         for (const stream of this.streams) {
@@ -291,7 +291,9 @@ class MockMuxer implements StreamMuxer {
     })
 
     // receives messages from all of the muxed streams
-    this.streamInput = pushable<StreamMessage>()
+    this.streamInput = pushable<StreamMessage>({
+      objectMode: true
+    })
   }
 
   // receive incoming messages
