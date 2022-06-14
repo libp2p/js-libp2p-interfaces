@@ -1,3 +1,15 @@
+## [@libp2p/interfaces-v2.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v2.0.3...@libp2p/interfaces-v2.0.4) (2022-06-14)
+
+
+### Bug Fixes
+
+* event emitter types ([#230](https://github.com/libp2p/js-libp2p-interfaces/issues/230)) ([f16f74f](https://github.com/libp2p/js-libp2p-interfaces/commit/f16f74fc972e537698884c1910854e9630058c36)), closes [#227](https://github.com/libp2p/js-libp2p-interfaces/issues/227)
+
+
+### Trivial Changes
+
+* add missing deps ([#229](https://github.com/libp2p/js-libp2p-interfaces/issues/229)) ([cc3cece](https://github.com/libp2p/js-libp2p-interfaces/commit/cc3cece290108302fb84501e2500fb18cd99f90f))
+
 ## [@libp2p/interfaces-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v2.0.2...@libp2p/interfaces-v2.0.3) (2022-05-31)
 
 
