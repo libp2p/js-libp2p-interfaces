@@ -168,6 +168,6 @@
     "@libp2p/interface-connection-encrypter-compliance-tests": "~0.0.0",
     "@libp2p/interface-peer-discovery-compliance-tests": "~0.0.0",
     "@libp2p/interface-stream-muxer-compliance-tests": "~0.0.0",
-    "aegir": "^37.0.17"
+    "aegir": "^37.2.0"
   }
 }
