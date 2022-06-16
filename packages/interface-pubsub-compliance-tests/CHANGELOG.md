@@ -1,3 +1,11 @@
+## [@libp2p/interface-pubsub-compliance-tests-v1.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v1.0.1...@libp2p/interface-pubsub-compliance-tests-v1.0.2) (2022-06-16)
+
+
+### Trivial Changes
+
+* update deps ([54fbb37](https://github.com/libp2p/js-libp2p-interfaces/commit/54fbb37c8644a3fd6833c12550a57bf1a9292902))
+* update deps ([970a940](https://github.com/libp2p/js-libp2p-interfaces/commit/970a940a2f65b946936a53febdc52527baefbd34))
+
 ## [@libp2p/interface-pubsub-compliance-tests-v1.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v1.0.0...@libp2p/interface-pubsub-compliance-tests-v1.0.1) (2022-06-14)
 
 
