@@ -136,7 +136,7 @@
   },
   "dependencies": {
     "@libp2p/components": "^1.0.0",
-    "@libp2p/interface-connection": "^1.0.0",
+    "@libp2p/interface-connection": "^2.0.0",
     "@libp2p/interface-connection-encrypter": "^1.0.0",
     "@libp2p/interface-connection-manager": "^1.0.0",
     "@libp2p/interface-peer-discovery": "^1.0.0",
@@ -154,7 +154,7 @@
     "abortable-iterator": "^4.0.2",
     "any-signal": "^3.0.1",
     "err-code": "^3.0.1",
-    "it-handshake": "^3.0.1",
+    "it-handshake": "^4.0.0",
     "it-map": "^1.0.6",
     "it-ndjson": "^0.1.1",
     "it-pair": "^2.0.2",
