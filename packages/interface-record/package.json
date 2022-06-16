@@ -131,6 +131,6 @@
     "@libp2p/interface-peer-id": "^1.0.0"
   },
   "devDependencies": {
-    "aegir": "^37.2.0"
+    "aegir": "^37.2.1"
   }
 }

@@ -130,6 +130,6 @@
   "dependencies": {
     "@libp2p/interface-compliance-tests": "^3.0.0",
     "@libp2p/interface-record": "^1.0.0",
-    "aegir": "^37.0.17"
+    "aegir": "^37.2.1"
   }
 }

@@ -132,7 +132,7 @@
     "@libp2p/interface-peer-discovery": "^1.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@multiformats/multiaddr": "^10.2.0",
-    "aegir": "^37.0.17",
+    "aegir": "^37.2.1",
     "delay": "^5.0.0",
     "p-defer": "^4.0.0"
   }
