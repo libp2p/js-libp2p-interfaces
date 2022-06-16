@@ -13,9 +13,14 @@ export interface StreamHandler {
 
 export interface StreamHandlerOptions {
   /**
-   * How many streams can be open for this protocol at the same time on each connection (default: 1)
+   * How many incoming streams can be open for this protocol at the same time on each connection (default: 1)
    */
-  maxConcurrentStreams?: number
+  maxIncomingStreams?: number
+
+  /**
+   * How many outgoing streams can be open for this protocol at the same time on each connection (default: 1)
+   */
+  maxOutgoingStreams?: number
 }
 
 export interface StreamHandlerRecord {
