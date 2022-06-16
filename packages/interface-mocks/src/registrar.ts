@@ -1,6 +1,7 @@
 import type { IncomingStreamData, Registrar, StreamHandler, Topology, StreamHandlerOptions, StreamHandlerRecord } from '@libp2p/interface-registrar'
 import type { Connection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
+import merge from 'merge-options'
 
 export class MockRegistrar implements Registrar {
   private readonly topologies: Map<string, Array<{ id: string, topology: Topology }>> = new Map()
@@ -10,7 +11,12 @@ export class MockRegistrar implements Registrar {
     return Array.from(this.handlers.keys()).sort()
   }
 
-  async handle (protocol: string, handler: StreamHandler, options: StreamHandlerOptions = { maxConcurrentStreams: 1 }): Promise<void> {
+  async handle (protocol: string, handler: StreamHandler, opts?: StreamHandlerOptions): Promise<void> {
+    const options = merge({
+      maxIncomingStreams: 1,
+      maxOutgoingStreams: 1
+    }, opts)
+
     if (this.handlers.has(protocol)) {
       throw new Error(`Handler already registered for protocol ${protocol}`)
     }
