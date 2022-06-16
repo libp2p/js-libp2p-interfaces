@@ -114,7 +114,7 @@ export default (test: TestSetup<Connection>) => {
         expect(stream).to.have.nested.property('stat.protocol', protocol)
 
         // Close stream
-        await stream.close()
+        stream.close()
 
         expect(connection.streams.filter(s => s.id === stream.id)).to.be.empty()
       })
