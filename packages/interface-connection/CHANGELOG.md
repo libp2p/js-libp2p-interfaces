@@ -1,3 +1,14 @@
+## [@libp2p/interface-connection-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v1.0.1...@libp2p/interface-connection-v2.0.0) (2022-06-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* The Connection and Stream APIs have been updated
+
+### Features
+
+* store stream data on the stream, track the stream direction ([#245](https://github.com/libp2p/js-libp2p-interfaces/issues/245)) ([6d74d2f](https://github.com/libp2p/js-libp2p-interfaces/commit/6d74d2f9f344fb4d6741ba0d35263ebe351a4c65))
+
 ## [@libp2p/interface-connection-v1.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v1.0.0...@libp2p/interface-connection-v1.0.1) (2022-06-14)
 
 
