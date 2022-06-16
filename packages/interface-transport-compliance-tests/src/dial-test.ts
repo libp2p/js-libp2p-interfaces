@@ -64,7 +64,7 @@ export default (common: TestSetup<TransportTestFixtures>) => {
         upgrader
       })
 
-      const { stream } = await conn.newStream([protocol])
+      const stream = await conn.newStream([protocol])
       const result = await all(stream.source)
 
       expect(upgradeSpy.callCount).to.equal(1)

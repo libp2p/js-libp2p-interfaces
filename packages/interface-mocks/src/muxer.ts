@@ -87,7 +87,7 @@ class MuxedStream {
       }
 
       if (this.sinkEnded) {
-        this.stream.timeline.close = Date.now()
+        this.stream.stat.timeline.close = Date.now()
 
         if (onEnd != null) {
           onEnd(endErr)
@@ -109,7 +109,7 @@ class MuxedStream {
       }
 
       if (this.sourceEnded) {
-        this.stream.timeline.close = Date.now()
+        this.stream.stat.timeline.close = Date.now()
 
         if (onEnd != null) {
           onEnd(endErr)
@@ -248,9 +248,13 @@ class MuxedStream {
         this.input.end(err)
         onSinkEnd(err)
       },
-      timeline: {
-        open: Date.now()
-      }
+      stat: {
+        direction: type === 'initiator' ? 'outbound' : 'inbound',
+        timeline: {
+          open: Date.now()
+        }
+      },
+      metadata: {}
     }
   }
 }

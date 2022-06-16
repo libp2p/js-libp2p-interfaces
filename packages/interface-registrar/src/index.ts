@@ -2,7 +2,6 @@ import type { Connection, Stream } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
 
 export interface IncomingStreamData {
-  protocol: string
   stream: Stream
   connection: Connection
 }

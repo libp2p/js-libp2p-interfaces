@@ -1,7 +1,7 @@
 import { peerIdFromString } from '@libp2p/peer-id'
 import { pipe } from 'it-pipe'
 import { duplexPair } from 'it-pair/duplex'
-import type { MultiaddrConnection, Connection, Stream, Metadata, ProtocolStream, ConnectionStat } from '@libp2p/interface-connection'
+import type { MultiaddrConnection, Connection, Stream, ConnectionStat } from '@libp2p/interface-connection'
 import type { Duplex } from 'it-stream-types'
 import { mockMuxer } from './muxer.js'
 import type { PeerId } from '@libp2p/interface-peer-id'
@@ -15,6 +15,7 @@ import type { Multiaddr } from '@multiformats/multiaddr'
 import type { StreamMuxer } from '@libp2p/interface-stream-muxer'
 import type { Components } from '@libp2p/components'
 import type { AbortOptions } from '@libp2p/interfaces'
+import errCode from 'err-code'
 
 const log = logger('libp2p:mock-connection')
 
@@ -37,7 +38,6 @@ class MockConnection implements Connection {
   public remotePeer: PeerId
   public direction: 'inbound' | 'outbound'
   public stat: ConnectionStat
-  public registry: Map<string, Metadata>
   public streams: Stream[]
   public tags: string[]
 
@@ -58,7 +58,6 @@ class MockConnection implements Connection {
       multiplexer: 'test-multiplexer',
       encryption: 'yes-yes-very-secure'
     }
-    this.registry = new Map()
     this.streams = []
     this.tags = []
     this.muxer = muxer
@@ -74,42 +73,44 @@ class MockConnection implements Connection {
       throw new Error('protocols must have a length')
     }
 
+    if (this.stat.status !== STATUS.OPEN) {
+      throw errCode(new Error('connection must be open to create streams'), 'ERR_CONNECTION_CLOSED')
+    }
+
     const id = `${Math.random()}`
     const stream: Stream = this.muxer.newStream(id)
     const mss = new Dialer(stream)
     const result = await mss.select(protocols, options)
 
-    const streamData: ProtocolStream = {
-      protocol: result.protocol,
-      stream: {
-        ...stream,
-        ...result.stream
+    const streamWithProtocol: Stream = {
+      ...stream,
+      ...result.stream,
+      stat: {
+        ...stream.stat,
+        direction: 'outbound',
+        protocol: result.protocol
       }
     }
 
-    this.addStream(stream, { protocol: result.protocol, metadata: {} })
+    this.streams.push(streamWithProtocol)
 
-    return streamData
+    return streamWithProtocol
   }
 
-  addStream (stream: Stream, metadata: Partial<Metadata>) {
-    this.registry.set(stream.id, {
-      protocol: metadata.protocol ?? '',
-      metadata: metadata.metadata ?? {}
-    })
-
+  addStream (stream: Stream) {
     this.streams.push(stream)
   }
 
   removeStream (id: string) {
-    this.registry.delete(id)
     this.streams = this.streams.filter(stream => stream.id !== id)
   }
 
   async close () {
     this.stat.status = STATUS.CLOSING
     await this.maConn.close()
+    this.streams.forEach(s => s.close())
     this.stat.status = STATUS.CLOSED
+    this.stat.timeline.close = Date.now()
   }
 }
 
@@ -134,11 +135,12 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
           .then(({ stream, protocol }) => {
             log('%s: incoming stream opened on %s', direction, protocol)
             muxedStream = { ...muxedStream, ...stream }
+            muxedStream.stat.protocol = protocol
 
-            connection.addStream(muxedStream, { protocol, metadata: {} })
+            connection.addStream(muxedStream)
             const { handler } = registrar.getHandler(protocol)
 
-            handler({ connection, stream: muxedStream, protocol })
+            handler({ connection, stream: muxedStream })
           }).catch(err => {
             log.error(err)
           })
@@ -174,9 +176,14 @@ export function mockStream (stream: Duplex<Uint8Array>): Stream {
     closeWrite: () => {},
     abort: () => {},
     reset: () => {},
-    timeline: {
-      open: Date.now()
+    stat: {
+      direction: 'outbound',
+      protocol: '/foo/1.0.0',
+      timeline: {
+        open: Date.now()
+      }
     },
+    metadata: {},
     id: `stream-${Date.now()}`
   }
 }
