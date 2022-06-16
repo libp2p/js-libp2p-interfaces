@@ -13,6 +13,9 @@
       "path": "../interface-connection"
     },
     {
+      "path": "../interface-connection-compliance-tests"
+    },
+    {
       "path": "../interface-connection-encrypter"
     },
     {

@@ -4,23 +4,59 @@ import type * as Status from './status.js'
 import type { Duplex } from 'it-stream-types'
 import type { AbortOptions } from '@libp2p/interfaces'
 
-export interface Timeline {
+export interface ConnectionTimeline {
   open: number
   upgraded?: number
   close?: number
 }
 
 export interface ConnectionStat {
+  /**
+   * Outbound conections are opened by the local node, inbound streams are opened by the remote
+   */
   direction: 'inbound' | 'outbound'
-  timeline: Timeline
+
+  /**
+   * Lifecycle times for the connection
+   */
+  timeline: ConnectionTimeline
+
+  /**
+   * Once a multiplexer has been negotiated for this stream, it will be set on the stat object
+   */
   multiplexer?: string
+
+  /**
+   * Once a connection encrypter has been negotiated for this stream, it will be set on the stat object
+   */
   encryption?: string
+
+  /**
+   * The current status of the connection
+   */
   status: keyof typeof Status
 }
 
-export interface Metadata {
-  protocol: string
-  metadata: Record<string, any>
+export interface StreamTimeline {
+  open: number
+  close?: number
+}
+
+export interface StreamStat {
+  /**
+   * Outbound streams are opened by the local node, inbound streams are opened by the remote
+   */
+  direction: 'inbound' | 'outbound'
+
+  /**
+   * Lifecycle times for the stream
+   */
+  timeline: StreamTimeline
+
+  /**
+   * Once a protocol has been negotiated for this stream, it will be set on the stat object
+   */
+  protocol?: string
 }
 
 /**
@@ -57,19 +93,19 @@ export interface Stream extends Duplex<Uint8Array> {
   reset: () => void
 
   /**
-   * Records stream lifecycle event timings
-   */
-  timeline: Timeline
-
-  /**
    * Unique identifier for a stream
    */
   id: string
-}
 
-export interface ProtocolStream {
-  protocol: string
-  stream: Stream
+  /**
+   * Stats about this stream
+   */
+  stat: StreamStat
+
+  /**
+   * User defined stream metadata
+   */
+  metadata: Record<string, any>
 }
 
 /**
@@ -83,12 +119,11 @@ export interface Connection {
   stat: ConnectionStat
   remoteAddr: Multiaddr
   remotePeer: PeerId
-  registry: Map<string, Metadata>
   tags: string[]
   streams: Stream[]
 
-  newStream: (multicodecs: string | string[], options?: AbortOptions) => Promise<ProtocolStream>
-  addStream: (stream: Stream, data: Partial<Metadata>) => void
+  newStream: (multicodecs: string | string[], options?: AbortOptions) => Promise<Stream>
+  addStream: (stream: Stream) => void
   removeStream: (id: string) => void
   close: () => Promise<void>
 }

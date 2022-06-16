@@ -1,7 +1,7 @@
 import tests from '@libp2p/interface-peer-discovery-compliance-tests'
 import { MockDiscovery } from '../src/peer-discovery.js'
 
-describe('compliance tests', () => {
+describe('mock peer discovery compliance tests', () => {
   let intervalId: any
 
   tests({

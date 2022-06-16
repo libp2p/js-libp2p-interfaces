@@ -80,7 +80,7 @@ export default (common: TestSetup<TransportTestFixtures>) => {
       // Give the listener a chance to finish its upgrade
       await pWaitFor(() => listenerConns.length === 2)
 
-      const { stream: stream1 } = await conn1.newStream([protocol])
+      const stream1 = await conn1.newStream([protocol])
 
       // Wait for the data send and close to finish
       await Promise.all([

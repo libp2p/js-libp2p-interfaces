@@ -142,12 +142,12 @@
     "@libp2p/interface-peer-discovery": "^1.0.0",
     "@libp2p/interface-peer-id": "^1.0.0",
     "@libp2p/interface-peer-info": "^1.0.0",
-    "@libp2p/interface-registrar": "^1.0.0",
+    "@libp2p/interface-registrar": "^1.1.0",
     "@libp2p/interface-stream-muxer": "^1.0.0",
     "@libp2p/interface-transport": "^1.0.0",
     "@libp2p/interfaces": "^3.0.0",
-    "@libp2p/logger": "^1.1.6",
-    "@libp2p/multistream-select": "^1.0.6",
+    "@libp2p/logger": "^2.0.0",
+    "@libp2p/multistream-select": "^2.0.0",
     "@libp2p/peer-id": "^1.1.12",
     "@libp2p/peer-id-factory": "^1.0.12",
     "@multiformats/multiaddr": "^10.2.0",
@@ -166,6 +166,7 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
+    "@libp2p/interface-connection-compliance-tests": "^1.0.0",
     "@libp2p/interface-connection-encrypter-compliance-tests": "^1.0.0",
     "@libp2p/interface-peer-discovery-compliance-tests": "^1.0.0",
     "@libp2p/interface-stream-muxer-compliance-tests": "^1.0.0",
