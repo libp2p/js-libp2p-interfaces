@@ -1,3 +1,21 @@
+## [@libp2p/interface-mocks-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v1.1.0...@libp2p/interface-mocks-v2.0.0) (2022-06-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* The Connection and Stream APIs have been updated
+
+### Features
+
+* store stream data on the stream, track the stream direction ([#245](https://github.com/libp2p/js-libp2p-interfaces/issues/245)) ([6d74d2f](https://github.com/libp2p/js-libp2p-interfaces/commit/6d74d2f9f344fb4d6741ba0d35263ebe351a4c65))
+
+
+### Trivial Changes
+
+* update deps ([970a940](https://github.com/libp2p/js-libp2p-interfaces/commit/970a940a2f65b946936a53febdc52527baefbd34))
+* update deps ([219e60e](https://github.com/libp2p/js-libp2p-interfaces/commit/219e60ec6f886b95803457fe48dfcdb4ed57e34c))
+* update deps ([545264f](https://github.com/libp2p/js-libp2p-interfaces/commit/545264f87a58394d2a7da77e93f3a596e889238f))
+
 ## [@libp2p/interface-mocks-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v1.0.1...@libp2p/interface-mocks-v1.1.0) (2022-06-16)
 
 
