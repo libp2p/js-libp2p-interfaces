@@ -12,9 +12,9 @@ export class MockRegistrar implements Registrar {
   }
 
   async handle (protocol: string, handler: StreamHandler, opts?: StreamHandlerOptions): Promise<void> {
-    const options = merge({
-      maxIncomingStreams: 1,
-      maxOutgoingStreams: 1
+    const options = merge.bind({ ignoreUndefined: true })({
+      maxInboundStreams: 1,
+      maxOutboundStreams: 1
     }, opts)
 
     if (this.handlers.has(protocol)) {
