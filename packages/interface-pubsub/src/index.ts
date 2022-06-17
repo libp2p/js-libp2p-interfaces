@@ -68,32 +68,6 @@ export interface PeerStreams extends EventEmitter<PeerStreamEvents> {
   attachOutboundStream: (stream: Stream) => Promise<Pushable<Uint8Array>>
 }
 
-export interface PubSubInit {
-  enabled?: boolean
-
-  multicodecs?: string[]
-
-  /**
-   * defines how signatures should be handled
-   */
-  globalSignaturePolicy?: SignaturePolicy
-
-  /**
-   * if can relay messages not subscribed
-   */
-  canRelayMessage?: boolean
-
-  /**
-   * if publish should emit to self, if subscribed
-   */
-  emitSelf?: boolean
-
-  /**
-   * handle this many incoming pubsub messages concurrently
-   */
-  messageProcessingConcurrency?: number
-}
-
 interface Subscription {
   topic: string
   subscribe: boolean
