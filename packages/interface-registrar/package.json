@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-registrar",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Registrar interface for libp2p",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-registrar#readme",
