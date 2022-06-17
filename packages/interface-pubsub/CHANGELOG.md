@@ -1,3 +1,10 @@
+## [@libp2p/interface-pubsub-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-v1.0.2...@libp2p/interface-pubsub-v1.0.3) (2022-06-17)
+
+
+### Bug Fixes
+
+* add stream control for pubsub ([#248](https://github.com/libp2p/js-libp2p-interfaces/issues/248)) ([e687895](https://github.com/libp2p/js-libp2p-interfaces/commit/e687895267d98fcd99d6d0d849527ab9eed69695))
+
 ## [@libp2p/interface-pubsub-v1.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-v1.0.1...@libp2p/interface-pubsub-v1.0.2) (2022-06-16)
 
 
