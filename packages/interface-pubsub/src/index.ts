@@ -92,6 +92,16 @@ export interface PubSubInit {
    * handle this many incoming pubsub messages concurrently
    */
   messageProcessingConcurrency?: number
+
+  /**
+   * How many parallel incoming streams to allow on the pubsub protocol per-connection
+   */
+  maxInboundStreams?: number
+
+  /**
+   * How many parallel outgoing streams to allow on the pubsub protocol per-connection
+   */
+  maxOutboundStreams?: number
 }
 
 interface Subscription {
