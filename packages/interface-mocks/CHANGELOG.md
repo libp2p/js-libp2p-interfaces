@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v2.0.0...@libp2p/interface-mocks-v2.0.1) (2022-06-17)
+
+
+### Bug Fixes
+
+* update stream handler args ([#247](https://github.com/libp2p/js-libp2p-interfaces/issues/247)) ([d29e134](https://github.com/libp2p/js-libp2p-interfaces/commit/d29e134bd70295c725bfd627d5887954d1a278ae))
+
 ## [@libp2p/interface-mocks-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v1.1.0...@libp2p/interface-mocks-v2.0.0) (2022-06-16)
 
 
