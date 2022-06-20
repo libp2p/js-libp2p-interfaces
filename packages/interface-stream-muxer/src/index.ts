@@ -19,6 +19,11 @@ export interface StreamMuxer extends Duplex<Uint8Array> {
    * provided, the id of the stream will be used.
    */
   newStream: (name?: string) => Stream
+
+  /**
+   * Close or abort all tracked streams and stop the muxer
+   */
+  close: (err?: Error) => void
 }
 
 export interface StreamMuxerInit extends AbortOptions {

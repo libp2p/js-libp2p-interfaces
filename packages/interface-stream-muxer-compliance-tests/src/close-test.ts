@@ -68,6 +68,120 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       expect(dialer.streams).to.have.lengthOf(0)
     })
 
+    it('calling close closes streams', async () => {
+      let openedStreams = 0
+      const expectedStreams = 5
+      const dialerFactory = await common.setup()
+      const dialer = dialerFactory.createStreamMuxer({ direction: 'outbound' })
+
+      // Listener is echo server :)
+      const listenerFactory = await common.setup()
+      const listener = listenerFactory.createStreamMuxer({
+        direction: 'inbound',
+        onIncomingStream: (stream) => {
+          openedStreams++
+          void pipe(stream, stream)
+        }
+      })
+
+      const p = duplexPair<Uint8Array>()
+      void pipe(p[0], dialer, p[0])
+      void pipe(p[1], listener, p[1])
+
+      const streams = Array(expectedStreams).fill(0).map(() => dialer.newStream())
+
+      void Promise.all(
+        streams.map(async stream => {
+          return await pipe(
+            infiniteRandom,
+            stream,
+            drain
+          )
+        })
+      )
+
+      expect(dialer.streams, 'dialer - number of opened streams should match number of calls to newStream').to.have.lengthOf(expectedStreams)
+
+      // Pause, and then close the dialer
+      await delay(50)
+
+      dialer.close()
+
+      expect(openedStreams, 'listener - number of opened streams should match number of calls to newStream').to.have.equal(expectedStreams)
+      expect(dialer.streams, 'all tracked streams should be deleted after the muxer has called close').to.have.lengthOf(0)
+    })
+
+    it('calling close with an error aborts streams', async () => {
+      let openedStreams = 0
+      const expectedStreams = 5
+      const dialerFactory = await common.setup()
+      const dialer = dialerFactory.createStreamMuxer({ direction: 'outbound' })
+
+      // Listener is echo server :)
+      const listenerFactory = await common.setup()
+      const listener = listenerFactory.createStreamMuxer({
+        direction: 'inbound',
+        onIncomingStream: (stream) => {
+          openedStreams++
+          void pipe(stream, stream)
+        }
+      })
+
+      const p = duplexPair<Uint8Array>()
+      void pipe(p[0], dialer, p[0])
+      void pipe(p[1], listener, p[1])
+
+      const streams = Array(expectedStreams).fill(0).map(() => dialer.newStream())
+
+      const streamPipes = streams.map(async stream => {
+        return await pipe(
+          infiniteRandom,
+          stream,
+          drain
+        )
+      })
+
+      expect(dialer.streams, 'dialer - number of opened streams should match number of calls to newStream').to.have.lengthOf(expectedStreams)
+
+      // Pause, and then close the dialer
+      await delay(50)
+
+      // close _with an error_
+      dialer.close(new Error())
+
+      const timeoutError = new Error('timeout')
+      for (const pipe of streamPipes) {
+        try {
+          await Promise.race([
+            pipe,
+            new Promise((_resolve, reject) => setTimeout(() => reject(timeoutError), 20))
+          ])
+          expect.fail('stream pipe with infinite source should never return')
+        } catch (e) {
+          if (e === timeoutError) {
+            expect.fail('expected stream pipe to throw an error after muxer closed with error')
+          }
+        }
+      }
+
+      expect(openedStreams, 'listener - number of opened streams should match number of calls to newStream').to.have.equal(expectedStreams)
+      expect(dialer.streams, 'all tracked streams should be deleted after the muxer has called close').to.have.lengthOf(0)
+    })
+
+    it('calling newStream after close throws an error', async () => {
+      const dialerFactory = await common.setup()
+      const dialer = dialerFactory.createStreamMuxer({ direction: 'outbound' })
+
+      dialer.close()
+
+      try {
+        dialer.newStream()
+        expect.fail('newStream should throw if called after close')
+      } catch (e) {
+        expect(dialer.streams, 'closed muxer should have no streams').to.have.lengthOf(0)
+      }
+    })
+
     it('closing one of the muxed streams doesn\'t close others', async () => {
       const p = duplexPair<Uint8Array>()
       const dialerFactory = await common.setup()
