@@ -23,12 +23,13 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
     it('Open a stream from the dialer', async () => {
       const p = duplexPair<Uint8Array>()
       const dialerFactory = await common.setup()
-      const dialer = dialerFactory.createStreamMuxer()
+      const dialer = dialerFactory.createStreamMuxer({ direction: 'outbound' })
       const onStreamPromise: DeferredPromise<Stream> = defer()
       const onStreamEndPromise: DeferredPromise<Stream> = defer()
 
       const listenerFactory = await common.setup()
       const listener = listenerFactory.createStreamMuxer({
+        direction: 'inbound',
         onIncomingStream: (stream) => {
           onStreamPromise.resolve(stream)
         },
@@ -77,13 +78,14 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       const onStreamPromise: DeferredPromise<Stream> = defer()
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({
+        direction: 'outbound',
         onIncomingStream: (stream: Stream) => {
           onStreamPromise.resolve(stream)
         }
       })
 
       const listenerFactory = await common.setup()
-      const listener = listenerFactory.createStreamMuxer()
+      const listener = listenerFactory.createStreamMuxer({ direction: 'inbound' })
 
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
@@ -108,6 +110,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       const onListenerStreamPromise: DeferredPromise<Stream> = defer()
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({
+        direction: 'outbound',
         onIncomingStream: (stream) => {
           onDialerStreamPromise.resolve(stream)
         }
@@ -115,6 +118,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
       const listenerFactory = await common.setup()
       const listener = listenerFactory.createStreamMuxer({
+        direction: 'inbound',
         onIncomingStream: (stream) => {
           onListenerStreamPromise.resolve(stream)
         }
@@ -146,12 +150,14 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       const onListenerStreamPromise: DeferredPromise<Stream> = defer()
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({
+        direction: 'outbound',
         onIncomingStream: (stream) => {
           onDialerStreamPromise.resolve(stream)
         }
       })
       const listenerFactory = await common.setup()
       const listener = listenerFactory.createStreamMuxer({
+        direction: 'inbound',
         onIncomingStream: (stream) => {
           onListenerStreamPromise.resolve(stream)
         }

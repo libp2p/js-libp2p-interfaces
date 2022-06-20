@@ -1,5 +1,5 @@
 import type { Duplex } from 'it-stream-types'
-import type { Stream } from '@libp2p/interface-connection'
+import type { Direction, Stream } from '@libp2p/interface-connection'
 import type { AbortOptions } from '@libp2p/interfaces'
 
 export interface StreamMuxerFactory {
@@ -24,4 +24,9 @@ export interface StreamMuxer extends Duplex<Uint8Array> {
 export interface StreamMuxerInit extends AbortOptions {
   onIncomingStream?: (stream: Stream) => void
   onStreamEnd?: (stream: Stream) => void
+
+  /**
+   * Outbound stream muxers are opened by the local node, inbound stream muxers are opened by the remote
+   */
+  direction?: Direction
 }
