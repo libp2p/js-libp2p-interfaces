@@ -1,3 +1,10 @@
+## [@libp2p/interface-stream-muxer-compliance-tests-v2.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v2.0.0...@libp2p/interface-stream-muxer-compliance-tests-v2.1.0) (2022-06-21)
+
+
+### Features
+
+* add direction to StreamMuxerInit ([#253](https://github.com/libp2p/js-libp2p-interfaces/issues/253)) ([6d34d75](https://github.com/libp2p/js-libp2p-interfaces/commit/6d34d755ff4e798d52945f1f099052bdd6a83f2b))
+
 ## [@libp2p/interface-stream-muxer-compliance-tests-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v1.0.2...@libp2p/interface-stream-muxer-compliance-tests-v2.0.0) (2022-06-16)
 
 
