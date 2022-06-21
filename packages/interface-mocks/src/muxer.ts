@@ -278,7 +278,7 @@ class MockMuxer implements StreamMuxer {
     this.registryInitiatorStreams = new Map()
     this.registryRecipientStreams = new Map()
     this.log('create muxer')
-    this.options = init ?? {}
+    this.options = init ?? { direction: 'inbound' }
     // receives data from the muxer at the other end of the stream
     this.source = this.input = pushable({
       onEnd: (err) => {

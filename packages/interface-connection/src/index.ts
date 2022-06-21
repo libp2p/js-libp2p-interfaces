@@ -10,11 +10,16 @@ export interface ConnectionTimeline {
   close?: number
 }
 
+/**
+ * Outbound conections are opened by the local node, inbound streams are opened by the remote
+ */
+export type Direction = 'inbound' | 'outbound'
+
 export interface ConnectionStat {
   /**
    * Outbound conections are opened by the local node, inbound streams are opened by the remote
    */
-  direction: 'inbound' | 'outbound'
+  direction: Direction
 
   /**
    * Lifecycle times for the connection
@@ -46,7 +51,7 @@ export interface StreamStat {
   /**
    * Outbound streams are opened by the local node, inbound streams are opened by the remote
    */
-  direction: 'inbound' | 'outbound'
+  direction: Direction
 
   /**
    * Lifecycle times for the stream

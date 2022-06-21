@@ -1,7 +1,7 @@
 import { peerIdFromString } from '@libp2p/peer-id'
 import { pipe } from 'it-pipe'
 import { duplexPair } from 'it-pair/duplex'
-import type { MultiaddrConnection, Connection, Stream, ConnectionStat } from '@libp2p/interface-connection'
+import type { MultiaddrConnection, Connection, Stream, ConnectionStat, Direction } from '@libp2p/interface-connection'
 import type { Duplex } from 'it-stream-types'
 import { mockMuxer } from './muxer.js'
 import type { PeerId } from '@libp2p/interface-peer-id'
@@ -20,14 +20,14 @@ import errCode from 'err-code'
 const log = logger('libp2p:mock-connection')
 
 export interface MockConnectionOptions {
-  direction?: 'inbound' | 'outbound'
+  direction?: Direction
   registrar?: Registrar
 }
 
 interface MockConnectionInit {
   remoteAddr: Multiaddr
   remotePeer: PeerId
-  direction: 'inbound' | 'outbound'
+  direction: Direction
   maConn: MultiaddrConnection
   muxer: StreamMuxer
 }
@@ -36,7 +36,7 @@ class MockConnection implements Connection {
   public id: string
   public remoteAddr: Multiaddr
   public remotePeer: PeerId
-  public direction: 'inbound' | 'outbound'
+  public direction: Direction
   public stat: ConnectionStat
   public streams: Stream[]
   public tags: string[]
@@ -128,6 +128,7 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
   const muxerFactory = mockMuxer()
 
   const muxer = muxerFactory.createStreamMuxer({
+    direction: direction,
     onIncomingStream: (muxedStream) => {
       const mss = new Listener(muxedStream)
       try {
