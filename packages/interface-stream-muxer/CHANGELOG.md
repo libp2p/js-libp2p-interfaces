@@ -1,3 +1,14 @@
+## [@libp2p/interface-stream-muxer-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v1.1.0...@libp2p/interface-stream-muxer-v2.0.0) (2022-06-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* StreamMuxer now has a `close` method
+
+### Features
+
+* add stream muxer close ([#254](https://github.com/libp2p/js-libp2p-interfaces/issues/254)) ([d1f511e](https://github.com/libp2p/js-libp2p-interfaces/commit/d1f511e4b5857769c4eddf902288dc69fcb667b4))
+
 ## [@libp2p/interface-stream-muxer-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v1.0.2...@libp2p/interface-stream-muxer-v1.1.0) (2022-06-21)
 
 
