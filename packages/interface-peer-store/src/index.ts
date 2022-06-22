@@ -223,6 +223,16 @@ export interface PeerStoreInit {
   addressFilter?: AddressFilter
 }
 
+export interface TagOptions {
+  value?: number
+  ttl?: number
+}
+
+export interface Tag {
+  name: string
+  value: number
+}
+
 export interface PeerStore extends EventEmitter<PeerStoreEvents> {
   addressBook: AddressBook
   keyBook: KeyBook
@@ -241,4 +251,8 @@ export interface PeerStore extends EventEmitter<PeerStoreEvents> {
   delete: (peerId: PeerId) => Promise<void>
   has: (peerId: PeerId) => Promise<boolean>
   get: (peerId: PeerId) => Promise<Peer>
+
+  tagPeer: (peerId: PeerId, tag: string, options?: TagOptions) => Promise<void>
+  unTagPeer: (peerId: PeerId, tag: string) => Promise<void>
+  getTags: (peerId: PeerId) => Promise<Tag[]>
 }
