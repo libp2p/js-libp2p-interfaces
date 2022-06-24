@@ -71,7 +71,7 @@ export interface PeerStreams extends EventEmitter<PeerStreamEvents> {
 export interface PubSubInit {
   enabled?: boolean
 
-  multicodecs?: string[]
+  multicodecs?: Set<string>
 
   /**
    * defines how signatures should be handled
