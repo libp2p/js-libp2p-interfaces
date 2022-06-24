@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-transport-compliance-tests",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Compliance tests for implementations of the libp2p Transport interface",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-transport-compliance-tests#readme",

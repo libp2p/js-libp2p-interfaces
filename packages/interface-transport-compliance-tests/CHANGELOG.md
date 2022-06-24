@@ -1,3 +1,10 @@
+## [@libp2p/interface-transport-compliance-tests-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.0...@libp2p/interface-transport-compliance-tests-v2.0.1) (2022-06-24)
+
+
+### Trivial Changes
+
+* update sibling dependencies [skip ci] ([c5c41c5](https://github.com/libp2p/js-libp2p-interfaces/commit/c5c41c521cf970addc1840d8519cdaa542a0db16))
+
 ## [@libp2p/interface-transport-compliance-tests-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v1.0.0...@libp2p/interface-transport-compliance-tests-v2.0.0) (2022-06-16)
 
 
