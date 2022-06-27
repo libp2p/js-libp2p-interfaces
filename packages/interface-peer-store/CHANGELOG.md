@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-store-v1.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v1.1.0...@libp2p/interface-peer-store-v1.2.0) (2022-06-27)
+
+
+### Features
+
+* export common tags ([#263](https://github.com/libp2p/js-libp2p-interfaces/issues/263)) ([8ca626e](https://github.com/libp2p/js-libp2p-interfaces/commit/8ca626e0b39f943244bb5ba005b84e2155d471fd))
+
 ## [@libp2p/interface-peer-store-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v1.0.0...@libp2p/interface-peer-store-v1.1.0) (2022-06-24)
 
 
