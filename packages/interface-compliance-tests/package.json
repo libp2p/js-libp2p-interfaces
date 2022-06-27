@@ -152,6 +152,6 @@
     "release": "aegir release"
   },
   "dependencies": {
-    "aegir": "^37.0.17"
+    "aegir": "^37.4.0"
   }
 }
