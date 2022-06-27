@@ -32,7 +32,7 @@ The API is presented with both Node.js and Go primitives, however, there is not 
 
 ## Modules that implement the interface
 
-- [JavaScript libp2p-peer-id](https://github.com/libp2p/js-peer-id)
+- [JavaScript libp2p-peer-id](https://github.com/libp2p/js-libp2p-peer-id)
 
 Send a PR to add a new one if you happen to find or write one.
 
