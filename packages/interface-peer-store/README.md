@@ -11,6 +11,8 @@
 ## Table of contents <!-- omit in toc -->
 
 - [Install](#install)
+- [Usage](#usage)
+  - [Tags](#tags)
 - [License](#license)
 - [Contribution](#contribution)
 
@@ -18,6 +20,18 @@
 
 ```console
 $ npm i @libp2p/interface-peer-store
+```
+
+## Usage
+
+### Tags
+
+Common tags can be imported from the `@libp2p/interface-peer-store/tag` module:
+
+```js
+import { KEEP_ALIVE } from '@libp2p/interface-peer-store/tags'
+
+await peerStore.tagPeer(peerId, KEEP_ALIVE)
 ```
 
 ## License
