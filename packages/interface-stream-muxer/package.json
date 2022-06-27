@@ -133,6 +133,6 @@
     "it-stream-types": "^1.0.4"
   },
   "devDependencies": {
-    "aegir": "^37.2.0"
+    "aegir": "^37.4.0"
   }
 }
