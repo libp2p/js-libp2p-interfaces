@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-record",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Record interface for libp2p",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-record#readme",
@@ -131,6 +131,6 @@
     "@libp2p/interface-peer-id": "^1.0.0"
   },
   "devDependencies": {
-    "aegir": "^37.2.0"
+    "aegir": "^37.4.0"
   }
 }
