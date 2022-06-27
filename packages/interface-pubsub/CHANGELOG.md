@@ -1,3 +1,10 @@
+## [@libp2p/interface-pubsub-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-v1.0.3...@libp2p/interface-pubsub-v1.0.4) (2022-06-27)
+
+
+### Trivial Changes
+
+* update deps ([#262](https://github.com/libp2p/js-libp2p-interfaces/issues/262)) ([51edf7d](https://github.com/libp2p/js-libp2p-interfaces/commit/51edf7d9b3765a6f75c915b1483ea345d0133a41))
+
 ## [@libp2p/interface-pubsub-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-v1.0.2...@libp2p/interface-pubsub-v1.0.3) (2022-06-17)
 
 
