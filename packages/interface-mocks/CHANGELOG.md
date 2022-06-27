@@ -1,3 +1,20 @@
+## [@libp2p/interface-mocks-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v2.1.0...@libp2p/interface-mocks-v3.0.0) (2022-06-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* StreamMuxer now has a `close` method
+
+### Features
+
+* add stream muxer close ([#254](https://github.com/libp2p/js-libp2p-interfaces/issues/254)) ([d1f511e](https://github.com/libp2p/js-libp2p-interfaces/commit/d1f511e4b5857769c4eddf902288dc69fcb667b4))
+
+
+### Trivial Changes
+
+* update sibling dependencies [skip ci] ([7f7fb67](https://github.com/libp2p/js-libp2p-interfaces/commit/7f7fb67b054688bfbc0cc68b9f2892bee8b41f13))
+* update sibling dependencies [skip ci] ([c522241](https://github.com/libp2p/js-libp2p-interfaces/commit/c522241b08cfef3995efb5415104f46521dcd3b7))
+
 ## [@libp2p/interface-mocks-v2.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v2.0.1...@libp2p/interface-mocks-v2.1.0) (2022-06-21)
 
 
