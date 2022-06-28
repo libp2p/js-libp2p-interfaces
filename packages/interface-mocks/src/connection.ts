@@ -78,7 +78,7 @@ class MockConnection implements Connection {
     }
 
     const id = `${Math.random()}`
-    const stream: Stream = this.muxer.newStream(id)
+    const stream = this.muxer.newStream(id)
     const mss = new Dialer(stream)
     const result = await mss.select(protocols, options)
 
@@ -135,13 +135,19 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
         mss.handle(registrar.getProtocols())
           .then(({ stream, protocol }) => {
             log('%s: incoming stream opened on %s', direction, protocol)
-            muxedStream = { ...muxedStream, ...stream }
-            muxedStream.stat.protocol = protocol
+            const streamWithProtocol = {
+              ...muxedStream,
+              ...stream,
+              stat: {
+                ...muxedStream.stat,
+                protocol
+              }
+            }
 
-            connection.addStream(muxedStream)
+            connection.addStream(streamWithProtocol)
             const { handler } = registrar.getHandler(protocol)
 
-            handler({ connection, stream: muxedStream })
+            handler({ connection, stream: streamWithProtocol })
           }).catch(err => {
             log.error(err)
           })

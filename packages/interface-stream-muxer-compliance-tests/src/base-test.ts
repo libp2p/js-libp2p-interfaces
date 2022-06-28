@@ -10,8 +10,7 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { isValidTick } from '@libp2p/interface-compliance-tests/is-valid-tick'
 import type { DeferredPromise } from 'p-defer'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
-import type { Stream } from '@libp2p/interface-connection'
-import type { StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
+import type { MuxedStream, StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
 import type { Source, Duplex } from 'it-stream-types'
 
 async function drainAndClose (stream: Duplex<Uint8Array>) {
@@ -24,8 +23,8 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       const p = duplexPair<Uint8Array>()
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({ direction: 'outbound' })
-      const onStreamPromise: DeferredPromise<Stream> = defer()
-      const onStreamEndPromise: DeferredPromise<Stream> = defer()
+      const onStreamPromise: DeferredPromise<MuxedStream> = defer()
+      const onStreamEndPromise: DeferredPromise<MuxedStream> = defer()
 
       const listenerFactory = await common.setup()
       const listener = listenerFactory.createStreamMuxer({
@@ -75,11 +74,11 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
     it('Open a stream from the listener', async () => {
       const p = duplexPair<Uint8Array>()
-      const onStreamPromise: DeferredPromise<Stream> = defer()
+      const onStreamPromise: DeferredPromise<MuxedStream> = defer()
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({
         direction: 'outbound',
-        onIncomingStream: (stream: Stream) => {
+        onIncomingStream: (stream: MuxedStream) => {
           onStreamPromise.resolve(stream)
         }
       })
@@ -106,8 +105,8 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
     it('Open a stream on both sides', async () => {
       const p = duplexPair<Uint8Array>()
-      const onDialerStreamPromise: DeferredPromise<Stream> = defer()
-      const onListenerStreamPromise: DeferredPromise<Stream> = defer()
+      const onDialerStreamPromise: DeferredPromise<MuxedStream> = defer()
+      const onListenerStreamPromise: DeferredPromise<MuxedStream> = defer()
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({
         direction: 'outbound',
@@ -146,8 +145,8 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
     it('Open a stream on one side, write, open a stream on the other side', async () => {
       const toString = (source: Source<Uint8Array>) => map(source, (u) => uint8ArrayToString(u))
       const p = duplexPair<Uint8Array>()
-      const onDialerStreamPromise: DeferredPromise<Stream> = defer()
-      const onListenerStreamPromise: DeferredPromise<Stream> = defer()
+      const onDialerStreamPromise: DeferredPromise<MuxedStream> = defer()
+      const onListenerStreamPromise: DeferredPromise<MuxedStream> = defer()
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({
         direction: 'outbound',

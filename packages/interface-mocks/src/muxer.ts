@@ -6,8 +6,7 @@ import { anySignal } from 'any-signal'
 import errCode from 'err-code'
 import { Logger, logger } from '@libp2p/logger'
 import * as ndjson from 'it-ndjson'
-import type { Stream } from '@libp2p/interface-connection'
-import type { StreamMuxer, StreamMuxerFactory, StreamMuxerInit } from '@libp2p/interface-stream-muxer'
+import type { MuxedStream, StreamMuxer, StreamMuxerFactory, StreamMuxerInit } from '@libp2p/interface-stream-muxer'
 import type { Source } from 'it-stream-types'
 import { pipe } from 'it-pipe'
 import map from 'it-map'
@@ -44,10 +43,10 @@ interface CreateMessage {
 
 type StreamMessage = DataMessage | ResetMessage | CloseMessage | CreateMessage
 
-class MuxedStream {
+class MockMuxedStream {
   public id: string
   public input: Pushable<Uint8Array>
-  public stream: Stream
+  public stream: MuxedStream
   public type: 'initiator' | 'recipient'
 
   private sinkEnded: boolean
@@ -267,8 +266,8 @@ class MockMuxer implements StreamMuxer {
   public protocol: string = '/mock-muxer/1.0.0'
 
   private readonly closeController: AbortController
-  private readonly registryInitiatorStreams: Map<string, MuxedStream>
-  private readonly registryRecipientStreams: Map<string, MuxedStream>
+  private readonly registryInitiatorStreams: Map<string, MockMuxedStream>
+  private readonly registryRecipientStreams: Map<string, MockMuxedStream>
   private readonly options: StreamMuxerInit
 
   private readonly log: Logger
@@ -318,7 +317,7 @@ class MockMuxer implements StreamMuxer {
   }
 
   handleMessage (message: StreamMessage) {
-    let muxedStream: MuxedStream | undefined
+    let muxedStream: MockMuxedStream | undefined
 
     const registry = message.direction === 'initiator' ? this.registryRecipientStreams : this.registryInitiatorStreams
 
@@ -371,12 +370,12 @@ class MockMuxer implements StreamMuxer {
     return storedStream.stream
   }
 
-  createStream (name?: string, type: 'initiator' | 'recipient' = 'initiator'): MuxedStream {
+  createStream (name?: string, type: 'initiator' | 'recipient' = 'initiator'): MockMuxedStream {
     const id = name ?? `${this.name}:stream:${streams++}`
 
     this.log('createStream %s %s', type, id)
 
-    const muxedStream: MuxedStream = new MuxedStream({
+    const muxedStream = new MockMuxedStream({
       id,
       type,
       push: this.streamInput,

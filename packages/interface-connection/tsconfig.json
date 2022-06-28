@@ -11,6 +11,9 @@
       "path": "../interface-peer-id"
     },
     {
+      "path": "../interface-stream-muxer"
+    },
+    {
       "path": "../interfaces"
     }
   ]

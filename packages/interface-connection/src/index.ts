@@ -3,6 +3,7 @@ import type { PeerId } from '@libp2p/interface-peer-id'
 import type * as Status from './status.js'
 import type { Duplex } from 'it-stream-types'
 import type { AbortOptions } from '@libp2p/interfaces'
+import type { MuxedStream, MuxedStreamStat, MuxedStreamTimeline, Direction } from '@libp2p/interface-stream-muxer'
 
 export interface ConnectionTimeline {
   open: number
@@ -11,13 +12,15 @@ export interface ConnectionTimeline {
 }
 
 /**
- * Outbound conections are opened by the local node, inbound streams are opened by the remote
+ * Outbound connections are opened by the local node, inbound connections are opened by the remote
  */
-export type Direction = 'inbound' | 'outbound'
+export type { Direction }
+
+export type { MuxedStreamTimeline as StreamTimeline }
 
 export interface ConnectionStat {
   /**
-   * Outbound conections are opened by the local node, inbound streams are opened by the remote
+   * Outbound connections are opened by the local node, inbound connections are opened by the remote
    */
   direction: Direction
 
@@ -42,26 +45,11 @@ export interface ConnectionStat {
   status: keyof typeof Status
 }
 
-export interface StreamTimeline {
-  open: number
-  close?: number
-}
-
-export interface StreamStat {
-  /**
-   * Outbound streams are opened by the local node, inbound streams are opened by the remote
-   */
-  direction: Direction
-
-  /**
-   * Lifecycle times for the stream
-   */
-  timeline: StreamTimeline
-
+export interface StreamStat extends MuxedStreamStat {
   /**
    * Once a protocol has been negotiated for this stream, it will be set on the stat object
    */
-  protocol?: string
+  protocol: string
 }
 
 /**
@@ -71,46 +59,11 @@ export interface StreamStat {
  * It may be encrypted and multiplexed depending on the
  * configuration of the nodes.
  */
-export interface Stream extends Duplex<Uint8Array> {
-  /**
-   * Close a stream for reading and writing
-   */
-  close: () => void
-
-  /**
-   * Close a stream for reading only
-   */
-  closeRead: () => void
-
-  /**
-   * Close a stream for writing only
-   */
-  closeWrite: () => void
-
-  /**
-   * Call when a local error occurs, should close the stream for reading and writing
-   */
-  abort: (err: Error) => void
-
-  /**
-   * Call when a remote error occurs, should close the stream for reading and writing
-   */
-  reset: () => void
-
-  /**
-   * Unique identifier for a stream
-   */
-  id: string
-
+export interface Stream extends MuxedStream {
   /**
    * Stats about this stream
    */
   stat: StreamStat
-
-  /**
-   * User defined stream metadata
-   */
-  metadata: Record<string, any>
 }
 
 /**
@@ -120,16 +73,54 @@ export interface Stream extends Duplex<Uint8Array> {
  * between which the connection is made.
  */
 export interface Connection {
+  /**
+   * A unique identifer for this stream
+   */
   id: string
+
+  /**
+   * Stats about this stream
+   */
   stat: ConnectionStat
+
+  /**
+   * The address of the remote peer
+   */
   remoteAddr: Multiaddr
+
+  /**
+   * The PeerId of the remote peer
+   */
   remotePeer: PeerId
+
+  /**
+   * Tags this connection has
+   */
   tags: string[]
+
+  /**
+   * A list of multiplexed streams open on this connection
+   */
   streams: Stream[]
 
+  /**
+   * Open a new multiplexed stream
+   */
   newStream: (multicodecs: string | string[], options?: AbortOptions) => Promise<Stream>
+
+  /**
+   * When a multiplexed stream is open on the remote, add it to this connection
+   */
   addStream: (stream: Stream) => void
+
+  /**
+   * Remove a stream from this connection
+   */
   removeStream: (id: string) => void
+
+  /**
+   * Close this connection and tear down any multiplexed streams
+   */
   close: () => Promise<void>
 }
 

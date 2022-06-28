@@ -149,6 +149,7 @@
   },
   "dependencies": {
     "@libp2p/interface-peer-id": "^1.0.0",
+    "@libp2p/interface-stream-muxer": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@multiformats/multiaddr": "^10.2.0",
     "it-stream-types": "^1.0.4"

@@ -128,7 +128,6 @@
     "release": "aegir release"
   },
   "dependencies": {
-    "@libp2p/interface-connection": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "it-stream-types": "^1.0.4"
   },

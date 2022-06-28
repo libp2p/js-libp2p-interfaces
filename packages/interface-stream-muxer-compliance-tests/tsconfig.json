@@ -12,9 +12,6 @@
       "path": "../interface-compliance-tests"
     },
     {
-      "path": "../interface-connection"
-    },
-    {
       "path": "../interface-stream-muxer"
     }
   ]
