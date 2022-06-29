@@ -27,14 +27,23 @@ export const StrictNoSign = 'StrictNoSign'
 
 export type SignaturePolicy = typeof StrictSign | typeof StrictNoSign
 
-export interface Message {
+export interface SignedMessage {
+  type: 'signed'
   from: PeerId
   topic: string
   data: Uint8Array
-  sequenceNumber?: bigint
-  signature?: Uint8Array
-  key?: Uint8Array
+  sequenceNumber: bigint
+  signature: Uint8Array
+  key: Uint8Array
 }
+
+export interface UnsignedMessage {
+  type: 'unsigned'
+  topic: string
+  data: Uint8Array
+}
+
+export type Message = SignedMessage | UnsignedMessage
 
 export interface PubSubRPCMessage {
   from?: Uint8Array
