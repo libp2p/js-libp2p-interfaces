@@ -161,11 +161,22 @@ export type ComponentMetricsGroup = Record<string, number>
 /**
  * Used to calculate metric values dynamically
  */
-export type CalculateComponentMetric = () => Promise<ComponentMetric> | ComponentMetric
+export interface CalculateComponentMetric { (): Promise<ComponentMetric> | ComponentMetric }
 
 export interface TrackedMetric {
+  /**
+   * In systems that support them, this label can help make graphs more interpretable
+   */
   label?: string
+
+  /**
+   * In systems that support them, this help text can help make graphs more interpretable
+   */
   help?: string
+
+  /**
+   * A function that returns a value or a group of values
+   */
   calculate: CalculateComponentMetric
 }
 
