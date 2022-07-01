@@ -114,18 +114,77 @@ export interface StreamMetrics {
   trackStream: <T extends Duplex<Uint8Array>> (data: TrackStreamOptions<T>) => T
 }
 
+/**
+ * Used to update a tracked metric. Value can either be a number, an object containing
+ * key/value pairs or an (optionally async) function to return a number or an object of
+ * key/value pairs.
+ */
 export interface ComponentMetricsUpdate {
+  /**
+   * Name of the system, e.g. libp2p, ipfs, etc
+   */
   system: string
+
+  /**
+   * Name of the system component that contains the metric
+   */
   component: string
+
+  /**
+   * Name of the metric being tracked
+   */
   metric: string
-  value: number
+
+  /**
+   * The value or function to calculate the value
+   */
+  value: ComponentMetric | CalculateComponentMetric
+
+  /**
+   * Optional label for the metric
+   */
+  label?: string
+
+  /**
+   * Optional help for the metric
+   */
+  help?: string
+}
+
+export type ComponentMetric = number | ComponentMetricsGroup
+
+/**
+ * Used to group related metrics together by label and value
+ */
+export type ComponentMetricsGroup = Record<string, number>
+
+/**
+ * Used to calculate metric values dynamically
+ */
+export interface CalculateComponentMetric { (): Promise<ComponentMetric> | ComponentMetric }
+
+export interface TrackedMetric {
+  /**
+   * In systems that support them, this label can help make graphs more interpretable
+   */
+  label?: string
+
+  /**
+   * In systems that support them, this help text can help make graphs more interpretable
+   */
+  help?: string
+
+  /**
+   * A function that returns a value or a group of values
+   */
+  calculate: CalculateComponentMetric
 }
 
 export interface ComponentMetricsTracker {
   /**
    * Returns tracked metrics key by system, component, metric, value
    */
-  getComponentMetrics: () => Map<string, Map<string, Map<string, number>>>
+  getComponentMetrics: () => Map<string, Map<string, Map<string, TrackedMetric>>>
 
   /**
    * Update the stored metric value for the given system and component
