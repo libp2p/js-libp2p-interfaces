@@ -1,3 +1,14 @@
+## [@libp2p/interface-metrics-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-metrics-v1.0.3...@libp2p/interface-metrics-v2.0.0) (2022-07-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* the return type of `metrics.getComponentMetrics` has been changed to include optional labels/help text and also is now a function that returns a single or group value
+
+### Features
+
+* add metrics groups ([#267](https://github.com/libp2p/js-libp2p-interfaces/issues/267)) ([b9d898a](https://github.com/libp2p/js-libp2p-interfaces/commit/b9d898abdb551ebe2e0e961ec325d5e6abcf4fab)), closes [#257](https://github.com/libp2p/js-libp2p-interfaces/issues/257) [#258](https://github.com/libp2p/js-libp2p-interfaces/issues/258)
+
 ## [@libp2p/interface-metrics-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-metrics-v1.0.2...@libp2p/interface-metrics-v1.0.3) (2022-06-27)
 
 
