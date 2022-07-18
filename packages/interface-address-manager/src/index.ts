@@ -38,7 +38,9 @@ export interface AddressManager extends EventEmitter<AddressManagerEvents> {
   removeObservedAddr: (addr: Multiaddr) => void
 
   /**
-   * Add peer observed addresses along with an optional confidence specifier
+   * Add peer observed addresses.  These will then appear in the output of getObservedAddrs
+   * but not getAddresses() until their dialability has been confirmed via a call to
+   * confirmObservedAddr.
    */
   addObservedAddr: (addr: Multiaddr) => void
 
