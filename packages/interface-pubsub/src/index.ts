@@ -2,6 +2,7 @@ import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Pushable } from 'it-pushable'
 import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Stream } from '@libp2p/interface-connection'
+import type { Uint8ArrayList } from 'uint8arraylist'
 
 /**
  * On the producing side:
@@ -58,14 +59,14 @@ export interface PubSubRPC {
 export interface PeerStreams extends EventEmitter<PeerStreamEvents> {
   id: PeerId
   protocol: string
-  outboundStream?: Pushable<Uint8Array>
-  inboundStream?: AsyncIterable<Uint8Array>
+  outboundStream?: Pushable<Uint8ArrayList>
+  inboundStream?: AsyncIterable<Uint8ArrayList>
   isWritable: boolean
 
   close: () => void
-  write: (buf: Uint8Array) => void
-  attachInboundStream: (stream: Stream) => AsyncIterable<Uint8Array>
-  attachOutboundStream: (stream: Stream) => Promise<Pushable<Uint8Array>>
+  write: (buf: Uint8Array | Uint8ArrayList) => void
+  attachInboundStream: (stream: Stream) => AsyncIterable<Uint8ArrayList>
+  attachOutboundStream: (stream: Stream) => Promise<Pushable<Uint8ArrayList>>
 }
 
 export interface PubSubInit {
