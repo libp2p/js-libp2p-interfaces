@@ -165,10 +165,15 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       function receivedMsg (evt: CustomEvent<Message>) {
         const msg = evt.detail
-        expect(uint8ArrayToString(msg.data)).to.equal('banana')
-        expect(msg.from.toString()).to.equal(componentsB.getPeerId().toString())
-        expect(msg.sequenceNumber).to.be.a('BigInt')
-        expect(msg.topic).to.be.equal(topic)
+        if (msg.type === 'unsigned') {
+          expect(uint8ArrayToString(msg.data)).to.equal('banana')
+          expect(msg.topic).to.be.equal(topic)
+        } else {
+          expect(uint8ArrayToString(msg.data)).to.equal('banana')
+          expect(msg.from.toString()).to.equal(componentsB.getPeerId().toString())
+          expect(msg.sequenceNumber).to.be.a('BigInt')
+          expect(msg.topic).to.be.equal(topic)
+        }
 
         if (++counter === 10) {
           psA.removeEventListener('message', receivedMsg)

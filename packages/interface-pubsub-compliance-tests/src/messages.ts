@@ -49,10 +49,12 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       const event = await eventPromise
       const message = event.detail
 
-      expect(message.from.toString()).to.equal(components.getPeerId().toString())
-      expect(message.sequenceNumber).to.not.eql(undefined)
-      expect(message.key).to.not.eql(undefined)
-      expect(message.signature).to.not.eql(undefined)
+      if (message.type === 'signed') {
+        expect(message.from.toString()).to.equal(components.getPeerId().toString())
+        expect(message.sequenceNumber).to.not.eql(undefined)
+        expect(message.key).to.not.eql(undefined)
+        expect(message.signature).to.not.eql(undefined)
+      }
     })
   })
 }
