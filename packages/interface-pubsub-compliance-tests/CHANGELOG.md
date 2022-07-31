@@ -1,3 +1,10 @@
+## [@libp2p/interface-pubsub-compliance-tests-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v2.0.0...@libp2p/interface-pubsub-compliance-tests-v2.0.1) (2022-07-31)
+
+
+### Dependencies
+
+* update uint8arraylist and p-wait-for deps ([#274](https://github.com/libp2p/js-libp2p-interfaces/issues/274)) ([c55f12e](https://github.com/libp2p/js-libp2p-interfaces/commit/c55f12e47be0a10e41709b0d6a60dd8bc1209ee5))
+
 ## [@libp2p/interface-pubsub-compliance-tests-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v1.0.4...@libp2p/interface-pubsub-compliance-tests-v2.0.0) (2022-07-31)
 
 
