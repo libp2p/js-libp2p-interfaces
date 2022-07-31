@@ -1,3 +1,15 @@
+## [@libp2p/interface-transport-compliance-tests-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.2...@libp2p/interface-transport-compliance-tests-v2.0.3) (2022-07-31)
+
+
+### Trivial Changes
+
+* update project config ([#271](https://github.com/libp2p/js-libp2p-interfaces/issues/271)) ([59c0bf5](https://github.com/libp2p/js-libp2p-interfaces/commit/59c0bf5e0b05496fca2e4902632b61bb41fad9e9))
+
+
+### Dependencies
+
+* update uint8arraylist and p-wait-for deps ([#274](https://github.com/libp2p/js-libp2p-interfaces/issues/274)) ([c55f12e](https://github.com/libp2p/js-libp2p-interfaces/commit/c55f12e47be0a10e41709b0d6a60dd8bc1209ee5))
+
 ## [@libp2p/interface-transport-compliance-tests-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.1...@libp2p/interface-transport-compliance-tests-v2.0.2) (2022-06-27)
 
 
