@@ -1,3 +1,26 @@
+## [@libp2p/interface-pubsub-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-v1.0.4...@libp2p/interface-pubsub-v2.0.0) (2022-07-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* The `Message` type is now either a `SignedMessage`
+or a `UnsignedMessage`
+* the inbound/outbound stream types have changed
+
+### Features
+
+* pubsub Message types for signature policies ([#266](https://github.com/libp2p/js-libp2p-interfaces/issues/266)) ([9eb710b](https://github.com/libp2p/js-libp2p-interfaces/commit/9eb710bcbdb0aef95c7a8613e00065a3b7c7f887))
+
+
+### Bug Fixes
+
+* make stream types Uint8ArrayLists ([#272](https://github.com/libp2p/js-libp2p-interfaces/issues/272)) ([ace7e0c](https://github.com/libp2p/js-libp2p-interfaces/commit/ace7e0cdb81dd241a8e96a44e841d38b2b80e031))
+
+
+### Trivial Changes
+
+* update project config ([#271](https://github.com/libp2p/js-libp2p-interfaces/issues/271)) ([59c0bf5](https://github.com/libp2p/js-libp2p-interfaces/commit/59c0bf5e0b05496fca2e4902632b61bb41fad9e9))
+
 ## [@libp2p/interface-pubsub-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-v1.0.3...@libp2p/interface-pubsub-v1.0.4) (2022-06-27)
 
 
