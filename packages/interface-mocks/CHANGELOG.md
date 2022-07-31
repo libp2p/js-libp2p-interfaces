@@ -1,3 +1,15 @@
+## [@libp2p/interface-mocks-v3.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v3.0.1...@libp2p/interface-mocks-v3.0.2) (2022-07-31)
+
+
+### Bug Fixes
+
+* mock connection manager close reciprocal connection ([#268](https://github.com/libp2p/js-libp2p-interfaces/issues/268)) ([f16dd7b](https://github.com/libp2p/js-libp2p-interfaces/commit/f16dd7bed2735e3a27e8febfe48bac75d4ff009f))
+
+
+### Trivial Changes
+
+* update project config ([#271](https://github.com/libp2p/js-libp2p-interfaces/issues/271)) ([59c0bf5](https://github.com/libp2p/js-libp2p-interfaces/commit/59c0bf5e0b05496fca2e4902632b61bb41fad9e9))
+
 ## [@libp2p/interface-mocks-v3.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v3.0.0...@libp2p/interface-mocks-v3.0.1) (2022-06-27)
 
 
