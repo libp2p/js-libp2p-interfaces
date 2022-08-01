@@ -9,7 +9,6 @@ import { createMaConnPair } from './utils/index.js'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { ConnectionEncrypter } from '@libp2p/interface-connection-encrypter'
 import type { PeerId } from '@libp2p/interface-peer-id'
-import type { Source } from 'it-stream-types'
 import { Uint8ArrayList } from 'uint8arraylist'
 
 export default (common: TestSetup<ConnectionEncrypter>) => {
@@ -61,16 +60,10 @@ export default (common: TestSetup<ConnectionEncrypter>) => {
       const result = await pipe(
         [input],
         outboundResult.conn,
-        // Convert BufferList to Buffer via slice
-        (source: Source<Uint8ArrayList>) => (async function * () {
-          for await (const chunk of source) {
-            yield chunk
-          }
-        })(),
         async (source) => await all(source)
       )
 
-      expect(result).to.eql(input)
+      expect(result).to.eql([input])
     })
 
     it('should return the remote peer id', async () => {
