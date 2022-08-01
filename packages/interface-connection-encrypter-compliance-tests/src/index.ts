@@ -10,6 +10,7 @@ import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { ConnectionEncrypter } from '@libp2p/interface-connection-encrypter'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Source } from 'it-stream-types'
+import { Uint8ArrayList } from 'uint8arraylist'
 
 export default (common: TestSetup<ConnectionEncrypter>) => {
   describe('interface-connection-encrypter compliance tests', () => {
@@ -56,20 +57,20 @@ export default (common: TestSetup<ConnectionEncrypter>) => {
       void pipe(inboundResult.conn, inboundResult.conn)
 
       // Send some data and collect the result
-      const input = uint8ArrayFromString('data to encrypt')
+      const input = new Uint8ArrayList(uint8ArrayFromString('data to encrypt'))
       const result = await pipe(
         [input],
         outboundResult.conn,
         // Convert BufferList to Buffer via slice
-        (source: Source<Uint8Array>) => (async function * toBuffer () {
+        (source: Source<Uint8ArrayList>) => (async function * () {
           for await (const chunk of source) {
-            yield chunk.slice()
+            yield chunk
           }
         })(),
         async (source) => await all(source)
       )
 
-      expect(result).to.eql([input])
+      expect(result).to.eql(input)
     })
 
     it('should return the remote peer id', async () => {
@@ -79,7 +80,7 @@ export default (common: TestSetup<ConnectionEncrypter>) => {
         inboundResult,
         outboundResult
       ] = await Promise.all([
-        crypto.secureInbound(remotePeer, localConn),
+        crypto.secureInbound(remotePeer, localConn, localPeer),
         crypto.secureOutbound(localPeer, remoteConn, remotePeer)
       ])
 

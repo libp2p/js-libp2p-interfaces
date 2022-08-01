@@ -255,7 +255,7 @@ export interface MultiaddrConnectionTimeline {
  * a peer. It is a low-level primitive and is the raw connection
  * without encryption or stream multiplexing.
  */
-export interface MultiaddrConnection extends Duplex<Uint8Array> {
+export interface MultiaddrConnection<T = Uint8Array> extends Duplex<T> {
   close: (err?: Error) => Promise<void>
   remoteAddr: Multiaddr
   timeline: MultiaddrConnectionTimeline
