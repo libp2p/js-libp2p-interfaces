@@ -21,7 +21,7 @@ export default (test: TestSetup<Record>) => {
 
     it('is able to marshal', () => {
       const rawData = record.marshal()
-      expect(rawData).to.be.an.instanceof(Uint8Array)
+      expect(rawData).to.have.property('byteLength')
     })
 
     it('is able to compare two records', () => {
