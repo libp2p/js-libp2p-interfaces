@@ -1,4 +1,5 @@
 import type { PeerId } from '@libp2p/interface-peer-id'
+import type { Uint8ArrayList } from 'uint8arraylist'
 
 /**
  * Record is the base implementation of a record that can be used as the payload of a libp2p envelope.
@@ -15,7 +16,7 @@ export interface Record {
   /**
    * Marshal a record to be used in an envelope.
    */
-  marshal: () => Uint8Array
+  marshal: () => Uint8ArrayList
   /**
    * Verifies if the other provided Record is identical to this one.
    */
@@ -24,11 +25,11 @@ export interface Record {
 
 export interface Envelope {
   peerId: PeerId
-  payloadType: Uint8Array
-  payload: Uint8Array
-  signature: Uint8Array
+  payloadType: Uint8Array | Uint8ArrayList
+  payload: Uint8Array | Uint8ArrayList
+  signature: Uint8Array | Uint8ArrayList
 
-  marshal: () => Uint8Array
+  marshal: () => Uint8ArrayList
   validate: (domain: string) => Promise<boolean>
   equals: (other: Envelope) => boolean
 }
