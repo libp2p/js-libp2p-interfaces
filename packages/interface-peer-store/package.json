@@ -156,7 +156,7 @@
     "@libp2p/interface-peer-info": "^1.0.0",
     "@libp2p/interface-record": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
-    "@multiformats/multiaddr": "^10.2.0"
+    "@multiformats/multiaddr": "^10.3.3"
   },
   "devDependencies": {
     "aegir": "^37.4.0"
