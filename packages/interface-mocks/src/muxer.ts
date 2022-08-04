@@ -46,8 +46,8 @@ type StreamMessage = DataMessage | ResetMessage | CloseMessage | CreateMessage
 
 class MuxedStream {
   public id: string
-  public input: Pushable<Uint8Array>
-  public stream: Stream
+  public input: Pushable<Uint8ArrayList>
+  public stream: Stream<Uint8ArrayList>
   public type: 'initiator' | 'recipient'
 
   private sinkEnded: boolean
@@ -260,8 +260,8 @@ class MuxedStream {
 }
 
 class MockMuxer implements StreamMuxer {
-  public source: Source<Uint8Array>
-  public input: Pushable<Uint8Array>
+  public source: Source<Uint8ArrayList>
+  public input: Pushable<Uint8ArrayList>
   public streamInput: Pushable<StreamMessage>
   public name: string
   public protocol: string = '/mock-muxer/1.0.0'
@@ -295,11 +295,11 @@ class MockMuxer implements StreamMuxer {
   }
 
   // receive incoming messages
-  async sink (source: Source<Uint8Array>) {
+  async sink (source: Source<Uint8ArrayList>) {
     try {
       await pipe(
         abortableSource(source, this.closeController.signal),
-        (source) => map(source, buf => uint8ArrayToString(buf)),
+        (source) => map(source, buf => uint8ArrayToString(buf.subarray())),
         ndjson.parse,
         async (source) => {
           for await (const message of source) {
@@ -344,7 +344,7 @@ class MockMuxer implements StreamMuxer {
     }
 
     if (message.type === 'data') {
-      muxedStream.input.push(uint8ArrayFromString(message.chunk, 'base64'))
+      muxedStream.input.push(new Uint8ArrayList(uint8ArrayFromString(message.chunk, 'base64')))
     } else if (message.type === 'reset') {
       this.log('-> reset stream %s %s', muxedStream.type, muxedStream.stream.id)
       muxedStream.stream.reset()
@@ -422,7 +422,7 @@ class MockMuxerFactory implements StreamMuxerFactory {
       void pipe(
         mockMuxer.streamInput,
         ndjson.stringify,
-        (source) => map(source, str => uint8ArrayFromString(str)),
+        (source) => map(source, str => new Uint8ArrayList(uint8ArrayFromString(str))),
         async (source) => {
           for await (const buf of source) {
             mockMuxer.input.push(buf)

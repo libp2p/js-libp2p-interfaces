@@ -10,6 +10,7 @@ import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
 import pDefer from 'p-defer'
 import all from 'it-all'
+import { Uint8ArrayList } from 'uint8arraylist'
 
 function randomBuffer () {
   return uint8ArrayFromString(Math.random().toString())
@@ -18,7 +19,7 @@ function randomBuffer () {
 const infiniteRandom = {
   [Symbol.asyncIterator]: async function * () {
     while (true) {
-      yield randomBuffer()
+      yield new Uint8ArrayList(randomBuffer())
       await delay(50)
     }
   }
@@ -42,7 +43,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
         }
       })
 
-      const p = duplexPair<Uint8Array>()
+      const p = duplexPair<Uint8ArrayList>()
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
@@ -62,7 +63,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
       // Pause, and then send some data and close the dialer
       await delay(50)
-      await pipe([randomBuffer()], dialer, drain)
+      await pipe([new Uint8ArrayList(randomBuffer())], dialer, drain)
 
       expect(openedStreams).to.have.equal(expectedStreams)
       expect(dialer.streams).to.have.lengthOf(0)
@@ -84,7 +85,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
         }
       })
 
-      const p = duplexPair<Uint8Array>()
+      const p = duplexPair<Uint8ArrayList>()
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
@@ -127,7 +128,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
         }
       })
 
-      const p = duplexPair<Uint8Array>()
+      const p = duplexPair<Uint8ArrayList>()
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
@@ -183,7 +184,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
     })
 
     it('closing one of the muxed streams doesn\'t close others', async () => {
-      const p = duplexPair<Uint8Array>()
+      const p = duplexPair<Uint8ArrayList>()
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({ direction: 'outbound' })
 
@@ -220,7 +221,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
       // Pause, and then send some data and close the first stream
       await delay(50)
-      await pipe([randomBuffer()], stream, drain)
+      await pipe([new Uint8ArrayList(randomBuffer())], stream, drain)
       closed = true
 
       // Abort all the other streams later
@@ -234,10 +235,10 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
     it('can close a stream for writing', async () => {
       const deferred = pDefer<any>()
 
-      const p = duplexPair<Uint8Array>()
+      const p = duplexPair<Uint8ArrayList>()
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({ direction: 'outbound' })
-      const data = [randomBuffer(), randomBuffer()]
+      const data = [randomBuffer(), randomBuffer()].map(d => new Uint8ArrayList(d))
 
       const listenerFactory = await common.setup()
       const listener = listenerFactory.createStreamMuxer({
@@ -257,7 +258,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
             expect(results).to.eql(data)
 
             try {
-              await stream.sink([randomBuffer()])
+              await stream.sink([new Uint8ArrayList(randomBuffer())])
             } catch (err) {
               deferred.resolve(err)
             }
@@ -280,10 +281,10 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
     it('can close a stream for reading', async () => {
       const deferred = pDefer<any>()
 
-      const p = duplexPair<Uint8Array>()
+      const p = duplexPair<Uint8ArrayList>()
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({ direction: 'outbound' })
-      const data = [randomBuffer(), randomBuffer()]
+      const data = [randomBuffer(), randomBuffer()].map(d => new Uint8ArrayList(d))
 
       const listenerFactory = await common.setup()
       const listener = listenerFactory.createStreamMuxer({
