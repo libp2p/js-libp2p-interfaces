@@ -126,7 +126,7 @@ export interface Connection<T extends Uint8Array | Uint8ArrayList = Uint8Array> 
   remoteAddr: Multiaddr
   remotePeer: PeerId
   tags: string[]
-  streams: Stream<T>[]
+  streams: Array<Stream<T>>
 
   newStream: (multicodecs: string | string[], options?: AbortOptions) => Promise<Stream>
   addStream: (stream: Stream<T>) => void
