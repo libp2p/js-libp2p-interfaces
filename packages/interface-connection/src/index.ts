@@ -3,6 +3,7 @@ import type { PeerId } from '@libp2p/interface-peer-id'
 import type * as Status from './status.js'
 import type { Duplex } from 'it-stream-types'
 import type { AbortOptions } from '@libp2p/interfaces'
+import type { Uint8ArrayList } from 'uint8arraylist'
 
 export interface ConnectionTimeline {
   open: number
@@ -71,7 +72,7 @@ export interface StreamStat {
  * It may be encrypted and multiplexed depending on the
  * configuration of the nodes.
  */
-export interface Stream extends Duplex<Uint8Array> {
+export interface Stream<T extends Uint8Array | Uint8ArrayList = Uint8Array> extends Duplex<T> {
   /**
    * Close a stream for reading and writing
    */
@@ -119,23 +120,23 @@ export interface Stream extends Duplex<Uint8Array> {
  * multiplexed, depending on the configuration of the nodes
  * between which the connection is made.
  */
-export interface Connection {
+export interface Connection<T extends Uint8Array | Uint8ArrayList = Uint8Array> {
   id: string
   stat: ConnectionStat
   remoteAddr: Multiaddr
   remotePeer: PeerId
   tags: string[]
-  streams: Stream[]
+  streams: Array<Stream<T>>
 
   newStream: (multicodecs: string | string[], options?: AbortOptions) => Promise<Stream>
-  addStream: (stream: Stream) => void
+  addStream: (stream: Stream<T>) => void
   removeStream: (id: string) => void
   close: () => Promise<void>
 }
 
 export const symbol = Symbol.for('@libp2p/connection')
 
-export function isConnection (other: any): other is Connection {
+export function isConnection (other: any): other is Connection<Uint8Array | Uint8ArrayList> {
   return other != null && Boolean(other[symbol])
 }
 
@@ -255,7 +256,7 @@ export interface MultiaddrConnectionTimeline {
  * a peer. It is a low-level primitive and is the raw connection
  * without encryption or stream multiplexing.
  */
-export interface MultiaddrConnection extends Duplex<Uint8Array> {
+export interface MultiaddrConnection<T extends Uint8Array | Uint8ArrayList = Uint8Array> extends Duplex<T> {
   close: (err?: Error) => Promise<void>
   remoteAddr: Multiaddr
   timeline: MultiaddrConnectionTimeline

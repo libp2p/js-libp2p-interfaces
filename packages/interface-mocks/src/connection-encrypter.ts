@@ -6,10 +6,11 @@ import { UnexpectedPeerError } from '@libp2p/interface-connection-encrypter/erro
 import { Multiaddr } from '@multiformats/multiaddr'
 import type { ConnectionEncrypter } from '@libp2p/interface-connection-encrypter'
 import type { Transform, Source } from 'it-stream-types'
+import { Uint8ArrayList } from 'uint8arraylist'
 
 // A basic transform that does nothing to the data
-const transform = (): Transform<Uint8Array, Uint8Array> => {
-  return (source: Source<Uint8Array>) => (async function * () {
+const transform = <T>(): Transform<T, T> => {
+  return (source: Source<T>) => (async function * () {
     for await (const chunk of source) {
       yield chunk
     }
@@ -21,8 +22,8 @@ export function mockConnectionEncrypter () {
     protocol: 'insecure',
     secureInbound: async (localPeer, duplex, expectedPeer) => {
       // 1. Perform a basic handshake.
-      const shake = handshake(duplex)
-      shake.write(localPeer.toBytes())
+      const shake = handshake<Uint8ArrayList>(duplex)
+      shake.write(new Uint8ArrayList(localPeer.toBytes()))
       const remoteId = await shake.read()
 
       if (remoteId == null) {
@@ -37,9 +38,9 @@ export function mockConnectionEncrypter () {
       }
 
       // 2. Create your encryption box/unbox wrapper
-      const wrapper = duplexPair<Uint8Array>()
-      const encrypt = transform() // Use transform iterables to modify data
-      const decrypt = transform()
+      const wrapper = duplexPair<Uint8ArrayList>()
+      const encrypt = transform<Uint8ArrayList>() // Use transform iterables to modify data
+      const decrypt = transform<Uint8ArrayList>()
 
       void pipe(
         wrapper[0], // We write to wrapper
@@ -66,8 +67,8 @@ export function mockConnectionEncrypter () {
     },
     secureOutbound: async (localPeer, duplex, remotePeer) => {
       // 1. Perform a basic handshake.
-      const shake = handshake(duplex)
-      shake.write(localPeer.toBytes())
+      const shake = handshake<Uint8ArrayList>(duplex)
+      shake.write(new Uint8ArrayList(localPeer.toBytes()))
       const remoteId = await shake.read()
 
       if (remoteId == null) {
@@ -77,9 +78,9 @@ export function mockConnectionEncrypter () {
       shake.rest()
 
       // 2. Create your encryption box/unbox wrapper
-      const wrapper = duplexPair<Uint8Array>()
-      const encrypt = transform()
-      const decrypt = transform()
+      const wrapper = duplexPair<Uint8ArrayList>()
+      const encrypt = transform<Uint8ArrayList>()
+      const decrypt = transform<Uint8ArrayList>()
 
       void pipe(
         wrapper[0], // We write to wrapper
