@@ -120,13 +120,13 @@ export interface Stream extends Duplex<Uint8ArrayList, Uint8ArrayList | Uint8Arr
  * multiplexed, depending on the configuration of the nodes
  * between which the connection is made.
  */
-export interface Connection {
+export interface Connection<T extends Uint8Array | Uint8ArrayList = Uint8Array> {
   id: string
   stat: ConnectionStat
   remoteAddr: Multiaddr
   remotePeer: PeerId
   tags: string[]
-  streams: Stream[]
+  streams: Array<Stream>
 
   newStream: (multicodecs: string | string[], options?: AbortOptions) => Promise<Stream>
   addStream: (stream: Stream) => void
@@ -136,7 +136,7 @@ export interface Connection {
 
 export const symbol = Symbol.for('@libp2p/connection')
 
-export function isConnection (other: any): other is Connection {
+export function isConnection (other: any): other is Connection<Uint8Array | Uint8ArrayList> {
   return other != null && Boolean(other[symbol])
 }
 
