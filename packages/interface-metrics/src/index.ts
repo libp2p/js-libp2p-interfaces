@@ -46,11 +46,11 @@ export interface Stats {
   push: (counter: string, inc: number) => void
 }
 
-export interface TrackStreamOptions <T extends Duplex<Uint8Array>> {
+export interface TrackStreamOptions {
   /**
    * A duplex iterable stream
    */
-  stream: T
+  stream: Duplex<{ byteLength: number }, any>
 
   /**
    * The id of the remote peer that's connected
@@ -111,7 +111,7 @@ export interface StreamMetrics {
    * When the `PeerId` is known, `Metrics.updatePlaceholder` should be called
    * with the placeholder string returned from here, and the known `PeerId`.
    */
-  trackStream: <T extends Duplex<Uint8Array>> (data: TrackStreamOptions<T>) => T
+  trackStream: (data: TrackStreamOptions) => void
 }
 
 /**

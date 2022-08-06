@@ -72,7 +72,7 @@ export interface StreamStat {
  * It may be encrypted and multiplexed depending on the
  * configuration of the nodes.
  */
-export interface Stream<T extends Uint8Array | Uint8ArrayList = Uint8Array> extends Duplex<T> {
+export interface Stream extends Duplex<Uint8ArrayList, Uint8ArrayList | Uint8Array> {
   /**
    * Close a stream for reading and writing
    */
@@ -120,23 +120,23 @@ export interface Stream<T extends Uint8Array | Uint8ArrayList = Uint8Array> exte
  * multiplexed, depending on the configuration of the nodes
  * between which the connection is made.
  */
-export interface Connection<T extends Uint8Array | Uint8ArrayList = Uint8Array> {
+export interface Connection {
   id: string
   stat: ConnectionStat
   remoteAddr: Multiaddr
   remotePeer: PeerId
   tags: string[]
-  streams: Stream<T>[]
+  streams: Stream[]
 
   newStream: (multicodecs: string | string[], options?: AbortOptions) => Promise<Stream>
-  addStream: (stream: Stream<T>) => void
+  addStream: (stream: Stream) => void
   removeStream: (id: string) => void
   close: () => Promise<void>
 }
 
 export const symbol = Symbol.for('@libp2p/connection')
 
-export function isConnection (other: any): other is Connection<Uint8Array | Uint8ArrayList> {
+export function isConnection (other: any): other is Connection {
   return other != null && Boolean(other[symbol])
 }
 

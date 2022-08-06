@@ -47,7 +47,7 @@ type StreamMessage = DataMessage | ResetMessage | CloseMessage | CreateMessage
 class MuxedStream {
   public id: string
   public input: Pushable<Uint8ArrayList>
-  public stream: Stream<Uint8ArrayList>
+  public stream: Stream
   public type: 'initiator' | 'recipient'
 
   private sinkEnded: boolean
@@ -260,8 +260,8 @@ class MuxedStream {
 }
 
 class MockMuxer implements StreamMuxer {
-  public source: Source<Uint8ArrayList>
-  public input: Pushable<Uint8ArrayList>
+  public source: Source<Uint8Array>
+  public input: Pushable<Uint8Array>
   public streamInput: Pushable<StreamMessage>
   public name: string
   public protocol: string = '/mock-muxer/1.0.0'
@@ -295,7 +295,7 @@ class MockMuxer implements StreamMuxer {
   }
 
   // receive incoming messages
-  async sink (source: Source<Uint8ArrayList>) {
+  async sink (source: Source<Uint8Array>) {
     try {
       await pipe(
         abortableSource(source, this.closeController.signal),
@@ -425,7 +425,7 @@ class MockMuxerFactory implements StreamMuxerFactory {
         (source) => map(source, str => new Uint8ArrayList(uint8ArrayFromString(str))),
         async (source) => {
           for await (const buf of source) {
-            mockMuxer.input.push(buf)
+            mockMuxer.input.push(buf.subarray())
           }
         }
       )

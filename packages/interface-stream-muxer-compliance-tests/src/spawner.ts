@@ -9,7 +9,7 @@ import type { StreamMuxer, StreamMuxerInit } from '@libp2p/interface-stream-muxe
 import { Uint8ArrayList } from 'uint8arraylist'
 
 export default async (createMuxer: (init?: StreamMuxerInit) => Promise<StreamMuxer>, nStreams: number, nMsg: number, limit?: number) => {
-  const [dialerSocket, listenerSocket] = duplexPair<Uint8ArrayList>()
+  const [dialerSocket, listenerSocket] = duplexPair<Uint8Array>()
 
   const msg = new Uint8ArrayList(uint8ArrayFromString('simple msg'))
 

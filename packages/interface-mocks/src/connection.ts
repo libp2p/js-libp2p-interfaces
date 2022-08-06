@@ -8,7 +8,7 @@ import type { PeerId } from '@libp2p/interface-peer-id'
 import { mockMultiaddrConnection } from './multiaddr-connection.js'
 import type { Registrar } from '@libp2p/interface-registrar'
 import { mockRegistrar } from './registrar.js'
-import { Dialer, Listener } from '@libp2p/multistream-select'
+import * as mss from '@libp2p/multistream-select'
 import { logger } from '@libp2p/logger'
 import * as STATUS from '@libp2p/interface-connection/status'
 import type { Multiaddr } from '@multiformats/multiaddr'
@@ -16,6 +16,7 @@ import type { StreamMuxer } from '@libp2p/interface-stream-muxer'
 import type { Components } from '@libp2p/components'
 import type { AbortOptions } from '@libp2p/interfaces'
 import errCode from 'err-code'
+import type { Uint8ArrayList } from 'uint8arraylist'
 
 const log = logger('libp2p:mock-connection')
 
@@ -79,8 +80,7 @@ class MockConnection implements Connection {
 
     const id = `${Math.random()}`
     const stream: Stream = this.muxer.newStream(id)
-    const mss = new Dialer(stream)
-    const result = await mss.select(protocols, options)
+    const result = await mss.select(stream, protocols, options)
 
     const streamWithProtocol: Stream = {
       ...stream,
@@ -130,9 +130,8 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
   const muxer = muxerFactory.createStreamMuxer({
     direction: direction,
     onIncomingStream: (muxedStream) => {
-      const mss = new Listener(muxedStream)
       try {
-        mss.handle(registrar.getProtocols())
+        mss.handle(muxedStream, registrar.getProtocols())
           .then(({ stream, protocol }) => {
             log('%s: incoming stream opened on %s', direction, protocol)
             muxedStream = { ...muxedStream, ...stream }
@@ -169,7 +168,7 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
   return connection
 }
 
-export function mockStream (stream: Duplex<Uint8Array>): Stream {
+export function mockStream (stream: Duplex<Uint8ArrayList, Uint8ArrayList | Uint8Array>): Stream {
   return {
     ...stream,
     close: () => {},

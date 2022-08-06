@@ -1,7 +1,6 @@
 import type { Duplex } from 'it-stream-types'
 import type { Direction, Stream } from '@libp2p/interface-connection'
 import type { AbortOptions } from '@libp2p/interfaces'
-import type { Uint8ArrayList } from 'uint8arraylist'
 
 export interface StreamMuxerFactory {
   protocol: string
@@ -11,15 +10,15 @@ export interface StreamMuxerFactory {
 /**
  * A libp2p stream muxer
  */
-export interface StreamMuxer extends Duplex<Uint8ArrayList> {
+export interface StreamMuxer extends Duplex<Uint8Array> {
   protocol: string
 
-  readonly streams: Stream<Uint8ArrayList>[]
+  readonly streams: Stream[]
   /**
    * Initiate a new stream with the given name. If no name is
    * provided, the id of the stream will be used.
    */
-  newStream: (name?: string) => Stream<Uint8ArrayList>
+  newStream: (name?: string) => Stream
 
   /**
    * Close or abort all tracked streams and stop the muxer
@@ -28,8 +27,8 @@ export interface StreamMuxer extends Duplex<Uint8ArrayList> {
 }
 
 export interface StreamMuxerInit extends AbortOptions {
-  onIncomingStream?: (stream: Stream<Uint8ArrayList>) => void
-  onStreamEnd?: (stream: Stream<Uint8ArrayList>) => void
+  onIncomingStream?: (stream: Stream) => void
+  onStreamEnd?: (stream: Stream) => void
 
   /**
    * Outbound stream muxers are opened by the local node, inbound stream muxers are opened by the remote
