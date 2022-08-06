@@ -134,8 +134,7 @@
   "dependencies": {
     "@libp2p/interface-connection": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
-    "it-stream-types": "^1.0.4",
-    "uint8arraylist": "^2.1.2"
+    "it-stream-types": "^1.0.4"
   },
   "devDependencies": {
     "aegir": "^37.4.0"
