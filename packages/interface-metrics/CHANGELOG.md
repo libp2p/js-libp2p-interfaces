@@ -1,3 +1,19 @@
+## [@libp2p/interface-metrics-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-metrics-v2.0.0...@libp2p/interface-metrics-v3.0.0) (2022-08-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* change stream muxer interface (#279)
+
+### Features
+
+* change stream muxer interface ([#279](https://github.com/libp2p/js-libp2p-interfaces/issues/279)) ([1ebe269](https://github.com/libp2p/js-libp2p-interfaces/commit/1ebe26988b6a286f36a4fc5177f502cfb60368a1))
+
+
+### Trivial Changes
+
+* update project config ([#271](https://github.com/libp2p/js-libp2p-interfaces/issues/271)) ([59c0bf5](https://github.com/libp2p/js-libp2p-interfaces/commit/59c0bf5e0b05496fca2e4902632b61bb41fad9e9))
+
 ## [@libp2p/interface-metrics-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-metrics-v1.0.3...@libp2p/interface-metrics-v2.0.0) (2022-07-01)
 
 
