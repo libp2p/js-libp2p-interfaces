@@ -13,8 +13,9 @@ import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Stream } from '@libp2p/interface-connection'
 import type { StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
 import type { Source, Duplex } from 'it-stream-types'
+import { Uint8ArrayList } from 'uint8arraylist'
 
-async function drainAndClose (stream: Duplex<Uint8Array>) {
+async function drainAndClose (stream: Duplex<any>) {
   return await pipe([], stream, drain)
 }
 
@@ -144,7 +145,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
     })
 
     it('Open a stream on one side, write, open a stream on the other side', async () => {
-      const toString = (source: Source<Uint8Array>) => map(source, (u) => uint8ArrayToString(u))
+      const toString = (source: Source<Uint8ArrayList>) => map(source, (u) => uint8ArrayToString(u.subarray()))
       const p = duplexPair<Uint8Array>()
       const onDialerStreamPromise: DeferredPromise<Stream> = defer()
       const onListenerStreamPromise: DeferredPromise<Stream> = defer()
@@ -169,8 +170,8 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       const dialerConn = dialer.newStream()
       const listenerConn = listener.newStream()
 
-      void pipe([uint8ArrayFromString('hey')], dialerConn)
-      void pipe([uint8ArrayFromString('hello')], listenerConn)
+      void pipe([new Uint8ArrayList(uint8ArrayFromString('hey'))], dialerConn)
+      void pipe([new Uint8ArrayList(uint8ArrayFromString('hello'))], listenerConn)
 
       const [
         dialerStream,
