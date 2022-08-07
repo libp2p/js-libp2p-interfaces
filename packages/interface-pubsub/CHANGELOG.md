@@ -1,3 +1,10 @@
+## [@libp2p/interface-pubsub-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-v2.0.0...@libp2p/interface-pubsub-v2.0.1) (2022-08-07)
+
+
+### Dependencies
+
+* update sibling dependencies ([f859920](https://github.com/libp2p/js-libp2p-interfaces/commit/f859920423587ae797ac90ccaa3af8bdf60ae549))
+
 ## [@libp2p/interface-pubsub-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-v1.0.4...@libp2p/interface-pubsub-v2.0.0) (2022-07-31)
 
 
