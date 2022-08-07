@@ -171,7 +171,7 @@
   },
   "devDependencies": {
     "@libp2p/interface-connection-compliance-tests": "^2.0.0",
-    "@libp2p/interface-connection-encrypter-compliance-tests": "^1.0.0",
+    "@libp2p/interface-connection-encrypter-compliance-tests": "^2.0.0",
     "@libp2p/interface-peer-discovery-compliance-tests": "^1.0.0",
     "@libp2p/interface-stream-muxer-compliance-tests": "^3.0.0",
     "aegir": "^37.4.0"
