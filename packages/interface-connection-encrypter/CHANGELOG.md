@@ -1,3 +1,19 @@
+## [@libp2p/interface-connection-encrypter-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-v1.0.3...@libp2p/interface-connection-encrypter-v2.0.0) (2022-08-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* change connection encryption interface to uint8arraylist (#278)
+
+### Features
+
+* change connection encryption interface to uint8arraylist ([#278](https://github.com/libp2p/js-libp2p-interfaces/issues/278)) ([1fa580c](https://github.com/libp2p/js-libp2p-interfaces/commit/1fa580c5a45325dc9384738e9a78a238eabb81c3))
+
+
+### Trivial Changes
+
+* update project config ([#271](https://github.com/libp2p/js-libp2p-interfaces/issues/271)) ([59c0bf5](https://github.com/libp2p/js-libp2p-interfaces/commit/59c0bf5e0b05496fca2e4902632b61bb41fad9e9))
+
 ## [@libp2p/interface-connection-encrypter-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-v1.0.2...@libp2p/interface-connection-encrypter-v1.0.3) (2022-06-27)
 
 
