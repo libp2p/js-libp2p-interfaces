@@ -1,3 +1,24 @@
+## [@libp2p/interface-mocks-v4.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v3.0.3...@libp2p/interface-mocks-v4.0.0) (2022-08-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* change stream muxer interface (#279)
+* change connection encryption interface to uint8arraylist (#278)
+
+### Features
+
+* change connection encryption interface to uint8arraylist ([#278](https://github.com/libp2p/js-libp2p-interfaces/issues/278)) ([1fa580c](https://github.com/libp2p/js-libp2p-interfaces/commit/1fa580c5a45325dc9384738e9a78a238eabb81c3))
+* change stream muxer interface ([#279](https://github.com/libp2p/js-libp2p-interfaces/issues/279)) ([1ebe269](https://github.com/libp2p/js-libp2p-interfaces/commit/1ebe26988b6a286f36a4fc5177f502cfb60368a1))
+
+
+### Dependencies
+
+* update sibling dependencies ([f75e927](https://github.com/libp2p/js-libp2p-interfaces/commit/f75e9271345910e812ad600f936f4f774028e3fe))
+* update sibling dependencies ([d98a5ea](https://github.com/libp2p/js-libp2p-interfaces/commit/d98a5ea604c817cf6da47d9e86eea1e981b48711))
+* update sibling dependencies ([f859920](https://github.com/libp2p/js-libp2p-interfaces/commit/f859920423587ae797ac90ccaa3af8bdf60ae549))
+* update sibling dependencies ([93a89b1](https://github.com/libp2p/js-libp2p-interfaces/commit/93a89b1ca6d35fb5f26963ae7bb10026f3f5d45d))
+
 ## [@libp2p/interface-mocks-v3.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v3.0.2...@libp2p/interface-mocks-v3.0.3) (2022-07-31)
 
 
