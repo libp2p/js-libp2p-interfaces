@@ -15,6 +15,7 @@ import type { TransportTestFixtures } from './index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Connection } from '@libp2p/interface-connection'
 import type { Registrar } from '@libp2p/interface-registrar'
+import { Uint8ArrayList } from 'uint8arraylist'
 
 export default (common: TestSetup<TransportTestFixtures>) => {
   describe('listen', () => {
@@ -85,7 +86,7 @@ export default (common: TestSetup<TransportTestFixtures>) => {
       // Wait for the data send and close to finish
       await Promise.all([
         pipe(
-          [uint8ArrayFromString('Some data that is never handled')],
+          [new Uint8ArrayList(uint8ArrayFromString('Some data that is never handled'))],
           stream1
         ),
         // Closer the listener (will take a couple of seconds to time out)
