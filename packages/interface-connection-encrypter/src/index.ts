@@ -16,7 +16,7 @@ export interface ConnectionEncrypter {
   /**
    * Decrypt incoming data.
    */
-  secureInbound: (localPeer: PeerId, connection: Duplex<Uint8Array> | Duplex<Uint8ArrayList>, remotePeer?: PeerId) => Promise<SecuredConnection>
+  secureInbound: (localPeer: PeerId, connection: Duplex<Uint8Array>, remotePeer?: PeerId) => Promise<SecuredConnection>
 }
 
 export interface SecuredConnection {
