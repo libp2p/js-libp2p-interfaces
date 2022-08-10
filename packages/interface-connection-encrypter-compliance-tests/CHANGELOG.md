@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-encrypter-compliance-tests-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-compliance-tests-v2.0.0...@libp2p/interface-connection-encrypter-compliance-tests-v2.0.1) (2022-08-10)
+
+
+### Bug Fixes
+
+* revert connection encryption change to accept Uint8ArrayLists ([#280](https://github.com/libp2p/js-libp2p-interfaces/issues/280)) ([03d763c](https://github.com/libp2p/js-libp2p-interfaces/commit/03d763c1a6b168bba001783a1fb59af3f7d4e205))
+
 ## [@libp2p/interface-connection-encrypter-compliance-tests-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-compliance-tests-v1.0.2...@libp2p/interface-connection-encrypter-compliance-tests-v2.0.0) (2022-08-07)
 
 
