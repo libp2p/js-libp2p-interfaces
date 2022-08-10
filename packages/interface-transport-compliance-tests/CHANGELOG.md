@@ -1,3 +1,10 @@
+## [@libp2p/interface-transport-compliance-tests-v2.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.4...@libp2p/interface-transport-compliance-tests-v2.0.5) (2022-08-10)
+
+
+### Bug Fixes
+
+* compare bytes in transport test ([#281](https://github.com/libp2p/js-libp2p-interfaces/issues/281)) ([b7d9ef6](https://github.com/libp2p/js-libp2p-interfaces/commit/b7d9ef6f5a43b569997bf9e7c908beb2b861d01d))
+
 ## [@libp2p/interface-transport-compliance-tests-v2.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.3...@libp2p/interface-transport-compliance-tests-v2.0.4) (2022-08-10)
 
 
