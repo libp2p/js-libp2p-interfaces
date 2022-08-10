@@ -9,7 +9,6 @@ import { createMaConnPair } from './utils/index.js'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { ConnectionEncrypter } from '@libp2p/interface-connection-encrypter'
 import type { PeerId } from '@libp2p/interface-peer-id'
-import { Uint8ArrayList } from 'uint8arraylist'
 
 export default (common: TestSetup<ConnectionEncrypter>) => {
   describe('interface-connection-encrypter compliance tests', () => {
@@ -56,7 +55,7 @@ export default (common: TestSetup<ConnectionEncrypter>) => {
       void pipe(inboundResult.conn, inboundResult.conn)
 
       // Send some data and collect the result
-      const input = new Uint8ArrayList(uint8ArrayFromString('data to encrypt'))
+      const input = uint8ArrayFromString('data to encrypt')
       const result = await pipe(
         [input],
         outboundResult.conn,
