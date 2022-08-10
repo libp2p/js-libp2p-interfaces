@@ -21,7 +21,7 @@ export function mockConnectionEncrypter () {
     protocol: 'insecure',
     secureInbound: async (localPeer, duplex, expectedPeer) => {
       // 1. Perform a basic handshake.
-      const shake = handshake<Uint8Array>(duplex as Duplex<Uint8Array>)
+      const shake = handshake<Uint8Array>(duplex)
       shake.write(localPeer.toBytes())
       const remoteId = await shake.read()
 
