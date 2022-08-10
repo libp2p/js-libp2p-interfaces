@@ -5,7 +5,7 @@ import { pipe } from 'it-pipe'
 import { UnexpectedPeerError } from '@libp2p/interface-connection-encrypter/errors'
 import { Multiaddr } from '@multiformats/multiaddr'
 import type { ConnectionEncrypter } from '@libp2p/interface-connection-encrypter'
-import type { Transform, Source, Duplex } from 'it-stream-types'
+import type { Transform, Source } from 'it-stream-types'
 
 // A basic transform that does nothing to the data
 const transform = <T>(): Transform<T, T> => {
@@ -66,7 +66,7 @@ export function mockConnectionEncrypter () {
     },
     secureOutbound: async (localPeer, duplex, remotePeer) => {
       // 1. Perform a basic handshake.
-      const shake = handshake<Uint8Array>(duplex as Duplex<Uint8Array>)
+      const shake = handshake<Uint8Array>(duplex)
       shake.write(localPeer.toBytes())
       const remoteId = await shake.read()
 
