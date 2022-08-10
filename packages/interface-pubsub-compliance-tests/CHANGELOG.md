@@ -1,3 +1,10 @@
+## [@libp2p/interface-pubsub-compliance-tests-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v2.0.1...@libp2p/interface-pubsub-compliance-tests-v2.0.2) (2022-08-10)
+
+
+### Dependencies
+
+* update sibling dependencies ([fc4c49c](https://github.com/libp2p/js-libp2p-interfaces/commit/fc4c49c22334b9f2059b08e13ba94f3e8938482e))
+
 ## [@libp2p/interface-pubsub-compliance-tests-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v2.0.0...@libp2p/interface-pubsub-compliance-tests-v2.0.1) (2022-07-31)
 
 
