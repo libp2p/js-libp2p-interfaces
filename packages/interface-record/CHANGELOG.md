@@ -1,3 +1,10 @@
+## [@libp2p/interface-record-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-record-v2.0.0...@libp2p/interface-record-v2.0.1) (2022-08-11)
+
+
+### Bug Fixes
+
+* update marshal type ([#282](https://github.com/libp2p/js-libp2p-interfaces/issues/282)) ([2c04ff9](https://github.com/libp2p/js-libp2p-interfaces/commit/2c04ff98097ba33dc64878b788c6b9318d2ea98b))
+
 ## [@libp2p/interface-record-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-record-v1.0.2...@libp2p/interface-record-v2.0.0) (2022-08-03)
 
 
