@@ -6,6 +6,7 @@ import { UnexpectedPeerError } from '@libp2p/interface-connection-encrypter/erro
 import { Multiaddr } from '@multiformats/multiaddr'
 import type { ConnectionEncrypter } from '@libp2p/interface-connection-encrypter'
 import type { Transform, Source } from 'it-stream-types'
+import map from 'it-map'
 
 // A basic transform that does nothing to the data
 const transform = <T>(): Transform<T, T> => {
@@ -45,6 +46,7 @@ export function mockConnectionEncrypter () {
         wrapper[0], // We write to wrapper
         encrypt, // The data is encrypted
         shake.stream, // It goes to the remote peer
+        source => map(source, (list) => list.subarray()), // turn lists into arrays
         decrypt, // Decrypt the incoming data
         wrapper[0] // Pipe to the wrapper
       )
@@ -85,6 +87,7 @@ export function mockConnectionEncrypter () {
         wrapper[0], // We write to wrapper
         encrypt, // The data is encrypted
         shake.stream, // It goes to the remote peer
+        source => map(source, (list) => list.subarray()), // turn lists into arrays
         decrypt, // Decrypt the incoming data
         wrapper[0] // Pipe to the wrapper
       )
