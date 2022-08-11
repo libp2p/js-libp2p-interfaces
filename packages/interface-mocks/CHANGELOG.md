@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v4.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v4.0.1...@libp2p/interface-mocks-v4.0.2) (2022-08-11)
+
+
+### Bug Fixes
+
+* update marshal type ([#282](https://github.com/libp2p/js-libp2p-interfaces/issues/282)) ([2c04ff9](https://github.com/libp2p/js-libp2p-interfaces/commit/2c04ff98097ba33dc64878b788c6b9318d2ea98b))
+
 ## [@libp2p/interface-mocks-v4.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v4.0.0...@libp2p/interface-mocks-v4.0.1) (2022-08-10)
 
 
