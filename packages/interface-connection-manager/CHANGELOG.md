@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-manager-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.0.3...@libp2p/interface-connection-manager-v1.1.0) (2022-09-09)
+
+
+### Features
+
+* add dialer interface ([#285](https://github.com/libp2p/js-libp2p-interfaces/issues/285)) ([1e62df4](https://github.com/libp2p/js-libp2p-interfaces/commit/1e62df4f15b45abe62fe8400dbd88866a2bc13cd))
+
 ## [@libp2p/interface-connection-manager-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.0.2...@libp2p/interface-connection-manager-v1.0.3) (2022-08-07)
 
 
