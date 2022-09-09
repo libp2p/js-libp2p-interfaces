@@ -2,6 +2,7 @@ import type { AbortOptions } from '@libp2p/interfaces'
 import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Connection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
+import type { Multiaddr } from '@multiformats/multiaddr'
 
 export interface ConnectionManagerEvents {
   'peer:connect': CustomEvent<Connection>
@@ -23,4 +24,21 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
    * Close our connections to a peer
    */
   closeConnections: (peer: PeerId) => Promise<void>
+}
+
+export interface Dialer {
+  /**
+   * Dial a peer or multiaddr and return the promise of a connection
+   */
+  dial: (peer: PeerId | Multiaddr, options?: AbortOptions) => Promise<Connection>
+
+  /**
+   * Request `num` dial tokens. Only the returned number of dials may be attempted.
+   */
+  getTokens: (num: number) => number[]
+
+  /**
+   * After a dial attempt succeeds or fails, return the passed token to the pool
+   */
+  releaseToken: (token: number) => void
 }

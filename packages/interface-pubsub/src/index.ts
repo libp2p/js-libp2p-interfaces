@@ -133,7 +133,7 @@ export interface PublishResult {
   recipients: PeerId[]
 }
 
-export interface PubSub<Events = PubSubEvents> extends EventEmitter<Events> {
+export interface PubSub<Events extends { [s: string]: any } = PubSubEvents> extends EventEmitter<Events> {
   globalSignaturePolicy: typeof StrictSign | typeof StrictNoSign
   multicodecs: string[]
 
