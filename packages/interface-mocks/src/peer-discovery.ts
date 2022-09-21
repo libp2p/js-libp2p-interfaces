@@ -1,4 +1,4 @@
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { EventEmitter, CustomEvent } from '@libp2p/interfaces/events'
 import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interface-peer-discovery'
@@ -55,7 +55,7 @@ export class MockDiscovery extends EventEmitter<PeerDiscoveryEvents> implements 
           this.dispatchEvent(new CustomEvent<PeerInfo>('peer', {
             detail: {
               id: peerId,
-              multiaddrs: [new Multiaddr('/ip4/127.0.0.1/tcp/8000')],
+              multiaddrs: [multiaddr('/ip4/127.0.0.1/tcp/8000')],
               protocols: []
             }
           }))

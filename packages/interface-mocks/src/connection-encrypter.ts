@@ -3,7 +3,7 @@ import { handshake } from 'it-handshake'
 import { duplexPair } from 'it-pair/duplex'
 import { pipe } from 'it-pipe'
 import { UnexpectedPeerError } from '@libp2p/interface-connection-encrypter/errors'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import type { ConnectionEncrypter } from '@libp2p/interface-connection-encrypter'
 import type { Transform, Source } from 'it-stream-types'
 import map from 'it-map'
@@ -55,8 +55,8 @@ export function mockConnectionEncrypter () {
         conn: {
           ...wrapper[1],
           close: async () => {},
-          localAddr: new Multiaddr('/ip4/127.0.0.1/tcp/4001'),
-          remoteAddr: new Multiaddr('/ip4/127.0.0.1/tcp/4002'),
+          localAddr: multiaddr('/ip4/127.0.0.1/tcp/4001'),
+          remoteAddr: multiaddr('/ip4/127.0.0.1/tcp/4002'),
           timeline: {
             open: Date.now()
           },
@@ -96,8 +96,8 @@ export function mockConnectionEncrypter () {
         conn: {
           ...wrapper[1],
           close: async () => {},
-          localAddr: new Multiaddr('/ip4/127.0.0.1/tcp/4001'),
-          remoteAddr: new Multiaddr('/ip4/127.0.0.1/tcp/4002'),
+          localAddr: multiaddr('/ip4/127.0.0.1/tcp/4001'),
+          remoteAddr: multiaddr('/ip4/127.0.0.1/tcp/4002'),
           timeline: {
             open: Date.now()
           },

@@ -1,5 +1,5 @@
 import { duplexPair } from 'it-pair/duplex'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import type { MultiaddrConnection } from '@libp2p/interface-connection'
 import type { Duplex } from 'it-stream-types'
 
@@ -10,7 +10,7 @@ export function createMaConnPair (): [MultiaddrConnection, MultiaddrConnection] 
     const output: MultiaddrConnection = {
       ...duplex,
       close: async () => {},
-      remoteAddr: new Multiaddr('/ip4/127.0.0.1/tcp/4001'),
+      remoteAddr: multiaddr('/ip4/127.0.0.1/tcp/4001'),
       timeline: {
         open: Date.now()
       }

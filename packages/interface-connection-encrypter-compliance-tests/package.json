@@ -137,7 +137,7 @@
     "@libp2p/interface-connection-encrypter": "^2.0.0",
     "@libp2p/interface-peer-id": "^1.0.0",
     "@libp2p/peer-id-factory": "^1.0.12",
-    "@multiformats/multiaddr": "^10.2.0",
+    "@multiformats/multiaddr": "^11.0.0",
     "aegir": "^37.4.0",
     "it-all": "^1.0.6",
     "it-pair": "^2.0.2",
