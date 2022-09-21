@@ -1,3 +1,10 @@
+## [@libp2p/interface-transport-compliance-tests-v2.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.5...@libp2p/interface-transport-compliance-tests-v2.0.6) (2022-09-21)
+
+
+### Dependencies
+
+* update @multiformats/multiaddr to 11.0.0 ([#288](https://github.com/libp2p/js-libp2p-interfaces/issues/288)) ([57b2ad8](https://github.com/libp2p/js-libp2p-interfaces/commit/57b2ad88edfc7807311143791bc49270b1a81eaf))
+
 ## [@libp2p/interface-transport-compliance-tests-v2.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.4...@libp2p/interface-transport-compliance-tests-v2.0.5) (2022-08-10)
 
 
