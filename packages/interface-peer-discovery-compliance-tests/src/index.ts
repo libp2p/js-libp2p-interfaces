@@ -1,5 +1,5 @@
 import { expect } from 'aegir/chai'
-import { Multiaddr } from '@multiformats/multiaddr'
+import { isMultiaddr } from '@multiformats/multiaddr'
 import delay from 'delay'
 import pDefer from 'p-defer'
 import { start, stop } from '@libp2p/interfaces/startable'
@@ -50,7 +50,7 @@ export default (common: TestSetup<PeerDiscovery & Startable>) => {
         expect(id).to.have.property('type').that.is.oneOf(['RSA', 'Ed25519', 'secp256k1'])
         expect(multiaddrs).to.exist()
 
-        multiaddrs.forEach((m) => expect(Multiaddr.isMultiaddr(m)).to.eql(true))
+        multiaddrs.forEach((m) => expect(isMultiaddr(m)).to.eql(true))
 
         defer.resolve()
       })

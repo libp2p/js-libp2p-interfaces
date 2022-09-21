@@ -134,7 +134,7 @@
   "dependencies": {
     "@libp2p/interface-connection": "^3.0.0",
     "@libp2p/interfaces": "^3.0.0",
-    "@multiformats/multiaddr": "^10.2.0",
+    "@multiformats/multiaddr": "^11.0.0",
     "it-stream-types": "^1.0.4"
   },
   "devDependencies": {

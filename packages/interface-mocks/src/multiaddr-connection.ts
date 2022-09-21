@@ -1,9 +1,10 @@
-import { Multiaddr } from '@multiformats/multiaddr'
+import { multiaddr } from '@multiformats/multiaddr'
 import { duplexPair } from 'it-pair/duplex'
 import { abortableSource } from 'abortable-iterator'
 import type { MultiaddrConnection } from '@libp2p/interface-connection'
 import type { Duplex } from 'it-stream-types'
 import type { PeerId } from '@libp2p/interface-peer-id'
+import type { Multiaddr } from '@multiformats/multiaddr'
 
 export function mockMultiaddrConnection (source: Duplex<Uint8Array> & Partial<MultiaddrConnection>, peerId: PeerId): MultiaddrConnection {
   const maConn: MultiaddrConnection = {
@@ -13,7 +14,7 @@ export function mockMultiaddrConnection (source: Duplex<Uint8Array> & Partial<Mu
     timeline: {
       open: Date.now()
     },
-    remoteAddr: new Multiaddr(`/ip4/127.0.0.1/tcp/4001/p2p/${peerId.toString()}`),
+    remoteAddr: multiaddr(`/ip4/127.0.0.1/tcp/4001/p2p/${peerId.toString()}`),
     ...source
   }
 
