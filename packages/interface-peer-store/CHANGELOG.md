@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-store-v1.2.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v1.2.1...@libp2p/interface-peer-store-v1.2.2) (2022-09-21)
+
+
+### Dependencies
+
+* update @multiformats/multiaddr to 11.0.0 ([#289](https://github.com/libp2p/js-libp2p-interfaces/issues/289)) ([81daf98](https://github.com/libp2p/js-libp2p-interfaces/commit/81daf9803a952cc8241c0956272b7f5625088636))
+
 ## [@libp2p/interface-peer-store-v1.2.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v1.2.0...@libp2p/interface-peer-store-v1.2.1) (2022-08-03)
 
 
