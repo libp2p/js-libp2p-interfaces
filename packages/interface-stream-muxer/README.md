@@ -18,7 +18,7 @@
   - [`const muxer = new Muxer([options])`](#const-muxer--new-muxeroptions)
   - [`muxer.onStream`](#muxeronstream)
   - [`muxer.onStreamEnd`](#muxeronstreamend)
-  - [`const stream = muxer.newStream([options])`](#const-stream--muxernewstreamoptions)
+  - [`const stream = await muxer.newStream([options])`](#const-stream--muxernewstreamoptions)
   - [`const streams = muxer.streams`](#const-streams--muxerstreams)
 - [License](#license)
 - [Contribution](#contribution)
@@ -150,7 +150,7 @@ const muxer = new Muxer()
 muxer.onStreamEnd = stream => { /* ... */ }
 ```
 
-### `const stream = muxer.newStream([options])`
+### `const stream = await muxer.newStream([options])`
 
 Initiate a new stream with the remote. Returns a [duplex stream](https://gist.github.com/alanshaw/591dc7dd54e4f99338a347ef568d6ee9#duplex-it).
 
@@ -158,7 +158,7 @@ e.g.
 
 ```js
 // Create a new stream on the muxed connection
-const stream = muxer.newStream()
+const stream = await muxer.newStream()
 
 // Use this new stream like any other duplex stream:
 pipe([1, 2, 3], stream, consume)

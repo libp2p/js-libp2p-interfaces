@@ -79,7 +79,7 @@ class MockConnection implements Connection {
     }
 
     const id = `${Math.random()}`
-    const stream: Stream = this.muxer.newStream(id)
+    const stream: Stream = await this.muxer.newStream(id)
     const result = await mss.select(stream, protocols, options)
 
     const streamWithProtocol: Stream = {

@@ -18,7 +18,7 @@ export interface StreamMuxer extends Duplex<Uint8Array> {
    * Initiate a new stream with the given name. If no name is
    * provided, the id of the stream will be used.
    */
-  newStream: (name?: string) => Stream
+  newStream: (name?: string) => Stream | Promise<Stream>
 
   /**
    * Close or abort all tracked streams and stop the muxer
