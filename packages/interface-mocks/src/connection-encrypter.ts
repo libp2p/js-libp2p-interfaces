@@ -63,7 +63,8 @@ export function mockConnectionEncrypter () {
           conn: true
         },
         remotePeer,
-        remoteEarlyData: new Uint8Array(0)
+        remoteEarlyData: new Uint8Array(0),
+        remoteExtensions: {}
       }
     },
     secureOutbound: async (localPeer, duplex, remotePeer) => {
@@ -104,7 +105,8 @@ export function mockConnectionEncrypter () {
           conn: true
         },
         remotePeer: peerIdFromBytes(remoteId.slice()),
-        remoteEarlyData: new Uint8Array(0)
+        remoteEarlyData: new Uint8Array(0),
+        remoteExtensions: {}
       }
     }
   }
