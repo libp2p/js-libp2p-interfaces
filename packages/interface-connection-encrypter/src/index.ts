@@ -9,12 +9,16 @@ export interface ConnectionEncrypter {
   protocol: string
 
   /**
-   * Encrypt outgoing data to the remote party.
+   * Encrypt outgoing data to the remote party. If the remote PeerId is known,
+   * pass it for extra verification, otherwise it will be determined during
+   * the handshake.
    */
-  secureOutbound: (localPeer: PeerId, connection: Duplex<Uint8Array>, remotePeer: PeerId) => Promise<SecuredConnection>
+  secureOutbound: (localPeer: PeerId, connection: Duplex<Uint8Array>, remotePeer?: PeerId) => Promise<SecuredConnection>
 
   /**
-   * Decrypt incoming data.
+   * Decrypt incoming data. If the remote PeerId is known,
+   * pass it for extra verification, otherwise it will be determined during
+   * the handshake
    */
   secureInbound: (localPeer: PeerId, connection: Duplex<Uint8Array>, remotePeer?: PeerId) => Promise<SecuredConnection>
 }
