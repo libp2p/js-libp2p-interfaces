@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-encrypter-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-v2.0.1...@libp2p/interface-connection-encrypter-v2.0.2) (2022-09-30)
+
+
+### Bug Fixes
+
+* make outbound peer id optional ([#294](https://github.com/libp2p/js-libp2p-interfaces/issues/294)) ([6724ffe](https://github.com/libp2p/js-libp2p-interfaces/commit/6724ffef0d170dba2d4c9973b46334fc421f8ea8))
+
 ## [@libp2p/interface-connection-encrypter-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-v2.0.0...@libp2p/interface-connection-encrypter-v2.0.1) (2022-08-10)
 
 
