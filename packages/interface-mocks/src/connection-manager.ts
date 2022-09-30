@@ -134,6 +134,10 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
 
     await componentsB.getConnectionManager().closeConnections(this.components.getPeerId())
   }
+
+  async acceptIncomingConnection () {
+
+  }
 }
 
 export function mockConnectionManager () {
