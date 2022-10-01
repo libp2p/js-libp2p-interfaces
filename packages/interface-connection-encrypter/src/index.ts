@@ -25,6 +25,6 @@ export interface ConnectionEncrypter<Extension = unknown> {
 
 export interface SecuredConnection<E> {
   conn: Duplex<Uint8Array>
-  remoteExtensions: E
+  remoteExtensions?: E
   remotePeer: PeerId
 }
