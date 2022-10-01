@@ -5,7 +5,7 @@ import type { Duplex } from 'it-stream-types'
  * A libp2p connection encrypter module must be compliant to this interface
  * to ensure all exchanged data between two peers is encrypted.
  */
-export interface ConnectionEncrypter<Extension = any> {
+export interface ConnectionEncrypter<Extension = unknown> {
   protocol: string
 
   /**
@@ -25,7 +25,6 @@ export interface ConnectionEncrypter<Extension = any> {
 
 export interface SecuredConnection<E> {
   conn: Duplex<Uint8Array>
-  remoteEarlyData: Uint8Array
   remoteExtensions: E
   remotePeer: PeerId
 }
