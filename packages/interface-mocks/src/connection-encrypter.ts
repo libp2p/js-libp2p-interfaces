@@ -54,7 +54,7 @@ export function mockConnectionEncrypter () {
       return {
         conn: {
           ...wrapper[1],
-          close: async () => {},
+          close: async () => { },
           localAddr: multiaddr('/ip4/127.0.0.1/tcp/4001'),
           remoteAddr: multiaddr('/ip4/127.0.0.1/tcp/4002'),
           timeline: {
@@ -95,7 +95,7 @@ export function mockConnectionEncrypter () {
       return {
         conn: {
           ...wrapper[1],
-          close: async () => {},
+          close: async () => { },
           localAddr: multiaddr('/ip4/127.0.0.1/tcp/4001'),
           remoteAddr: multiaddr('/ip4/127.0.0.1/tcp/4002'),
           timeline: {
