@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-manager-v1.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.1.1...@libp2p/interface-connection-manager-v1.2.0) (2022-10-04)
+
+
+### Features
+
+* add acceptIncomingConnection to ConnectionManager ([#295](https://github.com/libp2p/js-libp2p-interfaces/issues/295)) ([5d460e8](https://github.com/libp2p/js-libp2p-interfaces/commit/5d460e8815a8b49915da7ffabccc4a8b96a61acc))
+
 ## [@libp2p/interface-connection-manager-v1.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.1.0...@libp2p/interface-connection-manager-v1.1.1) (2022-09-21)
 
 
