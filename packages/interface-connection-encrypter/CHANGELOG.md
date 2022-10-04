@@ -1,3 +1,14 @@
+## [@libp2p/interface-connection-encrypter-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-v2.0.2...@libp2p/interface-connection-encrypter-v3.0.0) (2022-10-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* Add remoteExtensions to connection-encrypter (#293)
+
+### Features
+
+* Add remoteExtensions to connection-encrypter ([#293](https://github.com/libp2p/js-libp2p-interfaces/issues/293)) ([501c684](https://github.com/libp2p/js-libp2p-interfaces/commit/501c684d792cd910de7cb9bfbda349db257ee2ca))
+
 ## [@libp2p/interface-connection-encrypter-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-v2.0.1...@libp2p/interface-connection-encrypter-v2.0.2) (2022-09-30)
 
 
