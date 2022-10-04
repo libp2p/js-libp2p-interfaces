@@ -28,10 +28,10 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
   /**
    * Invoked after an incoming connection is opened but before PeerIds are
    * exchanged, this lets the ConnectionManager check we have sufficient
-   * resources to accept the connection, otherwise it will be closed and an
-   * error thrown
+   * resources to accept the connection in which case it will return true,
+   * otherwise it will return false.
    */
-  acceptIncomingConnection: (maConn: MultiaddrConnection) => Promise<void>
+  acceptIncomingConnection: (maConn: MultiaddrConnection) => Promise<boolean>
 }
 
 export interface Dialer {
