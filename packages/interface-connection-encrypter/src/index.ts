@@ -23,8 +23,8 @@ export interface ConnectionEncrypter<Extension = unknown> {
   secureInbound: (localPeer: PeerId, connection: Duplex<Uint8Array>, remotePeer?: PeerId) => Promise<SecuredConnection<Extension>>
 }
 
-export interface SecuredConnection<E> {
+export interface SecuredConnection<Extension = unknown> {
   conn: Duplex<Uint8Array>
-  remoteExtensions?: E
+  remoteExtensions?: Extension
   remotePeer: PeerId
 }
