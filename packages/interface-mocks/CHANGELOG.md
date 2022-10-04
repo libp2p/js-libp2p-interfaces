@@ -1,3 +1,19 @@
+## [@libp2p/interface-mocks-v5.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v4.0.3...@libp2p/interface-mocks-v5.0.0) (2022-10-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* Add remoteExtensions to connection-encrypter (#293)
+
+### Features
+
+* Add remoteExtensions to connection-encrypter ([#293](https://github.com/libp2p/js-libp2p-interfaces/issues/293)) ([501c684](https://github.com/libp2p/js-libp2p-interfaces/commit/501c684d792cd910de7cb9bfbda349db257ee2ca))
+
+
+### Dependencies
+
+* update sibling dependencies ([419f947](https://github.com/libp2p/js-libp2p-interfaces/commit/419f9479e8bba5d0555fe20a6fb9f0cf12a82cf9))
+
 ## [@libp2p/interface-mocks-v4.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v4.0.2...@libp2p/interface-mocks-v4.0.3) (2022-09-21)
 
 
