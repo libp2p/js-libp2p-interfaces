@@ -1,6 +1,6 @@
 import type { AbortOptions } from '@libp2p/interfaces'
 import type { EventEmitter } from '@libp2p/interfaces/events'
-import type { Connection } from '@libp2p/interface-connection'
+import type { Connection, MultiaddrConnection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Multiaddr } from '@multiformats/multiaddr'
 
@@ -24,6 +24,14 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
    * Close our connections to a peer
    */
   closeConnections: (peer: PeerId) => Promise<void>
+
+  /**
+   * Invoked after an incoming connection is opened but before PeerIds are
+   * exchanged, this lets the ConnectionManager check we have sufficient
+   * resources to accept the connection in which case it will return true,
+   * otherwise it will return false.
+   */
+  acceptIncomingConnection: (maConn: MultiaddrConnection) => Promise<boolean>
 }
 
 export interface Dialer {
