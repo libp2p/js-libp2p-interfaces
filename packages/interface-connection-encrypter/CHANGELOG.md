@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-encrypter-v3.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-v3.0.0...@libp2p/interface-connection-encrypter-v3.0.1) (2022-10-04)
+
+
+### Bug Fixes
+
+* add default extension type ([#296](https://github.com/libp2p/js-libp2p-interfaces/issues/296)) ([ab658bc](https://github.com/libp2p/js-libp2p-interfaces/commit/ab658bc1b11e411e685388acb9da8f65d62ef919))
+
 ## [@libp2p/interface-connection-encrypter-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-v2.0.2...@libp2p/interface-connection-encrypter-v3.0.0) (2022-10-04)
 
 
