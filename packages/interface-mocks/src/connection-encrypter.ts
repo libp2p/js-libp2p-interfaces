@@ -54,7 +54,7 @@ export function mockConnectionEncrypter () {
       return {
         conn: {
           ...wrapper[1],
-          close: async () => {},
+          close: async () => { },
           localAddr: multiaddr('/ip4/127.0.0.1/tcp/4001'),
           remoteAddr: multiaddr('/ip4/127.0.0.1/tcp/4002'),
           timeline: {
@@ -63,7 +63,7 @@ export function mockConnectionEncrypter () {
           conn: true
         },
         remotePeer,
-        remoteEarlyData: new Uint8Array(0)
+        remoteExtensions: {}
       }
     },
     secureOutbound: async (localPeer, duplex, remotePeer) => {
@@ -95,7 +95,7 @@ export function mockConnectionEncrypter () {
       return {
         conn: {
           ...wrapper[1],
-          close: async () => {},
+          close: async () => { },
           localAddr: multiaddr('/ip4/127.0.0.1/tcp/4001'),
           remoteAddr: multiaddr('/ip4/127.0.0.1/tcp/4002'),
           timeline: {
@@ -104,7 +104,7 @@ export function mockConnectionEncrypter () {
           conn: true
         },
         remotePeer: peerIdFromBytes(remoteId.slice()),
-        remoteEarlyData: new Uint8Array(0)
+        remoteExtensions: {}
       }
     }
   }
