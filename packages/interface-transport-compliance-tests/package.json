@@ -136,7 +136,7 @@
     "@libp2p/interface-connection": "^3.0.0",
     "@libp2p/interface-mocks": "^5.0.0",
     "@libp2p/interface-registrar": "^2.0.0",
-    "@libp2p/interface-transport": "^1.0.0",
+    "@libp2p/interface-transport": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@multiformats/multiaddr": "^11.0.0",
     "aegir": "^37.4.0",
