@@ -47,7 +47,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const streams = Array(expectedStreams).fill(0).map(() => dialer.newStream())
+      const streams = await Promise.all(Array(expectedStreams).fill(0).map(() => dialer.newStream()))
 
       void Promise.all(
         streams.map(async stream => {
@@ -89,7 +89,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const streams = Array(expectedStreams).fill(0).map(() => dialer.newStream())
+      const streams = await Promise.all(Array(expectedStreams).fill(0).map(() => dialer.newStream()))
 
       void Promise.all(
         streams.map(async stream => {
@@ -132,7 +132,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const streams = Array(expectedStreams).fill(0).map(() => dialer.newStream())
+      const streams = await Promise.all(Array(expectedStreams).fill(0).map(() => dialer.newStream()))
 
       const streamPipes = streams.map(async stream => {
         return await pipe(
@@ -176,7 +176,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       dialer.close()
 
       try {
-        dialer.newStream()
+        await dialer.newStream()
         expect.fail('newStream should throw if called after close')
       } catch (e) {
         expect(dialer.streams, 'closed muxer should have no streams').to.have.lengthOf(0)
@@ -200,8 +200,8 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const stream = dialer.newStream()
-      const streams = Array.from(Array(5), () => dialer.newStream())
+      const stream = await dialer.newStream()
+      const streams = await Promise.all(Array.from(Array(5), () => dialer.newStream()))
       let closed = false
       const controllers: AbortController[] = []
 
@@ -271,7 +271,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const stream = dialer.newStream()
+      const stream = await dialer.newStream()
       await stream.sink(data)
 
       const err = await deferred.promise
@@ -297,7 +297,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const stream = dialer.newStream()
+      const stream = await dialer.newStream()
       await stream.closeRead()
 
       // Source should be done

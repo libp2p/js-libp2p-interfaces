@@ -30,7 +30,7 @@ export default async (createMuxer: (init?: StreamMuxerInit) => Promise<StreamMux
   void pipe(dialerSocket, dialer, dialerSocket)
 
   const spawnStream = async () => {
-    const stream = dialer.newStream()
+    const stream = await dialer.newStream()
     expect(stream).to.exist // eslint-disable-line
 
     const res = await pipe(

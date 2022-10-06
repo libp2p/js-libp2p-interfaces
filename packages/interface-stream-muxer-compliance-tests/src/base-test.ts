@@ -42,7 +42,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const conn = dialer.newStream()
+      const conn = await dialer.newStream()
       expect(dialer.streams).to.include(conn)
       expect(isValidTick(conn.stat.timeline.open)).to.equal(true)
 
@@ -91,7 +91,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const conn = listener.newStream()
+      const conn = await listener.newStream()
 
       void drainAndClose(conn)
 
@@ -128,8 +128,8 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const dialerInitiatorStream = dialer.newStream()
-      const listenerInitiatorStream = listener.newStream()
+      const dialerInitiatorStream = await dialer.newStream()
+      const listenerInitiatorStream = await listener.newStream()
 
       await Promise.all([
         drainAndClose(dialerInitiatorStream),
@@ -167,8 +167,8 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const dialerConn = dialer.newStream()
-      const listenerConn = listener.newStream()
+      const dialerConn = await dialer.newStream()
+      const listenerConn = await listener.newStream()
 
       void pipe([new Uint8ArrayList(uint8ArrayFromString('hey'))], dialerConn)
       void pipe([new Uint8ArrayList(uint8ArrayFromString('hello'))], listenerConn)

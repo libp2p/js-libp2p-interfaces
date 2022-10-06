@@ -1,5 +1,6 @@
 import type { AbortOptions } from '@libp2p/interfaces'
 import type { EventEmitter } from '@libp2p/interfaces/events'
+import type { StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Connection, MultiaddrConnection } from '@libp2p/interface-connection'
 import type { Duplex } from 'it-stream-types'
@@ -78,16 +79,22 @@ export interface UpgraderEvents {
   'connectionEnd': CustomEvent<Connection>
 }
 
+export interface UpgraderOptions {
+  skipEncryption?: boolean
+  skipProtection?: boolean
+  muxerFactory?: StreamMuxerFactory
+}
+
 export interface Upgrader extends EventEmitter<UpgraderEvents> {
   /**
    * Upgrades an outbound connection on `transport.dial`.
    */
-  upgradeOutbound: (maConn: MultiaddrConnection) => Promise<Connection>
+  upgradeOutbound: (maConn: MultiaddrConnection, opts?: UpgraderOptions) => Promise<Connection>
 
   /**
    * Upgrades an inbound connection on transport listener.
    */
-  upgradeInbound: (maConn: MultiaddrConnection) => Promise<Connection>
+  upgradeInbound: (maConn: MultiaddrConnection, opts?: UpgraderOptions) => Promise<Connection>
 }
 
 export interface ProtocolHandler {
