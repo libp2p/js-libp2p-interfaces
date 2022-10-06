@@ -1,3 +1,23 @@
+## [@libp2p/interface-mocks-v6.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v5.1.0...@libp2p/interface-mocks-v6.0.0) (2022-10-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* the return type of StreamMuxer.newStream can now return a promise
+
+Co-authored-by: Marco Munizaga <marco@marcopolo.io>
+
+### Features
+
+* add upgrader options ([#290](https://github.com/libp2p/js-libp2p-interfaces/issues/290)) ([c502b66](https://github.com/libp2p/js-libp2p-interfaces/commit/c502b66d87020eb8e2768c49be17392c55503f69))
+
+
+### Dependencies
+
+* update sibling dependencies ([0fae3ee](https://github.com/libp2p/js-libp2p-interfaces/commit/0fae3ee43fab43293fb290654a927b5c5c5759fc))
+* update sibling dependencies ([8a89a05](https://github.com/libp2p/js-libp2p-interfaces/commit/8a89a054e95827dd8cccc033669e17ae58059fbc))
+* update sibling dependencies ([66b4993](https://github.com/libp2p/js-libp2p-interfaces/commit/66b49938a09eeb12bf8ec8d78938d5cffd6ec134))
+
 ## [@libp2p/interface-mocks-v5.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v5.0.0...@libp2p/interface-mocks-v5.1.0) (2022-10-04)
 
 
