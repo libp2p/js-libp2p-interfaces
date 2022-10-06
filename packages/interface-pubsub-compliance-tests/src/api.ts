@@ -11,7 +11,7 @@ import type { Components } from '@libp2p/components'
 import { createComponents } from './utils.js'
 import { isStartable, start, stop } from '@libp2p/interfaces/startable'
 import { mockNetwork } from '@libp2p/interface-mocks'
-import { PeerId } from '@libp2p/interface-peer-id'
+import type { PeerId } from '@libp2p/interface-peer-id'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
@@ -120,11 +120,11 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       pubsub.subscribe(topic)
       pubsub.topicValidators.set(topic, (peer: PeerId, message: Message) => {
-        expect(peer).to.be.equal(components.getPeerId());
+        expect(peer).to.be.equal(components.getPeerId())
         expect(message).to.exist()
         expect(message).to.have.nested.property('data', data)
         expect(message).to.have.nested.property('topic', topic)
-        defer.resolve();
+        defer.resolve()
         return TopicValidatorResult.Accept
       })
       await pubsub.publish(topic, data)

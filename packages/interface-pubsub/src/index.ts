@@ -143,7 +143,9 @@ export enum TopicValidatorResult {
   Reject = 'reject'
 }
 
-export type TopicValidatorFn = (peer: PeerId, message: Message) => TopicValidatorResult | Promise<TopicValidatorResult>
+export interface TopicValidatorFn {
+  (peer: PeerId, message: Message): TopicValidatorResult | Promise<TopicValidatorResult>
+}
 
 export interface PubSub<Events extends { [s: string]: any } = PubSubEvents> extends EventEmitter<Events> {
   globalSignaturePolicy: typeof StrictSign | typeof StrictNoSign
