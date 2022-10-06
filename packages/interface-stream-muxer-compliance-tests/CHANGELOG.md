@@ -1,3 +1,21 @@
+## [@libp2p/interface-stream-muxer-compliance-tests-v5.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v4.0.0...@libp2p/interface-stream-muxer-compliance-tests-v5.0.0) (2022-10-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* the return type of StreamMuxer.newStream can now return a promise
+
+Co-authored-by: Marco Munizaga <marco@marcopolo.io>
+
+### Features
+
+* add upgrader options ([#290](https://github.com/libp2p/js-libp2p-interfaces/issues/290)) ([c502b66](https://github.com/libp2p/js-libp2p-interfaces/commit/c502b66d87020eb8e2768c49be17392c55503f69))
+
+
+### Dependencies
+
+* update sibling dependencies ([66b4993](https://github.com/libp2p/js-libp2p-interfaces/commit/66b49938a09eeb12bf8ec8d78938d5cffd6ec134))
+
 ## [@libp2p/interface-stream-muxer-compliance-tests-v4.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v3.0.1...@libp2p/interface-stream-muxer-compliance-tests-v4.0.0) (2022-08-07)
 
 
