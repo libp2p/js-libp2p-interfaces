@@ -82,7 +82,7 @@ export interface UpgraderEvents {
 export interface UpgraderOptions {
   skipEncryption?: boolean
   skipProtection?: boolean
-  muxerFactory?: StreamMuxerFactory | undefined
+  muxerFactory?: StreamMuxerFactory
 }
 
 export interface Upgrader extends EventEmitter<UpgraderEvents> {
