@@ -5,13 +5,12 @@ import pWaitFor from 'p-wait-for'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import delay from 'delay'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
-import { PubSub, TopicValidatorResult, Message } from '@libp2p/interface-pubsub'
+import type { PubSub } from '@libp2p/interface-pubsub'
 import type { PubSubArgs } from './index.js'
 import type { Components } from '@libp2p/components'
 import { createComponents } from './utils.js'
 import { isStartable, start, stop } from '@libp2p/interfaces/startable'
 import { mockNetwork } from '@libp2p/interface-mocks'
-import type { PeerId } from '@libp2p/interface-peer-id'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
@@ -106,26 +105,6 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         expect(evt).to.have.nested.property('detail.topic', topic)
         expect(evt).to.have.deep.nested.property('detail.data', data)
         defer.resolve()
-      })
-      await pubsub.publish(topic, data)
-      await defer.promise
-
-      await stop(components)
-    })
-
-    it('validates topic messages', async () => {
-      const defer = pDefer()
-
-      await start(components)
-
-      pubsub.subscribe(topic)
-      pubsub.topicValidators.set(topic, (peer: PeerId, message: Message) => {
-        expect(peer).to.be.equal(components.getPeerId())
-        expect(message).to.exist()
-        expect(message).to.have.nested.property('data', data)
-        expect(message).to.have.nested.property('topic', topic)
-        defer.resolve()
-        return TopicValidatorResult.Accept
       })
       await pubsub.publish(topic, data)
       await defer.promise
