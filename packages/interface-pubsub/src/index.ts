@@ -133,9 +133,22 @@ export interface PublishResult {
   recipients: PeerId[]
 }
 
+export enum TopicValidatorResult {
+  /// The message is considered valid, and it should be delivered and forwarded to the network.
+  Accept = 'accept',
+  /// The message is neither delivered nor forwarded to the network, but the router does not
+  /// trigger the P₄ penalty.
+  Ignore = 'ignore',
+  /// The message is considered invalid, and it should be rejected and trigger the P₄ penalty.
+  Reject = 'reject'
+}
+
+export type TopicValidatorFn = (peer: PeerId, message: Message) => TopicValidatorResult | Promise<TopicValidatorResult>
+
 export interface PubSub<Events extends { [s: string]: any } = PubSubEvents> extends EventEmitter<Events> {
   globalSignaturePolicy: typeof StrictSign | typeof StrictNoSign
   multicodecs: string[]
+  topicValidators: Map<string, TopicValidatorFn>
 
   getPeers: () => PeerId[]
   getTopics: () => string[]
