@@ -1,3 +1,11 @@
+## [@libp2p/interface-transport-compliance-tests-v2.0.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.7...@libp2p/interface-transport-compliance-tests-v2.0.8) (2022-10-06)
+
+
+### Dependencies
+
+* update sibling dependencies ([2f46d7f](https://github.com/libp2p/js-libp2p-interfaces/commit/2f46d7ff4189c29a63bac93b0b5b73de0a75922f))
+* update sibling dependencies ([0fae3ee](https://github.com/libp2p/js-libp2p-interfaces/commit/0fae3ee43fab43293fb290654a927b5c5c5759fc))
+
 ## [@libp2p/interface-transport-compliance-tests-v2.0.7](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.6...@libp2p/interface-transport-compliance-tests-v2.0.7) (2022-10-04)
 
 
