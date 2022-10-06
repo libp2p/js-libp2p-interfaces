@@ -1,3 +1,22 @@
+## [@libp2p/interface-transport-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-v1.0.4...@libp2p/interface-transport-v2.0.0) (2022-10-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* the return type of StreamMuxer.newStream can now return a promise
+
+Co-authored-by: Marco Munizaga <marco@marcopolo.io>
+
+### Features
+
+* add upgrader options ([#290](https://github.com/libp2p/js-libp2p-interfaces/issues/290)) ([c502b66](https://github.com/libp2p/js-libp2p-interfaces/commit/c502b66d87020eb8e2768c49be17392c55503f69))
+
+
+### Dependencies
+
+* update sibling dependencies ([66b4993](https://github.com/libp2p/js-libp2p-interfaces/commit/66b49938a09eeb12bf8ec8d78938d5cffd6ec134))
+* update sibling dependencies ([5de9728](https://github.com/libp2p/js-libp2p-interfaces/commit/5de97284827de6c63182b704c1be12c5f8cf7af5))
+
 ## [@libp2p/interface-transport-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-v1.0.3...@libp2p/interface-transport-v1.0.4) (2022-09-21)
 
 
