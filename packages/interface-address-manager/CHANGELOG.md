@@ -1,3 +1,14 @@
+## [@libp2p/interface-address-manager-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-address-manager-v1.0.3...@libp2p/interface-address-manager-v2.0.0) (2022-10-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* add observed address methods (#269)
+
+### Features
+
+* add observed address methods ([#269](https://github.com/libp2p/js-libp2p-interfaces/issues/269)) ([0b157d5](https://github.com/libp2p/js-libp2p-interfaces/commit/0b157d5666caaaaa8676265cab3e4b010872ee41))
+
 ## [@libp2p/interface-address-manager-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-address-manager-v1.0.2...@libp2p/interface-address-manager-v1.0.3) (2022-09-21)
 
 
