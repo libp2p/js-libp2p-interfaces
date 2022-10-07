@@ -134,12 +134,17 @@ export interface PublishResult {
 }
 
 export enum TopicValidatorResult {
-  /// The message is considered valid, and it should be delivered and forwarded to the network.
+  /**
+   * The message is considered valid, and it should be delivered and forwarded to the network
+   */
   Accept = 'accept',
-  /// The message is neither delivered nor forwarded to the network, but the router does not
-  /// trigger the P₄ penalty.
+  /**
+   * The message is neither delivered nor forwarded to the network
+   */
   Ignore = 'ignore',
-  /// The message is considered invalid, and it should be rejected and trigger the P₄ penalty.
+  /**
+   * The message is considered invalid, and it should be rejected
+   */
   Reject = 'reject'
 }
 
