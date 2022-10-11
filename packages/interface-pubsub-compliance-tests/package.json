@@ -136,7 +136,7 @@
     "@libp2p/interface-compliance-tests": "^3.0.0",
     "@libp2p/interface-mocks": "^6.0.0",
     "@libp2p/interface-peer-id": "^1.0.0",
-    "@libp2p/interface-pubsub": "^2.0.0",
+    "@libp2p/interface-pubsub": "^3.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@libp2p/peer-id-factory": "^1.0.12",
     "aegir": "^37.4.0",
