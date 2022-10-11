@@ -12,6 +12,7 @@ import type { PubSubArgs } from './index.js'
 import type { Components } from '@libp2p/components'
 import { start, stop } from '@libp2p/interfaces/startable'
 import { mockNetwork } from '@libp2p/interface-mocks'
+import { TopicValidatorResult } from '@libp2p/interface-pubsub'
 
 const topic = 'foo'
 
@@ -152,6 +153,37 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       ])
 
       await psB.publish(topic, uint8ArrayFromString('banana'))
+
+      return await defer.promise
+    })
+
+    it('validate topic message', async () => {
+      const defer = pDefer()
+
+      psA.subscribe(topic)
+
+      psB.topicValidators.set(topic, (peer, message) => {
+        if (!peer.equals(componentsA.getPeerId())) {
+          defer.reject('Invalid peer id in topic validator fn')
+          return TopicValidatorResult.Reject
+        }
+
+        if (uint8ArrayToString(message.data) !== 'hey') {
+          defer.reject('Invalid message in topic validator fn')
+          return TopicValidatorResult.Reject
+        }
+
+        defer.resolve()
+        return TopicValidatorResult.Accept
+      })
+      psB.subscribe(topic)
+
+      await Promise.all([
+        waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
+        waitForSubscriptionUpdate(psB, componentsA.getPeerId())
+      ])
+
+      await psA.publish(topic, uint8ArrayFromString('hey'))
 
       return await defer.promise
     })
