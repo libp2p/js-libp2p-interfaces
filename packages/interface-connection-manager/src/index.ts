@@ -32,6 +32,11 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
    * otherwise it will return false.
    */
   acceptIncomingConnection: (maConn: MultiaddrConnection) => Promise<boolean>
+
+  /**
+   * Invoked after upgrading a multiaddr connection has finished
+   */
+  afterUpgradeInbound: () => void
 }
 
 export interface Dialer {
