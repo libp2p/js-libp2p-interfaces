@@ -1,3 +1,14 @@
+## [@libp2p/interface-pubsub-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-v2.1.0...@libp2p/interface-pubsub-v3.0.0) (2022-10-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* add topicValidators to pubsub interface (#298)
+
+### Bug Fixes
+
+* add topicValidators to pubsub interface ([#298](https://github.com/libp2p/js-libp2p-interfaces/issues/298)) ([e5ff819](https://github.com/libp2p/js-libp2p-interfaces/commit/e5ff819c6dd235b2ea9ea5133457b384c4411cf3))
+
 ## [@libp2p/interface-pubsub-v2.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-v2.0.1...@libp2p/interface-pubsub-v2.1.0) (2022-09-09)
 
 
