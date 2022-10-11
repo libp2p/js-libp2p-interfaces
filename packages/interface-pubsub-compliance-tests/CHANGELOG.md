@@ -1,3 +1,19 @@
+## [@libp2p/interface-pubsub-compliance-tests-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v2.0.5...@libp2p/interface-pubsub-compliance-tests-v3.0.0) (2022-10-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* add topicValidators to pubsub interface (#298)
+
+### Bug Fixes
+
+* add topicValidators to pubsub interface ([#298](https://github.com/libp2p/js-libp2p-interfaces/issues/298)) ([e5ff819](https://github.com/libp2p/js-libp2p-interfaces/commit/e5ff819c6dd235b2ea9ea5133457b384c4411cf3))
+
+
+### Dependencies
+
+* update sibling dependencies ([8f3680e](https://github.com/libp2p/js-libp2p-interfaces/commit/8f3680e2d87e424936dfe7128b859795f0327d9a))
+
 ## [@libp2p/interface-pubsub-compliance-tests-v2.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v2.0.4...@libp2p/interface-pubsub-compliance-tests-v2.0.5) (2022-10-07)
 
 
