@@ -138,6 +138,10 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
   async acceptIncomingConnection (): Promise<boolean> {
     return true
   }
+
+  afterUpgradeInbound (): void {
+
+  }
 }
 
 export function mockConnectionManager () {
