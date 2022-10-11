@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v6.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v6.0.1...@libp2p/interface-mocks-v6.1.0) (2022-10-11)
+
+
+### Features
+
+* add afterUpgradeInbound method ([#300](https://github.com/libp2p/js-libp2p-interfaces/issues/300)) ([fbdf5f5](https://github.com/libp2p/js-libp2p-interfaces/commit/fbdf5f54277735a26df0a28099eeae9d57159978))
+
 ## [@libp2p/interface-mocks-v6.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v6.0.0...@libp2p/interface-mocks-v6.0.1) (2022-10-07)
 
 
