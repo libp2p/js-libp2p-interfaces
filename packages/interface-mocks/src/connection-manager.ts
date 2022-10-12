@@ -8,7 +8,7 @@ import errCode from 'err-code'
 import type { Registrar } from '@libp2p/interface-registrar'
 import type { PubSub } from '@libp2p/interface-pubsub'
 
-export interface NetworkComponents {
+export interface MockNetworkComponents {
   peerId: PeerId
   registrar: Registrar
   connectionManager: ConnectionManager
@@ -16,13 +16,13 @@ export interface NetworkComponents {
 }
 
 class MockNetwork {
-  private components: NetworkComponents[] = []
+  private components: MockNetworkComponents[] = []
 
-  addNode (components: NetworkComponents): void {
+  addNode (components: MockNetworkComponents): void {
     this.components.push(components)
   }
 
-  getNode (peerId: PeerId): NetworkComponents {
+  getNode (peerId: PeerId): MockNetworkComponents {
     for (const components of this.components) {
       if (peerId.equals(components.peerId)) {
         return components
@@ -41,10 +41,10 @@ export const mockNetwork = new MockNetwork()
 
 class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager, Startable {
   private connections: Connection[] = []
-  private readonly components: NetworkComponents
+  private readonly components: MockNetworkComponents
   private started = false
 
-  constructor (components: NetworkComponents) {
+  constructor (components: MockNetworkComponents) {
     super()
 
     this.components = components
@@ -154,6 +154,6 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
   }
 }
 
-export function mockConnectionManager (components: NetworkComponents) {
+export function mockConnectionManager (components: MockNetworkComponents) {
   return new MockConnectionManager(components)
 }

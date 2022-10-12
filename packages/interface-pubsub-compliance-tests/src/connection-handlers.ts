@@ -11,14 +11,14 @@ import { start, stop } from '@libp2p/interfaces/startable'
 import { createComponents } from './utils.js'
 import { pEvent } from 'p-event'
 import { mockNetwork } from '@libp2p/interface-mocks'
-import type { NetworkComponents } from '@libp2p/interface-mocks'
+import type { MockNetworkComponents } from '@libp2p/interface-mocks'
 
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub connection handlers', () => {
     let psA: PubSub
     let psB: PubSub
-    let componentsA: NetworkComponents
-    let componentsB: NetworkComponents
+    let componentsA: MockNetworkComponents
+    let componentsB: MockNetworkComponents
 
     describe('nodes send state on connection', () => {
       // Create pubsub nodes and connect them
@@ -85,8 +85,8 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
     describe('pubsub started before connect', () => {
       let psA: PubSub
       let psB: PubSub
-      let componentsA: NetworkComponents
-      let componentsB: NetworkComponents
+      let componentsA: MockNetworkComponents
+      let componentsB: MockNetworkComponents
 
       // Create pubsub nodes and start them
       beforeEach(async () => {
@@ -159,8 +159,8 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
     describe('pubsub started after connect', () => {
       let psA: PubSub
       let psB: PubSub
-      let componentsA: NetworkComponents
-      let componentsB: NetworkComponents
+      let componentsA: MockNetworkComponents
+      let componentsB: MockNetworkComponents
 
       // Create pubsub nodes
       beforeEach(async () => {
@@ -240,8 +240,8 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
     describe('pubsub with intermittent connections', () => {
       let psA: PubSub
       let psB: PubSub
-      let componentsA: NetworkComponents
-      let componentsB: NetworkComponents
+      let componentsA: MockNetworkComponents
+      let componentsB: MockNetworkComponents
 
       // Create pubsub nodes and start them
       beforeEach(async () => {
