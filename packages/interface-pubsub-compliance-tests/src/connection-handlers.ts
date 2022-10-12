@@ -11,7 +11,7 @@ import { start, stop } from '@libp2p/interfaces/startable'
 import { createComponents } from './utils.js'
 import { pEvent } from 'p-event'
 import { mockNetwork } from '@libp2p/interface-mocks'
-import type { NetworkComponents } from '@libp2p/interface-mocks/src/connection-manager.js'
+import type { NetworkComponents } from '@libp2p/interface-mocks'
 
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub connection handlers', () => {
