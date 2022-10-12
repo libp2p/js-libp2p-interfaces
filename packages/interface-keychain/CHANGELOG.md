@@ -1,3 +1,15 @@
+## [@libp2p/interface-keychain-v1.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-keychain-v1.0.3...@libp2p/interface-keychain-v1.0.4) (2022-10-12)
+
+
+### Trivial Changes
+
+* update project config ([#271](https://github.com/libp2p/js-libp2p-interfaces/issues/271)) ([59c0bf5](https://github.com/libp2p/js-libp2p-interfaces/commit/59c0bf5e0b05496fca2e4902632b61bb41fad9e9))
+
+
+### Dependencies
+
+* bump multiformats from 9.9.0 to 10.0.0 ([#302](https://github.com/libp2p/js-libp2p-interfaces/issues/302)) ([fe11d69](https://github.com/libp2p/js-libp2p-interfaces/commit/fe11d69b6aca3dd6ef6053bec27b534ec9908aa1))
+
 ## [@libp2p/interface-keychain-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-keychain-v1.0.2...@libp2p/interface-keychain-v1.0.3) (2022-06-27)
 
 
