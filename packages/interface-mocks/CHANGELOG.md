@@ -1,3 +1,16 @@
+## [@libp2p/interface-mocks-v7.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v7.0.0...@libp2p/interface-mocks-v7.0.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* export network components type ([79a5d8f](https://github.com/libp2p/js-libp2p-interfaces/commit/79a5d8fc57ae47274ff9ad9c3969c5898f07eb1d))
+* update mock network components use ([c760e95](https://github.com/libp2p/js-libp2p-interfaces/commit/c760e95f07b6199f08adb20c1e3a4265649fdda0))
+
+
+### Trivial Changes
+
+* fix linting ([a8ab192](https://github.com/libp2p/js-libp2p-interfaces/commit/a8ab19295452c388d6556ea7847c490035455c99))
+
 ## [@libp2p/interface-mocks-v7.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v6.1.0...@libp2p/interface-mocks-v7.0.0) (2022-10-12)
 
 
