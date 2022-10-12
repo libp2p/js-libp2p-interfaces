@@ -5,11 +5,10 @@ import pDefer from 'p-defer'
 import { start, stop } from '@libp2p/interfaces/startable'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { PeerDiscovery } from '@libp2p/interface-peer-discovery'
-import type { Startable } from '@libp2p/interfaces/startable'
 
-export default (common: TestSetup<PeerDiscovery & Startable>) => {
+export default (common: TestSetup<PeerDiscovery>) => {
   describe('interface-peer-discovery compliance tests', () => {
-    let discovery: PeerDiscovery & Startable
+    let discovery: PeerDiscovery
 
     beforeEach(async () => {
       discovery = await common.setup()

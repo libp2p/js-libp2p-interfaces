@@ -6,8 +6,7 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import delay from 'delay'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { PubSub } from '@libp2p/interface-pubsub'
-import type { PubSubArgs } from './index.js'
-import type { Components } from '@libp2p/components'
+import type { PubSubArgs, PubSubComponents } from './index.js'
 import { createComponents } from './utils.js'
 import { isStartable, start, stop } from '@libp2p/interfaces/startable'
 import { mockNetwork } from '@libp2p/interface-mocks'
@@ -18,24 +17,24 @@ const data = uint8ArrayFromString('bar')
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub api', () => {
     let pubsub: PubSub
-    let components: Components
+    let components: PubSubComponents
 
     // Create pubsub router
     beforeEach(async () => {
       mockNetwork.reset()
       components = await createComponents()
 
-      pubsub = components.setPubSub(await common.setup({
+      pubsub = components.pubsub = await common.setup({
         components,
         init: {
           emitSelf: true
         }
-      }))
+      })
     })
 
     afterEach(async () => {
       sinon.restore()
-      await stop(components)
+      await stop(...Object.values(components))
       await common.teardown()
       mockNetwork.reset()
     })
@@ -45,12 +44,12 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         return
       }
 
-      sinon.spy(components.getRegistrar(), 'register')
+      sinon.spy(components.registrar, 'register')
 
-      await start(components)
+      await start(...Object.values(components))
 
       expect(pubsub.isStarted()).to.equal(true)
-      expect(components.getRegistrar().register).to.have.property('callCount', 1)
+      expect(components.registrar.register).to.have.property('callCount', 1)
     })
 
     it('can stop correctly', async () => {
@@ -58,13 +57,13 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         return
       }
 
-      sinon.spy(components.getRegistrar(), 'unregister')
+      sinon.spy(components.registrar, 'unregister')
 
-      await start(components)
-      await stop(components)
+      await start(...Object.values(components))
+      await stop(...Object.values(components))
 
       expect(pubsub.isStarted()).to.equal(false)
-      expect(components.getRegistrar().unregister).to.have.property('callCount', 1)
+      expect(components.registrar.unregister).to.have.property('callCount', 1)
     })
 
     it('can subscribe and unsubscribe correctly', async () => {
@@ -72,7 +71,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         throw new Error('a message should not be received')
       }
 
-      await start(components)
+      await start(...Object.values(components))
       pubsub.subscribe(topic)
       pubsub.addEventListener('message', handler)
 
@@ -92,13 +91,13 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       // handlers are called async
       await delay(100)
 
-      await stop(components)
+      await stop(...Object.values(components))
     })
 
     it('can subscribe and publish correctly', async () => {
       const defer = pDefer()
 
-      await start(components)
+      await start(...Object.values(components))
 
       pubsub.subscribe(topic)
       pubsub.addEventListener('message', (evt) => {
@@ -109,7 +108,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       await pubsub.publish(topic, data)
       await defer.promise
 
-      await stop(components)
+      await stop(...Object.values(components))
     })
   })
 }

@@ -3,20 +3,28 @@ import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interface-connection-manager'
-import type { Components, Initializable } from '@libp2p/components'
 import { connectionPair } from './connection.js'
 import errCode from 'err-code'
+import type { Registrar } from '@libp2p/interface-registrar'
+import type { PubSub } from '@libp2p/interface-pubsub'
+
+export interface NetworkComponents {
+  peerId: PeerId
+  registrar: Registrar
+  connectionManager: ConnectionManager
+  pubsub?: PubSub
+}
 
 class MockNetwork {
-  private components: Components[] = []
+  private components: NetworkComponents[] = []
 
-  addNode (components: Components): void {
+  addNode (components: NetworkComponents): void {
     this.components.push(components)
   }
 
-  getNode (peerId: PeerId): Components {
+  getNode (peerId: PeerId): NetworkComponents {
     for (const components of this.components) {
-      if (peerId.equals(components.getPeerId())) {
+      if (peerId.equals(components.peerId)) {
         return components
       }
     }
@@ -31,12 +39,14 @@ class MockNetwork {
 
 export const mockNetwork = new MockNetwork()
 
-class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager, Initializable, Startable {
+class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager, Startable {
   private connections: Connection[] = []
-  private components?: Components
+  private readonly components: NetworkComponents
   private started = false
 
-  init (components: Components) {
+  constructor (components: NetworkComponents) {
+    super()
+
     this.components = components
   }
 
@@ -82,25 +92,25 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
 
     // track connections
     this.connections.push(aToB)
-    ;(componentsB.getConnectionManager() as MockConnectionManager).connections.push(bToA)
+    ;(componentsB.connectionManager as MockConnectionManager).connections.push(bToA)
 
-    this.components.getConnectionManager().dispatchEvent(new CustomEvent<Connection>('peer:connect', {
+    this.components.connectionManager?.dispatchEvent(new CustomEvent<Connection>('peer:connect', {
       detail: aToB
     }))
 
-    for (const protocol of this.components.getRegistrar().getProtocols()) {
-      for (const topology of this.components.getRegistrar().getTopologies(protocol)) {
-        topology.onConnect(componentsB.getPeerId(), aToB)
+    for (const protocol of this.components.registrar.getProtocols()) {
+      for (const topology of this.components.registrar.getTopologies(protocol)) {
+        topology.onConnect(componentsB.peerId, aToB)
       }
     }
 
-    componentsB.getConnectionManager().dispatchEvent(new CustomEvent<Connection>('peer:connect', {
+    componentsB.connectionManager?.dispatchEvent(new CustomEvent<Connection>('peer:connect', {
       detail: bToA
     }))
 
-    for (const protocol of componentsB.getRegistrar().getProtocols()) {
-      for (const topology of componentsB.getRegistrar().getTopologies(protocol)) {
-        topology.onConnect(this.components.getPeerId(), bToA)
+    for (const protocol of componentsB.registrar.getProtocols()) {
+      for (const topology of componentsB.registrar.getTopologies(protocol)) {
+        topology.onConnect(this.components.peerId, bToA)
       }
     }
 
@@ -120,9 +130,9 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
 
     const componentsB = mockNetwork.getNode(peerId)
 
-    for (const protocol of this.components.getRegistrar().getProtocols()) {
-      this.components.getRegistrar().getTopologies(protocol).forEach(topology => {
-        topology.onDisconnect(componentsB.getPeerId())
+    for (const protocol of this.components.registrar.getProtocols()) {
+      this.components.registrar.getTopologies(protocol).forEach(topology => {
+        topology.onDisconnect(componentsB.peerId)
       })
     }
 
@@ -132,7 +142,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
 
     this.connections = this.connections.filter(c => !c.remotePeer.equals(peerId))
 
-    await componentsB.getConnectionManager().closeConnections(this.components.getPeerId())
+    await componentsB.connectionManager?.closeConnections(this.components.peerId)
   }
 
   async acceptIncomingConnection (): Promise<boolean> {
@@ -144,6 +154,6 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
   }
 }
 
-export function mockConnectionManager () {
-  return new MockConnectionManager()
+export function mockConnectionManager (components: NetworkComponents) {
+  return new MockConnectionManager(components)
 }

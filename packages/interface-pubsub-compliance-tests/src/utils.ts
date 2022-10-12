@@ -1,10 +1,10 @@
 import { pEvent } from 'p-event'
 import pWaitFor from 'p-wait-for'
-import { Components } from '@libp2p/components'
 import type { PubSub, SubscriptionChangeData } from '@libp2p/interface-pubsub'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { mockConnectionManager, mockRegistrar, mockNetwork } from '@libp2p/interface-mocks'
+import type { NetworkComponents } from '@libp2p/interface-mocks/src/connection-manager'
 
 export async function waitForSubscriptionUpdate (a: PubSub, b: PeerId) {
   await pWaitFor(async () => {
@@ -14,12 +14,12 @@ export async function waitForSubscriptionUpdate (a: PubSub, b: PeerId) {
   })
 }
 
-export async function createComponents (): Promise<Components> {
-  const components = new Components({
+export async function createComponents (): Promise<NetworkComponents> {
+  const components: any = {
     peerId: await createEd25519PeerId(),
-    registrar: mockRegistrar(),
-    connectionManager: mockConnectionManager()
-  })
+    registrar: mockRegistrar()
+  }
+  components.connectionManager = mockConnectionManager(components)
 
   mockNetwork.addNode(components)
 

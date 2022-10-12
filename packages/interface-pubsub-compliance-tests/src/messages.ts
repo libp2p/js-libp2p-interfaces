@@ -3,8 +3,7 @@ import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Message, PubSub } from '@libp2p/interface-pubsub'
-import type { PubSubArgs } from './index.js'
-import type { Components } from '@libp2p/components'
+import type { PubSubArgs, PubSubComponents } from './index.js'
 import { start, stop } from '@libp2p/interfaces/startable'
 import { pEvent } from 'p-event'
 import { createComponents } from './utils.js'
@@ -16,25 +15,25 @@ const data = uint8ArrayFromString('bar')
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('messages', () => {
     let pubsub: PubSub
-    let components: Components
+    let components: PubSubComponents
 
     // Create pubsub router
     beforeEach(async () => {
       mockNetwork.reset()
       components = await createComponents()
 
-      pubsub = components.setPubSub(await common.setup({
+      pubsub = components.pubsub = await common.setup({
         components,
         init: {
           emitSelf: true
         }
-      }))
-      await start(components)
+      })
+      await start(...Object.values(components))
     })
 
     afterEach(async () => {
       sinon.restore()
-      await stop(components)
+      await stop(...Object.values(components))
       await common.teardown()
       mockNetwork.reset()
     })
@@ -50,7 +49,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       const message = event.detail
 
       if (message.type === 'signed') {
-        expect(message.from.toString()).to.equal(components.getPeerId().toString())
+        expect(message.from.toString()).to.equal(components.peerId.toString())
         expect(message.sequenceNumber).to.not.eql(undefined)
         expect(message.key).to.not.eql(undefined)
         expect(message.signature).to.not.eql(undefined)
