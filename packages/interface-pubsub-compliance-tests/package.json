@@ -144,6 +144,6 @@
     "p-event": "^5.0.1",
     "p-wait-for": "^5.0.0",
     "sinon": "^14.0.0",
-    "uint8arrays": "^3.0.0"
+    "uint8arrays": "^4.0.1"
   }
 }
