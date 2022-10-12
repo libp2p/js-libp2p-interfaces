@@ -1,3 +1,14 @@
+## [@libp2p/interface-stream-muxer-compliance-tests-v6.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v5.0.0...@libp2p/interface-stream-muxer-compliance-tests-v6.0.0) (2022-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* modules no longer implement `Initializable` instead switching to constructor injection
+
+### Bug Fixes
+
+* remove @libp2p/components ([#301](https://github.com/libp2p/js-libp2p-interfaces/issues/301)) ([1d37dc6](https://github.com/libp2p/js-libp2p-interfaces/commit/1d37dc6d3197838a71895d5769ad8bba6eb38fd3))
+
 ## [@libp2p/interface-stream-muxer-compliance-tests-v5.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v4.0.0...@libp2p/interface-stream-muxer-compliance-tests-v5.0.0) (2022-10-06)
 
 
