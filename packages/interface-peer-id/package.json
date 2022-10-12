@@ -132,7 +132,7 @@
     "release": "aegir release"
   },
   "dependencies": {
-    "multiformats": "^9.6.3"
+    "multiformats": "^10.0.0"
   },
   "devDependencies": {
     "aegir": "^37.4.0"

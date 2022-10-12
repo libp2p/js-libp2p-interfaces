@@ -134,7 +134,7 @@
   "dependencies": {
     "@libp2p/interface-peer-info": "^1.0.0",
     "@libp2p/interfaces": "^3.0.0",
-    "multiformats": "^9.6.3"
+    "multiformats": "^10.0.0"
   },
   "devDependencies": {
     "aegir": "^37.4.0"
