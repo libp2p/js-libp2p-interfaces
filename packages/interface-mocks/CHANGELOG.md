@@ -1,3 +1,21 @@
+## [@libp2p/interface-mocks-v7.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v6.1.0...@libp2p/interface-mocks-v7.0.0) (2022-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* modules no longer implement `Initializable` instead switching to constructor injection
+
+### Bug Fixes
+
+* remove @libp2p/components ([#301](https://github.com/libp2p/js-libp2p-interfaces/issues/301)) ([1d37dc6](https://github.com/libp2p/js-libp2p-interfaces/commit/1d37dc6d3197838a71895d5769ad8bba6eb38fd3))
+
+
+### Dependencies
+
+* update sibling dependencies ([99330b2](https://github.com/libp2p/js-libp2p-interfaces/commit/99330b20842b2aff7530d1b9d373e8dce1ec3699))
+* update sibling dependencies ([6f26d1b](https://github.com/libp2p/js-libp2p-interfaces/commit/6f26d1b0343f4b41c064fab3ef87f308fc0c652d))
+* update sibling dependencies ([2ad1fa3](https://github.com/libp2p/js-libp2p-interfaces/commit/2ad1fa37c46b4c472570d79a592e798f20ed0cc8))
+
 ## [@libp2p/interface-mocks-v6.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v6.0.1...@libp2p/interface-mocks-v6.1.0) (2022-10-11)
 
 
