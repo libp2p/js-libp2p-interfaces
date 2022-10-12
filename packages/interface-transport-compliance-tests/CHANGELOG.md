@@ -1,3 +1,19 @@
+## [@libp2p/interface-transport-compliance-tests-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.8...@libp2p/interface-transport-compliance-tests-v3.0.0) (2022-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* modules no longer implement `Initializable` instead switching to constructor injection
+
+### Bug Fixes
+
+* remove @libp2p/components ([#301](https://github.com/libp2p/js-libp2p-interfaces/issues/301)) ([1d37dc6](https://github.com/libp2p/js-libp2p-interfaces/commit/1d37dc6d3197838a71895d5769ad8bba6eb38fd3))
+
+
+### Dependencies
+
+* update sibling dependencies ([d3226f7](https://github.com/libp2p/js-libp2p-interfaces/commit/d3226f7383de85cae2b4771c22eea22c4bb5bbeb))
+
 ## [@libp2p/interface-transport-compliance-tests-v2.0.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v2.0.7...@libp2p/interface-transport-compliance-tests-v2.0.8) (2022-10-06)
 
 
