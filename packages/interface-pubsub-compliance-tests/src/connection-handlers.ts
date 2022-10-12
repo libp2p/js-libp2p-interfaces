@@ -7,18 +7,18 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Message, PubSub } from '@libp2p/interface-pubsub'
 import type { PubSubArgs } from './index.js'
-import type { Components } from '@libp2p/components'
 import { start, stop } from '@libp2p/interfaces/startable'
 import { createComponents } from './utils.js'
 import { pEvent } from 'p-event'
 import { mockNetwork } from '@libp2p/interface-mocks'
+import type { NetworkComponents } from '@libp2p/interface-mocks/src/connection-manager.js'
 
 export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('pubsub connection handlers', () => {
     let psA: PubSub
     let psB: PubSub
-    let componentsA: Components
-    let componentsB: Components
+    let componentsA: NetworkComponents
+    let componentsB: NetworkComponents
 
     describe('nodes send state on connection', () => {
       // Create pubsub nodes and connect them
@@ -28,18 +28,18 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         componentsA = await createComponents()
         componentsB = await createComponents()
 
-        psA = componentsA.setPubSub(await common.setup({
+        psA = componentsA.pubsub = await common.setup({
           components: componentsA,
           init: {}
-        }))
+        })
 
-        psB = componentsB.setPubSub(await common.setup({
+        psB = componentsB.pubsub = await common.setup({
           components: componentsB,
           init: {}
-        }))
+        })
 
         // Start pubsub
-        await start(componentsA, componentsB)
+        await start(...Object.values(componentsA), ...Object.values(componentsB))
 
         expect(psA.getPeers()).to.be.empty()
         expect(psB.getPeers()).to.be.empty()
@@ -56,7 +56,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
       afterEach(async () => {
         sinon.restore()
-        await stop(componentsA, componentsB)
+        await stop(...Object.values(componentsA), ...Object.values(componentsB))
         await common.teardown()
         mockNetwork.reset()
       })
@@ -67,7 +67,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           pEvent(psB, 'subscription-change')
         ])
 
-        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
+        await componentsA.connectionManager.openConnection(componentsB.peerId)
 
         await subscriptionsChanged
 
@@ -77,16 +77,16 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         expect(psA.getTopics()).to.deep.equal(['Za'])
         expect(psB.getTopics()).to.deep.equal(['Zb'])
 
-        expect(psA.getSubscribers('Zb').map(p => p.toString())).to.deep.equal([componentsB.getPeerId().toString()])
-        expect(psB.getSubscribers('Za').map(p => p.toString())).to.deep.equal([componentsA.getPeerId().toString()])
+        expect(psA.getSubscribers('Zb').map(p => p.toString())).to.deep.equal([componentsB.peerId.toString()])
+        expect(psB.getSubscribers('Za').map(p => p.toString())).to.deep.equal([componentsA.peerId.toString()])
       })
     })
 
     describe('pubsub started before connect', () => {
       let psA: PubSub
       let psB: PubSub
-      let componentsA: Components
-      let componentsB: Components
+      let componentsA: NetworkComponents
+      let componentsB: NetworkComponents
 
       // Create pubsub nodes and start them
       beforeEach(async () => {
@@ -94,27 +94,27 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         componentsA = await createComponents()
         componentsB = await createComponents()
 
-        psA = componentsA.setPubSub(await common.setup({
+        psA = componentsA.pubsub = await common.setup({
           components: componentsA,
           init: {}
-        }))
-        psB = componentsB.setPubSub(await common.setup({
+        })
+        psB = componentsB.pubsub = await common.setup({
           components: componentsB,
           init: {}
-        }))
+        })
 
-        await start(componentsA, componentsB)
+        await start(...Object.values(componentsA), ...Object.values(componentsB))
       })
 
       afterEach(async () => {
         sinon.restore()
-        await stop(componentsA, componentsB)
+        await stop(...Object.values(componentsA), ...Object.values(componentsB))
         await common.teardown()
         mockNetwork.reset()
       })
 
       it('should get notified of connected peers on dial', async () => {
-        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
+        await componentsA.connectionManager.openConnection(componentsB.peerId)
 
         return await Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
@@ -127,7 +127,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         const topic = 'test-topic'
         const data = uint8ArrayFromString('hey!')
 
-        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
+        await componentsA.connectionManager.openConnection(componentsB.peerId)
 
         let subscribedTopics = psA.getTopics()
         expect(subscribedTopics).to.not.include(topic)
@@ -148,7 +148,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         // wait for psB to know about psA subscription
         await pWaitFor(() => {
           const subscribedPeers = psB.getSubscribers(topic)
-          return subscribedPeers.map(p => p.toString()).includes(componentsA.getPeerId().toString()) // eslint-disable-line max-nested-callbacks
+          return subscribedPeers.map(p => p.toString()).includes(componentsA.peerId.toString()) // eslint-disable-line max-nested-callbacks
         })
         await psB.publish(topic, data)
 
@@ -159,8 +159,8 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
     describe('pubsub started after connect', () => {
       let psA: PubSub
       let psB: PubSub
-      let componentsA: Components
-      let componentsB: Components
+      let componentsA: NetworkComponents
+      let componentsB: NetworkComponents
 
       // Create pubsub nodes
       beforeEach(async () => {
@@ -168,27 +168,27 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         componentsA = await createComponents()
         componentsB = await createComponents()
 
-        psA = componentsA.setPubSub(await common.setup({
+        psA = componentsA.pubsub = await common.setup({
           components: componentsA,
           init: {}
-        }))
-        psB = componentsB.setPubSub(await common.setup({
+        })
+        psB = componentsB.pubsub = await common.setup({
           components: componentsB,
           init: {}
-        }))
+        })
       })
 
       afterEach(async () => {
         sinon.restore()
-        await stop(componentsA, componentsB)
+        await stop(...Object.values(componentsA), ...Object.values(componentsB))
         await common.teardown()
         mockNetwork.reset()
       })
 
       it('should get notified of connected peers after starting', async () => {
-        await start(componentsA, componentsB)
+        await start(...Object.values(componentsA), ...Object.values(componentsB))
 
-        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
+        await componentsA.connectionManager.openConnection(componentsB.peerId)
 
         return await Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
@@ -201,9 +201,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         const topic = 'test-topic'
         const data = uint8ArrayFromString('hey!')
 
-        await start(componentsA, componentsB)
+        await start(...Object.values(componentsA), ...Object.values(componentsB))
 
-        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
+        await componentsA.connectionManager.openConnection(componentsB.peerId)
 
         await Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
@@ -229,7 +229,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         // wait for psB to know about psA subscription
         await pWaitFor(() => {
           const subscribedPeers = psB.getSubscribers(topic)
-          return subscribedPeers.map(p => p.toString()).includes(componentsA.getPeerId().toString()) // eslint-disable-line max-nested-callbacks
+          return subscribedPeers.map(p => p.toString()).includes(componentsA.peerId.toString()) // eslint-disable-line max-nested-callbacks
         })
         await psB.publish(topic, data)
 
@@ -240,8 +240,8 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
     describe('pubsub with intermittent connections', () => {
       let psA: PubSub
       let psB: PubSub
-      let componentsA: Components
-      let componentsB: Components
+      let componentsA: NetworkComponents
+      let componentsB: NetworkComponents
 
       // Create pubsub nodes and start them
       beforeEach(async () => {
@@ -249,21 +249,21 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         componentsA = await createComponents()
         componentsB = await createComponents()
 
-        psA = componentsA.setPubSub(await common.setup({
+        psA = componentsA.pubsub = await common.setup({
           components: componentsA,
           init: {}
-        }))
-        psB = componentsB.setPubSub(await common.setup({
+        })
+        psB = componentsB.pubsub = await common.setup({
           components: componentsB,
           init: {}
-        }))
+        })
 
-        await start(componentsA, componentsB)
+        await start(...Object.values(componentsA), ...Object.values(componentsB))
       })
 
       afterEach(async () => {
         sinon.restore()
-        await stop(componentsA, componentsB)
+        await stop(...Object.values(componentsA), ...Object.values(componentsB))
         await common.teardown()
         mockNetwork.reset()
       })
@@ -276,7 +276,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         const defer1 = pDefer()
         const defer2 = pDefer()
 
-        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
+        await componentsA.connectionManager.openConnection(componentsB.peerId)
 
         let subscribedTopics = psA.getTopics()
         expect(subscribedTopics).to.not.include(topic)
@@ -298,7 +298,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         // wait for psB to know about psA subscription
         await pWaitFor(() => {
           const subscribedPeers = psB.getSubscribers(topic)
-          return subscribedPeers.map(p => p.toString()).includes(componentsA.getPeerId().toString()) // eslint-disable-line max-nested-callbacks
+          return subscribedPeers.map(p => p.toString()).includes(componentsA.peerId.toString()) // eslint-disable-line max-nested-callbacks
         })
         await psB.publish(topic, data)
 
@@ -315,12 +315,12 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         })
         await start(psB)
 
-        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
+        await componentsA.connectionManager.openConnection(componentsB.peerId)
 
         // wait for remoteLibp2p to know about libp2p subscription
         await pWaitFor(() => {
           const subscribedPeers = psB.getSubscribers(topic)
-          return subscribedPeers.toString().includes(componentsA.getPeerId().toString())
+          return subscribedPeers.toString().includes(componentsA.peerId.toString())
         })
 
         await psB.publish(topic, data)
@@ -379,12 +379,12 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         const originalConnection = await psA._libp2p.dialer.connectToPeer(psB.peerId)
 
         // second connection
-        await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
+        await componentsA.connectionManager.openConnection(componentsB.peerId)
 
         // Wait for subscriptions to occur
         await pWaitFor(() => {
-          return psA.getSubscribers(topic).map(p => p.toString()).includes(componentsB.getPeerId().toString()) &&
-            psB.getSubscribers(topic).map(p => p.toString()).includes(componentsA.getPeerId().toString())
+          return psA.getSubscribers(topic).map(p => p.toString()).includes(componentsB.peerId.toString()) &&
+            psB.getSubscribers(topic).map(p => p.toString()).includes(componentsA.peerId.toString())
         })
 
         // Verify messages go both ways

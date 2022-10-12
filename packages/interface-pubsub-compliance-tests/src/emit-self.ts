@@ -1,11 +1,9 @@
 import { expect } from 'aegir/chai'
 import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { mockRegistrar, mockNetwork } from '@libp2p/interface-mocks'
+import { mockNetwork } from '@libp2p/interface-mocks'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
-import type { PubSubArgs } from './index.js'
-import { Components } from '@libp2p/components'
+import type { PubSubArgs, PubSubComponents } from './index.js'
 import { start, stop } from '@libp2p/interfaces/startable'
 import type { PubSub } from '@libp2p/interface-pubsub'
 import { createComponents } from './utils.js'
@@ -18,26 +16,26 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
   describe('emit self', () => {
     describe('enabled', () => {
       let pubsub: PubSub
-      let components: Components
+      let components: PubSubComponents
 
       before(async () => {
         mockNetwork.reset()
         components = await createComponents()
 
-        pubsub = components.setPubSub(await common.setup({
+        pubsub = components.pubsub = await common.setup({
           components,
           init: {
             emitSelf: true
           }
-        }))
+        })
 
-        await start(components)
+        await start(...Object.values(components))
         pubsub.subscribe(topic)
       })
 
       after(async () => {
         sinon.restore()
-        await stop(components)
+        await stop(...Object.values(components))
         await common.teardown()
         mockNetwork.reset()
       })
@@ -63,28 +61,25 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
     describe('disabled', () => {
       let pubsub: PubSub
-      let components: Components
+      let components: PubSubComponents
 
       before(async () => {
         mockNetwork.reset()
-        components = new Components({
-          peerId: await createEd25519PeerId(),
-          registrar: mockRegistrar()
-        })
-        pubsub = components.setPubSub(await common.setup({
+        components = await createComponents()
+        pubsub = components.pubsub = await common.setup({
           components,
           init: {
             emitSelf: false
           }
-        }))
+        })
 
-        await start(components)
+        await start(...Object.values(components))
         pubsub.subscribe(topic)
       })
 
       after(async () => {
         sinon.restore()
-        await stop(components)
+        await stop(...Object.values(components))
         await common.teardown()
         mockNetwork.reset()
       })

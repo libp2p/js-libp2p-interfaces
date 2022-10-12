@@ -13,7 +13,6 @@ import { logger } from '@libp2p/logger'
 import * as STATUS from '@libp2p/interface-connection/status'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { StreamMuxer } from '@libp2p/interface-stream-muxer'
-import type { Components } from '@libp2p/components'
 import type { AbortOptions } from '@libp2p/interfaces'
 import errCode from 'err-code'
 import type { Uint8ArrayList } from 'uint8arraylist'
@@ -193,18 +192,18 @@ export interface Peer {
   registrar: Registrar
 }
 
-export function connectionPair (a: Components, b: Components): [ Connection, Connection ] {
+export function connectionPair (a: { peerId: PeerId, registrar: Registrar }, b: { peerId: PeerId, registrar: Registrar }): [ Connection, Connection ] {
   const [peerBtoPeerA, peerAtoPeerB] = duplexPair<Uint8Array>()
 
   return [
     mockConnection(
-      mockMultiaddrConnection(peerAtoPeerB, b.getPeerId()), {
-        registrar: a.getRegistrar()
+      mockMultiaddrConnection(peerAtoPeerB, b.peerId), {
+        registrar: a.registrar
       }
     ),
     mockConnection(
-      mockMultiaddrConnection(peerBtoPeerA, a.getPeerId()), {
-        registrar: b.getRegistrar()
+      mockMultiaddrConnection(peerBtoPeerA, a.peerId), {
+        registrar: b.registrar
       }
     )
   ]

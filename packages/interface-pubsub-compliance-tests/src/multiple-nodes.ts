@@ -8,8 +8,7 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { createComponents, waitForSubscriptionUpdate } from './utils.js'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Message, PubSub } from '@libp2p/interface-pubsub'
-import type { PubSubArgs } from './index.js'
-import type { Components } from '@libp2p/components'
+import type { PubSubArgs, PubSubComponents } from './index.js'
 import { start, stop } from '@libp2p/interfaces/startable'
 import delay from 'delay'
 import { mockNetwork } from '@libp2p/interface-mocks'
@@ -24,9 +23,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         let psA: PubSub
         let psB: PubSub
         let psC: PubSub
-        let componentsA: Components
-        let componentsB: Components
-        let componentsC: Components
+        let componentsA: PubSubComponents
+        let componentsB: PubSubComponents
+        let componentsC: PubSubComponents
 
         // Create and start pubsub nodes
         beforeEach(async () => {
@@ -36,31 +35,31 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           componentsB = await createComponents()
           componentsC = await createComponents()
 
-          psA = componentsA.setPubSub(await common.setup({
+          psA = componentsA.pubsub = await common.setup({
             components: componentsA,
             init: {
               emitSelf: true
             }
-          }))
-          psB = componentsB.setPubSub(await common.setup({
+          })
+          psB = componentsB.pubsub = await common.setup({
             components: componentsB,
             init: {
               emitSelf: true
             }
-          }))
-          psC = componentsC.setPubSub(await common.setup({
+          })
+          psC = componentsC.pubsub = await common.setup({
             components: componentsC,
             init: {
               emitSelf: true
             }
-          }))
+          })
 
           // Start pubsub modes
-          await start(componentsA, componentsB, componentsC)
+          await start(...Object.values(componentsA), ...Object.values(componentsB), ...Object.values(componentsC))
 
           // Connect nodes
-          await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
-          await componentsB.getConnectionManager().openConnection(componentsC.getPeerId())
+          await componentsA.connectionManager.openConnection(componentsB.peerId)
+          await componentsB.connectionManager.openConnection(componentsC.peerId)
 
           // Wait for peers to be ready in pubsub
           await pWaitFor(() =>
@@ -72,7 +71,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
         afterEach(async () => {
           sinon.restore()
-          await stop(componentsA, componentsB, componentsC)
+          await stop(...Object.values(componentsA), ...Object.values(componentsB), ...Object.values(componentsC))
           await common.teardown()
           mockNetwork.reset()
         })
@@ -83,10 +82,10 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           psA.subscribe(topic)
           expect(psA.getTopics()).to.deep.equal([topic])
 
-          await waitForSubscriptionUpdate(psB, componentsA.getPeerId())
+          await waitForSubscriptionUpdate(psB, componentsA.peerId)
 
           expect(psB.getPeers().length).to.equal(2)
-          expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsA.getPeerId().toString()])
+          expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsA.peerId.toString()])
 
           expect(psC.getPeers().length).to.equal(1)
           expect(psC.getSubscribers(topic)).to.be.empty()
@@ -98,15 +97,15 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           expect(psB.getTopics()).to.deep.equal([topic])
 
           await Promise.all([
-            waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
-            waitForSubscriptionUpdate(psC, componentsB.getPeerId())
+            waitForSubscriptionUpdate(psA, componentsB.peerId),
+            waitForSubscriptionUpdate(psC, componentsB.peerId)
           ])
 
           expect(psA.getPeers().length).to.equal(1)
-          expect(psA.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsB.getPeerId().toString()])
+          expect(psA.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsB.peerId.toString()])
 
           expect(psC.getPeers().length).to.equal(1)
-          expect(psC.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsB.getPeerId().toString()])
+          expect(psC.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsB.peerId.toString()])
         })
 
         it('subscribe to the topic on node c', async () => {
@@ -119,7 +118,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           psB.addEventListener('subscription-change', () => {
             expect(psA.getPeers().length).to.equal(1)
             expect(psB.getPeers().length).to.equal(2)
-            expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsC.getPeerId().toString()])
+            expect(psB.getSubscribers(topic).map(p => p.toString())).to.deep.equal([componentsC.peerId.toString()])
 
             defer.resolve()
           }, {
@@ -138,9 +137,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           psC.subscribe(topic)
 
           await Promise.all([
-            waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
-            waitForSubscriptionUpdate(psB, componentsA.getPeerId()),
-            waitForSubscriptionUpdate(psC, componentsB.getPeerId())
+            waitForSubscriptionUpdate(psA, componentsB.peerId),
+            waitForSubscriptionUpdate(psB, componentsA.peerId),
+            waitForSubscriptionUpdate(psC, componentsB.peerId)
           ])
 
           // GossipSub needs time to build the mesh overlay
@@ -198,9 +197,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
             psC.subscribe(topic)
 
             await Promise.all([
-              waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
-              waitForSubscriptionUpdate(psB, componentsA.getPeerId()),
-              waitForSubscriptionUpdate(psC, componentsB.getPeerId())
+              waitForSubscriptionUpdate(psA, componentsB.peerId),
+              waitForSubscriptionUpdate(psB, componentsA.peerId),
+              waitForSubscriptionUpdate(psC, componentsB.peerId)
             ])
 
             // GossipSub needs time to build the mesh overlay
@@ -250,11 +249,11 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         let psC: PubSub
         let psD: PubSub
         let psE: PubSub
-        let componentsA: Components
-        let componentsB: Components
-        let componentsC: Components
-        let componentsD: Components
-        let componentsE: Components
+        let componentsA: PubSubComponents
+        let componentsB: PubSubComponents
+        let componentsC: PubSubComponents
+        let componentsD: PubSubComponents
+        let componentsE: PubSubComponents
 
         // Create and start pubsub nodes
         beforeEach(async () => {
@@ -266,45 +265,51 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           componentsD = await createComponents()
           componentsE = await createComponents()
 
-          psA = componentsA.setPubSub(await common.setup({
+          psA = componentsA.pubsub = await common.setup({
             components: componentsA,
             init: {
               emitSelf: true
             }
-          }))
-          psB = componentsB.setPubSub(await common.setup({
+          })
+          psB = componentsB.pubsub = await common.setup({
             components: componentsB,
             init: {
               emitSelf: true
             }
-          }))
-          psC = componentsC.setPubSub(await common.setup({
+          })
+          psC = componentsC.pubsub = await common.setup({
             components: componentsC,
             init: {
               emitSelf: true
             }
-          }))
-          psD = componentsD.setPubSub(await common.setup({
+          })
+          psD = componentsD.pubsub = await common.setup({
             components: componentsD,
             init: {
               emitSelf: true
             }
-          }))
-          psE = componentsE.setPubSub(await common.setup({
+          })
+          psE = componentsE.pubsub = await common.setup({
             components: componentsE,
             init: {
               emitSelf: true
             }
-          }))
+          })
 
           // Start pubsub nodes
-          await start(componentsA, componentsB, componentsC, componentsD, componentsE)
+          await start(
+            ...Object.values(componentsA),
+            ...Object.values(componentsB),
+            ...Object.values(componentsC),
+            ...Object.values(componentsD),
+            ...Object.values(componentsE)
+          )
 
           // connect nodes
-          await componentsA.getConnectionManager().openConnection(componentsB.getPeerId())
-          await componentsB.getConnectionManager().openConnection(componentsC.getPeerId())
-          await componentsC.getConnectionManager().openConnection(componentsD.getPeerId())
-          await componentsD.getConnectionManager().openConnection(componentsE.getPeerId())
+          await componentsA.connectionManager.openConnection(componentsB.peerId)
+          await componentsB.connectionManager.openConnection(componentsC.peerId)
+          await componentsC.connectionManager.openConnection(componentsD.peerId)
+          await componentsD.connectionManager.openConnection(componentsE.peerId)
 
           // Wait for peers to be ready in pubsub
           await pWaitFor(() =>
@@ -317,7 +322,13 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         })
 
         afterEach(async () => {
-          await stop(componentsA, componentsB, componentsC, componentsD, componentsE)
+          await stop(
+            ...Object.values(componentsA),
+            ...Object.values(componentsB),
+            ...Object.values(componentsC),
+            ...Object.values(componentsD),
+            ...Object.values(componentsE)
+          )
           await common.teardown()
           mockNetwork.reset()
         })
@@ -352,11 +363,11 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
           psE.addEventListener('message', incMsg)
 
           await Promise.all([
-            waitForSubscriptionUpdate(psA, componentsB.getPeerId()),
-            waitForSubscriptionUpdate(psB, componentsA.getPeerId()),
-            waitForSubscriptionUpdate(psC, componentsB.getPeerId()),
-            waitForSubscriptionUpdate(psD, componentsC.getPeerId()),
-            waitForSubscriptionUpdate(psE, componentsD.getPeerId())
+            waitForSubscriptionUpdate(psA, componentsB.peerId),
+            waitForSubscriptionUpdate(psB, componentsA.peerId),
+            waitForSubscriptionUpdate(psC, componentsB.peerId),
+            waitForSubscriptionUpdate(psD, componentsC.peerId),
+            waitForSubscriptionUpdate(psE, componentsD.peerId)
           ])
 
           // GossipSub needs time to build the mesh overlay
