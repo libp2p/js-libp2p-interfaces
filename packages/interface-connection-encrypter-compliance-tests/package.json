@@ -139,7 +139,7 @@
     "@libp2p/peer-id-factory": "^1.0.12",
     "@multiformats/multiaddr": "^11.0.0",
     "aegir": "^37.4.0",
-    "it-all": "^1.0.6",
+    "it-all": "^2.0.0",
     "it-pair": "^2.0.2",
     "it-pipe": "^2.0.3",
     "it-stream-types": "^1.0.4",
