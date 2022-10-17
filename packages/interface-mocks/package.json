@@ -158,7 +158,7 @@
     "any-signal": "^3.0.1",
     "err-code": "^3.0.1",
     "it-handshake": "^4.0.0",
-    "it-map": "^1.0.6",
+    "it-map": "^2.0.0",
     "it-ndjson": "^0.1.1",
     "it-pair": "^2.0.2",
     "it-pipe": "^2.0.3",
