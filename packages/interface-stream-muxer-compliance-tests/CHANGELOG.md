@@ -1,3 +1,10 @@
+## [@libp2p/interface-stream-muxer-compliance-tests-v6.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v6.0.2...@libp2p/interface-stream-muxer-compliance-tests-v6.0.3) (2022-10-18)
+
+
+### Dependencies
+
+* bump lerna from 5.6.2 to 6.0.1 ([#307](https://github.com/libp2p/js-libp2p-interfaces/issues/307)) ([d203019](https://github.com/libp2p/js-libp2p-interfaces/commit/d2030195b9689c504c148a722027d93af4fdc26d))
+
 ## [@libp2p/interface-stream-muxer-compliance-tests-v6.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v6.0.1...@libp2p/interface-stream-muxer-compliance-tests-v6.0.2) (2022-10-17)
 
 
