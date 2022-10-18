@@ -8,7 +8,9 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
     return factory.createStreamMuxer(init)
   }
 
-  describe('stress test', () => {
+  describe('stress test', function () {
+    this.timeout(800000)
+
     it('1 stream with 1 msg', async () => await spawn(createMuxer, 1, 1))
     it('1 stream with 10 msg', async () => await spawn(createMuxer, 1, 10))
     it('1 stream with 100 msg', async () => await spawn(createMuxer, 1, 100))
@@ -20,9 +22,6 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
     it('100 streams with 100 msg', async () => await spawn(createMuxer, 100, 100))
     it('1000 streams with 1 msg', async () => await spawn(createMuxer, 1000, 1))
     it('1000 streams with 10 msg', async () => await spawn(createMuxer, 1000, 10))
-    it('1000 streams with 100 msg', async function () {
-      this.timeout(800000)
-      await spawn(createMuxer, 1000, 100)
-    })
+    it('1000 streams with 100 msg', async () => await spawn(createMuxer, 1000, 100))
   })
 }
