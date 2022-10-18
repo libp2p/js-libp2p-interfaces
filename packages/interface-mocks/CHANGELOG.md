@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v7.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v7.0.2...@libp2p/interface-mocks-v7.0.3) (2022-10-18)
+
+
+### Dependencies
+
+* bump it-ndjson from 0.1.1 to 1.0.0 ([#308](https://github.com/libp2p/js-libp2p-interfaces/issues/308)) ([54db8a4](https://github.com/libp2p/js-libp2p-interfaces/commit/54db8a45c8e533b832c0b7b0f6847c28d7185676))
+
 ## [@libp2p/interface-mocks-v7.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v7.0.1...@libp2p/interface-mocks-v7.0.2) (2022-10-17)
 
 
