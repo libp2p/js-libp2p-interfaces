@@ -300,7 +300,7 @@ class MockMuxer implements StreamMuxer {
       await pipe(
         abortableSource(source, this.closeController.signal),
         (source) => map(source, buf => uint8ArrayToString(buf.subarray())),
-        ndjson.parse,
+        ndjson.parse<StreamMessage>,
         async (source) => {
           for await (const message of source) {
             this.log.trace('-> %s %s %s', message.type, message.direction, message.id)
