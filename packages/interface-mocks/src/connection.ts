@@ -12,7 +12,7 @@ import * as mss from '@libp2p/multistream-select'
 import { logger } from '@libp2p/logger'
 import * as STATUS from '@libp2p/interface-connection/status'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { StreamMuxer } from '@libp2p/interface-stream-muxer'
+import type { StreamMuxer, StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
 import type { AbortOptions } from '@libp2p/interfaces'
 import errCode from 'err-code'
 import type { Uint8ArrayList } from 'uint8arraylist'
@@ -21,7 +21,8 @@ const log = logger('libp2p:mock-connection')
 
 export interface MockConnectionOptions {
   direction?: Direction
-  registrar?: Registrar
+  registrar?: Registrar,
+  muxerFactory?: StreamMuxerFactory
 }
 
 interface MockConnectionInit {
@@ -124,7 +125,7 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
   const remotePeer = peerIdFromString(remotePeerIdStr)
   const direction = opts.direction ?? 'inbound'
   const registrar = opts.registrar ?? mockRegistrar()
-  const muxerFactory = mockMuxer()
+  const muxerFactory = opts.muxerFactory ?? mockMuxer()
 
   const muxer = muxerFactory.createStreamMuxer({
     direction: direction,

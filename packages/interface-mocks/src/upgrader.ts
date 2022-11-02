@@ -1,5 +1,5 @@
 import { mockConnection } from './connection.js'
-import type { Upgrader, UpgraderEvents } from '@libp2p/interface-transport'
+import type { Upgrader, UpgraderEvents, UpgraderOptions } from '@libp2p/interface-transport'
 import type { MultiaddrConnection } from '@libp2p/interface-connection'
 import type { Registrar } from '@libp2p/interface-registrar'
 import { EventEmitter } from '@libp2p/interfaces/events'
@@ -17,17 +17,19 @@ class MockUpgrader extends EventEmitter<UpgraderEvents> implements Upgrader {
     this.registrar = init.registrar
   }
 
-  async upgradeOutbound (multiaddrConnection: MultiaddrConnection) {
+  async upgradeOutbound (multiaddrConnection: MultiaddrConnection, opts: UpgraderOptions = {}) {
     return mockConnection(multiaddrConnection, {
       direction: 'outbound',
-      registrar: this.registrar
+      registrar: this.registrar,
+      ...opts
     })
   }
 
-  async upgradeInbound (multiaddrConnection: MultiaddrConnection) {
+  async upgradeInbound (multiaddrConnection: MultiaddrConnection, opts: UpgraderOptions = {}) {
     return mockConnection(multiaddrConnection, {
       direction: 'inbound',
-      registrar: this.registrar
+      registrar: this.registrar,
+      ...opts
     })
   }
 }
