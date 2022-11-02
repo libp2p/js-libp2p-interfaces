@@ -21,7 +21,7 @@ const log = logger('libp2p:mock-connection')
 
 export interface MockConnectionOptions {
   direction?: Direction
-  registrar?: Registrar,
+  registrar?: Registrar
   muxerFactory?: StreamMuxerFactory
 }
 
