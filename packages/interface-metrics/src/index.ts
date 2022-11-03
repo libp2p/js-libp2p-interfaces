@@ -63,7 +63,119 @@ export interface TrackStreamOptions {
   protocol?: string
 }
 
-export interface StreamMetrics {
+/**
+ * Create tracked metrics with these options. Loosely based on the
+ * interfaces exposed by the prom-client module
+ */
+export interface MetricOptions {
+  /**
+   * Optional label for the metric
+   */
+  label?: string
+
+  /**
+   * Optional help for the metric
+   */
+  help?: string
+}
+
+/**
+ * A function that returns a tracked metric which may be expensive
+ * to calculate so it is only invoked when metrics are being scraped
+ */
+export type CalculateMetric<T = number> = (() => T) | (() => Promise<T>)
+
+/**
+ * Create tracked metrics that are expensive to calculate by passing
+ * a function that is only invoked when metrics are being scraped
+ */
+export interface CalculatedMetricOptions<T = number> extends MetricOptions {
+  /**
+   * An optional function invoked to calculate the component metric instead of
+   * using `.update`, `.increment`, and `.decrement`
+   */
+  calculate: CalculateMetric<T>
+}
+
+/**
+ * Call this function to stop the timer returned from the `.timer` method
+ * on the metric
+ */
+export interface StopTimer { (): void }
+
+/**
+ * A tracked metric loosely based on the interfaces exposed by the
+ * prom-client module
+ */
+export interface Metric {
+  /**
+   * Update the stored metric to the passed value
+   */
+  update: (value: number) => void
+
+  /**
+   * Increment the metric by the passed value or 1
+   */
+  increment: (value?: number) => void
+
+  /**
+   * Decrement the metric by the passed value or 1
+   */
+  decrement: (value?: number) => void
+
+  /**
+   * Reset this metric to its default value
+   */
+  reset: () => void
+
+  /**
+   * Start a timed metric, call the returned function to
+   * stop the timer
+   */
+  timer: () => StopTimer
+}
+
+/**
+ * A group of related metrics loosely based on the interfaces exposed by the
+ * prom-client module
+ */
+export interface MetricGroup {
+  /**
+   * Update the stored metric group to the passed value
+   */
+  update: (values: Record<string, number>) => void
+
+  /**
+   * Increment the metric group keys by the passed number or
+   * any non-numeric value to increment by 1
+   */
+  increment: (values: Record<string, number | unknown>) => void
+
+  /**
+   * Decrement the metric group keys by the passed number or
+   * any non-numeric value to decrement by 1
+   */
+  decrement: (values: Record<string, number | unknown>) => void
+
+  /**
+   * Reset the passed key in this metric group to its default value
+   * or all keys if no key is passed
+   */
+  reset: () => void
+
+  /**
+   * Start a timed metric for the named key in the group, call
+   * the returned function to stop the timer
+   */
+  timer: (key: string) => StopTimer
+}
+
+/**
+ * The libp2p metrics tracking object. This interface is only concerned
+ * with the collection of metrics, please see the individual implementations
+ * for how to extract metrics for viewing.
+ */
+export interface Metrics {
   /**
    * Returns the global `Stats` object
    */
@@ -112,86 +224,18 @@ export interface StreamMetrics {
    * with the placeholder string returned from here, and the known `PeerId`.
    */
   trackStream: (data: TrackStreamOptions) => void
-}
-
-/**
- * Used to update a tracked metric. Value can either be a number, an object containing
- * key/value pairs or an (optionally async) function to return a number or an object of
- * key/value pairs.
- */
-export interface ComponentMetricsUpdate {
-  /**
-   * Name of the system, e.g. libp2p, ipfs, etc
-   */
-  system: string
 
   /**
-   * Name of the system component that contains the metric
+   * Register an arbitrary metric. Call this to set help/labels for metrics
+   * and update/increment/decrement/etc them by calling methods on the returned
+   * metric object
    */
-  component: string
+  registerMetric: ((name: string, options?: MetricOptions) => Metric) & ((name: string, options: CalculatedMetricOptions) => void)
 
   /**
-   * Name of the metric being tracked
+   * Register a a group of related metrics. Call this to set help/labels for
+   * groups of related metrics that will be updated with by calling `.update`,
+   * `.increment` and/or `.decrement` methods on the returned metric group object
    */
-  metric: string
-
-  /**
-   * The value or function to calculate the value
-   */
-  value: ComponentMetric | CalculateComponentMetric
-
-  /**
-   * Optional label for the metric
-   */
-  label?: string
-
-  /**
-   * Optional help for the metric
-   */
-  help?: string
-}
-
-export type ComponentMetric = number | ComponentMetricsGroup
-
-/**
- * Used to group related metrics together by label and value
- */
-export type ComponentMetricsGroup = Record<string, number>
-
-/**
- * Used to calculate metric values dynamically
- */
-export interface CalculateComponentMetric { (): Promise<ComponentMetric> | ComponentMetric }
-
-export interface TrackedMetric {
-  /**
-   * In systems that support them, this label can help make graphs more interpretable
-   */
-  label?: string
-
-  /**
-   * In systems that support them, this help text can help make graphs more interpretable
-   */
-  help?: string
-
-  /**
-   * A function that returns a value or a group of values
-   */
-  calculate: CalculateComponentMetric
-}
-
-export interface ComponentMetricsTracker {
-  /**
-   * Returns tracked metrics key by system, component, metric, value
-   */
-  getComponentMetrics: () => Map<string, Map<string, Map<string, TrackedMetric>>>
-
-  /**
-   * Update the stored metric value for the given system and component
-   */
-  updateComponentMetric: (data: ComponentMetricsUpdate) => void
-}
-
-export interface Metrics extends StreamMetrics, ComponentMetricsTracker {
-
+  registerMetricGroup: ((name: string, options?: MetricOptions) => MetricGroup) & ((name: string, options: CalculatedMetricOptions<Record<string, number>>) => void)
 }
