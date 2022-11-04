@@ -1,5 +1,5 @@
-import type { MultiaddrConnection, Stream, Connection } from '@libp2p/interface-connection'
-import type { Metric, MetricGroup, StopTimer, Metrics, CalculatedMetricOptions, MetricOptions } from '@libp2p/interface-metrics'
+import type { Metric, MetricGroup, StopTimer, Metrics, CalculatedMetricOptions, MetricOptions, Stats, TrackStreamOptions } from '@libp2p/interface-metrics'
+import type { PeerId } from '@libp2p/interface-peer-id'
 
 class DefaultMetric implements Metric {
   public value: number = 0
@@ -72,12 +72,36 @@ class DefaultGroupMetric implements MetricGroup {
 class MockMetrics implements Metrics {
   public metrics = new Map<string, any>()
 
-  trackMultiaddrConnection (maConn: MultiaddrConnection) {
-    return maConn
+   getGlobal (): Stats {
+    throw new Error('not implemented')
+   }
+
+   getPeers () {
+    return []
+   }
+
+   forPeer (peerId: PeerId): Stats | undefined {
+    throw new Error('not implemented')
+   }
+
+   getProtocols (): string[] {
+    return []
+   }
+
+   forProtocol (protocol: string): Stats | undefined {
+    throw new Error('not implemented')
+   }
+
+  onPeerDisconnected (peerId: PeerId): void {
+
   }
 
-  trackProtocolStream (stream: Stream, connection: Connection) {
-    return stream
+  updatePlaceholder (placeholder: PeerId, peerId: PeerId): void {
+
+  }
+
+  trackStream (data: TrackStreamOptions): void {
+
   }
 
   registerMetric (name: string, opts: CalculatedMetricOptions): void
