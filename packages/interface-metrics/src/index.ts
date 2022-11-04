@@ -203,13 +203,6 @@ export interface Metrics {
   forProtocol: (protocol: string) => Stats | undefined
 
   /**
-   * Should be called when all connections to a given peer
-   * have closed. The `Stats` collection for the peer will
-   * be stopped and moved to an LRU for temporary retention.
-   */
-  onPeerDisconnected: (peerId: PeerId) => void
-
-  /**
    * Replaces the `PeerId` string with the given `peerId`.
    * If stats are already being tracked for the given `peerId`, the
    * placeholder stats will be merged with the existing stats.

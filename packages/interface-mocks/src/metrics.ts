@@ -72,28 +72,24 @@ class DefaultGroupMetric implements MetricGroup {
 class MockMetrics implements Metrics {
   public metrics = new Map<string, any>()
 
-   getGlobal (): Stats {
+  getGlobal (): Stats {
     throw new Error('not implemented')
-   }
+  }
 
-   getPeers () {
+  getPeers () {
     return []
-   }
+  }
 
-   forPeer (peerId: PeerId): Stats | undefined {
+  forPeer (peerId: PeerId): Stats | undefined {
     throw new Error('not implemented')
-   }
+  }
 
-   getProtocols (): string[] {
+  getProtocols (): string[] {
     return []
-   }
+  }
 
-   forProtocol (protocol: string): Stats | undefined {
+  forProtocol (protocol: string): Stats | undefined {
     throw new Error('not implemented')
-   }
-
-  onPeerDisconnected (peerId: PeerId): void {
-
   }
 
   updatePlaceholder (placeholder: PeerId, peerId: PeerId): void {
