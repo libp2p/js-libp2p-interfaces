@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v7.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v7.0.3...@libp2p/interface-mocks-v7.1.0) (2022-11-05)
+
+
+### Features
+
+* allow passing muxer factory to mock upgrader ([#309](https://github.com/libp2p/js-libp2p-interfaces/issues/309)) ([b2a4d92](https://github.com/libp2p/js-libp2p-interfaces/commit/b2a4d9231580e4cfc7b662e4cdae72f43e1c1011))
+
 ## [@libp2p/interface-mocks-v7.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v7.0.2...@libp2p/interface-mocks-v7.0.3) (2022-10-18)
 
 
