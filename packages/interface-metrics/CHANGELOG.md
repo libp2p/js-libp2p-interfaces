@@ -1,3 +1,10 @@
+## [@libp2p/interface-metrics-v4.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-metrics-v4.0.1...@libp2p/interface-metrics-v4.0.2) (2022-11-05)
+
+
+### Bug Fixes
+
+* metrics only need numbers ([#312](https://github.com/libp2p/js-libp2p-interfaces/issues/312)) ([0076c1f](https://github.com/libp2p/js-libp2p-interfaces/commit/0076c1f354ebc1106b6ac42d48688c0209866084))
+
 ## [@libp2p/interface-metrics-v4.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-metrics-v4.0.0...@libp2p/interface-metrics-v4.0.1) (2022-11-05)
 
 
