@@ -1,3 +1,24 @@
+## [@libp2p/interface-mocks-v8.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v7.1.0...@libp2p/interface-mocks-v8.0.0) (2022-11-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* the global/per-peer moving average tracking has been removed from the interface as it's expensive and requires lots of timers - this functionality can be replicated by implementations if it's desirable.  It's better to have simple counters instead and let an external system like Prometheus or Graphana calculate the values over time
+
+### Features
+
+* return metrics objects from register instead of updating with an options object ([#310](https://github.com/libp2p/js-libp2p-interfaces/issues/310)) ([3b106ce](https://github.com/libp2p/js-libp2p-interfaces/commit/3b106ce799b5d84a82a66238995e09970ed8116c))
+
+
+### Bug Fixes
+
+* update project config ([#311](https://github.com/libp2p/js-libp2p-interfaces/issues/311)) ([27dd0ce](https://github.com/libp2p/js-libp2p-interfaces/commit/27dd0ce3c249892ac69cbb24ddaf0b9f32385e37))
+
+
+### Dependencies
+
+* update sibling dependencies ([6f41152](https://github.com/libp2p/js-libp2p-interfaces/commit/6f41152cc10e9babd338fe0c0d3c9bfff6eee960))
+
 ## [@libp2p/interface-mocks-v7.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v7.0.3...@libp2p/interface-mocks-v7.1.0) (2022-11-05)
 
 
