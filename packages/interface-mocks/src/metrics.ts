@@ -4,16 +4,16 @@ import type { MultiaddrConnection, Stream, Connection } from '@libp2p/interface-
 class DefaultMetric implements Metric {
   public value: number = 0
 
-  update (value: number | bigint): void {
-    this.value = Number(value)
+  update (value: number): void {
+    this.value = value
   }
 
-  increment (value: number | bigint = 1): void {
-    this.value += Number(value)
+  increment (value: number = 1): void {
+    this.value += value
   }
 
-  decrement (value: number | bigint = 1): void {
-    this.value -= Number(value)
+  decrement (value: number = 1): void {
+    this.value -= value
   }
 
   reset (): void {
@@ -32,25 +32,25 @@ class DefaultMetric implements Metric {
 class DefaultGroupMetric implements MetricGroup {
   public values: Record<string, number> = {}
 
-  update (values: Record<string, number | bigint>): void {
+  update (values: Record<string, number>): void {
     Object.entries(values).forEach(([key, value]) => {
-      this.values[key] = Number(value)
+      this.values[key] = value
     })
   }
 
-  increment (values: Record<string, number | bigint | unknown>): void {
+  increment (values: Record<string, number | unknown>): void {
     Object.entries(values).forEach(([key, value]) => {
       this.values[key] = this.values[key] ?? 0
-      const inc = typeof value === 'number' || typeof value === 'bigint' ? value : 1
+      const inc = typeof value === 'number' ? value : 1
 
       this.values[key] += Number(inc)
     })
   }
 
-  decrement (values: Record<string, number | bigint | unknown>): void {
+  decrement (values: Record<string, number | unknown>): void {
     Object.entries(values).forEach(([key, value]) => {
       this.values[key] = this.values[key] ?? 0
-      const dec = typeof value === 'number' || typeof value === 'bigint' ? value : 1
+      const dec = typeof value === 'number' ? value : 1
 
       this.values[key] -= Number(dec)
     })
