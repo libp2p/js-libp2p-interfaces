@@ -1,19 +1,19 @@
-import type { Metric, MetricGroup, StopTimer, Metrics, CalculatedMetricOptions, MetricOptions, Stats, TrackStreamOptions } from '@libp2p/interface-metrics'
-import type { PeerId } from '@libp2p/interface-peer-id'
+import type { Metric, MetricGroup, StopTimer, Metrics, CalculatedMetricOptions, MetricOptions } from '@libp2p/interface-metrics'
+import type { MultiaddrConnection, Stream, Connection } from '@libp2p/interface-connection'
 
 class DefaultMetric implements Metric {
   public value: number = 0
 
-  update (value: number): void {
-    this.value = value
+  update (value: number | bigint): void {
+    this.value = Number(value)
   }
 
-  increment (value = 1): void {
-    this.value += value
+  increment (value: number | bigint = 1): void {
+    this.value += Number(value)
   }
 
-  decrement (value = 1): void {
-    this.value -= value
+  decrement (value: number | bigint = 1): void {
+    this.value -= Number(value)
   }
 
   reset (): void {
@@ -32,27 +32,27 @@ class DefaultMetric implements Metric {
 class DefaultGroupMetric implements MetricGroup {
   public values: Record<string, number> = {}
 
-  update (values: Record<string, number>): void {
+  update (values: Record<string, number | bigint>): void {
     Object.entries(values).forEach(([key, value]) => {
-      this.values[key] = value
+      this.values[key] = Number(value)
     })
   }
 
-  increment (values: Record<string, number | unknown>): void {
+  increment (values: Record<string, number | bigint | unknown>): void {
     Object.entries(values).forEach(([key, value]) => {
       this.values[key] = this.values[key] ?? 0
-      const inc = typeof value === 'number' ? value : 1
+      const inc = typeof value === 'number' || typeof value == 'bigint' ? value : 1
 
-      this.values[key] += inc
+      this.values[key] += Number(inc)
     })
   }
 
-  decrement (values: Record<string, number | unknown>): void {
+  decrement (values: Record<string, number | bigint | unknown>): void {
     Object.entries(values).forEach(([key, value]) => {
       this.values[key] = this.values[key] ?? 0
-      const dec = typeof value === 'number' ? value : 1
+      const dec = typeof value === 'number' || typeof value == 'bigint' ? value : 1
 
-      this.values[key] -= dec
+      this.values[key] -= Number(dec)
     })
   }
 
@@ -72,31 +72,11 @@ class DefaultGroupMetric implements MetricGroup {
 class MockMetrics implements Metrics {
   public metrics = new Map<string, any>()
 
-  getGlobal (): Stats {
-    throw new Error('not implemented')
-  }
-
-  getPeers () {
-    return []
-  }
-
-  forPeer (peerId: PeerId): Stats | undefined {
-    throw new Error('not implemented')
-  }
-
-  getProtocols (): string[] {
-    return []
-  }
-
-  forProtocol (protocol: string): Stats | undefined {
-    throw new Error('not implemented')
-  }
-
-  updatePlaceholder (placeholder: PeerId, peerId: PeerId): void {
+  trackMultiaddrConnection (maConn: MultiaddrConnection): void {
 
   }
 
-  trackStream (data: TrackStreamOptions): void {
+  trackProtocolStream (stream: Stream, connection: Connection): void {
 
   }
 
@@ -119,9 +99,47 @@ class MockMetrics implements Metrics {
     return metric
   }
 
+  registerCounter (name: string, opts: CalculatedMetricOptions): void
+  registerCounter (name: string, opts?: MetricOptions): Metric
+  registerCounter (name: string, opts: any): any {
+    if (name == null ?? name.trim() === '') {
+      throw new Error('Metric name is required')
+    }
+
+    if (opts?.calculate != null) {
+      // calculated metric
+      this.metrics.set(name, opts.calculate)
+      return
+    }
+
+    const metric = new DefaultMetric()
+    this.metrics.set(name, metric)
+
+    return metric
+  }
+
   registerMetricGroup (name: string, opts: CalculatedMetricOptions<Record<string, number>>): void
   registerMetricGroup (name: string, opts?: MetricOptions): MetricGroup
   registerMetricGroup (name: string, opts: any): any {
+    if (name == null ?? name.trim() === '') {
+      throw new Error('Metric name is required')
+    }
+
+    if (opts?.calculate != null) {
+      // calculated metric
+      this.metrics.set(name, opts.calculate)
+      return
+    }
+
+    const metric = new DefaultGroupMetric()
+    this.metrics.set(name, metric)
+
+    return metric
+  }
+
+  registerCounterGroup (name: string, opts: CalculatedMetricOptions<Record<string, number>>): void
+  registerCounterGroup (name: string, opts?: MetricOptions): MetricGroup
+  registerCounterGroup (name: string, opts: any): any {
     if (name == null ?? name.trim() === '') {
       throw new Error('Metric name is required')
     }
