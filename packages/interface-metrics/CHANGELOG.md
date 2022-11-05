@@ -1,3 +1,14 @@
+## [@libp2p/interface-metrics-v4.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-metrics-v3.0.0...@libp2p/interface-metrics-v4.0.0) (2022-11-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* the global/per-peer moving average tracking has been removed from the interface as it's expensive and requires lots of timers - this functionality can be replicated by implementations if it's desirable.  It's better to have simple counters instead and let an external system like Prometheus or Graphana calculate the values over time
+
+### Features
+
+* return metrics objects from register instead of updating with an options object ([#310](https://github.com/libp2p/js-libp2p-interfaces/issues/310)) ([3b106ce](https://github.com/libp2p/js-libp2p-interfaces/commit/3b106ce799b5d84a82a66238995e09970ed8116c))
+
 ## [@libp2p/interface-metrics-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-metrics-v2.0.0...@libp2p/interface-metrics-v3.0.0) (2022-08-07)
 
 
