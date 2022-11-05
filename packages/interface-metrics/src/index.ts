@@ -111,7 +111,7 @@ export interface MetricGroup {
  * A tracked counter loosely based on the Counter interface exposed
  * by the prom-client module - counters are metrics that only go up
  */
- export interface Counter {
+export interface Counter {
   /**
    * Increment the metric by the passed value or 1
    */

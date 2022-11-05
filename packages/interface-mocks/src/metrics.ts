@@ -41,7 +41,7 @@ class DefaultGroupMetric implements MetricGroup {
   increment (values: Record<string, number | bigint | unknown>): void {
     Object.entries(values).forEach(([key, value]) => {
       this.values[key] = this.values[key] ?? 0
-      const inc = typeof value === 'number' || typeof value == 'bigint' ? value : 1
+      const inc = typeof value === 'number' || typeof value === 'bigint' ? value : 1
 
       this.values[key] += Number(inc)
     })
@@ -50,7 +50,7 @@ class DefaultGroupMetric implements MetricGroup {
   decrement (values: Record<string, number | bigint | unknown>): void {
     Object.entries(values).forEach(([key, value]) => {
       this.values[key] = this.values[key] ?? 0
-      const dec = typeof value === 'number' || typeof value == 'bigint' ? value : 1
+      const dec = typeof value === 'number' || typeof value === 'bigint' ? value : 1
 
       this.values[key] -= Number(dec)
     })
