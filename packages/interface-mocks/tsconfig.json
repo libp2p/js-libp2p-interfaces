@@ -25,6 +25,9 @@
       "path": "../interface-connection-manager"
     },
     {
+      "path": "../interface-metrics"
+    },
+    {
       "path": "../interface-peer-discovery"
     },
     {

@@ -12,6 +12,9 @@
       "path": "../interface-connection"
     },
     {
+      "path": "../interface-stream-muxer"
+    },
+    {
       "path": "../interfaces"
     }
   ]
