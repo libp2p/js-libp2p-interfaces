@@ -193,19 +193,24 @@ export interface Peer {
   registrar: Registrar
 }
 
-export function connectionPair (a: { peerId: PeerId, registrar: Registrar }, b: { peerId: PeerId, registrar: Registrar }): [ Connection, Connection ] {
+export function multiaddrConnectionPair (a: { peerId: PeerId, registrar: Registrar }, b: { peerId: PeerId, registrar: Registrar }): [ MultiaddrConnection, MultiaddrConnection ] {
   const [peerBtoPeerA, peerAtoPeerB] = duplexPair<Uint8Array>()
 
   return [
-    mockConnection(
-      mockMultiaddrConnection(peerAtoPeerB, b.peerId), {
-        registrar: a.registrar
-      }
-    ),
-    mockConnection(
-      mockMultiaddrConnection(peerBtoPeerA, a.peerId), {
-        registrar: b.registrar
-      }
-    )
+    mockMultiaddrConnection(peerAtoPeerB, b.peerId),
+    mockMultiaddrConnection(peerBtoPeerA, a.peerId)
+  ]
+}
+
+export function connectionPair (a: { peerId: PeerId, registrar: Registrar }, b: { peerId: PeerId, registrar: Registrar }): [ Connection, Connection ] {
+  const [peerBtoPeerA, peerAtoPeerB] = multiaddrConnectionPair(a, b)
+
+  return [
+    mockConnection(peerBtoPeerA, {
+      registrar: a.registrar
+    }),
+    mockConnection(peerAtoPeerB, {
+      registrar: b.registrar
+    })
   ]
 }

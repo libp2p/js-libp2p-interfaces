@@ -11,7 +11,7 @@
 ## Table of contents <!-- omit in toc -->
 
 - [Install](#install)
-- [Using the Test Suite](#using-the-test-suite)
+- [Implementations](#implementations)
 - [License](#license)
 - [Contribution](#contribution)
 
@@ -21,24 +21,9 @@
 $ npm i @libp2p/interface-metrics
 ```
 
-## Using the Test Suite
+## Implementations
 
-You can also check out the [internal test suite](../../test/crypto/compliance.spec.js) to see the setup in action.
-
-```js
-const tests = require('libp2p-interfaces-compliance-tests/keys')
-const yourKeys = require('./your-keys')
-
-tests({
-  setup () {
-    // Set up your keys if needed, then return it
-    return yourKeys
-  },
-  teardown () {
-    // Clean up your keys if needed
-  }
-})
-```
+* [@libp2p/prometheus-metrics](https://github.com/libp2p/js-libp2p-prometheus-metrics)
 
 ## License
 
