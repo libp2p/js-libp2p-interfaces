@@ -20,13 +20,13 @@ export interface MetricOptions {
  * A function that returns a tracked metric which may be expensive
  * to calculate so it is only invoked when metrics are being scraped
  */
-export type CalculateMetric<T = number | bigint> = (() => T) | (() => Promise<T>)
+export type CalculateMetric<T = number> = (() => T) | (() => Promise<T>)
 
 /**
  * Create tracked metrics that are expensive to calculate by passing
  * a function that is only invoked when metrics are being scraped
  */
-export interface CalculatedMetricOptions<T = number | bigint> extends MetricOptions {
+export interface CalculatedMetricOptions<T = number> extends MetricOptions {
   /**
    * An optional function invoked to calculate the component metric instead of
    * using `.update`, `.increment`, and `.decrement`
@@ -48,17 +48,17 @@ export interface Metric {
   /**
    * Update the stored metric to the passed value
    */
-  update: (value: number | bigint) => void
+  update: (value: number) => void
 
   /**
    * Increment the metric by the passed value or 1
    */
-  increment: (value?: number | bigint) => void
+  increment: (value?: number) => void
 
   /**
    * Decrement the metric by the passed value or 1
    */
-  decrement: (value?: number | bigint) => void
+  decrement: (value?: number) => void
 
   /**
    * Reset this metric to its default value
@@ -80,19 +80,19 @@ export interface MetricGroup {
   /**
    * Update the stored metric group to the passed value
    */
-  update: (values: Record<string, number | bigint>) => void
+  update: (values: Record<string, number>) => void
 
   /**
    * Increment the metric group keys by the passed number or
    * any non-numeric value to increment by 1
    */
-  increment: (values: Record<string, number | bigint | unknown>) => void
+  increment: (values: Record<string, number | unknown>) => void
 
   /**
    * Decrement the metric group keys by the passed number or
    * any non-numeric value to decrement by 1
    */
-  decrement: (values: Record<string, number | bigint | unknown>) => void
+  decrement: (values: Record<string, number | unknown>) => void
 
   /**
    * Reset the passed key in this metric group to its default value
@@ -115,7 +115,7 @@ export interface Counter {
   /**
    * Increment the metric by the passed value or 1
    */
-  increment: (value?: number | bigint) => void
+  increment: (value?: number) => void
 
   /**
    * Reset this metric to its default value
@@ -133,7 +133,7 @@ export interface CounterGroup {
    * Increment the metric group keys by the passed number or
    * any non-numeric value to increment by 1
    */
-  increment: (values: Record<string, number | bigint | unknown>) => void
+  increment: (values: Record<string, number | unknown>) => void
 
   /**
    * Reset the passed key in this metric group to its default value
@@ -170,7 +170,7 @@ export interface Metrics {
    * groups of related metrics that will be updated with by calling `.update`,
    * `.increment` and/or `.decrement` methods on the returned metric group object
    */
-  registerMetricGroup: ((name: string, options?: MetricOptions) => MetricGroup) & ((name: string, options: CalculatedMetricOptions<Record<string, number | bigint>>) => void)
+  registerMetricGroup: ((name: string, options?: MetricOptions) => MetricGroup) & ((name: string, options: CalculatedMetricOptions<Record<string, number>>) => void)
 
   /**
    * Register an arbitrary counter. Call this to set help/labels for counters
@@ -183,5 +183,5 @@ export interface Metrics {
    * groups of related counters that will be updated with by calling the `.increment`
    * method on the returned counter group object
    */
-  registerCounterGroup: ((name: string, options?: MetricOptions) => CounterGroup) & ((name: string, options: CalculatedMetricOptions<Record<string, number | bigint>>) => void)
+  registerCounterGroup: ((name: string, options?: MetricOptions) => CounterGroup) & ((name: string, options: CalculatedMetricOptions<Record<string, number>>) => void)
 }
