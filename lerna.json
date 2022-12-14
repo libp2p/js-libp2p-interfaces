@@ -6,8 +6,5 @@
     "run": {
       "stream": true
     }
-  },
-  "packages": [
-    "packages/*"
-  ]
+  }
 }
