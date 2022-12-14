@@ -1,3 +1,15 @@
+## [@libp2p/interface-connection-compliance-tests-v2.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-compliance-tests-v2.0.3...@libp2p/interface-connection-compliance-tests-v2.0.4) (2022-12-14)
+
+
+### Bug Fixes
+
+* generate docs for all packages ([#321](https://github.com/libp2p/js-libp2p-interfaces/issues/321)) ([b6f8b32](https://github.com/libp2p/js-libp2p-interfaces/commit/b6f8b32a920c15a28fe021e6050e31aaae89d518))
+
+
+### Dependencies
+
+* bump sinon from 14.0.2 to 15.0.0 ([#316](https://github.com/libp2p/js-libp2p-interfaces/issues/316)) ([d37721c](https://github.com/libp2p/js-libp2p-interfaces/commit/d37721c9143cd3eeafb5f8249b07d9f2fbce0f54))
+
 ## [@libp2p/interface-connection-compliance-tests-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-compliance-tests-v2.0.2...@libp2p/interface-connection-compliance-tests-v2.0.3) (2022-11-05)
 
 
