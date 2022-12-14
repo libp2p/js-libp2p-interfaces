@@ -135,7 +135,7 @@
     "@libp2p/interface-compliance-tests": "^3.0.0",
     "@libp2p/interface-connection": "^3.0.0",
     "aegir": "^37.7.3",
-    "sinon": "^14.0.0",
+    "sinon": "^15.0.0",
     "ts-sinon": "^2.0.2"
   },
   "typedoc": {
