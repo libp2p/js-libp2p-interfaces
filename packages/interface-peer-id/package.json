@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-peer-id",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Peer Identifier interface for libp2p",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-peer-id#readme",
@@ -23,7 +23,7 @@
   "types": "./dist/src/index.d.ts",
   "files": [
     "src",
-    "dist/src",
+    "dist",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -135,6 +135,9 @@
     "multiformats": "^10.0.0"
   },
   "devDependencies": {
-    "aegir": "^37.4.0"
+    "aegir": "^37.7.3"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts"
   }
 }

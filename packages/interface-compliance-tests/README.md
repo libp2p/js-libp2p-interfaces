@@ -11,6 +11,7 @@
 
 - [Install](#install)
 - [Usage](#usage)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -23,6 +24,10 @@ $ npm i @libp2p/interface-compliance-tests
 ## Usage
 
 Each [interface](https://npmjs.org/packages/@libp2p/interfaces) has its documentation on how to use the compliance tests and should be used as the source of truth.
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

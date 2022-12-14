@@ -34,10 +34,12 @@
     "generate": "lerna run generate",
     "build": "lerna run build",
     "lint": "lerna run lint",
+    "docs": "aegir docs",
     "dep-check": "lerna run dep-check",
-    "release": "lerna run --concurrency 1 release -- --"
+    "release": "npm run docs && lerna run --concurrency 1 release -- --"
   },
   "dependencies": {
+    "aegir": "^37.7.3",
     "lerna": "^6.0.1",
     "rimraf": "^3.0.2"
   },

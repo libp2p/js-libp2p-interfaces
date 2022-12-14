@@ -29,6 +29,7 @@
     - [Local address](#local-address)
     - [Stat](#stat)
     - [Tags](#tags)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -297,6 +298,10 @@ This property contains the encryption method being used in the connection. It is
 - `JavaScript` - `conn.tags`
 
 This property contains an array of tags associated with the connection. New tags can be pushed to this array during the connection's lifetime.
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

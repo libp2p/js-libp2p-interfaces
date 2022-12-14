@@ -10,7 +10,9 @@
 ## Table of contents <!-- omit in toc -->
 
 - [Install](#install)
+  - [Browser `<script>` tag](#browser-script-tag)
 - [Usage](#usage)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -20,9 +22,21 @@
 $ npm i @libp2p/interface-mocks
 ```
 
+### Browser `<script>` tag
+
+Loading this module through a script tag will make it's exports available as `Libp2pInterfaceMocks` in the global namespace.
+
+```html
+<script src="https://unpkg.com/@libp2p/interface-mocks/dist/index.min.js"></script>
+```
+
 ## Usage
 
 Each [interface](../interfaces) has its documentation on how to use the compliance tests and should be used as the source of truth.
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

@@ -18,6 +18,7 @@
   - [`start` the service](#start-the-service)
   - [`stop` the service](#stop-the-service)
   - [discovering peers](#discovering-peers)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -100,6 +101,10 @@ Every time a peer is discovered by a discovery service, it emits a `peer` event 
 
 - `<`[`PeerId`](https://github.com/libp2p/js-peer-id)`>` `peerData.id`
 - `<Array<`[`Multiaddr`](https://github.com/multiformats/js-multiaddr)`>>` `peerData.multiaddrs`
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

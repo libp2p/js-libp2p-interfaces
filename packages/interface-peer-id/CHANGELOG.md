@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-id-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-id-v1.0.6...@libp2p/interface-peer-id-v1.1.0) (2022-12-07)
+
+
+### Features
+
+* expose supported peer id types ([#318](https://github.com/libp2p/js-libp2p-interfaces/issues/318)) ([1197484](https://github.com/libp2p/js-libp2p-interfaces/commit/11974843445a7f4792192340c0697d40bf87fddc))
+
 ## [@libp2p/interface-peer-id-v1.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-id-v1.0.5...@libp2p/interface-peer-id-v1.0.6) (2022-11-05)
 
 

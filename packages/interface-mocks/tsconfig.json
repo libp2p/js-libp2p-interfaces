@@ -5,8 +5,7 @@
   },
   "include": [
     "src",
-    "test",
-    "../libp2p-interfaces-connection-encrypter-compliance-tests/connection-encrypter"
+    "test"
   ],
   "references": [
     {
@@ -38,6 +37,9 @@
     },
     {
       "path": "../interface-peer-info"
+    },
+    {
+      "path": "../interface-pubsub"
     },
     {
       "path": "../interface-registrar"

@@ -1,8 +1,10 @@
 import type { CID } from 'multiformats/cid'
 import type { MultihashDigest } from 'multiformats/hashes/interface'
 
+export type PeerIdType = 'RSA' | 'Ed25519' | 'secp256k1'
+
 interface BasePeerId {
-  readonly type: 'RSA' | 'Ed25519' | 'secp256k1'
+  readonly type: PeerIdType
   readonly multihash: MultihashDigest
   readonly privateKey?: Uint8Array
   readonly publicKey?: Uint8Array

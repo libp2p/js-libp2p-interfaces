@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v8.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v8.0.1...@libp2p/interface-mocks-v8.0.2) (2022-12-07)
+
+
+### Bug Fixes
+
+* add missing dependency ([e2168e8](https://github.com/libp2p/js-libp2p-interfaces/commit/e2168e8f863d6a488e4117800b5143dce1122b0b))
+
 ## [@libp2p/interface-mocks-v8.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v8.0.0...@libp2p/interface-mocks-v8.0.1) (2022-11-05)
 
 

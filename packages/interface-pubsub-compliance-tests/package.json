@@ -23,7 +23,7 @@
   "types": "./dist/src/index.d.ts",
   "files": [
     "src",
-    "dist/src",
+    "dist",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -138,12 +138,15 @@
     "@libp2p/interface-pubsub": "^3.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@libp2p/peer-id-factory": "^1.0.12",
-    "aegir": "^37.4.0",
+    "aegir": "^37.7.3",
     "delay": "^5.0.0",
     "p-defer": "^4.0.0",
     "p-event": "^5.0.1",
     "p-wait-for": "^5.0.0",
     "sinon": "^14.0.0",
     "uint8arrays": "^4.0.2"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts"
   }
 }
