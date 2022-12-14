@@ -23,7 +23,7 @@
   "types": "./dist/src/index.d.ts",
   "files": [
     "src",
-    "dist/src",
+    "dist",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -136,7 +136,7 @@
     "@libp2p/interface-connection": "^3.0.0",
     "@libp2p/interface-stream-muxer": "^3.0.0",
     "abortable-iterator": "^4.0.2",
-    "aegir": "^37.4.0",
+    "aegir": "^37.7.2",
     "delay": "^5.0.0",
     "it-all": "^2.0.0",
     "it-drain": "^2.0.0",
@@ -148,5 +148,8 @@
     "p-limit": "^4.0.0",
     "uint8arraylist": "^2.1.2",
     "uint8arrays": "^4.0.2"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts"
   }
 }
