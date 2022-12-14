@@ -11,6 +11,7 @@
 
 - [Install](#install)
 - [Using the Test Suite](#using-the-test-suite)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -38,6 +39,10 @@ tests({
   }
 })
 ```
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

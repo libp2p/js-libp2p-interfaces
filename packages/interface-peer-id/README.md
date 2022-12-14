@@ -14,6 +14,7 @@
 - [Badge](#badge)
 - [Usage](#usage)
   - [Node.js](#nodejs)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -62,6 +63,10 @@ describe('your peer id', () => {
   })
 })
 ```
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

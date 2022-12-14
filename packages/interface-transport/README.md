@@ -26,6 +26,7 @@
   - [Start a listener](#start-a-listener)
   - [Get listener addrs](#get-listener-addrs)
   - [Stop a listener](#stop-a-listener)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -246,6 +247,10 @@ This method closes the listener so that no more connections can be opened on thi
 `options` is an optional object that may contain the following properties:
 
 - `timeout` - A timeout value (in ms) after which all connections on this transport will be destroyed if the transport is not able to close gracefully. (e.g `{ timeout: 1000 }`)
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 
