@@ -39,7 +39,7 @@
     "release": "npm run docs && lerna run --concurrency 1 release -- --"
   },
   "dependencies": {
-    "aegir": "ipfs/aegir#fix/use-npm-override",
+    "aegir": "^37.7.3",
     "lerna": "^6.0.1",
     "rimraf": "^3.0.2"
   },

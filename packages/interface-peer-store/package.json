@@ -159,7 +159,7 @@
     "@multiformats/multiaddr": "^11.0.0"
   },
   "devDependencies": {
-    "aegir": "^37.7.2"
+    "aegir": "^37.7.3"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts"

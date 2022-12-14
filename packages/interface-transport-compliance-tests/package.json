@@ -139,7 +139,7 @@
     "@libp2p/interface-transport": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@multiformats/multiaddr": "^11.0.0",
-    "aegir": "^37.7.2",
+    "aegir": "^37.7.3",
     "it-all": "^2.0.0",
     "it-drain": "^2.0.0",
     "it-pipe": "^2.0.3",

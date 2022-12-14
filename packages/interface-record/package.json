@@ -136,7 +136,7 @@
     "uint8arraylist": "^2.1.2"
   },
   "devDependencies": {
-    "aegir": "^37.7.2"
+    "aegir": "^37.7.3"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts"
