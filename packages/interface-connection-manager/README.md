@@ -11,6 +11,7 @@
 
 - [Install](#install)
 - [Usage](#usage)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -25,6 +26,10 @@ $ npm i @libp2p/interface-connection-manager
 ```js
 import type { ConnectionManager } from '@libp2p/interface-connection-manager'
 ```
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

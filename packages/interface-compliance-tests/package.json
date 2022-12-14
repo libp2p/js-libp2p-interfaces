@@ -39,7 +39,7 @@
   },
   "files": [
     "src",
-    "dist/src",
+    "dist",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -156,6 +156,9 @@
     "release": "aegir release"
   },
   "dependencies": {
-    "aegir": "^37.4.0"
+    "aegir": "^37.7.3"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts"
   }
 }

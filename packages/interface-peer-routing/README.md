@@ -16,6 +16,7 @@
   - [Node.js](#nodejs)
 - [API](#api)
   - - [findPeer](#findpeer)
+  - [API Docs](#api-docs)
   - [License](#license)
   - [Contribute](#contribute)
 
@@ -65,6 +66,10 @@ Query the network for all multiaddresses associated with a `PeerId`.
 It returns the [peerId](https://github.com/libp2p/js-peer-id) together with the known peers [multiaddrs](https://github.com/multiformats/js-multiaddr), as follows:
 
 `Promise<{ id: PeerId, multiaddrs: Multiaddr[] }>`
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

@@ -11,6 +11,7 @@
 
 - [Install](#install)
 - [Usage](#usage)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -25,6 +26,10 @@ $ npm i @libp2p/interface-address-manager
 ```js
 import type { AddressManager } from '@libp2p/interfaces-address-manager'
 ```
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

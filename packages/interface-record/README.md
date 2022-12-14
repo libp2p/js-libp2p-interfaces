@@ -15,6 +15,7 @@
 - [API](#api)
   - [marshal](#marshal)
   - [equals](#equals)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -114,6 +115,10 @@ Verifies if the other Record is identical to this one.
 **Returns**
 
 - `other is Record`
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

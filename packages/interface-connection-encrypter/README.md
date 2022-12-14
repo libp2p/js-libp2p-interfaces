@@ -15,6 +15,7 @@
   - [Secure Outbound](#secure-outbound)
 - [Crypto Errors](#crypto-errors)
   - [Error Types](#error-types)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -92,6 +93,10 @@ console.log(error.code === UnexpectedPeerError.code) // true
 - `InvalidCryptoExchangeError` - Should be thrown when a peer provides data that is insufficient to finish the crypto exchange.
 - `InvalidCryptoTransmissionError` - Should be thrown when an error occurs during encryption/decryption.
 - `UnexpectedPeerError` - Should be thrown when the expected peer id does not match the peer id determined via the crypto exchange.
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 
