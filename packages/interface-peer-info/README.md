@@ -10,6 +10,7 @@
 ## Table of contents <!-- omit in toc -->
 
 - [Install](#install)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -18,6 +19,10 @@
 ```console
 $ npm i @libp2p/interface-peer-info
 ```
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

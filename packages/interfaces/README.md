@@ -15,6 +15,7 @@
   - [Events](#events)
   - [AbortOptions](#abortoptions)
   - [Startable](#startable)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -83,6 +84,10 @@ isStartable(myStartable) // returns true
 await start(myStartable)
 await stop(myStartable)
 ```
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

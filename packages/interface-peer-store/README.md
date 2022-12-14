@@ -12,6 +12,7 @@
 - [Install](#install)
 - [Usage](#usage)
   - [Tags](#tags)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -32,6 +33,10 @@ import { KEEP_ALIVE } from '@libp2p/interface-peer-store/tags'
 
 await peerStore.tagPeer(peerId, KEEP_ALIVE)
 ```
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

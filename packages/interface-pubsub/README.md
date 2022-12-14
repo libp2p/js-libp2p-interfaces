@@ -45,6 +45,7 @@
         - [Parameters](#parameters-5)
       - [Returns](#returns-3)
   - [Test suite usage](#test-suite-usage)
+  - [API Docs](#api-docs)
   - [License](#license)
   - [Contribute](#contribute)
 
@@ -305,6 +306,10 @@ describe('compliance', () => {
   })
 })
 ```
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

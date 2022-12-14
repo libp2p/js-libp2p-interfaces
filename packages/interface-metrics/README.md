@@ -11,6 +11,7 @@
 
 - [Install](#install)
 - [Implementations](#implementations)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -23,6 +24,10 @@ $ npm i @libp2p/interface-metrics
 ## Implementations
 
 - [@libp2p/prometheus-metrics](https://github.com/libp2p/js-libp2p-prometheus-metrics)
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

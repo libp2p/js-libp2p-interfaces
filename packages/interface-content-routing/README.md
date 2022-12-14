@@ -17,6 +17,7 @@
 - [API](#api)
   - - [findProviders](#findproviders)
     - [provide](#provide)
+  - [API Docs](#api-docs)
   - [License](#license)
   - [Contribute](#contribute)
 
@@ -82,6 +83,10 @@ Announce to the network that we are providing the given value.
 It returns a promise that is resolved on the success of the operation.
 
 `Promise<void>`
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

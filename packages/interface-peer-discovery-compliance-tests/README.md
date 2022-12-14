@@ -11,6 +11,7 @@
 
 - [Install](#install)
 - [Usage](#usage)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -37,6 +38,10 @@ describe('your peer discovery implementation', () => {
   })
 })
 ```
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

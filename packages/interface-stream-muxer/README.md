@@ -19,6 +19,7 @@
   - [`muxer.onStreamEnd`](#muxeronstreamend)
   - [`const stream = await muxer.newStream([options])`](#const-stream--await-muxernewstreamoptions)
   - [`const streams = muxer.streams`](#const-streams--muxerstreams)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -173,6 +174,10 @@ muxer.streams.map(stream => {
   console.log(stream.id)
 })
 ```
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 

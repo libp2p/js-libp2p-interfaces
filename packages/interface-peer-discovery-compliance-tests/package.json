@@ -23,7 +23,7 @@
   "types": "./dist/src/index.d.ts",
   "files": [
     "src",
-    "dist/src",
+    "dist",
     "!dist/test",
     "!**/*.tsbuildinfo"
   ],
@@ -136,8 +136,11 @@
     "@libp2p/interface-peer-discovery": "^1.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@multiformats/multiaddr": "^11.0.0",
-    "aegir": "^37.4.0",
+    "aegir": "^37.7.3",
     "delay": "^5.0.0",
     "p-defer": "^4.0.0"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts"
   }
 }
