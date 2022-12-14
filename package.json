@@ -36,7 +36,7 @@
     "lint": "lerna run lint",
     "docs": "aegir docs",
     "dep-check": "lerna run dep-check",
-    "release": "npm run docs && lerna run --concurrency 1 release -- --"
+    "release": "NODE_OPTIONS=--max_old_space_size=4096 npm run docs && lerna run --concurrency 1 release -- --"
   },
   "dependencies": {
     "aegir": "^37.7.3",
