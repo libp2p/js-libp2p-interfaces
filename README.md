@@ -10,6 +10,7 @@
 ## Table of contents <!-- omit in toc -->
 
 - [Structure](#structure)
+- [API Docs](#api-docs)
 - [License](#license)
 - [Contribute](#contribute)
 
@@ -44,6 +45,10 @@
 - [`/packages/interface-transport`](./packages/interface-transport) Transport interface for libp2p
 - [`/packages/interface-transport-compliance-tests`](./packages/interface-transport-compliance-tests) Compliance tests for implementations of the libp2p Transport interface
 - [`/packages/interfaces`](./packages/interfaces) Common code shared by the various libp2p interfaces
+
+## API Docs
+
+- <https://libp2p.github.io/js-libp2p-interfaces>
 
 ## License
 
