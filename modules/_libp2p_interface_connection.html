@@ -1,0 +1,404 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@libp2p/interface-connection | Documentation</title><meta name="description" content="Documentation for Documentation"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base="..">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">Documentation</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb">
+<li><a href="../modules.html">Documentation</a></li>
+<li><a href="_libp2p_interface_connection.html">@libp2p/interface-connection</a></li></ul>
+<h1>Module @libp2p/interface-connection - v3.0.4</h1></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-connection/src/index.ts#L1">packages/interface-connection/src/index.ts:1</a></li></ul></aside>
+<section class="tsd-panel-group">
+<section class="tsd-panel tsd-typography">
+<a href="#libp2pinterface-connection-" id="libp2pinterface-connection-" style="color: inherit; text-decoration: none;">
+  <h1>@libp2p/interface-connection <!-- omit in toc --></h1>
+</a>
+<p><a href="http://libp2p.io/"><img src="https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square" alt="libp2p.io"></a>
+<a href="https://discuss.libp2p.io"><img src="https://img.shields.io/discourse/https/discuss.libp2p.io/posts.svg?style=flat-square" alt="Discuss"></a>
+<a href="https://codecov.io/gh/libp2p/js-libp2p-interfaces"><img src="https://img.shields.io/codecov/c/github/libp2p/js-libp2p-interfaces.svg?style=flat-square" alt="codecov"></a>
+<a href="https://github.com/libp2p/js-libp2p-interfaces/actions/workflows/js-test-and-release.yml"><img src="https://img.shields.io/github/workflow/status/libp2p/js-libp2p-interfaces/test%20&%20maybe%20release/master?style=flat-square" alt="CI"></a></p>
+<blockquote>
+<p>Connection interface for libp2p</p>
+</blockquote>
+
+<a href="#table-of-contents-" id="table-of-contents-" style="color: inherit; text-decoration: none;">
+  <h2>Table of contents <!-- omit in toc --></h2>
+</a>
+<ul>
+<li><a href="#install">Install</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#connection">Connection</a></li>
+<li><a href="#test-suite">Test suite</a></li>
+<li><a href="#api">API</a><ul>
+<li><a href="#connection-1">Connection</a><ul>
+<li><a href="#creating-a-connection-instance">Creating a connection instance</a></li>
+<li><a href="#create-a-new-stream">Create a new stream</a></li>
+<li><a href="#add-stream-metadata">Add stream metadata</a></li>
+<li><a href="#remove-a-from-the-registry">Remove a from the registry</a></li>
+<li><a href="#close-connection">Close connection</a></li>
+<li><a href="#connection-identifier">Connection identifier</a></li>
+<li><a href="#connection-streams-registry">Connection streams registry</a></li>
+<li><a href="#remote-peer">Remote peer</a></li>
+<li><a href="#local-peer">Local peer</a></li>
+<li><a href="#get-the-connection-streams">Get the connection Streams</a></li>
+<li><a href="#remote-address">Remote address</a></li>
+<li><a href="#local-address">Local address</a></li>
+<li><a href="#stat">Stat</a></li>
+<li><a href="#tags">Tags</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#api-docs">API Docs</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#contribute">Contribute</a></li>
+</ul>
+
+<a href="#install" id="install" style="color: inherit; text-decoration: none;">
+  <h2>Install</h2>
+</a>
+<pre><code class="language-console">$ npm i @libp2p/interface-connection
+</code></pre>
+
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+<pre><code class="language-js"><span class="hl-0">import</span><span class="hl-1"> </span><span class="hl-0">type</span><span class="hl-1"> { </span><span class="hl-2">Connection</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;@libp2p/interface-connection&#39;</span>
+</code></pre>
+<p>This is a test suite and interface you can use to implement a connection. The connection interface contains all the metadata associated with it, as well as an array of the streams opened through this connection. In the same way as the connection, a stream contains properties with its metadata, plus an iterable duplex object that offers a mechanism for writing and reading data, with back pressure. This module and test suite were heavily inspired by abstract-blob-store and interface-stream-muxer.</p>
+<p>The primary goal of this module is to enable developers to pick, swap or upgrade their connection without losing the same API expectations and mechanisms such as back pressure and the ability to half close a connection.</p>
+<p>Publishing a test suite as a module lets multiple modules ensure compatibility since they use the same test suite.</p>
+
+<a href="#connection" id="connection" style="color: inherit; text-decoration: none;">
+  <h2>Connection</h2>
+</a>
+<p>Before creating a connection from a transport compatible with <code>libp2p</code> it is important to understand some concepts:</p>
+<ul>
+<li><strong>socket</strong>: the underlying raw duplex connection between two nodes. It is created by the transports during a dial/listen.</li>
+<li><strong><a href="https://github.com/libp2p/interface-transport#multiaddrconnection">multiaddr connection</a></strong>: an abstraction over the socket to allow it to work with multiaddr addresses. It is a duplex connection that transports create to wrap the socket before passing to an upgrader that turns it into a standard connection (see below).</li>
+<li><strong>connection</strong>: a connection between two <em>peers</em> that has built in multiplexing and info about the connected peer. It is created from a <a href="https://github.com/libp2p/interface-transport#multiaddrconnection">multiaddr connection</a> by an upgrader. The upgrader uses multistream-select to add secio and multiplexing and returns this object.</li>
+<li><strong>stream</strong>: a muxed duplex channel of the <code>connection</code>. Each connection may have many streams.</li>
+</ul>
+<p>A connection stands for the libp2p communication duplex layer between two nodes. It is <strong>not</strong> the underlying raw transport duplex layer (socket), such as a TCP socket, but an abstracted layer that sits on top of the raw socket.</p>
+<p>This helps ensuring that the transport is responsible for socket management, while also allowing the application layer to handle the connection management.</p>
+
+<a href="#test-suite" id="test-suite" style="color: inherit; text-decoration: none;">
+  <h2>Test suite</h2>
+</a>
+<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">tests</span><span class="hl-1"> = </span><span class="hl-6">require</span><span class="hl-1">(</span><span class="hl-3">&#39;@libp2p/interface-connection-compliance-tests&#39;</span><span class="hl-1">)</span><br/><span class="hl-6">describe</span><span class="hl-1">(</span><span class="hl-3">&#39;your connection&#39;</span><span class="hl-1">, () </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">tests</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-7">// Options should be passed to your connection</span><br/><span class="hl-1">    </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-6">setup</span><span class="hl-1"> (</span><span class="hl-2">options</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-0">return</span><span class="hl-1"> </span><span class="hl-2">YourConnection</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">    </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-6">teardown</span><span class="hl-1"> () {</span><br/><span class="hl-1">      </span><span class="hl-7">// cleanup resources created by setup()</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  })</span><br/><span class="hl-1">})</span>
+</code></pre>
+
+<a href="#api" id="api" style="color: inherit; text-decoration: none;">
+  <h2>API</h2>
+</a>
+
+<a href="#connection-1" id="connection-1" style="color: inherit; text-decoration: none;">
+  <h3>Connection</h3>
+</a>
+<p>A valid connection (one that follows this abstraction), must implement the following API:</p>
+<ul>
+<li>type: <code>Connection</code></li>
+</ul>
+<pre><code class="language-js"><span class="hl-4">new</span><span class="hl-1"> </span><span class="hl-6">Connection</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-2">localAddr</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">remoteAddr</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">localPeer</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">remotePeer</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">newStream</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">close</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">getStreams</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">stat:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-2">direction</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">timeline:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-2">open</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-2">upgraded</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">    </span><span class="hl-2">multiplexer</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">encryption</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">})</span>
+</code></pre>
+<ul>
+<li><code>&lt;Multiaddr&gt; conn.localAddr</code></li>
+<li><code>&lt;Multiaddr&gt; conn.remoteAddr</code></li>
+<li><code>&lt;PeerId&gt; conn.localPeer</code></li>
+<li><code>&lt;PeerId&gt; conn.remotePeer</code></li>
+<li><code>&lt;Object&gt; conn.stat</code></li>
+<li><code>&lt;Map&gt; conn.registry</code></li>
+<li><code>Array&lt;Stream&gt; conn.streams</code></li>
+<li><code>Promise&lt;object&gt; conn.newStream(Array&lt;protocols&gt;)</code></li>
+<li><code>&lt;void&gt; conn.removeStream(id)</code></li>
+<li><code>&lt;Stream&gt; conn.addStream(stream, protocol, metadata)</code></li>
+<li><code>Promise&lt;&gt; conn.close()</code></li>
+</ul>
+<p>It can be obtained as follows:</p>
+<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> { </span><span class="hl-5">Connection</span><span class="hl-1"> } = </span><span class="hl-6">require</span><span class="hl-1">(</span><span class="hl-3">&#39;interface-connection&#39;</span><span class="hl-1">)</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">conn</span><span class="hl-1"> = </span><span class="hl-4">new</span><span class="hl-1"> </span><span class="hl-6">Connection</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-2">localAddr:</span><span class="hl-1"> </span><span class="hl-2">maConn</span><span class="hl-1">.</span><span class="hl-2">localAddr</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">remoteAddr:</span><span class="hl-1"> </span><span class="hl-2">maConn</span><span class="hl-1">.</span><span class="hl-2">remoteAddr</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">localPeer:</span><span class="hl-1"> </span><span class="hl-4">this</span><span class="hl-1">.</span><span class="hl-2">_peerId</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">remotePeer</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">newStream</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">close</span><span class="hl-2">:</span><span class="hl-1"> </span><span class="hl-2">err</span><span class="hl-1"> </span><span class="hl-4">=&gt;</span><span class="hl-1"> </span><span class="hl-2">maConn</span><span class="hl-1">.</span><span class="hl-6">close</span><span class="hl-1">(</span><span class="hl-2">err</span><span class="hl-1">),</span><br/><span class="hl-1">  </span><span class="hl-2">getStreams</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">stats:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-2">direction:</span><span class="hl-1"> </span><span class="hl-3">&#39;outbound&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">timeline:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-2">open:</span><span class="hl-1"> </span><span class="hl-2">maConn</span><span class="hl-1">.</span><span class="hl-2">timeline</span><span class="hl-1">.</span><span class="hl-2">open</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-2">upgraded:</span><span class="hl-1"> </span><span class="hl-2">Date</span><span class="hl-1">.</span><span class="hl-6">now</span><span class="hl-1">()</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">    </span><span class="hl-2">multiplexer</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">encryption</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">})</span>
+</code></pre>
+
+<a href="#creating-a-connection-instance" id="creating-a-connection-instance" style="color: inherit; text-decoration: none;">
+  <h4>Creating a connection instance</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>const conn = new Connection({localAddr, remoteAddr, localPeer, remotePeer, newStream, close, getStreams, direction, multiplexer, encryption})</code></li>
+</ul>
+<p>Creates a new Connection instance.</p>
+<p><code>localAddr</code> is the optional <a href="https://github.com/multiformats/multiaddr">multiaddr</a> address used by the local peer to reach the remote.
+<code>remoteAddr</code> is the optional <a href="https://github.com/multiformats/multiaddr">multiaddr</a> address used to communicate with the remote peer.
+<code>localPeer</code> is the <a href="https://github.com/libp2p/js-peer-id">PeerId</a> of the local peer.
+<code>remotePeer</code> is the <a href="https://github.com/libp2p/js-peer-id">PeerId</a> of the remote peer.
+<code>newStream</code> is the <code>function</code> responsible for getting a new muxed+multistream-selected stream.
+<code>close</code> is the <code>function</code> responsible for closing the raw connection.
+<code>getStreams</code> is the <code>function</code> responsible for getting the streams muxed within the connection.
+<code>stats</code> is an <code>object</code> with the metadata of the connection. It contains:</p>
+<ul>
+<li><code>direction</code> is a <code>string</code> indicating whether the connection is <code>inbound</code> or <code>outbound</code>.</li>
+<li><code>timeline</code> is an <code>object</code> with the relevant events timestamps of the connection (<code>open</code>, <code>upgraded</code> and <code>closed</code>; the <code>closed</code> will be added when the connection is closed).</li>
+<li><code>multiplexer</code> is a <code>string</code> with the connection multiplexing codec (optional).</li>
+<li><code>encryption</code> is a <code>string</code> with the connection encryption method identifier (optional).</li>
+<li><code>status</code> is a <code>string</code> indicating the overall status of the connection. It is one of [<code>&#39;open&#39;</code>, <code>&#39;closing&#39;</code>, <code>&#39;closed&#39;</code>]</li>
+</ul>
+
+<a href="#create-a-new-stream" id="create-a-new-stream" style="color: inherit; text-decoration: none;">
+  <h4>Create a new stream</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.newStream(protocols)</code></li>
+</ul>
+<p>Create a new stream within the connection.</p>
+<p><code>protocols</code> is an array of the intended protocol to use (by order of preference). Example: <code>[/echo/1.0.0]</code></p>
+<p>It returns a <code>Promise</code> with an object with the following properties:</p>
+<pre><code class="language-js"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-2">stream</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">protocol</span><br/><span class="hl-1">}</span>
+</code></pre>
+<p>The stream property contains the muxed stream, while the protocol contains the protocol codec used by the stream.</p>
+
+<a href="#add-stream-metadata" id="add-stream-metadata" style="color: inherit; text-decoration: none;">
+  <h4>Add stream metadata</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.addStream(stream, { protocol, ...metadata })</code></li>
+</ul>
+<p>Add a new stream to the connection registry.</p>
+<p><code>stream</code> is a muxed stream.
+<code>protocol</code> is the string codec for the protocol used by the stream. Example: <code>/echo/1.0.0</code>
+<code>metadata</code> is an object containing any additional, optional, stream metadata that you wish to track (such as its <code>tags</code>).</p>
+
+<a href="#remove-a-from-the-registry" id="remove-a-from-the-registry" style="color: inherit; text-decoration: none;">
+  <h4>Remove a from the registry</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.removeStream(id)</code></li>
+</ul>
+<p>Removes the stream with the given id from the connection registry.</p>
+<p><code>id</code> is the unique id of the stream for this connection.</p>
+
+<a href="#close-connection" id="close-connection" style="color: inherit; text-decoration: none;">
+  <h4>Close connection</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.close()</code></li>
+</ul>
+<p>This method closes the connection to the remote peer, as well as all the streams muxed within the connection.</p>
+<p>It returns a <code>Promise</code>.</p>
+
+<a href="#connection-identifier" id="connection-identifier" style="color: inherit; text-decoration: none;">
+  <h4>Connection identifier</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.id</code></li>
+</ul>
+<p>This property contains the identifier of the connection.</p>
+
+<a href="#connection-streams-registry" id="connection-streams-registry" style="color: inherit; text-decoration: none;">
+  <h4>Connection streams registry</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.registry</code></li>
+</ul>
+<p>This property contains a map with the muxed streams indexed by their id. This registry contains the protocol used by the stream, as well as its metadata.</p>
+
+<a href="#remote-peer" id="remote-peer" style="color: inherit; text-decoration: none;">
+  <h4>Remote peer</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.remotePeer</code></li>
+</ul>
+<p>This property contains the remote <code>peer-id</code> of this connection.</p>
+
+<a href="#local-peer" id="local-peer" style="color: inherit; text-decoration: none;">
+  <h4>Local peer</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.localPeer</code></li>
+</ul>
+<p>This property contains the local <code>peer-id</code> of this connection.</p>
+
+<a href="#get-the-connection-streams" id="get-the-connection-streams" style="color: inherit; text-decoration: none;">
+  <h4>Get the connection Streams</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.streams</code></li>
+</ul>
+<p>This getter returns all the muxed streams within the connection.</p>
+<p>It returns an <code>Array</code>.</p>
+
+<a href="#remote-address" id="remote-address" style="color: inherit; text-decoration: none;">
+  <h4>Remote address</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.remoteAddr</code></li>
+</ul>
+<p>This getter returns the <code>remote</code> <a href="https://github.com/multiformats/multiaddr">multiaddr</a> address.</p>
+
+<a href="#local-address" id="local-address" style="color: inherit; text-decoration: none;">
+  <h4>Local address</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.localAddr</code></li>
+</ul>
+<p>This getter returns the <code>local</code> <a href="https://github.com/multiformats/multiaddr">multiaddr</a> address.</p>
+
+<a href="#stat" id="stat" style="color: inherit; text-decoration: none;">
+  <h4>Stat</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.stat</code></li>
+</ul>
+<p>This getter returns an <code>Object</code> with the metadata of the connection, as follows:</p>
+<ul>
+<li><code>status</code>:</li>
+</ul>
+<p>This property contains the status of the connection. It can be either <code>open</code>, <code>closing</code> or <code>closed</code>. Once the connection is created it is in an <code>open</code> status. When a <code>conn.close()</code> happens, the status will change to <code>closing</code> and finally, after all the connection streams are properly closed, the status will be <code>closed</code>. These values can also be directly referenced by importing the <code>status</code> file:</p>
+<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">OPEN</span><span class="hl-1">, </span><span class="hl-5">CLOSING</span><span class="hl-1">, </span><span class="hl-5">CLOSED</span><br/><span class="hl-1">} = </span><span class="hl-6">require</span><span class="hl-1">(</span><span class="hl-3">&#39;libp2p-interfaces/src/connection/status&#39;</span><span class="hl-1">)</span><br/><br/><span class="hl-0">if</span><span class="hl-1"> (</span><span class="hl-2">connection</span><span class="hl-1">.</span><span class="hl-2">stat</span><span class="hl-1">.</span><span class="hl-2">status</span><span class="hl-1"> === </span><span class="hl-5">OPEN</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-7">// ...</span><br/><span class="hl-1">}</span>
+</code></pre>
+<ul>
+<li><code>timeline</code>:</li>
+</ul>
+<p>This property contains an object with the <code>open</code>, <code>upgraded</code> and <code>close</code> timestamps of the connection. Note that, the <code>close</code> timestamp is <code>undefined</code> until the connection is closed.</p>
+<ul>
+<li><code>direction</code>:</li>
+</ul>
+<p>This property contains the direction of the peer in the connection. It can be <code>inbound</code> or <code>outbound</code>.</p>
+<ul>
+<li><code>multiplexer</code>:</li>
+</ul>
+<p>This property contains the <code>multiplexing</code> codec being used in the connection.</p>
+<ul>
+<li><code>encryption</code>:</li>
+</ul>
+<p>This property contains the encryption method being used in the connection. It is <code>undefined</code> if the connection is not encrypted.</p>
+
+<a href="#tags" id="tags" style="color: inherit; text-decoration: none;">
+  <h4>Tags</h4>
+</a>
+<ul>
+<li><code>JavaScript</code> - <code>conn.tags</code></li>
+</ul>
+<p>This property contains an array of tags associated with the connection. New tags can be pushed to this array during the connection&#39;s lifetime.</p>
+
+<a href="#api-docs" id="api-docs" style="color: inherit; text-decoration: none;">
+  <h2>API Docs</h2>
+</a>
+<ul>
+<li><a href="https://libp2p.github.io/js-libp2p-interfaces">https://libp2p.github.io/js-libp2p-interfaces</a></li>
+</ul>
+
+<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+  <h2>License</h2>
+</a>
+<p>Licensed under either of</p>
+<ul>
+<li>Apache 2.0, (<a href="LICENSE-APACHE">LICENSE-APACHE</a> / <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>)</li>
+<li>MIT (<a href="LICENSE-MIT">LICENSE-MIT</a> / <a href="http://opensource.org/licenses/MIT">http://opensource.org/licenses/MIT</a>)</li>
+</ul>
+
+<a href="#contribute" id="contribute" style="color: inherit; text-decoration: none;">
+  <h2>Contribute</h2>
+</a>
+<p>Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.</p>
+</section></section>
+<section class="tsd-panel-group tsd-index-group">
+<section class="tsd-panel tsd-index-panel">
+<h3 class="tsd-index-heading uppercase">Index</h3>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Interfaces</h3>
+<div class="tsd-index-list"><a href="../interfaces/_libp2p_interface_connection.Connection.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-interface)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-256-path"></rect><path d="M9.51 16V15.016H11.298V8.224H9.51V7.24H14.19V8.224H12.402V15.016H14.19V16H9.51Z" fill="var(--color-text)" id="icon-256-text"></path></svg><span>Connection</span></a>
+<a href="../interfaces/_libp2p_interface_connection.ConnectionGater.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Connection<wbr/>Gater</span></a>
+<a href="../interfaces/_libp2p_interface_connection.ConnectionProtector.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Connection<wbr/>Protector</span></a>
+<a href="../interfaces/_libp2p_interface_connection.ConnectionStat.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Connection<wbr/>Stat</span></a>
+<a href="../interfaces/_libp2p_interface_connection.ConnectionTimeline.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Connection<wbr/>Timeline</span></a>
+<a href="../interfaces/_libp2p_interface_connection.MultiaddrConnection.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Multiaddr<wbr/>Connection</span></a>
+<a href="../interfaces/_libp2p_interface_connection.MultiaddrConnectionTimeline.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Multiaddr<wbr/>Connection<wbr/>Timeline</span></a>
+<a href="../interfaces/_libp2p_interface_connection.Stream.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Stream</span></a>
+<a href="../interfaces/_libp2p_interface_connection.StreamStat.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Stream<wbr/>Stat</span></a>
+<a href="../interfaces/_libp2p_interface_connection.StreamTimeline.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>Stream<wbr/>Timeline</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Type Aliases</h3>
+<div class="tsd-index-list"><a href="../types/_libp2p_interface_connection.Direction.html" class="tsd-index-link tsd-kind-type-alias tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-4194304-path"></rect><path d="M11.31 16V8.224H8.91V7.24H14.79V8.224H12.39V16H11.31Z" fill="var(--color-text)" id="icon-4194304-text"></path></svg><span>Direction</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Variables</h3>
+<div class="tsd-index-list"><a href="../variables/_libp2p_interface_connection.symbol.html" class="tsd-index-link tsd-kind-variable tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-variable)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-32-path"></rect><path d="M11.106 16L8.85 7.24H9.966L11.454 13.192C11.558 13.608 11.646 13.996 11.718 14.356C11.79 14.708 11.842 14.976 11.874 15.16C11.906 14.976 11.954 14.708 12.018 14.356C12.09 13.996 12.178 13.608 12.282 13.192L13.758 7.24H14.85L12.582 16H11.106Z" fill="var(--color-text)" id="icon-32-text"></path></svg><span>symbol</span></a>
+</div></section>
+<section class="tsd-index-section">
+<h3 class="tsd-index-heading">Functions</h3>
+<div class="tsd-index-list"><a href="../functions/_libp2p_interface_connection.isConnection.html" class="tsd-index-link tsd-kind-function tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-function)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-64-path"></rect><path d="M9.39 16V7.24H14.55V8.224H10.446V11.128H14.238V12.112H10.47V16H9.39Z" fill="var(--color-text)" id="icon-64-text"></path></svg><span>is<wbr/>Connection</span></a>
+</div></section></section></section></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li class="current"><a href="../modules.html">Documentation</a>
+<ul>
+<li class="tsd-kind-module"><a href="_libp2p_interface_address_manager.html">@libp2p/interface-<wbr/>address-<wbr/>manager -<wbr/> v2.0.2</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_compliance_tests.html">@libp2p/interface-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.4</a></li>
+<li class="current selected tsd-kind-module"><a href="_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v3.0.4</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.4</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_encrypter.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter -<wbr/> v3.0.3</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.3</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v1.3.2</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v1.0.5</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v1.0.4</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v1.0.6</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.5</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.3</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v8.0.3</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.0.3</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_discovery_compliance_tests.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.2</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_id.html">@libp2p/interface-<wbr/>peer-<wbr/>id -<wbr/> v1.1.1</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.5</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.0.3</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v1.2.4</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v3.0.2</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_pubsub_compliance_tests.html">@libp2p/interface-<wbr/>pubsub-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.2</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_record.html">@libp2p/interface-<wbr/>record -<wbr/> v2.0.3</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.2</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.5</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v3.0.2</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v6.0.5</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v2.0.2</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_transport_compliance_tests.html">@libp2p/interface-<wbr/>transport-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.4</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interfaces.html">@libp2p/interfaces -<wbr/> v3.0.5</a></li></ul></li></ul></div></details></nav>
+<nav class="tsd-navigation secondary menu-sticky">
+<ul>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_connection.Connection.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Connection</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_connection.ConnectionGater.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Connection<wbr/>Gater</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_connection.ConnectionProtector.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Connection<wbr/>Protector</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_connection.ConnectionStat.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Connection<wbr/>Stat</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_connection.ConnectionTimeline.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Connection<wbr/>Timeline</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_connection.MultiaddrConnection.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Multiaddr<wbr/>Connection</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_connection.MultiaddrConnectionTimeline.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Multiaddr<wbr/>Connection<wbr/>Timeline</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_connection.Stream.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Stream</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_connection.StreamStat.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Stream<wbr/>Stat</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_connection.StreamTimeline.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Stream<wbr/>Timeline</a></li>
+<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="../types/_libp2p_interface_connection.Direction.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Direction</a></li>
+<li class="tsd-kind-variable tsd-parent-kind-module"><a href="../variables/_libp2p_interface_connection.symbol.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-32-path"></use><use href="#icon-32-text"></use></svg>symbol</a></li>
+<li class="tsd-kind-function tsd-parent-kind-module"><a href="../functions/_libp2p_interface_connection.isConnection.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>is<wbr/>Connection</a></li></ul></nav></div></div>
+<div class="overlay"></div><script src="../assets/main.js"></script></body></html>
