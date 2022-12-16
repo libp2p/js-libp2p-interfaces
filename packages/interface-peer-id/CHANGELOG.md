@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-id-v1.1.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-id-v1.1.1...@libp2p/interface-peer-id-v1.1.2) (2022-12-16)
+
+
+### Documentation
+
+* update project config ([#323](https://github.com/libp2p/js-libp2p-interfaces/issues/323)) ([0fc6a08](https://github.com/libp2p/js-libp2p-interfaces/commit/0fc6a08e9cdcefe361fe325281a3a2a03759ff59))
+
 ## [@libp2p/interface-peer-id-v1.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-id-v1.1.0...@libp2p/interface-peer-id-v1.1.1) (2022-12-14)
 
 
