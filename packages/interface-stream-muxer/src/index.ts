@@ -3,7 +3,14 @@ import type { Direction, Stream } from '@libp2p/interface-connection'
 import type { AbortOptions } from '@libp2p/interfaces'
 
 export interface StreamMuxerFactory {
+  /**
+   * The protocol used to select this muxer during connection opening
+   */
   protocol: string
+
+  /**
+   * Creates a new stream muxer to be used with a new connection
+   */
   createStreamMuxer: (init?: StreamMuxerInit) => StreamMuxer
 }
 
@@ -11,8 +18,14 @@ export interface StreamMuxerFactory {
  * A libp2p stream muxer
  */
 export interface StreamMuxer extends Duplex<Uint8Array> {
+  /**
+   * The protocol used to select this muxer during connection opening
+   */
   protocol: string
 
+  /**
+   * A list of streams that are currently open. Closed streams will not be returned.
+   */
   readonly streams: Stream[]
   /**
    * Initiate a new stream with the given name. If no name is
@@ -27,7 +40,14 @@ export interface StreamMuxer extends Duplex<Uint8Array> {
 }
 
 export interface StreamMuxerInit extends AbortOptions {
+  /**
+   * A callback function invoked every time an incoming stream is opened
+   */
   onIncomingStream?: (stream: Stream) => void
+
+  /**
+   * A callback function invoke every time a stream ends
+   */
   onStreamEnd?: (stream: Stream) => void
 
   /**

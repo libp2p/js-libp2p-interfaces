@@ -153,15 +153,112 @@ export interface TopicValidatorFn {
 }
 
 export interface PubSub<Events extends { [s: string]: any } = PubSubEvents> extends EventEmitter<Events> {
+  /**
+   * The global signature policy controls whether or not we sill send and receive
+   * signed or unsigned messages.
+   *
+   * Signed messages prevent spoofing message senders and should be preferred to
+   * using unsigned messages.
+   */
   globalSignaturePolicy: typeof StrictSign | typeof StrictNoSign
+
+  /**
+   * A list of multicodecs that contain the pubsub protocol name.
+   */
   multicodecs: string[]
+
+  /**
+   * Pubsub routers support message validators per topic, which will validate the message
+   * before its propagations. They are stored in a map where keys are the topic name and
+   * values are the validators.
+   *
+   * @example
+   *
+   * ```js
+   * const topic = 'topic'
+   * const validateMessage = (msgTopic, msg) => {
+   *   const input = uint8ArrayToString(msg.data)
+   *   const validInputs = ['a', 'b', 'c']
+   *
+   *   if (!validInputs.includes(input)) {
+   *     throw new Error('no valid input received')
+   *   }
+   * }
+   * libp2p.pubsub.topicValidators.set(topic, validateMessage)
+   * ```
+   */
   topicValidators: Map<string, TopicValidatorFn>
 
   getPeers: () => PeerId[]
+
+  /**
+   * Gets a list of topics the node is subscribed to.
+   *
+   * ```js
+   * const topics = libp2p.pubsub.getTopics()
+   * ```
+   */
   getTopics: () => string[]
+
+  /**
+   * Subscribes to a pubsub topic.
+   *
+   * @example
+   *
+   * ```js
+   * const topic = 'topic'
+   * const handler = (msg) => {
+   *   if (msg.topic === topic) {
+   *     // msg.data - pubsub data received
+   *   }
+   * }
+   *
+   * libp2p.pubsub.addEventListener('message', handler)
+   * libp2p.pubsub.subscribe(topic)
+   * ```
+   */
   subscribe: (topic: string) => void
+
+  /**
+   * Unsubscribes from a pubsub topic.
+   *
+   * @example
+   *
+   * ```js
+   * const topic = 'topic'
+   * const handler = (msg) => {
+   *   // msg.data - pubsub data received
+   * }
+   *
+   * libp2p.pubsub.removeEventListener(topic handler)
+   * libp2p.pubsub.unsubscribe(topic)
+   * ```
+   */
   unsubscribe: (topic: string) => void
+
+  /**
+   * Gets a list of the PeerIds that are subscribed to one topic.
+   *
+   * @example
+   *
+   * ```js
+   * const peerIds = libp2p.pubsub.getSubscribers(topic)
+   * ```
+   */
   getSubscribers: (topic: string) => PeerId[]
+
+  /**
+   * Publishes messages to the given topic.
+   *
+   * @example
+   *
+   * ```js
+   * const topic = 'topic'
+   * const data = uint8ArrayFromString('data')
+   *
+   * await libp2p.pubsub.publish(topic, data)
+   * ```
+   */
   publish: (topic: string, data: Uint8Array) => Promise<PublishResult>
 }
 

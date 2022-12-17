@@ -74,32 +74,54 @@ export interface StreamStat {
  */
 export interface Stream extends Duplex<Uint8ArrayList, Uint8ArrayList | Uint8Array> {
   /**
-   * Close a stream for reading and writing
+   * Closes the stream for **reading** *and* **writing**.
+   *
+   * Any buffered data in the source can still be consumed and the stream will end normally.
+   *
+   * This will cause a `CLOSE` message to be sent to the remote, *unless* the sink has already ended.
+   *
+   * The sink and the source will return normally.
    */
   close: () => void
 
   /**
-   * Close a stream for reading only
+   * Closes the stream for **reading**. If iterating over the source of this stream in a `for await of` loop, it will return (exit the loop) after any buffered data has been consumed.
+   *
+   * This function is called automatically by the muxer when it receives a `CLOSE` message from the remote.
+   *
+   * The source will return normally, the sink will continue to consume.
    */
   closeRead: () => void
 
   /**
-   * Close a stream for writing only
+   * Closes the stream for **writing**. If iterating over the source of this stream in a `for await of` loop, it will return (exit the loop) after any buffered data has been consumed.
+   *
+   * The source will return normally, the sink will continue to consume.
    */
   closeWrite: () => void
 
   /**
-   * Call when a local error occurs, should close the stream for reading and writing
+   * Closes the stream for **reading** *and* **writing**. This should be called when a *local error* has occurred.
+   *
+   * Note, if called without an error any buffered data in the source can still be consumed and the stream will end normally.
+   *
+   * This will cause a `RESET` message to be sent to the remote, *unless* the sink has already ended.
+   *
+   * The sink will return and the source will throw if an error is passed or return normally if not.
    */
   abort: (err: Error) => void
 
   /**
-   * Call when a remote error occurs, should close the stream for reading and writing
+   * Closes the stream *immediately* for **reading** *and* **writing**. This should be called when a *remote error* has occurred.
+   *
+   * This function is called automatically by the muxer when it receives a `RESET` message from the remote.
+   *
+   * The sink will return and the source will throw.
    */
   reset: () => void
 
   /**
-   * Unique identifier for a stream
+   * Unique identifier for a stream. Identifiers are not unique across muxers.
    */
   id: string
 
