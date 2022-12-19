@@ -1,0 +1,50 @@
+{
+  "extends": "aegir/src/config/tsconfig.aegir.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../interface-connection"
+    },
+    {
+      "path": "../interface-connection-manager"
+    },
+    {
+      "path": "../interface-content-routing"
+    },
+    {
+      "path": "../interface-dht"
+    },
+    {
+      "path": "../interface-keychain"
+    },
+    {
+      "path": "../interface-metrics"
+    },
+    {
+      "path": "../interface-peer-id"
+    },
+    {
+      "path": "../interface-peer-info"
+    },
+    {
+      "path": "../interface-peer-routing"
+    },
+    {
+      "path": "../interface-peer-store"
+    },
+    {
+      "path": "../interface-pubsub"
+    },
+    {
+      "path": "../interface-registrar"
+    },
+    {
+      "path": "../interfaces"
+    }
+  ]
+}
