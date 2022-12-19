@@ -133,7 +133,6 @@
   },
   "dependencies": {
     "@libp2p/interface-connection": "^3.0.0",
-    "@libp2p/interface-connection-manager": "^1.0.0",
     "@libp2p/interface-content-routing": "^1.0.0",
     "@libp2p/interface-dht": "^1.0.0",
     "@libp2p/interface-keychain": "^1.0.0",
