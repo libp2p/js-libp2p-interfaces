@@ -179,7 +179,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    *
    * @example
    *
-   *
    * ```js
    * for await (const event of libp2p.dht.findPeer(peerId)) {
    *   // ...
@@ -190,13 +189,7 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
 
   /**
    * The fetch service allows registering and unregistering functions that supply
-   * values for fetch queries - {@see https://github.com/libp2p/specs/tree/master/fetch }
-   *
-   * @example
-   *
-   * ```js
-   * libp2p.fetchService.registerLookupFunction('/prefix', (key) => { ... })
-   * ```
+   * values for fetch queries - see the [fetch spec](https://github.com/libp2p/specs/tree/master/fetch).
    */
   fetchService: {
     /**
