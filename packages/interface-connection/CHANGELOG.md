@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-v3.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v3.0.5...@libp2p/interface-connection-v3.0.6) (2022-12-19)
+
+
+### Documentation
+
+* add interface docs ([#324](https://github.com/libp2p/js-libp2p-interfaces/issues/324)) ([2789445](https://github.com/libp2p/js-libp2p-interfaces/commit/278944594c24e1a3c4b3624a35680d69166546d7))
+
 ## [@libp2p/interface-connection-v3.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v3.0.4...@libp2p/interface-connection-v3.0.5) (2022-12-16)
 
 
