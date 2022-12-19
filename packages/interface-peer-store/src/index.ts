@@ -101,21 +101,64 @@ export interface AddressBook {
   /**
    * Add known addresses of a provided peer.
    * If the peer is not known, it is set with the given addresses.
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.addressBook.add(peerId, multiaddr)
+   * ```
    */
   add: (peerId: PeerId, multiaddrs: Multiaddr[]) => Promise<void>
 
   /**
-   * Set the known addresses of a peer
+   * Set known `multiaddrs` of a given peer. This will replace previously stored multiaddrs, if available.
+   *
+   * Replacing stored multiaddrs might result in losing obtained certified addresses, which is not desirable.
+   *
+   * Consider using `addressBook.add()` if you're not sure this is what you want to do.
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.addressBook.add(peerId, multiaddr)
+   * ```
    */
   set: (peerId: PeerId, data: Multiaddr[]) => Promise<void>
 
   /**
    * Return the known addresses of a peer
+   *
+   * ```js
+   * peerStore.addressBook.get(peerId)
+   * // []
+   * peerStore.addressBook.set(peerId, multiaddr)
+   * peerStore.addressBook.get(peerId)
+   * // [
+   * // {
+   * //   multiaddr: /ip4/140.10.2.1/tcp/8000,
+   * //   ...
+   * // },
+   * // {
+   * //   multiaddr: /ip4/140.10.2.1/ws/8001
+   * //   ...
+   * // },
+   * // ]
+   * ```
    */
   get: (peerId: PeerId) => Promise<Address[]>
 
   /**
    * Remove stored addresses of a peer
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.addressBook.delete(peerId)
+   * // false
+   * peerStore.addressBook.set(peerId, multiaddr)
+   * peerStore.addressBook.delete(peerId)
+   * // true
+   * ```
    */
   delete: (peerId: PeerId) => Promise<void>
 }
@@ -125,17 +168,47 @@ export interface AddressBook {
  */
 export interface KeyBook {
   /**
-   * Get the known data of a peer
+   * Get the known `PublicKey` of a peer as a `Uint8Array`
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.keyBook.get(peerId)
+   * // undefined
+   * peerStore.keyBook.set(peerId, publicKey)
+   * peerStore.keyBook.get(peerId)
+   * // Uint8Array
+   * ```
    */
   get: (peerId: PeerId) => Promise<Uint8Array | undefined>
 
   /**
    * Set the known data of a peer
+   *
+   * @example
+   *
+   * ```js
+   * const publicKey = peerId.pubKey
+   * peerStore.keyBook.set(peerId, publicKey)
+   * ```
    */
   set: (peerId: PeerId, data: Uint8Array) => Promise<void>
 
   /**
    * Remove the known data of a peer
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.keyBook.get(peerId)
+   * // undefined
+   * peerStore.keyBook.set(peerId, publicKey)
+   * peerStore.keyBook.get(peerId)
+   * // Uint8Array
+   * peerStore.keyBook.delete(peerId)
+   * peerStore.keyBook.get(peerId)
+   * // undefined
+   * ```
    */
   delete: (peerId: PeerId) => Promise<void>
 }
@@ -146,16 +219,44 @@ export interface KeyBook {
 export interface MetadataBook extends Book<Map<string, Uint8Array>> {
   /**
    * Set a specific metadata value
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.metadataBook.setValue(peerId, 'nickname', uint8ArrayFromString('homePeer'))
+   * peerStore.metadataBook.getValue(peerId, 'nickname')
+   * // Uint8Array
+   * ```
    */
   setValue: (peerId: PeerId, key: string, value: Uint8Array) => Promise<void>
 
   /**
    * Get specific metadata value, if it exists
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.metadataBook.getValue(peerId, 'location')
+   * // undefined
+   * peerStore.metadataBook.setValue(peerId, 'location', uint8ArrayFromString('Berlin'))
+   * peerStore.metadataBook.getValue(peerId, 'location')
+   * // Uint8Array
+   * ```
    */
   getValue: (peerId: PeerId, key: string) => Promise<Uint8Array | undefined>
 
   /**
    * Deletes the provided peer metadata key from the book
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.metadataBook.getValue(peerId, 'location')
+   * // undefined
+   * peerStore.metadataBook.setValue(peerId, 'location', uint8ArrayFromString('Berlin'))
+   * peerStore.metadataBook.getValue(peerId, 'location')
+   * // Uint8Array
+   * ```
    */
   deleteValue: (peerId: PeerId, key: string) => Promise<void>
 }
@@ -167,12 +268,24 @@ export interface ProtoBook extends Book<string[]> {
   /**
    * Adds known protocols of a provided peer.
    * If the peer was not known before, it will be added.
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.protoBook.add(peerId, [ '/proto/1.0.0', '/proto/1.1.0' ])
+   * ```
    */
   add: (peerId: PeerId, protocols: string[]) => Promise<void>
 
   /**
    * Removes known protocols of a provided peer.
    * If the protocols did not exist before, nothing will be done.
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.protoBook.remove(peerId, protocols)
+   * ```
    */
   remove: (peerId: PeerId, protocols: string[]) => Promise<void>
 }
@@ -204,10 +317,74 @@ export interface PeerMetadataChangeData {
 export type EventName = 'peer' | 'change:protocols' | 'change:multiaddrs' | 'change:pubkey' | 'change:metadata'
 
 export interface PeerStoreEvents {
+  /**
+   * This event is emitted when a new peer is added to the peerStore
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.addEventListener('peer', (event) => {
+   *   const peerInfo = event.detail
+   *   // ...
+   * })
+   * ```
+   */
   'peer': CustomEvent<PeerInfo>
+
+  /**
+   * This event is emitted when known protocols for a peer change
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.addEventListener('change:protocols', (event) => {
+   *   const { peerId, protocols, oldProtocols } = event.detail
+   *   // ...
+   * })
+   * ```
+   */
   'change:protocols': CustomEvent<PeerProtocolsChangeData>
+
+  /**
+   * This event is emitted when known multiaddrs for a peer change
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.addEventListener('change:multiaddrs', (event) => {
+   *   const { peerId, multiaddrs, oldMultiaddrs } = event.detail
+   *   // ...
+   * })
+   * ```
+   */
   'change:multiaddrs': CustomEvent<PeerMultiaddrsChangeData>
+
+  /**
+   * This event is emitted when the public key for a peer changes
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.addEventListener('change:pubkey', (event) => {
+   *   const { peerId, publicKey, oldPublicKey } = event.detail
+   *   // ...
+   * })
+   * ```
+   */
   'change:pubkey': CustomEvent<PeerPublicKeyChangeData>
+
+  /**
+   * This event is emitted when known metadata for a peer changes
+   *
+   * @example
+   *
+   * ```js
+   * peerStore.addEventListener('change:metadata', (event) => {
+   *   const { peerId, metadata, oldMetadata } = event.detail
+   *   // ...
+   * })
+   * ```
+   */
   'change:metadata': CustomEvent<PeerMetadataChangeData>
 }
 
@@ -224,12 +401,26 @@ export interface PeerStoreInit {
 }
 
 export interface TagOptions {
+  /**
+   * An optional tag value (1-100)
+   */
   value?: number
+
+  /**
+   * An optional duration in ms after which the tag will expire
+   */
   ttl?: number
 }
 
 export interface Tag {
+  /**
+   * The tag name
+   */
   name: string
+
+  /**
+   * The tag value
+   */
   value: number
 }
 
@@ -245,14 +436,121 @@ export interface PeerStore extends EventEmitter<PeerStoreEvents> {
    * long-lived peer operations causing deadlocks over the datastore
    * which can happen if they try to access the peer store during the
    * loop
+   *
+   * @example
+   *
+   * ```js
+   * await peerStore.forEach(peer => {
+   *   // ...
+   * })
+   * ```
    */
   forEach: (fn: (peer: Peer) => void) => Promise<void>
+
+  /**
+   * Returns all peers in the peer store.
+   *
+   * @example
+   *
+   * ```js
+   * for (const peer of await peerStore.all()) {
+   *   // ...
+   * }
+   * ```
+   */
   all: () => Promise<Peer[]>
+
+  /**
+   * Delete all data stored for the passed peer
+   *
+   * @example
+   *
+   * ```js
+   * await peerStore.addressBook.set(peerId, multiaddrs)
+   * await peerStore.addressBook.get(peerId)
+   * // multiaddrs[]
+   *
+   * await peerStore.delete(peerId)
+   *
+   * await peerStore.addressBook.get(peerId)
+   * // []
+   * ```
+   */
   delete: (peerId: PeerId) => Promise<void>
+
+  /**
+   * Returns true if the passed PeerId is in the peer store
+   *
+   * @example
+   *
+   * ```js
+   * await peerStore.has(peerId)
+   * // false
+   * await peerStore.addressBook.add(peerId, multiaddrs)
+   * await peerStore.has(peerId)
+   * // true
+   * ```
+   */
   has: (peerId: PeerId) => Promise<boolean>
+
+  /**
+   * Returns all data stored for the passed PeerId
+   *
+   * @example
+   *
+   * ```js
+   * const peer = await peerStore.get(peerId)
+   * // { .. }
+   * ```
+   */
   get: (peerId: PeerId) => Promise<Peer>
 
+  /**
+   * Call this method to add a tag to a peer. Used by the connection manager
+   * to reconnect to peers, choose peers to disconnect from, etc.
+   *
+   * @example
+   *
+   * Values are between 0-100
+   *
+   * ```js
+   * peerStore.tagPeer(peerId, 'my-tag', {
+   *   value: 50
+   * })
+   * ```
+   *
+   * @example
+   *
+   * Tags can be given a TTL, for example this tag will expire after 5s:
+   *
+   * * ```js
+   * await peerStore.tagPeer(peerId, 'my-tag', {
+   *   value: 50,
+   *   ttl: 5000
+   * })
+   * ```
+   */
   tagPeer: (peerId: PeerId, tag: string, options?: TagOptions) => Promise<void>
+
+  /**
+   * This method will remove a tag from a peer
+   *
+   * @example
+   *
+   * ```js
+   * await peerStore.unTagPeer(peerId, 'my-tag)
+   * ```
+   */
   unTagPeer: (peerId: PeerId, tag: string) => Promise<void>
+
+  /**
+   * Return all tags that have been set on the passed peer
+   *
+   * @example
+   *
+   * ```js
+   * const tags = await peerStore.getTags(peerId)
+   * // []
+   */
   getTags: (peerId: PeerId) => Promise<Tag[]>
 }
