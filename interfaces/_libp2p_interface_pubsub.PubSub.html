@@ -74,7 +74,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">PeerId</span><span class="tsd-signature-symbol">[]</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L160">packages/interface-pubsub/src/index.ts:160</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L192">packages/interface-pubsub/src/index.ts:192</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="getSubscribers" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Subscribers</span><a href="#getSubscribers" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">get<wbr/>Subscribers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>topic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">PeerId</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span></div>
@@ -85,6 +85,11 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
 <li class="tsd-signature" id="__type-2.__type-3"><span class="tsd-signature-symbol">(</span>topic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PeerId</span><span class="tsd-signature-symbol">[]</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Gets a list of the PeerIds that are subscribed to one topic.</p>
+
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">peerIds</span><span class="hl-1"> = </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">.</span><span class="hl-6">getSubscribers</span><span class="hl-1">(</span><span class="hl-2">topic</span><span class="hl-1">)</span>
+</code></pre>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -92,7 +97,7 @@
 <h5>topic: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">PeerId</span><span class="tsd-signature-symbol">[]</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L164">packages/interface-pubsub/src/index.ts:164</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L248">packages/interface-pubsub/src/index.ts:248</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="getTopics" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Topics</span><a href="#getTopics" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">get<wbr/>Topics<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span></div>
@@ -103,19 +108,30 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
 <li class="tsd-signature" id="__type-4.__type-5"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Gets a list of topics the node is subscribed to.</p>
+<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">topics</span><span class="hl-1"> = </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">.</span><span class="hl-6">getTopics</span><span class="hl-1">()</span>
+</code></pre>
+</div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L161">packages/interface-pubsub/src/index.ts:161</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L201">packages/interface-pubsub/src/index.ts:201</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="globalSignaturePolicy" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>global<wbr/>Signature<wbr/>Policy</span><a href="#globalSignaturePolicy" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">global<wbr/>Signature<wbr/>Policy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;StrictSign&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;StrictNoSign&quot;</span></div><aside class="tsd-sources">
+<div class="tsd-signature">global<wbr/>Signature<wbr/>Policy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;StrictSign&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;StrictNoSign&quot;</span></div>
+<div class="tsd-comment tsd-typography"><p>The global signature policy controls whether or not we sill send and receive
+signed or unsigned messages.</p>
+<p>Signed messages prevent spoofing message senders and should be preferred to
+using unsigned messages.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L156">packages/interface-pubsub/src/index.ts:156</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L163">packages/interface-pubsub/src/index.ts:163</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="multicodecs" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>multicodecs</span><a href="#multicodecs" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">multicodecs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
+<div class="tsd-signature">multicodecs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+<div class="tsd-comment tsd-typography"><p>A list of multicodecs that contain the pubsub protocol name.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L157">packages/interface-pubsub/src/index.ts:157</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L168">packages/interface-pubsub/src/index.ts:168</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="publish" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>publish</span><a href="#publish" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">publish<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>topic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, data<span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array" class="tsd-signature-type external" target="_blank">Uint8Array</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_libp2p_interface_pubsub.PublishResult.html" class="tsd-signature-type" data-tsd-kind="Interface">PublishResult</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span></div>
@@ -126,6 +142,11 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
 <li class="tsd-signature" id="__type-6.__type-7"><span class="tsd-signature-symbol">(</span>topic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, data<span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array" class="tsd-signature-type external" target="_blank">Uint8Array</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_libp2p_interface_pubsub.PublishResult.html" class="tsd-signature-type" data-tsd-kind="Interface">PublishResult</a><span class="tsd-signature-symbol">&gt;</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Publishes messages to the given topic.</p>
+
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">topic</span><span class="hl-1"> = </span><span class="hl-3">&#39;topic&#39;</span><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">data</span><span class="hl-1"> = </span><span class="hl-6">uint8ArrayFromString</span><span class="hl-1">(</span><span class="hl-3">&#39;data&#39;</span><span class="hl-1">)</span><br/><br/><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">.</span><span class="hl-6">publish</span><span class="hl-1">(</span><span class="hl-2">topic</span><span class="hl-1">, </span><span class="hl-2">data</span><span class="hl-1">)</span>
+</code></pre>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -135,7 +156,7 @@
 <h5>data: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array" class="tsd-signature-type external" target="_blank">Uint8Array</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_libp2p_interface_pubsub.PublishResult.html" class="tsd-signature-type" data-tsd-kind="Interface">PublishResult</a><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L165">packages/interface-pubsub/src/index.ts:165</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L262">packages/interface-pubsub/src/index.ts:262</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="subscribe" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>subscribe</span><a href="#subscribe" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">subscribe<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>topic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></div>
@@ -146,6 +167,11 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
 <li class="tsd-signature" id="__type-8.__type-9"><span class="tsd-signature-symbol">(</span>topic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Subscribes to a pubsub topic.</p>
+
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">topic</span><span class="hl-1"> = </span><span class="hl-3">&#39;topic&#39;</span><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-6">handler</span><span class="hl-1"> = (</span><span class="hl-2">msg</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-0">if</span><span class="hl-1"> (</span><span class="hl-2">msg</span><span class="hl-1">.</span><span class="hl-2">topic</span><span class="hl-1"> === </span><span class="hl-2">topic</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-7">// msg.data - pubsub data received</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">.</span><span class="hl-6">addEventListener</span><span class="hl-1">(</span><span class="hl-3">&#39;message&#39;</span><span class="hl-1">, </span><span class="hl-2">handler</span><span class="hl-1">)</span><br/><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">.</span><span class="hl-6">subscribe</span><span class="hl-1">(</span><span class="hl-2">topic</span><span class="hl-1">)</span>
+</code></pre>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -153,12 +179,19 @@
 <h5>topic: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L162">packages/interface-pubsub/src/index.ts:162</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L220">packages/interface-pubsub/src/index.ts:220</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="topicValidators" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>topic<wbr/>Validators</span><a href="#topicValidators" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">topic<wbr/>Validators<span class="tsd-signature-symbol">:</span> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" class="tsd-signature-type external" target="_blank">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_libp2p_interface_pubsub.TopicValidatorFn.html" class="tsd-signature-type" data-tsd-kind="Interface">TopicValidatorFn</a><span class="tsd-signature-symbol">&gt;</span></div><aside class="tsd-sources">
+<div class="tsd-signature">topic<wbr/>Validators<span class="tsd-signature-symbol">:</span> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" class="tsd-signature-type external" target="_blank">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_libp2p_interface_pubsub.TopicValidatorFn.html" class="tsd-signature-type" data-tsd-kind="Interface">TopicValidatorFn</a><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-comment tsd-typography"><p>Pubsub routers support message validators per topic, which will validate the message
+before its propagations. They are stored in a map where keys are the topic name and
+values are the validators.</p>
+
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">topic</span><span class="hl-1"> = </span><span class="hl-3">&#39;topic&#39;</span><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-6">validateMessage</span><span class="hl-1"> = (</span><span class="hl-2">msgTopic</span><span class="hl-1">, </span><span class="hl-2">msg</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">input</span><span class="hl-1"> = </span><span class="hl-6">uint8ArrayToString</span><span class="hl-1">(</span><span class="hl-2">msg</span><span class="hl-1">.</span><span class="hl-2">data</span><span class="hl-1">)</span><br/><span class="hl-1">  </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">validInputs</span><span class="hl-1"> = [</span><span class="hl-3">&#39;a&#39;</span><span class="hl-1">, </span><span class="hl-3">&#39;b&#39;</span><span class="hl-1">, </span><span class="hl-3">&#39;c&#39;</span><span class="hl-1">]</span><br/><br/><span class="hl-1">  </span><span class="hl-0">if</span><span class="hl-1"> (!</span><span class="hl-2">validInputs</span><span class="hl-1">.</span><span class="hl-6">includes</span><span class="hl-1">(</span><span class="hl-2">input</span><span class="hl-1">)) {</span><br/><span class="hl-1">    </span><span class="hl-0">throw</span><span class="hl-1"> </span><span class="hl-4">new</span><span class="hl-1"> </span><span class="hl-6">Error</span><span class="hl-1">(</span><span class="hl-3">&#39;no valid input received&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span><br/><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">.</span><span class="hl-2">topicValidators</span><span class="hl-1">.</span><span class="hl-6">set</span><span class="hl-1">(</span><span class="hl-2">topic</span><span class="hl-1">, </span><span class="hl-2">validateMessage</span><span class="hl-1">)</span>
+</code></pre>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L158">packages/interface-pubsub/src/index.ts:158</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L190">packages/interface-pubsub/src/index.ts:190</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="unsubscribe" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>unsubscribe</span><a href="#unsubscribe" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">unsubscribe<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>topic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></div>
@@ -169,6 +202,11 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
 <li class="tsd-signature" id="__type-10.__type-11"><span class="tsd-signature-symbol">(</span>topic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Unsubscribes from a pubsub topic.</p>
+
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">topic</span><span class="hl-1"> = </span><span class="hl-3">&#39;topic&#39;</span><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-6">handler</span><span class="hl-1"> = (</span><span class="hl-2">msg</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">// msg.data - pubsub data received</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">.</span><span class="hl-6">removeEventListener</span><span class="hl-1">(</span><span class="hl-2">topic</span><span class="hl-1"> </span><span class="hl-2">handler</span><span class="hl-1">)</span><br/><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">.</span><span class="hl-6">unsubscribe</span><span class="hl-1">(</span><span class="hl-2">topic</span><span class="hl-1">)</span>
+</code></pre>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -176,7 +214,7 @@
 <h5>topic: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L163">packages/interface-pubsub/src/index.ts:163</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-pubsub/src/index.ts#L237">packages/interface-pubsub/src/index.ts:237</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a id="addEventListener" class="tsd-anchor"></a>
@@ -276,14 +314,14 @@
 <ul>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_address_manager.html">@libp2p/interface-<wbr/>address-<wbr/>manager -<wbr/> v2.0.3</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_compliance_tests.html">@libp2p/interface-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.5</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v3.0.5</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v3.0.6</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.5</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter -<wbr/> v3.0.4</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.4</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v1.3.3</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v1.0.6</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v1.3.4</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v1.0.7</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v1.0.5</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v1.0.7</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v1.0.8</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.6</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.4</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v8.0.4</a></li>
@@ -291,14 +329,14 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery_compliance_tests.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.3</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_id.html">@libp2p/interface-<wbr/>peer-<wbr/>id -<wbr/> v1.1.2</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.6</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.0.4</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v1.2.5</a></li>
-<li class="current tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v3.0.3</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.0.5</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v1.2.6</a></li>
+<li class="current tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v3.0.4</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub_compliance_tests.html">@libp2p/interface-<wbr/>pubsub-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.3</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record.html">@libp2p/interface-<wbr/>record -<wbr/> v2.0.4</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.3</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.6</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v3.0.3</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v3.0.4</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v6.0.6</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v2.0.3</a></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport_compliance_tests.html">@libp2p/interface-<wbr/>transport-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.5</a></li>
