@@ -12,7 +12,7 @@
 - [Structure](#structure)
 - [API Docs](#api-docs)
 - [License](#license)
-- [Contribute](#contribute)
+- [Contribution](#contribution)
 
 ## Structure
 
@@ -27,6 +27,7 @@
 - [`/packages/interface-dht`](./packages/interface-dht) DHT interface for libp2p
 - [`/packages/interface-keychain`](./packages/interface-keychain) Keychain interface for libp2p
 - [`/packages/interface-keys`](./packages/interface-keys) Keys interface for libp2p
+- [`/packages/interface-libp2p`](./packages/interface-libp2p) The interface implemented by a libp2p node
 - [`/packages/interface-metrics`](./packages/interface-metrics) Metrics interface for libp2p
 - [`/packages/interface-mocks`](./packages/interface-mocks) Mock implementations of several libp2p interfaces
 - [`/packages/interface-peer-discovery`](./packages/interface-peer-discovery) Peer Discovery interface for libp2p
@@ -57,6 +58,6 @@ Licensed under either of
 - Apache 2.0, ([LICENSE-APACHE](LICENSE-APACHE) / <http://www.apache.org/licenses/LICENSE-2.0>)
 - MIT ([LICENSE-MIT](LICENSE-MIT) / <http://opensource.org/licenses/MIT>)
 
-## Contribute
+## Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
