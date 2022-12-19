@@ -206,7 +206,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
      * @example
      *
      * ```js
-     * // ...
      * libp2p.fetchService.registerLookupFunction('/prefix', (key) => { ... })
      * ```
      */
@@ -219,7 +218,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
      * @example
      *
      * ```js
-     * // ...
      * libp2p.fetchService.unregisterLookupFunction('/prefix')
      * ```
      */
@@ -237,7 +235,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * @example
    *
    * ```js
-   * // ...
    * const listenMa = libp2p.getMultiaddrs()
    * // [ <Multiaddr 047f00000106f9ba - /ip4/127.0.0.1/tcp/63930> ]
    * ```
@@ -273,7 +270,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * @example
    *
    * ```js
-   * // ...
    * const conn = await libp2p.dial(remotePeerId)
    *
    * // create a new stream within the connection
@@ -295,7 +291,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * @example
    *
    * ```js
-   * // ...
    * import { pipe } from 'it-pipe'
    *
    * const { stream, protocol } = await libp2p.dialProtocol(remotePeerId, protocols)
@@ -312,7 +307,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * @example
    *
    * ```js
-   * // ...
    * await libp2p.hangUp(remotePeerId)
    * ```
    */
@@ -328,7 +322,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * @example
    *
    * ```js
-   * // ...
    * const handler = ({ connection, stream, protocol }) => {
    *   // use stream or connection according to the needs
    * }
@@ -348,7 +341,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * @example
    *
    * ```js
-   * // ...
    * libp2p.unhandle(['/echo/1.0.0'])
    * ```
    */
@@ -360,7 +352,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * @example
    *
    * ```js
-   * // ...
    * const latency = await libp2p.ping(otherPeerId)
    * ```
    */
@@ -369,8 +360,9 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
   /**
    * Sends a request to fetch the value associated with the given key from the given peer.
    *
+   * @example
+   *
    * ```js
-   * // ...
    * const value = await libp2p.fetch(otherPeerId, '/some/key')
    * ```
    */
