@@ -1,3 +1,10 @@
+## [@libp2p/interface-transport-v2.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-v2.0.3...@libp2p/interface-transport-v2.1.0) (2022-12-21)
+
+
+### Features
+
+* add fault tolerance enum ([#327](https://github.com/libp2p/js-libp2p-interfaces/issues/327)) ([85f8d60](https://github.com/libp2p/js-libp2p-interfaces/commit/85f8d60b147e1f0af61179137fbcdab500933e70))
+
 ## [@libp2p/interface-transport-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-v2.0.2...@libp2p/interface-transport-v2.0.3) (2022-12-16)
 
 
