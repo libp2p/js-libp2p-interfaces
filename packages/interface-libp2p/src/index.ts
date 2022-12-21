@@ -45,6 +45,36 @@ export interface Libp2pEvents {
    * ```
    */
   'peer:discovery': CustomEvent<PeerInfo>
+
+  /**
+   * This event will be triggered anytime a new Connection is established to another peer.
+   *
+   * @example
+   *
+   * ```js
+   * libp2p.connectionManager.addEventListener('peer:connect', (event) => {
+   *   const connection = event.detail
+   *   // ...
+   * })
+   * ```
+   */
+  'peer:connect': CustomEvent<Connection>
+
+  /**
+   * This event will be triggered anytime we are disconnected from another peer, regardless of
+   * the circumstances of that disconnection. If we happen to have multiple connections to a
+   * peer, this event will **only** be triggered when the last connection is closed.
+   *
+   * @example
+   *
+   * ```js
+   * libp2p.connectionManager.addEventListener('peer:disconnect', (event) => {
+   *   const connection = event.detail
+   *   // ...
+   * })
+   * ```
+   */
+  'peer:disconnect': CustomEvent<Connection>
 }
 
 /**
@@ -218,6 +248,38 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
   }
 
   /**
+   * The identify service supplies information about this node on request by network peers - see
+   * this [identify spec](https://github.com/libp2p/specs/blob/master/identify/README.md)
+   */
+  identifyService: {
+    host: {
+      /**
+       * Specifies the supported protocol version
+       *
+       * @example
+       *
+       * ```js
+       * libp2p.identifyService.host.protocolVersion
+       * // ipfs/0.1.0
+       * ```
+       */
+      protocolVersion: string
+
+      /**
+       * Specifies the supported protocol version
+       *
+       * @example
+       *
+       * ```js
+       * libp2p.identifyService.host.agentVersion
+       * // helia/1.0.0
+       * ```
+       */
+      agentVersion: string
+    }
+  }
+
+  /**
    * Get a deduplicated list of peer advertising multiaddrs by concatenating
    * the listen addresses used by transports with any configured
    * announce addresses as well as observed addresses reported by peers.
@@ -233,6 +295,18 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * ```
    */
   getMultiaddrs: () => Multiaddr[]
+
+  /**
+   * Returns a list of supported protocols
+   *
+   * @example
+   *
+   * ```js
+   * const protocols = libp2p.getProtocols()
+   * // [ '/ipfs/ping/1.0.0', '/ipfs/id/1.0.0' ]
+   * ```
+   */
+  getProtocols: () => string[]
 
   /**
    * Return a list of all connections this node has open, optionally filtering
