@@ -120,3 +120,18 @@ export interface TransportManager extends EventEmitter<TransportManagerEvents> {
   remove: (key: string) => Promise<void>
   removeAll: () => Promise<void>
 }
+
+/**
+ * Enum Transport Manager Fault Tolerance values
+ */
+export enum FaultTolerance {
+  /**
+   * should be used for failing in any listen circumstance
+   */
+  FATAL_ALL = 0,
+
+  /**
+   * should be used for not failing when not listening
+   */
+  NO_FATAL
+}
