@@ -235,6 +235,18 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
   getMultiaddrs: () => Multiaddr[]
 
   /**
+   * Returns a list of supported protocols
+   *
+   * @example
+   *
+   * ```js
+   * const protocols = libp2p.getProtocols()
+   * // [ '/ipfs/ping/1.0.0', '/libp2p/kad-dht/1.0.0 ]
+   * ```
+   */
+  getProtocols: () => string[]
+
+  /**
    * Return a list of all connections this node has open, optionally filtering
    * by a PeerId
    *
