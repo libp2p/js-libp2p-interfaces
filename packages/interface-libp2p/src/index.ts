@@ -241,7 +241,7 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    *
    * ```js
    * const protocols = libp2p.getProtocols()
-   * // [ '/ipfs/ping/1.0.0', '/libp2p/kad-dht/1.0.0 ]
+   * // [ '/ipfs/ping/1.0.0', '/ipfs/id/1.0.0' ]
    * ```
    */
   getProtocols: () => string[]
