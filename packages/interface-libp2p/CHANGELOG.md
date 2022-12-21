@@ -1,3 +1,10 @@
+## [@libp2p/interface-libp2p-v1.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.0.0...@libp2p/interface-libp2p-v1.0.1) (2022-12-21)
+
+
+### Bug Fixes
+
+* add getProtocols method, events, and identify service ([#326](https://github.com/libp2p/js-libp2p-interfaces/issues/326)) ([b036505](https://github.com/libp2p/js-libp2p-interfaces/commit/b036505100d32742065190e47d1803cbd8f61f4a))
+
 ## @libp2p/interface-libp2p-v1.0.0 (2022-12-19)
 
 
