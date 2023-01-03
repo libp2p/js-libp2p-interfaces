@@ -1,3 +1,10 @@
+## [@libp2p/interfaces-v3.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v3.1.0...@libp2p/interfaces-v3.2.0) (2023-01-03)
+
+
+### Features
+
+* add CodeError ([#314](https://github.com/libp2p/js-libp2p-interfaces/issues/314)) ([59aa8f7](https://github.com/libp2p/js-libp2p-interfaces/commit/59aa8f7fd2a8e80fc28e76fef320c531884e7e00)), closes [/github.com/libp2p/js-libp2p-crypto/pull/284#issuecomment-1324005434](https://github.com/libp2p//github.com/libp2p/js-libp2p-crypto/pull/284/issues/issuecomment-1324005434)
+
 ## [@libp2p/interfaces-v3.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v3.0.6...@libp2p/interfaces-v3.1.0) (2022-12-19)
 
 
