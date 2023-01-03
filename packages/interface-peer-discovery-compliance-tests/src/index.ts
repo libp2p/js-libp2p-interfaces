@@ -41,18 +41,20 @@ export default (common: TestSetup<PeerDiscovery>) => {
     it('should emit a peer event after start', async () => {
       const defer = pDefer()
 
-      await start(discovery)
-
       discovery.addEventListener('peer', (evt) => {
         const { id, multiaddrs } = evt.detail
         expect(id).to.exist()
-        expect(id).to.have.property('type').that.is.oneOf(['RSA', 'Ed25519', 'secp256k1'])
+        expect(id)
+          .to.have.property('type')
+          .that.is.oneOf(['RSA', 'Ed25519', 'secp256k1'])
         expect(multiaddrs).to.exist()
 
         multiaddrs.forEach((m) => expect(isMultiaddr(m)).to.eql(true))
 
         defer.resolve()
       })
+
+      await start(discovery)
 
       await defer.promise
     })
@@ -68,11 +70,11 @@ export default (common: TestSetup<PeerDiscovery>) => {
     it('should not receive a peer event after stop', async () => {
       const deferStart = pDefer()
 
-      await start(discovery)
-
       discovery.addEventListener('peer', () => {
         deferStart.resolve()
       })
+
+      await start(discovery)
 
       await deferStart.promise
 
