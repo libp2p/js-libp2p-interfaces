@@ -28,7 +28,7 @@ export class CodeError<T extends Record<string, any> = Record<string, never>> ex
   ) {
     super(message)
 
-    this.name = 'CodeError'
+    this.name = props?.name ?? 'CodeError'
     this.props = props ?? {} as T // eslint-disable-line @typescript-eslint/consistent-type-assertions
   }
 }
