@@ -22,3 +22,18 @@ export class AbortError extends Error {
     return 'aborted'
   }
 }
+
+export class CodeError<T extends Record<string, any> = Record<string, never>> extends Error {
+  public readonly props: T
+
+  constructor (
+    message: string,
+    public readonly code: string,
+    props?: T
+  ) {
+    super(message)
+
+    this.name = props?.name ?? 'CodeError'
+    this.props = props ?? {} as T // eslint-disable-line @typescript-eslint/consistent-type-assertions
+  }
+}
