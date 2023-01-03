@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-discovery-compliance-tests-v2.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-discovery-compliance-tests-v2.0.3...@libp2p/interface-peer-discovery-compliance-tests-v2.0.4) (2023-01-03)
+
+
+### Bug Fixes
+
+* refactor peer discovery compliance test ([#328](https://github.com/libp2p/js-libp2p-interfaces/issues/328)) ([87b4608](https://github.com/libp2p/js-libp2p-interfaces/commit/87b4608ae4c373c8dd59b1b68a63293fe9e15d69))
+
 ## [@libp2p/interface-peer-discovery-compliance-tests-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-discovery-compliance-tests-v2.0.2...@libp2p/interface-peer-discovery-compliance-tests-v2.0.3) (2022-12-16)
 
 
