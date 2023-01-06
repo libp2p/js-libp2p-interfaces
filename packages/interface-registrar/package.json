@@ -133,7 +133,7 @@
   },
   "dependencies": {
     "@libp2p/interface-connection": "^3.0.0",
-    "@libp2p/interface-peer-id": "^1.0.0"
+    "@libp2p/interface-peer-id": "^2.0.0"
   },
   "devDependencies": {
     "aegir": "^37.7.3"
