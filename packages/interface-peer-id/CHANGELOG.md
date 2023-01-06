@@ -1,3 +1,14 @@
+## [@libp2p/interface-peer-id-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-id-v1.1.2...@libp2p/interface-peer-id-v2.0.0) (2023-01-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump multiformats from 10.0.3 to 11.0.0 (#329)
+
+### Dependencies
+
+* bump multiformats from 10.0.3 to 11.0.0 ([#329](https://github.com/libp2p/js-libp2p-interfaces/issues/329)) ([ba3a98b](https://github.com/libp2p/js-libp2p-interfaces/commit/ba3a98be61e3cf0996fefbd3004e974bb41ad2f0))
+
 ## [@libp2p/interface-peer-id-v1.1.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-id-v1.1.1...@libp2p/interface-peer-id-v1.1.2) (2022-12-16)
 
 
