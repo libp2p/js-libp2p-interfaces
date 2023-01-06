@@ -1,3 +1,19 @@
+## [@libp2p/interface-pubsub-compliance-tests-v5.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v4.0.4...@libp2p/interface-pubsub-compliance-tests-v5.0.0) (2023-01-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* update peer-id dep to pull in new multiformats (#331)
+
+### Bug Fixes
+
+* update peer-id dep to pull in new multiformats ([#331](https://github.com/libp2p/js-libp2p-interfaces/issues/331)) ([fb8b7ba](https://github.com/libp2p/js-libp2p-interfaces/commit/fb8b7ba654a30a08da0652e2833e36dd3bb85e90))
+
+
+### Dependencies
+
+* update sibling dependencies ([1442ad3](https://github.com/libp2p/js-libp2p-interfaces/commit/1442ad37e44f886a423e7a09e53e0b1796327fde))
+
 ## [@libp2p/interface-pubsub-compliance-tests-v4.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v4.0.3...@libp2p/interface-pubsub-compliance-tests-v4.0.4) (2023-01-06)
 
 
