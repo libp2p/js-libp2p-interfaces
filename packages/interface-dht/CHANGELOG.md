@@ -1,3 +1,15 @@
+## [@libp2p/interface-dht-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-dht-v1.0.5...@libp2p/interface-dht-v2.0.0) (2023-01-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump multiformats from 10.0.3 to 11.0.0 (#329)
+
+### Dependencies
+
+* bump multiformats from 10.0.3 to 11.0.0 ([#329](https://github.com/libp2p/js-libp2p-interfaces/issues/329)) ([ba3a98b](https://github.com/libp2p/js-libp2p-interfaces/commit/ba3a98be61e3cf0996fefbd3004e974bb41ad2f0))
+* update sibling dependencies ([b50e621](https://github.com/libp2p/js-libp2p-interfaces/commit/b50e621d31a8b32affc3fadb9f97c4883d577f93))
+
 ## [@libp2p/interface-dht-v1.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-dht-v1.0.4...@libp2p/interface-dht-v1.0.5) (2022-12-16)
 
 
