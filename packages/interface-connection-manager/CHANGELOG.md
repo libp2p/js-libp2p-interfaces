@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-manager-v1.3.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.3.4...@libp2p/interface-connection-manager-v1.3.5) (2023-01-06)
+
+
+### Dependencies
+
+* update sibling dependencies ([b50e621](https://github.com/libp2p/js-libp2p-interfaces/commit/b50e621d31a8b32affc3fadb9f97c4883d577f93))
+
 ## [@libp2p/interface-connection-manager-v1.3.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.3.3...@libp2p/interface-connection-manager-v1.3.4) (2022-12-19)
 
 
