@@ -1,3 +1,19 @@
+## [@libp2p/interface-mocks-v9.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v8.0.5...@libp2p/interface-mocks-v9.0.0) (2023-01-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* update peer-id dep to pull in new multiformats (#331)
+
+### Bug Fixes
+
+* update peer-id dep to pull in new multiformats ([#331](https://github.com/libp2p/js-libp2p-interfaces/issues/331)) ([fb8b7ba](https://github.com/libp2p/js-libp2p-interfaces/commit/fb8b7ba654a30a08da0652e2833e36dd3bb85e90))
+
+
+### Dependencies
+
+* update sibling dependencies ([667082f](https://github.com/libp2p/js-libp2p-interfaces/commit/667082f7070ec28a2f19c356fe44fd7499958f2e))
+
 ## [@libp2p/interface-mocks-v8.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v8.0.4...@libp2p/interface-mocks-v8.0.5) (2023-01-06)
 
 
