@@ -156,7 +156,7 @@
     "release": "aegir release"
   },
   "dependencies": {
-    "aegir": "^37.7.3"
+    "aegir": "^37.9.0"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts"
