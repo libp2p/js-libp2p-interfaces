@@ -134,7 +134,7 @@
   "dependencies": {
     "@libp2p/interface-compliance-tests": "^3.0.0",
     "@libp2p/interface-record": "^2.0.0",
-    "aegir": "^37.7.3"
+    "aegir": "^37.9.0"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts"

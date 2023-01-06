@@ -139,7 +139,7 @@
     "multiformats": "^11.0.0"
   },
   "devDependencies": {
-    "aegir": "^37.7.3"
+    "aegir": "^37.9.0"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts"

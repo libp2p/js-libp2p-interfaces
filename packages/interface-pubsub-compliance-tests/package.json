@@ -138,7 +138,7 @@
     "@libp2p/interface-pubsub": "^3.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@libp2p/peer-id-factory": "^2.0.0",
-    "aegir": "^37.7.3",
+    "aegir": "^37.9.0",
     "delay": "^5.0.0",
     "p-defer": "^4.0.0",
     "p-event": "^5.0.1",
