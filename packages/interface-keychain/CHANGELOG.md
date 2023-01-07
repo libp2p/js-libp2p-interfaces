@@ -1,3 +1,15 @@
+## [@libp2p/interface-keychain-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-keychain-v2.0.0...@libp2p/interface-keychain-v2.0.1) (2023-01-07)
+
+
+### Bug Fixes
+
+* add importPeer method to keychain interface ([#333](https://github.com/libp2p/js-libp2p-interfaces/issues/333)) ([51de73c](https://github.com/libp2p/js-libp2p-interfaces/commit/51de73c85f72151d1b9e5f3248d757512d40659b))
+
+
+### Trivial Changes
+
+* remove lerna ([#330](https://github.com/libp2p/js-libp2p-interfaces/issues/330)) ([6678592](https://github.com/libp2p/js-libp2p-interfaces/commit/6678592dd0cf601a2671852f9d2a0aff5dee2b18))
+
 ## [@libp2p/interface-keychain-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-keychain-v1.0.8...@libp2p/interface-keychain-v2.0.0) (2023-01-06)
 
 
