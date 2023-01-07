@@ -25,7 +25,7 @@ import type { Connection, Stream } from '@libp2p/interface-connection'
 import type { PeerRouting } from '@libp2p/interface-peer-routing'
 import type { ContentRouting } from '@libp2p/interface-content-routing'
 import type { PubSub } from '@libp2p/interface-pubsub'
-import type { StreamHandler, StreamHandlerOptions } from '@libp2p/interface-registrar'
+import type { StreamHandler, StreamHandlerOptions, Topology } from '@libp2p/interface-registrar'
 import type { Metrics } from '@libp2p/interface-metrics'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import type { KeyChain } from '@libp2p/interface-keychain'
@@ -412,6 +412,41 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * ```
    */
   unhandle: (protocols: string[] | string) => Promise<void>
+
+  /**
+   * Register a topology to be informed when peers are encountered that
+   * support the specified protocol
+   *
+   * @example
+   *
+   * ```js
+   * import { createTopology } from '@libp2p/topology'
+   *
+   * const id = await libp2p.register('/echo/1.0.0', createTopology({
+   *   onConnect: (peer, connection) => {
+   *     // handle connect
+   *   },
+   *   onDisconnect: (peer, connection) => {
+   *     // handle disconnect
+   *   }
+   * }))
+   * ```
+   */
+  register: (protocol: string, topology: Topology) => Promise<string>
+
+  /**
+   * Unregister topology to no longer be informed when peers connect or
+   * disconnect.
+   *
+   * @example
+   *
+   * ```js
+   * const id = await libp2p.register(...)
+   *
+   * libp2p.unregister(id)
+   * ```
+   */
+  unregister: (id: string) => void
 
   /**
    * Pings the given peer in order to obtain the operation latency
