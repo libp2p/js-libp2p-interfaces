@@ -1,3 +1,15 @@
+## [@libp2p/interface-libp2p-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.0.2...@libp2p/interface-libp2p-v1.1.0) (2023-01-07)
+
+
+### Features
+
+* add register and unregister methods to libp2p type ([#332](https://github.com/libp2p/js-libp2p-interfaces/issues/332)) ([e37c55a](https://github.com/libp2p/js-libp2p-interfaces/commit/e37c55a62b1b4a927996ca9ea2a311651640de7f))
+
+
+### Trivial Changes
+
+* remove lerna ([#330](https://github.com/libp2p/js-libp2p-interfaces/issues/330)) ([6678592](https://github.com/libp2p/js-libp2p-interfaces/commit/6678592dd0cf601a2671852f9d2a0aff5dee2b18))
+
 ## [@libp2p/interface-libp2p-v1.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.0.1...@libp2p/interface-libp2p-v1.0.2) (2023-01-06)
 
 
