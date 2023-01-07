@@ -1,4 +1,5 @@
 import type { Multibase } from 'multiformats/bases/interface'
+import type { PeerId } from '@libp2p/interface-peer-id'
 
 export interface KeyInfo {
   /**
@@ -35,6 +36,15 @@ export interface KeyChain {
    * ```
    */
   importKey: (name: string, pem: string, password: string) => Promise<KeyInfo>
+
+  /**
+   * Import a new key from a PeerId with a private key component
+   *
+   * ```js
+   * const keyInfo = await libp2p.keychain.importPeer('keyTestImport', peerIdFromString('12D3Foo...'))
+   * ```
+   */
+  importPeer: (name: string, peerId: PeerId) => Promise<KeyInfo>
 
   /**
    * Create a key in the keychain.
