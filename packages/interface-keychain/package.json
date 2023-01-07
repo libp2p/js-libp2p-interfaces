@@ -132,6 +132,7 @@
     "release": "aegir release"
   },
   "dependencies": {
+    "@libp2p/interface-peer-id": "^2.0.0",
     "multiformats": "^11.0.0"
   },
   "devDependencies": {
