@@ -4,7 +4,7 @@ import type { Connection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interface-connection-manager'
 import { connectionPair } from './connection.js'
-import errCode from 'err-code'
+import { CodeError } from '@libp2p/interfaces/errors'
 import type { Registrar } from '@libp2p/interface-registrar'
 import type { PubSub } from '@libp2p/interface-pubsub'
 import { isMultiaddr, Multiaddr } from '@multiformats/multiaddr'
@@ -30,7 +30,7 @@ class MockNetwork {
       }
     }
 
-    throw errCode(new Error('Peer not found'), 'ERR_PEER_NOT_FOUND')
+    throw new CodeError('Peer not found', 'ERR_PEER_NOT_FOUND')
   }
 
   reset (): void {
@@ -78,11 +78,11 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
 
   async openConnection (peerId: PeerId | Multiaddr): Promise<Connection> {
     if (this.components == null) {
-      throw errCode(new Error('Not initialized'), 'ERR_NOT_INITIALIZED')
+      throw new CodeError('Not initialized', 'ERR_NOT_INITIALIZED')
     }
 
     if (isMultiaddr(peerId)) {
-      throw errCode(new Error('Dialing multiaddrs not supported'), 'ERR_NOT_SUPPORTED')
+      throw new CodeError('Dialing multiaddrs not supported', 'ERR_NOT_SUPPORTED')
     }
 
     const existingConnections = this.getConnections(peerId)
@@ -124,7 +124,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
 
   async closeConnections (peerId: PeerId): Promise<void> {
     if (this.components == null) {
-      throw errCode(new Error('Not initialized'), 'ERR_NOT_INITIALIZED')
+      throw new CodeError('Not initialized', 'ERR_NOT_INITIALIZED')
     }
 
     const connections = this.getConnections(peerId)
