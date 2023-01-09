@@ -3,7 +3,7 @@ import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { abortableSource } from 'abortable-iterator'
 import { anySignal } from 'any-signal'
-import errCode from 'err-code'
+import { CodeError } from '@libp2p/interfaces/errors'
 import { Logger, logger } from '@libp2p/logger'
 import * as ndjson from 'it-ndjson'
 import type { Stream } from '@libp2p/interface-connection'
@@ -125,7 +125,7 @@ class MuxedStream {
       id,
       sink: async (source) => {
         if (this.sinkEnded) {
-          throw errCode(new Error('stream closed for writing'), 'ERR_SINK_ENDED')
+          throw new CodeError('stream closed for writing', 'ERR_SINK_ENDED')
         }
 
         source = abortableSource(source, anySignal([
@@ -243,7 +243,7 @@ class MuxedStream {
 
       // Close immediately for reading and writing (remote error)
       reset: () => {
-        const err = errCode(new Error('stream reset'), 'ERR_STREAM_RESET')
+        const err = new CodeError('stream reset', 'ERR_STREAM_RESET')
         this.resetController.abort()
         this.input.end(err)
         onSinkEnd(err)

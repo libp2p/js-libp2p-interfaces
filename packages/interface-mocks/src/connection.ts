@@ -14,7 +14,7 @@ import * as STATUS from '@libp2p/interface-connection/status'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { StreamMuxer, StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
 import type { AbortOptions } from '@libp2p/interfaces'
-import errCode from 'err-code'
+import { CodeError } from '@libp2p/interfaces/errors'
 import type { Uint8ArrayList } from 'uint8arraylist'
 
 const log = logger('libp2p:mock-connection')
@@ -75,7 +75,7 @@ class MockConnection implements Connection {
     }
 
     if (this.stat.status !== STATUS.OPEN) {
-      throw errCode(new Error('connection must be open to create streams'), 'ERR_CONNECTION_CLOSED')
+      throw new CodeError('connection must be open to create streams', 'ERR_CONNECTION_CLOSED')
     }
 
     const id = `${Math.random()}`
