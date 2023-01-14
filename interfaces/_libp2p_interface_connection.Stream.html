@@ -55,8 +55,8 @@ configuration of the nodes.</p>
 <h4>Type declaration</h4>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
-<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
-<li class="tsd-signature" id="__type.__type-1"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error" class="tsd-signature-type external" target="_blank">Error</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+<li class="tsd-signature" id="abort.__type.__type-1"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error" class="tsd-signature-type external" target="_blank">Error</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Closes the stream for <strong>reading</strong> <em>and</em> <strong>writing</strong>. This should be called when a <em>local error</em> has occurred.</p>
 <p>Note, if called without an error any buffered data in the source can still be consumed and the stream will end normally.</p>
@@ -78,8 +78,8 @@ configuration of the nodes.</p>
 <h4>Type declaration</h4>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
-<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
-<li class="tsd-signature" id="__type-2.__type-3"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+<li class="tsd-signature" id="close.__type-2.__type-3"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Closes the stream for <strong>reading</strong> <em>and</em> <strong>writing</strong>.</p>
 <p>Any buffered data in the source can still be consumed and the stream will end normally.</p>
@@ -96,8 +96,8 @@ configuration of the nodes.</p>
 <h4>Type declaration</h4>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
-<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
-<li class="tsd-signature" id="__type-4.__type-5"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+<li class="tsd-signature" id="closeRead.__type-4.__type-5"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Closes the stream for <strong>reading</strong>. If iterating over the source of this stream in a <code>for await of</code> loop, it will return (exit the loop) after any buffered data has been consumed.</p>
 <p>This function is called automatically by the muxer when it receives a <code>CLOSE</code> message from the remote.</p>
@@ -113,8 +113,8 @@ configuration of the nodes.</p>
 <h4>Type declaration</h4>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
-<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
-<li class="tsd-signature" id="__type-6.__type-7"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+<li class="tsd-signature" id="closeWrite.__type-6.__type-7"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Closes the stream for <strong>writing</strong>. If iterating over the source of this stream in a <code>for await of</code> loop, it will return (exit the loop) after any buffered data has been consumed.</p>
 <p>The source will return normally, the sink will continue to consume.</p>
@@ -143,8 +143,8 @@ configuration of the nodes.</p>
 <h4>Type declaration</h4>
 <ul class="tsd-parameters">
 <li class="tsd-parameter-signature">
-<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
-<li class="tsd-signature" id="__type-8.__type-9"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+<li class="tsd-signature" id="reset.__type-8.__type-9"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Closes the stream <em>immediately</em> for <strong>reading</strong> <em>and</em> <strong>writing</strong>. This should be called when a <em>remote error</em> has occurred.</p>
 <p>This function is called automatically by the muxer when it receives a <code>RESET</code> message from the remote.</p>
@@ -197,7 +197,7 @@ configuration of the nodes.</p>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.0</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v1.3.5</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v1.3.6</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_manager._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.0.0</a>
@@ -216,7 +216,7 @@ configuration of the nodes.</p>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.4</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.0.4</a>
