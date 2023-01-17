@@ -1,3 +1,15 @@
+## [@libp2p/interfaces-v3.3.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v3.2.0...@libp2p/interfaces-v3.3.0) (2023-01-17)
+
+
+### Features
+
+* safe dispatch event ([#319](https://github.com/libp2p/js-libp2p-interfaces/issues/319)) ([8caeee8](https://github.com/libp2p/js-libp2p-interfaces/commit/8caeee8221e78c2412d8aeb9a7db7cc43abfdf1b)), closes [#317](https://github.com/libp2p/js-libp2p-interfaces/issues/317)
+
+
+### Trivial Changes
+
+* remove lerna ([#330](https://github.com/libp2p/js-libp2p-interfaces/issues/330)) ([6678592](https://github.com/libp2p/js-libp2p-interfaces/commit/6678592dd0cf601a2671852f9d2a0aff5dee2b18))
+
 ## [@libp2p/interfaces-v3.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interfaces-v3.1.0...@libp2p/interfaces-v3.2.0) (2023-01-03)
 
 
