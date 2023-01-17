@@ -1,4 +1,4 @@
-import { CustomEvent, EventEmitter } from '@libp2p/interfaces/events'
+import { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
@@ -99,9 +99,9 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     this.connections.push(aToB)
     ;(componentsB.connectionManager as MockConnectionManager).connections.push(bToA)
 
-    this.components.connectionManager?.dispatchEvent(new CustomEvent<Connection>('peer:connect', {
+    this.components.connectionManager?.safeDispatchEvent<Connection>('peer:connect', {
       detail: aToB
-    }))
+    })
 
     for (const protocol of this.components.registrar.getProtocols()) {
       for (const topology of this.components.registrar.getTopologies(protocol)) {
@@ -109,9 +109,9 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
       }
     }
 
-    componentsB.connectionManager?.dispatchEvent(new CustomEvent<Connection>('peer:connect', {
+    componentsB.connectionManager?.safeDispatchEvent<Connection>('peer:connect', {
       detail: bToA
-    }))
+    })
 
     for (const protocol of componentsB.registrar.getProtocols()) {
       for (const topology of componentsB.registrar.getTopologies(protocol)) {

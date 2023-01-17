@@ -74,6 +74,10 @@ export class EventEmitter<EventMap extends { [s: string]: any }> extends EventTa
 
     return result
   }
+
+  safeDispatchEvent<Detail>(type: keyof EventMap, detail: CustomEventInit<Detail>): boolean {
+    return this.dispatchEvent(new CustomEvent<Detail>(type as string, detail))
+  }
 }
 
 /**
