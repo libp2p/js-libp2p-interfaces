@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v9.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.0.1...@libp2p/interface-mocks-v9.1.0) (2023-01-17)
+
+
+### Features
+
+* safe dispatch event ([#319](https://github.com/libp2p/js-libp2p-interfaces/issues/319)) ([8caeee8](https://github.com/libp2p/js-libp2p-interfaces/commit/8caeee8221e78c2412d8aeb9a7db7cc43abfdf1b)), closes [#317](https://github.com/libp2p/js-libp2p-interfaces/issues/317)
+
 ## [@libp2p/interface-mocks-v9.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.0.0...@libp2p/interface-mocks-v9.0.1) (2023-01-14)
 
 
