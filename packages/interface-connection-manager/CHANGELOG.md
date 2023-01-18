@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-manager-v1.3.7](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.3.6...@libp2p/interface-connection-manager-v1.3.7) (2023-01-18)
+
+
+### Dependencies
+
+* bump aegir from 37.12.1 to 38.1.0 ([#335](https://github.com/libp2p/js-libp2p-interfaces/issues/335)) ([7368a36](https://github.com/libp2p/js-libp2p-interfaces/commit/7368a363423a08e8fa247dcb76ea13e4cf030d65))
+
 ## [@libp2p/interface-connection-manager-v1.3.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.3.5...@libp2p/interface-connection-manager-v1.3.6) (2023-01-14)
 
 
