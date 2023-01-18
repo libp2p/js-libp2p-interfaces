@@ -1,3 +1,15 @@
+## [@libp2p/interface-compliance-tests-v3.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v3.0.5...@libp2p/interface-compliance-tests-v3.0.6) (2023-01-18)
+
+
+### Trivial Changes
+
+* remove lerna ([#330](https://github.com/libp2p/js-libp2p-interfaces/issues/330)) ([6678592](https://github.com/libp2p/js-libp2p-interfaces/commit/6678592dd0cf601a2671852f9d2a0aff5dee2b18))
+
+
+### Dependencies
+
+* bump aegir from 37.12.1 to 38.1.0 ([#335](https://github.com/libp2p/js-libp2p-interfaces/issues/335)) ([7368a36](https://github.com/libp2p/js-libp2p-interfaces/commit/7368a363423a08e8fa247dcb76ea13e4cf030d65))
+
 ## [@libp2p/interface-compliance-tests-v3.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-compliance-tests-v3.0.4...@libp2p/interface-compliance-tests-v3.0.5) (2022-12-16)
 
 
