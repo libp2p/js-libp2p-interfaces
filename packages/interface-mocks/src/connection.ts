@@ -65,7 +65,7 @@ class MockConnection implements Connection {
     this.maConn = maConn
   }
 
-  async newStream (protocols: string | string[], options?: AbortOptions) {
+  async newStream (protocols: string | string[], options?: AbortOptions): Promise<Stream> {
     if (!Array.isArray(protocols)) {
       protocols = [protocols]
     }
@@ -97,18 +97,20 @@ class MockConnection implements Connection {
     return streamWithProtocol
   }
 
-  addStream (stream: Stream) {
+  addStream (stream: Stream): void {
     this.streams.push(stream)
   }
 
-  removeStream (id: string) {
+  removeStream (id: string): void {
     this.streams = this.streams.filter(stream => stream.id !== id)
   }
 
-  async close () {
+  async close (): Promise<void> {
     this.stat.status = STATUS.CLOSING
     await this.maConn.close()
-    this.streams.forEach(s => s.close())
+    this.streams.forEach(s => {
+      s.close()
+    })
     this.stat.status = STATUS.CLOSED
     this.stat.timeline.close = Date.now()
   }
@@ -128,7 +130,7 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
   const muxerFactory = opts.muxerFactory ?? mockMuxer()
 
   const muxer = muxerFactory.createStreamMuxer({
-    direction: direction,
+    direction,
     onIncomingStream: (muxedStream) => {
       try {
         mss.handle(muxedStream, registrar.getProtocols())

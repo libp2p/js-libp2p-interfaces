@@ -73,7 +73,7 @@ class MuxedStream {
 
     let endErr: Error | undefined
 
-    const onSourceEnd = (err?: Error) => {
+    const onSourceEnd = (err?: Error): void => {
       if (this.sourceEnded) {
         return
       }
@@ -95,7 +95,7 @@ class MuxedStream {
       }
     }
 
-    const onSinkEnd = (err?: Error) => {
+    const onSinkEnd = (err?: Error): void => {
       if (this.sinkEnded) {
         return
       }
@@ -295,7 +295,7 @@ class MockMuxer implements StreamMuxer {
   }
 
   // receive incoming messages
-  async sink (source: Source<Uint8Array>) {
+  async sink (source: Source<Uint8Array>): Promise<void> {
     try {
       await pipe(
         abortableSource(source, this.closeController.signal),
@@ -317,7 +317,7 @@ class MockMuxer implements StreamMuxer {
     }
   }
 
-  handleMessage (message: StreamMessage) {
+  handleMessage (message: StreamMessage): void {
     let muxedStream: MuxedStream | undefined
 
     const registry = message.direction === 'initiator' ? this.registryRecipientStreams : this.registryInitiatorStreams
@@ -350,17 +350,17 @@ class MockMuxer implements StreamMuxer {
       muxedStream.stream.reset()
     } else if (message.type === 'close') {
       this.log('-> closing stream %s %s', muxedStream.type, muxedStream.stream.id)
-      void muxedStream.stream.closeRead()
+      muxedStream.stream.closeRead()
     }
   }
 
-  get streams () {
+  get streams (): Stream[] {
     return Array.from(this.registryRecipientStreams.values())
       .concat(Array.from(this.registryInitiatorStreams.values()))
       .map(({ stream }) => stream)
   }
 
-  newStream (name?: string) {
+  newStream (name?: string): Stream {
     if (this.closeController.signal.aborted) {
       throw new Error('Muxer already closed')
     }
@@ -403,9 +403,13 @@ class MockMuxer implements StreamMuxer {
     this.log('closing muxed streams')
 
     if (err == null) {
-      this.streams.forEach(s => s.close())
+      this.streams.forEach(s => {
+        s.close()
+      })
     } else {
-      this.streams.forEach(s => s.abort(err))
+      this.streams.forEach(s => {
+        s.abort(err)
+      })
     }
     this.closeController.abort()
     this.input.end(err)

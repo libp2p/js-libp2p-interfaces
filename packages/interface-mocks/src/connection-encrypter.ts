@@ -17,7 +17,7 @@ const transform = <T>(): Transform<T, T> => {
   })()
 }
 
-export function mockConnectionEncrypter () {
+export function mockConnectionEncrypter (): ConnectionEncrypter {
   const encrypter: ConnectionEncrypter = {
     protocol: 'insecure',
     secureInbound: async (localPeer, duplex, expectedPeer) => {

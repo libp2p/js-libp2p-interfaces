@@ -33,7 +33,7 @@ class MockNetwork {
     throw errCode(new Error('Peer not found'), 'ERR_PEER_NOT_FOUND')
   }
 
-  reset () {
+  reset (): void {
     this.components = []
   }
 }
@@ -51,15 +51,15 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     this.components = components
   }
 
-  isStarted () {
+  isStarted (): boolean {
     return this.started
   }
 
-  async start () {
+  async start (): Promise<void> {
     this.started = true
   }
 
-  async stop () {
+  async stop (): Promise<void> {
     for (const connection of this.connections) {
       await this.closeConnections(connection.remotePeer)
     }
@@ -76,7 +76,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     return this.connections
   }
 
-  async openConnection (peerId: PeerId | Multiaddr) {
+  async openConnection (peerId: PeerId | Multiaddr): Promise<Connection> {
     if (this.components == null) {
       throw errCode(new Error('Not initialized'), 'ERR_NOT_INITIALIZED')
     }
@@ -99,7 +99,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     this.connections.push(aToB)
     ;(componentsB.connectionManager as MockConnectionManager).connections.push(bToA)
 
-    this.components.connectionManager?.safeDispatchEvent<Connection>('peer:connect', {
+    this.components.connectionManager.safeDispatchEvent<Connection>('peer:connect', {
       detail: aToB
     })
 
@@ -109,7 +109,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
       }
     }
 
-    componentsB.connectionManager?.safeDispatchEvent<Connection>('peer:connect', {
+    componentsB.connectionManager.safeDispatchEvent<Connection>('peer:connect', {
       detail: bToA
     })
 
@@ -122,7 +122,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     return aToB
   }
 
-  async closeConnections (peerId: PeerId) {
+  async closeConnections (peerId: PeerId): Promise<void> {
     if (this.components == null) {
       throw errCode(new Error('Not initialized'), 'ERR_NOT_INITIALIZED')
     }
@@ -145,7 +145,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
       await conn.close()
     }
 
-    this.connections = this.connections.filter(c => !c.remotePeer.equals(peerId))
+    this.connections = this.connections.filter(c => c.remotePeer.equals(peerId))
 
     await componentsB.connectionManager?.closeConnections(this.components.peerId)
   }
@@ -159,6 +159,6 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
   }
 }
 
-export function mockConnectionManager (components: MockNetworkComponents) {
+export function mockConnectionManager (components: MockNetworkComponents): ConnectionManager {
   return new MockConnectionManager(components)
 }

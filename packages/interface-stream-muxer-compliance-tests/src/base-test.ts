@@ -15,11 +15,11 @@ import type { StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
 import type { Source, Duplex } from 'it-stream-types'
 import { Uint8ArrayList } from 'uint8arraylist'
 
-async function drainAndClose (stream: Duplex<any>) {
-  return await pipe([], stream, drain)
+async function drainAndClose (stream: Duplex<any>): Promise<void> {
+  await pipe([], stream, drain)
 }
 
-export default (common: TestSetup<StreamMuxerFactory>) => {
+export default (common: TestSetup<StreamMuxerFactory>): void => {
   describe('base', () => {
     it('Open a stream from the dialer', async () => {
       const p = duplexPair<Uint8Array>()
@@ -134,8 +134,8 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       await Promise.all([
         drainAndClose(dialerInitiatorStream),
         drainAndClose(listenerInitiatorStream),
-        onDialerStreamPromise.promise.then(async stream => await drainAndClose(stream)),
-        onListenerStreamPromise.promise.then(async stream => await drainAndClose(stream))
+        onDialerStreamPromise.promise.then(async stream => { await drainAndClose(stream) }),
+        onListenerStreamPromise.promise.then(async stream => { await drainAndClose(stream) })
       ])
 
       await Promise.all([
@@ -145,7 +145,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
     })
 
     it('Open a stream on one side, write, open a stream on the other side', async () => {
-      const toString = (source: Source<Uint8ArrayList>) => map(source, (u) => uint8ArrayToString(u.subarray()))
+      const toString = (source: Source<Uint8ArrayList>): AsyncGenerator<string> => map(source, (u) => uint8ArrayToString(u.subarray()))
       const p = duplexPair<Uint8Array>()
       const onDialerStreamPromise: DeferredPromise<Stream> = defer()
       const onListenerStreamPromise: DeferredPromise<Stream> = defer()

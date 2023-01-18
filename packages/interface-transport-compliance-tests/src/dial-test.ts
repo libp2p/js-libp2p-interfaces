@@ -13,7 +13,7 @@ import type { TransportTestFixtures, Connector } from './index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Registrar } from '@libp2p/interface-registrar'
 
-export default (common: TestSetup<TransportTestFixtures>) => {
+export default (common: TestSetup<TransportTestFixtures>): void => {
   describe('dial', () => {
     let upgrader: Upgrader
     let registrar: Registrar
@@ -39,13 +39,13 @@ export default (common: TestSetup<TransportTestFixtures>) => {
       listener = transport.createListener({
         upgrader
       })
-      return await listener.listen(addrs[0])
+      await listener.listen(addrs[0])
     })
 
     afterEach(async () => {
       sinon.restore()
       connector.restore()
-      return await listener.close()
+      await listener.close()
     })
 
     it('simple', async () => {
@@ -113,7 +113,7 @@ export default (common: TestSetup<TransportTestFixtures>) => {
 
       const controller = new AbortController()
       const conn = transport.dial(addrs[0], { signal: controller.signal, upgrader })
-      setTimeout(() => controller.abort(), 50)
+      setTimeout(() => { controller.abort() }, 50)
 
       await expect(conn).to.eventually.be.rejected().with.property('code', AbortError.code)
       expect(upgradeSpy.callCount).to.equal(0)

@@ -16,10 +16,10 @@ interface Listener {
  * https://github.com/microsoft/TypeScript/issues/299
  * etc
  */
-export class EventEmitter<EventMap extends { [s: string]: any }> extends EventTarget {
+export class EventEmitter<EventMap extends Record<string, any>> extends EventTarget {
   #listeners: Map<any, Listener[]> = new Map()
 
-  listenerCount (type: string) {
+  listenerCount (type: string): number {
     const listeners = this.#listeners.get(type)
 
     if (listeners == null) {

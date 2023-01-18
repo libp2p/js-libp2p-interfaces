@@ -28,25 +28,25 @@ export class MockDiscovery extends EventEmitter<PeerDiscoveryEvents> implements 
     return true
   }
 
-  get [Symbol.toStringTag] () {
+  get [Symbol.toStringTag] (): string {
     return 'MockDiscovery'
   }
 
-  start () {
+  start (): void {
     this._isRunning = true
     this._discoverPeer()
   }
 
-  stop () {
+  stop (): void {
     clearTimeout(this._timer)
     this._isRunning = false
   }
 
-  isStarted () {
+  isStarted (): boolean {
     return this._isRunning
   }
 
-  _discoverPeer () {
+  _discoverPeer (): void {
     if (!this._isRunning) return
 
     PeerIdFactory.createEd25519PeerId()

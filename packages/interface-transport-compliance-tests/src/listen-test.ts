@@ -16,7 +16,7 @@ import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Connection } from '@libp2p/interface-connection'
 import type { Registrar } from '@libp2p/interface-registrar'
 
-export default (common: TestSetup<TransportTestFixtures>) => {
+export default (common: TestSetup<TransportTestFixtures>): void => {
   describe('listen', () => {
     let upgrader: Upgrader
     let addrs: Multiaddr[]
@@ -92,7 +92,7 @@ export default (common: TestSetup<TransportTestFixtures>) => {
         listener.close()
       ])
 
-      await stream1.close()
+      stream1.close()
       await conn1.close()
 
       expect(isValidTick(conn1.stat.timeline.close)).to.equal(true)
@@ -178,7 +178,7 @@ export default (common: TestSetup<TransportTestFixtures>) => {
         const listener = transport.createListener({
           upgrader
         })
-        listener.addEventListener('close', () => done())
+        listener.addEventListener('close', () => { done() })
 
         void (async () => {
           await listener.listen(addrs[0])

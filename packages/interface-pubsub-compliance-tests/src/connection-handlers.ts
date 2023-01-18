@@ -13,7 +13,7 @@ import { pEvent } from 'p-event'
 import { mockNetwork } from '@libp2p/interface-mocks'
 import type { MockNetworkComponents } from '@libp2p/interface-mocks'
 
-export default (common: TestSetup<PubSub, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>): void => {
   describe('pubsub connection handlers', () => {
     let psA: PubSub
     let psB: PubSub
@@ -336,7 +336,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         let bReceivedSecondMessageFromA = false
         const topic = 'reconnect-channel'
 
-        const handlerSpyA = (evt: CustomEvent<Message>) => {
+        const handlerSpyA = (evt: CustomEvent<Message>): void => {
           if (evt.detail.topic !== topic) {
             return
           }
@@ -352,7 +352,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
             aReceivedSecondMessageFromB = true
           }
         }
-        const handlerSpyB = (evt: CustomEvent<Message>) => {
+        const handlerSpyB = (evt: CustomEvent<Message>): void => {
           if (evt.detail.topic !== topic) {
             return
           }

@@ -10,7 +10,7 @@ import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { ConnectionEncrypter } from '@libp2p/interface-connection-encrypter'
 import type { PeerId } from '@libp2p/interface-peer-id'
 
-export default (common: TestSetup<ConnectionEncrypter>) => {
+export default (common: TestSetup<ConnectionEncrypter>): void => {
   describe('interface-connection-encrypter compliance tests', () => {
     let crypto: ConnectionEncrypter
     let localPeer: PeerId

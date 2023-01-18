@@ -16,7 +16,7 @@ export interface TransportTestFixtures {
   connector: Connector
 }
 
-export default (common: TestSetup<TransportTestFixtures>) => {
+export default (common: TestSetup<TransportTestFixtures>): void => {
   describe('interface-transport', () => {
     dial(common)
     listen(common)

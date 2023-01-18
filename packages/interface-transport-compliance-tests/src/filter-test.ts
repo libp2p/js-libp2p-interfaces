@@ -4,7 +4,7 @@ import type { Transport } from '@libp2p/interface-transport'
 import type { TransportTestFixtures } from './index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 
-export default (common: TestSetup<TransportTestFixtures>) => {
+export default (common: TestSetup<TransportTestFixtures>): void => {
   describe('filter', () => {
     let addrs: Multiaddr[]
     let transport: Transport

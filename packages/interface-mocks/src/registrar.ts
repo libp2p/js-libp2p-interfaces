@@ -7,7 +7,7 @@ export class MockRegistrar implements Registrar {
   private readonly topologies: Map<string, Array<{ id: string, topology: Topology }>> = new Map()
   private readonly handlers: Map<string, StreamHandlerRecord> = new Map()
 
-  getProtocols () {
+  getProtocols (): string[] {
     return Array.from(this.handlers.keys()).sort()
   }
 
@@ -27,11 +27,11 @@ export class MockRegistrar implements Registrar {
     })
   }
 
-  async unhandle (protocol: string) {
+  async unhandle (protocol: string): Promise<void> {
     this.handlers.delete(protocol)
   }
 
-  getHandler (protocol: string) {
+  getHandler (protocol: string): StreamHandlerRecord {
     const handler = this.handlers.get(protocol)
 
     if (handler == null) {
@@ -41,7 +41,7 @@ export class MockRegistrar implements Registrar {
     return handler
   }
 
-  async register (protocol: string, topology: Topology) {
+  async register (protocol: string, topology: Topology): Promise<string> {
     const id = `topology-id-${Math.random()}`
     let topologies = this.topologies.get(protocol)
 
@@ -59,7 +59,7 @@ export class MockRegistrar implements Registrar {
     return id
   }
 
-  unregister (id: string | string[]) {
+  unregister (id: string | string[]): void {
     if (!Array.isArray(id)) {
       id = [id]
     }
@@ -67,12 +67,12 @@ export class MockRegistrar implements Registrar {
     id.forEach(id => this.topologies.delete(id))
   }
 
-  getTopologies (protocol: string) {
+  getTopologies (protocol: string): Topology[] {
     return (this.topologies.get(protocol) ?? []).map(t => t.topology)
   }
 }
 
-export function mockRegistrar () {
+export function mockRegistrar (): Registrar {
   return new MockRegistrar()
 }
 

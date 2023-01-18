@@ -6,7 +6,7 @@ import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { mockConnectionManager, mockRegistrar, mockNetwork } from '@libp2p/interface-mocks'
 import type { MockNetworkComponents } from '@libp2p/interface-mocks'
 
-export async function waitForSubscriptionUpdate (a: PubSub, b: PeerId) {
+export async function waitForSubscriptionUpdate (a: PubSub, b: PeerId): Promise<void> {
   await pWaitFor(async () => {
     const event = await pEvent<'subscription-change', CustomEvent<SubscriptionChangeData>>(a, 'subscription-change')
 
