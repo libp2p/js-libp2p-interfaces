@@ -11,9 +11,6 @@
       "path": "../interface-connection"
     },
     {
-      "path": "../interface-connection-manager"
-    },
-    {
       "path": "../interface-content-routing"
     },
     {

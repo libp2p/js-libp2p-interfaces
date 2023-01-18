@@ -17,7 +17,7 @@
   - [Error Types](#error-types)
 - [API Docs](#api-docs)
 - [License](#license)
-- [Contribute](#contribute)
+- [Contribution](#contribution)
 
 ## Install
 
@@ -105,7 +105,7 @@ Licensed under either of
 - Apache 2.0, ([LICENSE-APACHE](LICENSE-APACHE) / <http://www.apache.org/licenses/LICENSE-2.0>)
 - MIT ([LICENSE-MIT](LICENSE-MIT) / <http://opensource.org/licenses/MIT>)
 
-## Contribute
+## Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
 
