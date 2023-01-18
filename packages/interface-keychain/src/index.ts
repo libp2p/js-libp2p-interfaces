@@ -1,3 +1,25 @@
+/**
+ * @packageDocumentation
+ *
+ * The libp2p keychain provides an API to store keys in a datastore in
+ * an encrypted format.
+ *
+ * @example
+ *
+ * ```typescript
+ * import { createLibp2p } from 'libp2p'
+ * import { FsDatastore } from 'datastore-fs'
+ *
+ * const node = await createLibp2p({
+ *   datastore: new FsDatastore('/path/to/dir')
+ * })
+ *
+ * const info = await node.keychain.createKey('my-new-key', 'Ed25519')
+ *
+ * console.info(info) // { id: '...', name: 'my-new-key' }
+ * ```
+ */
+
 import type { Multibase } from 'multiformats/bases/interface'
 import type { PeerId } from '@libp2p/interface-peer-id'
 
@@ -13,14 +35,16 @@ export interface KeyInfo {
   name: string
 }
 
-export type KeyType = 'Ed25519' | 'RSA'
+export type KeyType = 'RSA' | 'Ed25519' | 'secp256k1'
 
 export interface KeyChain {
   /**
    * Export an existing key as a PEM encrypted PKCS #8 string.
    *
+   * @example
+   *
    * ```js
-   * await libp2p.keychain.createKey('keyTest', 'rsa', 4096)
+   * await libp2p.keychain.createKey('keyTest', 'RSA', 4096)
    * const pemKey = await libp2p.keychain.exportKey('keyTest', 'password123')
    * ```
    */
@@ -29,8 +53,10 @@ export interface KeyChain {
   /**
    * Import a new key from a PEM encoded PKCS #8 string.
    *
+   * @example
+   *
    * ```js
-   * await libp2p.keychain.createKey('keyTest', 'rsa', 4096)
+   * await libp2p.keychain.createKey('keyTest', 'RSA', 4096)
    * const pemKey = await libp2p.keychain.exportKey('keyTest', 'password123')
    * const keyInfo = await libp2p.keychain.importKey('keyTestImport', pemKey, 'password123')
    * ```
@@ -40,6 +66,8 @@ export interface KeyChain {
   /**
    * Import a new key from a PeerId with a private key component
    *
+   * @example
+   *
    * ```js
    * const keyInfo = await libp2p.keychain.importPeer('keyTestImport', peerIdFromString('12D3Foo...'))
    * ```
@@ -47,12 +75,23 @@ export interface KeyChain {
   importPeer: (name: string, peerId: PeerId) => Promise<KeyInfo>
 
   /**
+   * Export an existing key as a PeerId
+   *
+   * @example
+   *
+   * ```js
+   * const peerId = await libp2p.keychain.exportPeerId('key-name')
+   * ```
+   */
+  exportPeerId: (name: string) => Promise<PeerId>
+
+  /**
    * Create a key in the keychain.
    *
    * @example
    *
    * ```js
-   * const keyInfo = await libp2p.keychain.createKey('keyTest', 'rsa', 4096)
+   * const keyInfo = await libp2p.keychain.createKey('keyTest', 'RSA', 4096)
    * ```
    */
   createKey: (name: string, type: KeyType, size?: number) => Promise<KeyInfo>
@@ -74,7 +113,7 @@ export interface KeyChain {
    * @example
    *
    * ```js
-   * await libp2p.keychain.createKey('keyTest', 'rsa', 4096)
+   * await libp2p.keychain.createKey('keyTest', 'RSA', 4096)
    * const keyInfo = await libp2p.keychain.removeKey('keyTest')
    * ```
    */
@@ -86,7 +125,7 @@ export interface KeyChain {
    * @example
    *
    * ```js
-   * await libp2p.keychain.createKey('keyTest', 'rsa', 4096)
+   * await libp2p.keychain.createKey('keyTest', 'RSA', 4096)
    * const keyInfo = await libp2p.keychain.renameKey('keyTest', 'keyNewNtest')
    * ```
    */
@@ -95,8 +134,10 @@ export interface KeyChain {
   /**
    * Find a key by it's id.
    *
+   * @example
+   *
    * ```js
-   * const keyInfo = await libp2p.keychain.createKey('keyTest', 'rsa', 4096)
+   * const keyInfo = await libp2p.keychain.createKey('keyTest', 'RSA', 4096)
    * const keyInfo2 = await libp2p.keychain.findKeyById(keyInfo.id)
    * ```
    */
@@ -108,7 +149,7 @@ export interface KeyChain {
    * @example
    *
    * ```js
-   * const keyInfo = await libp2p.keychain.createKey('keyTest', 'rsa', 4096)
+   * const keyInfo = await libp2p.keychain.createKey('keyTest', 'RSA', 4096)
    * const keyInfo2 = await libp2p.keychain.findKeyByName('keyTest')
    * ```
    */
