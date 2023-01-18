@@ -1,3 +1,10 @@
+## [@libp2p/interface-keychain-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-keychain-v2.0.1...@libp2p/interface-keychain-v2.0.2) (2023-01-18)
+
+
+### Bug Fixes
+
+* add exportPeer method to keychain interface ([#337](https://github.com/libp2p/js-libp2p-interfaces/issues/337)) ([a970939](https://github.com/libp2p/js-libp2p-interfaces/commit/a970939ee685c1fd8ba2121e04f8a7cff5b953ca))
+
 ## [@libp2p/interface-keychain-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-keychain-v2.0.0...@libp2p/interface-keychain-v2.0.1) (2023-01-07)
 
 
