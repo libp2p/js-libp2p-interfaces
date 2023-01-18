@@ -58,7 +58,7 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
    * const connection = await libp2p.connectionManager.openConnection(peerId)
    * ```
    */
-  openConnection: (peer: PeerId, options?: AbortOptions) => Promise<Connection>
+  openConnection: (peer: PeerId | Multiaddr, options?: AbortOptions) => Promise<Connection>
 
   /**
    * Close our connections to a peer

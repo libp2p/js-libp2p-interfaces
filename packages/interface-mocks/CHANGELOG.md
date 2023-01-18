@@ -1,3 +1,22 @@
+## [@libp2p/interface-mocks-v9.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.0.1...@libp2p/interface-mocks-v9.1.0) (2023-01-17)
+
+
+### Features
+
+* safe dispatch event ([#319](https://github.com/libp2p/js-libp2p-interfaces/issues/319)) ([8caeee8](https://github.com/libp2p/js-libp2p-interfaces/commit/8caeee8221e78c2412d8aeb9a7db7cc43abfdf1b)), closes [#317](https://github.com/libp2p/js-libp2p-interfaces/issues/317)
+
+## [@libp2p/interface-mocks-v9.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.0.0...@libp2p/interface-mocks-v9.0.1) (2023-01-14)
+
+
+### Bug Fixes
+
+* accept multiaddr param when opening connections ([#336](https://github.com/libp2p/js-libp2p-interfaces/issues/336)) ([fef9c26](https://github.com/libp2p/js-libp2p-interfaces/commit/fef9c26847cf63cb95f5fcb51ee40cbc679cc6bf))
+
+
+### Trivial Changes
+
+* remove lerna ([#330](https://github.com/libp2p/js-libp2p-interfaces/issues/330)) ([6678592](https://github.com/libp2p/js-libp2p-interfaces/commit/6678592dd0cf601a2671852f9d2a0aff5dee2b18))
+
 ## [@libp2p/interface-mocks-v9.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v8.0.5...@libp2p/interface-mocks-v9.0.0) (2023-01-06)
 
 

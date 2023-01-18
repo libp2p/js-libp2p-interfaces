@@ -1,4 +1,4 @@
-import { CustomEvent, EventEmitter } from '@libp2p/interfaces/events'
+import { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
@@ -7,6 +7,7 @@ import { connectionPair } from './connection.js'
 import errCode from 'err-code'
 import type { Registrar } from '@libp2p/interface-registrar'
 import type { PubSub } from '@libp2p/interface-pubsub'
+import { isMultiaddr, Multiaddr } from '@multiformats/multiaddr'
 
 export interface MockNetworkComponents {
   peerId: PeerId
@@ -75,9 +76,13 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     return this.connections
   }
 
-  async openConnection (peerId: PeerId) {
+  async openConnection (peerId: PeerId | Multiaddr) {
     if (this.components == null) {
       throw errCode(new Error('Not initialized'), 'ERR_NOT_INITIALIZED')
+    }
+
+    if (isMultiaddr(peerId)) {
+      throw errCode(new Error('Dialing multiaddrs not supported'), 'ERR_NOT_SUPPORTED')
     }
 
     const existingConnections = this.getConnections(peerId)
@@ -94,9 +99,9 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     this.connections.push(aToB)
     ;(componentsB.connectionManager as MockConnectionManager).connections.push(bToA)
 
-    this.components.connectionManager?.dispatchEvent(new CustomEvent<Connection>('peer:connect', {
+    this.components.connectionManager?.safeDispatchEvent<Connection>('peer:connect', {
       detail: aToB
-    }))
+    })
 
     for (const protocol of this.components.registrar.getProtocols()) {
       for (const topology of this.components.registrar.getTopologies(protocol)) {
@@ -104,9 +109,9 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
       }
     }
 
-    componentsB.connectionManager?.dispatchEvent(new CustomEvent<Connection>('peer:connect', {
+    componentsB.connectionManager?.safeDispatchEvent<Connection>('peer:connect', {
       detail: bToA
-    }))
+    })
 
     for (const protocol of componentsB.registrar.getProtocols()) {
       for (const topology of componentsB.registrar.getTopologies(protocol)) {
