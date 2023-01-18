@@ -14,9 +14,16 @@
 <ul class="tsd-breadcrumb">
 <li><a href="../modules.html">Documentation</a></li>
 <li><a href="_libp2p_interface_keychain.html">@libp2p/interface-keychain</a></li></ul>
-<h1>Module @libp2p/interface-keychain - v2.0.1</h1></div><aside class="tsd-sources">
+<h1>Module @libp2p/interface-keychain - v2.0.2</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>The libp2p keychain provides an API to store keys in a datastore in
+an encrypted format.</p>
+
+<h3>Example</h3><pre><code class="language-typescript"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">createLibp2p</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;libp2p&#39;</span><br/><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">FsDatastore</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;datastore-fs&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">node</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-6">createLibp2p</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-2">datastore:</span><span class="hl-1"> </span><span class="hl-4">new</span><span class="hl-1"> </span><span class="hl-6">FsDatastore</span><span class="hl-1">(</span><span class="hl-3">&#39;/path/to/dir&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">})</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">info</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">node</span><span class="hl-1">.</span><span class="hl-2">keychain</span><span class="hl-1">.</span><span class="hl-6">createKey</span><span class="hl-1">(</span><span class="hl-3">&#39;my-new-key&#39;</span><span class="hl-1">, </span><span class="hl-3">&#39;Ed25519&#39;</span><span class="hl-1">)</span><br/><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">info</span><span class="hl-1">(</span><span class="hl-2">info</span><span class="hl-1">) </span><span class="hl-7">// { id: &#39;...&#39;, name: &#39;my-new-key&#39; }</span>
+</code></pre>
+</div></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-keychain/src/index.ts#L1">packages/interface-keychain/src/index.ts:1</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-keychain/src/index.ts#L23">packages/interface-keychain/src/index.ts:23</a></li></ul></aside>
 <section class="tsd-panel-group">
 <section class="tsd-panel tsd-typography">
 <a href="#libp2pinterface-keychain-" id="libp2pinterface-keychain-" style="color: inherit; text-decoration: none;">
@@ -206,7 +213,7 @@
 <li class="tsd-kind-module"><a href="_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.0</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_dht._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="current selected tsd-kind-module"><a href="_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.1</a>
+<li class="current selected tsd-kind-module"><a href="_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_keychain._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.6</a></li>
