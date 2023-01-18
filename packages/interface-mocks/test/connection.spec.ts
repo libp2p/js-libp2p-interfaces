@@ -30,7 +30,9 @@ describe('mock connection compliance tests', () => {
       return connections[0]
     },
     async teardown () {
-      await Promise.all(connections.map(async conn => await conn.close()))
+      await Promise.all(connections.map(async conn => {
+        await conn.close()
+      }))
     }
   })
 })

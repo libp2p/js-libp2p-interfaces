@@ -13,7 +13,7 @@ import { start, stop } from '@libp2p/interfaces/startable'
 import delay from 'delay'
 import { mockNetwork } from '@libp2p/interface-mocks'
 
-export default (common: TestSetup<PubSub, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>): void => {
   describe('pubsub with multiple nodes', function () {
     describe('every peer subscribes to the topic', () => {
       describe('line', () => {
@@ -155,7 +155,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
           expect(result).to.have.property('recipients').with.property('length').greaterThanOrEqual(1)
 
-          function incMsg (evt: CustomEvent<Message>) {
+          function incMsg (evt: CustomEvent<Message>): void {
             const msg = evt.detail
 
             if (msg.topic !== topic) {
@@ -166,7 +166,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
             check()
           }
 
-          function check () {
+          function check (): void {
             if (++counter === 3) {
               psA.removeEventListener('message', incMsg)
               psB.removeEventListener('message', incMsg)
@@ -211,7 +211,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
             await psB.publish(topic, uint8ArrayFromString('hey'))
 
-            function incMsg (evt: CustomEvent<Message>) {
+            function incMsg (evt: CustomEvent<Message>): void {
               const msg = evt.detail
 
               if (msg.topic !== topic) {
@@ -222,7 +222,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
               check()
             }
 
-            function check () {
+            function check (): void {
               if (++counter === 3) {
                 psA.removeEventListener('message', incMsg)
                 psB.removeEventListener('message', incMsg)
@@ -375,7 +375,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
 
           await psC.publish('Z', uint8ArrayFromString('hey from c'))
 
-          function incMsg (evt: CustomEvent<Message>) {
+          function incMsg (evt: CustomEvent<Message>): void {
             const msg = evt.detail
 
             if (msg.topic !== topic) {
@@ -386,7 +386,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
             check()
           }
 
-          function check () {
+          function check (): void {
             if (++counter === 5) {
               psA.unsubscribe('Z')
               psB.unsubscribe('Z')

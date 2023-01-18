@@ -10,9 +10,9 @@ import { createComponents } from './utils.js'
 
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
-const shouldNotHappen = () => expect.fail()
+const shouldNotHappen = (): void => expect.fail()
 
-export default (common: TestSetup<PubSub, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>): void => {
   describe('emit self', () => {
     describe('enabled', () => {
       let pubsub: PubSub
@@ -92,7 +92,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
         await pubsub.publish(topic, data)
 
         // Wait 1 second to guarantee that self is not noticed
-        return await new Promise((resolve) => setTimeout(resolve, 1000))
+        await new Promise((resolve) => setTimeout(resolve, 1000))
       })
     })
   })

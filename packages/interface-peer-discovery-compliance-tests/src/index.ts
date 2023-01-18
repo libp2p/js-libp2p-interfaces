@@ -6,7 +6,7 @@ import { start, stop } from '@libp2p/interfaces/startable'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { PeerDiscovery } from '@libp2p/interface-peer-discovery'
 
-export default (common: TestSetup<PeerDiscovery>) => {
+export default (common: TestSetup<PeerDiscovery>): void => {
   describe('interface-peer-discovery compliance tests', () => {
     let discovery: PeerDiscovery
 

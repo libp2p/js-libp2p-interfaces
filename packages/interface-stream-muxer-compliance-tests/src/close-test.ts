@@ -12,7 +12,7 @@ import pDefer from 'p-defer'
 import all from 'it-all'
 import { Uint8ArrayList } from 'uint8arraylist'
 
-function randomBuffer () {
+function randomBuffer (): Uint8Array {
   return uint8ArrayFromString(Math.random().toString())
 }
 
@@ -25,7 +25,7 @@ const infiniteRandom = {
   }
 }
 
-export default (common: TestSetup<StreamMuxerFactory>) => {
+export default (common: TestSetup<StreamMuxerFactory>): void => {
   describe('close', () => {
     it('closing underlying socket closes streams', async () => {
       let openedStreams = 0
@@ -51,7 +51,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
       void Promise.all(
         streams.map(async stream => {
-          return await pipe(
+          await pipe(
             infiniteRandom,
             stream,
             drain
@@ -93,7 +93,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
       void Promise.all(
         streams.map(async stream => {
-          return await pipe(
+          await pipe(
             infiniteRandom,
             stream,
             drain
@@ -135,7 +135,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       const streams = await Promise.all(Array(expectedStreams).fill(0).map(() => dialer.newStream()))
 
       const streamPipes = streams.map(async stream => {
-        return await pipe(
+        await pipe(
           infiniteRandom,
           stream,
           drain
@@ -155,7 +155,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
         try {
           await Promise.race([
             pipe,
-            new Promise((_resolve, reject) => setTimeout(() => reject(timeoutError), 20))
+            new Promise((_resolve, reject) => setTimeout(() => { reject(timeoutError) }, 20))
           ])
           expect.fail('stream pipe with infinite source should never return')
         } catch (e) {
@@ -226,7 +226,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
       // Abort all the other streams later
       await delay(50)
-      controllers.forEach(c => c.abort())
+      controllers.forEach(c => { c.abort() })
 
       // These should now all resolve without error
       await Promise.all(streamResults)
@@ -246,7 +246,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
         onIncomingStream: (stream) => {
           void Promise.resolve().then(async () => {
             // Immediate close for write
-            await stream.closeWrite()
+            stream.closeWrite()
 
             const results = await pipe(stream, async (source) => {
               const data = []
@@ -298,7 +298,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
       void pipe(p[1], listener, p[1])
 
       const stream = await dialer.newStream()
-      await stream.closeRead()
+      stream.closeRead()
 
       // Source should be done
       void Promise.resolve().then(async () => {
@@ -314,7 +314,7 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
     it('calls onStreamEnd for closed streams not previously written', async () => {
       const deferred = pDefer()
 
-      const onStreamEnd = () => deferred.resolve()
+      const onStreamEnd = (): void => { deferred.resolve() }
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({
         direction: 'outbound',
@@ -323,14 +323,14 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
       const stream = await dialer.newStream()
 
-      await stream.close()
+      stream.close()
       await deferred.promise
     })
 
     it('calls onStreamEnd for read and write closed streams not previously written', async () => {
       const deferred = pDefer()
 
-      const onStreamEnd = () => deferred.resolve()
+      const onStreamEnd = (): void => { deferred.resolve() }
       const dialerFactory = await common.setup()
       const dialer = dialerFactory.createStreamMuxer({
         direction: 'outbound',
@@ -339,8 +339,8 @@ export default (common: TestSetup<StreamMuxerFactory>) => {
 
       const stream = await dialer.newStream()
 
-      await stream.closeWrite()
-      await stream.closeRead()
+      stream.closeWrite()
+      stream.closeRead()
       await deferred.promise
     })
   })

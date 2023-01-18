@@ -22,7 +22,7 @@ export interface PubSubArgs {
   init: PubSubInit
 }
 
-export default (common: TestSetup<PubSub, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>): void => {
   describe('interface-pubsub compliance tests', () => {
     apiTest(common)
     emitSelfTest(common)

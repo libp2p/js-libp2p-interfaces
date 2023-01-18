@@ -152,7 +152,7 @@ export interface TopicValidatorFn {
   (peer: PeerId, message: Message): TopicValidatorResult | Promise<TopicValidatorResult>
 }
 
-export interface PubSub<Events extends { [s: string]: any } = PubSubEvents> extends EventEmitter<Events> {
+export interface PubSub<Events extends Record<string, any> = PubSubEvents> extends EventEmitter<Events> {
   /**
    * The global signature policy controls whether or not we sill send and receive
    * signed or unsigned messages.

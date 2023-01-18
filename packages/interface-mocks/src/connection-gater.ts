@@ -1,5 +1,6 @@
+import type { ConnectionGater } from '@libp2p/interface-connection'
 
-export function mockConnectionGater () {
+export function mockConnectionGater (): ConnectionGater {
   return {
     denyDialPeer: async () => await Promise.resolve(false),
     denyDialMultiaddr: async () => await Promise.resolve(false),

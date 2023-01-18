@@ -14,11 +14,11 @@ export class AbortError extends Error {
     this.type = AbortError.type
   }
 
-  static get code () {
+  static get code (): string {
     return 'ABORT_ERR'
   }
 
-  static get type () {
+  static get type (): string {
     return 'aborted'
   }
 }

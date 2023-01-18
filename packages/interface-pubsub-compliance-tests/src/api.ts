@@ -14,7 +14,7 @@ import { mockNetwork } from '@libp2p/interface-mocks'
 const topic = 'foo'
 const data = uint8ArrayFromString('bar')
 
-export default (common: TestSetup<PubSub, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>): void => {
   describe('pubsub api', () => {
     let pubsub: PubSub
     let components: PubSubComponents
@@ -67,7 +67,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
     })
 
     it('can subscribe and unsubscribe correctly', async () => {
-      const handler = () => {
+      const handler = (): void => {
         throw new Error('a message should not be received')
       }
 

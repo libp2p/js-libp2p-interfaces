@@ -12,6 +12,9 @@
       "path": "../interface-compliance-tests"
     },
     {
+      "path": "../interface-connection-manager"
+    },
+    {
       "path": "../interface-mocks"
     },
     {
@@ -19,6 +22,9 @@
     },
     {
       "path": "../interface-pubsub"
+    },
+    {
+      "path": "../interface-registrar"
     },
     {
       "path": "../interfaces"

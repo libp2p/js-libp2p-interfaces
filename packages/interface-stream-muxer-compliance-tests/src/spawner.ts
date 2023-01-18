@@ -8,7 +8,7 @@ import all from 'it-all'
 import type { StreamMuxer, StreamMuxerInit } from '@libp2p/interface-stream-muxer'
 import { Uint8ArrayList } from 'uint8arraylist'
 
-export default async (createMuxer: (init?: StreamMuxerInit) => Promise<StreamMuxer>, nStreams: number, nMsg: number, limit?: number) => {
+export default async (createMuxer: (init?: StreamMuxerInit) => Promise<StreamMuxer>, nStreams: number, nMsg: number, limit?: number): Promise<void> => {
   const [dialerSocket, listenerSocket] = duplexPair<Uint8Array>()
 
   const msg = new Uint8ArrayList(uint8ArrayFromString('simple msg'))
@@ -29,7 +29,7 @@ export default async (createMuxer: (init?: StreamMuxerInit) => Promise<StreamMux
   void pipe(listenerSocket, listener, listenerSocket)
   void pipe(dialerSocket, dialer, dialerSocket)
 
-  const spawnStream = async () => {
+  const spawnStream = async (): Promise<void> => {
     const stream = await dialer.newStream()
     expect(stream).to.exist // eslint-disable-line
 
@@ -49,6 +49,6 @@ export default async (createMuxer: (init?: StreamMuxerInit) => Promise<StreamMux
   const limiter = pLimit(limit ?? Infinity)
 
   await Promise.all(
-    Array.from(Array(nStreams), async () => await limiter(async () => await spawnStream()))
+    Array.from(Array(nStreams), async () => { await limiter(async () => { await spawnStream() }) })
   )
 }

@@ -52,7 +52,7 @@ export function isStartable (obj: any): obj is Startable {
   return obj != null && typeof obj.start === 'function' && typeof obj.stop === 'function'
 }
 
-export async function start (...objs: any[]) {
+export async function start (...objs: any[]): Promise<void> {
   const startables: Startable[] = []
 
   for (const obj of objs) {
@@ -84,7 +84,7 @@ export async function start (...objs: any[]) {
   )
 }
 
-export async function stop (...objs: any[]) {
+export async function stop (...objs: any[]): Promise<void> {
   const startables: Startable[] = []
 
   for (const obj of objs) {

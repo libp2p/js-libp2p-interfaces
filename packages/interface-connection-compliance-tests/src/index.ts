@@ -4,7 +4,7 @@ import { stubInterface } from 'ts-sinon'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Connection, Stream } from '@libp2p/interface-connection'
 
-export default (test: TestSetup<Connection>) => {
+export default (test: TestSetup<Connection>): void => {
   describe('connection', () => {
     describe('open connection', () => {
       let connection: Connection
@@ -129,7 +129,7 @@ export default (test: TestSetup<Connection>) => {
       it.skip('should track inbound streams', async () => {
         // Add an remotely opened stream
         const stream = stubInterface<Stream>()
-        await connection.addStream(stream)
+        connection.addStream(stream)
         expect(stream).to.have.property('direction', 'inbound')
       })
 

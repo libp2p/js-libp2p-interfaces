@@ -2,7 +2,7 @@ import { expect } from 'aegir/chai'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Record } from '@libp2p/interface-record'
 
-export default (test: TestSetup<Record>) => {
+export default (test: TestSetup<Record>): void => {
   describe('record', () => {
     let record: Record
 

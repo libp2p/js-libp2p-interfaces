@@ -15,11 +15,11 @@ import { TopicValidatorResult } from '@libp2p/interface-pubsub'
 
 const topic = 'foo'
 
-function shouldNotHappen () {
+function shouldNotHappen (): void {
   expect.fail()
 }
 
-export default (common: TestSetup<PubSub, PubSubArgs>) => {
+export default (common: TestSetup<PubSub, PubSubArgs>): void => {
   describe('pubsub with two nodes', () => {
     let psA: PubSub
     let psB: PubSub
@@ -162,7 +162,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       psA.subscribe(topic)
 
       psB.topicValidators.set(topic, (peer, message) => {
-        if (!peer.equals(componentsA.peerId)) {
+        if (peer.equals(componentsA.peerId)) {
           defer.reject('Invalid peer id in topic validator fn')
           return TopicValidatorResult.Reject
         }
@@ -194,7 +194,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       psB.addEventListener('message', shouldNotHappen)
       psA.addEventListener('message', receivedMsg)
 
-      function receivedMsg (evt: CustomEvent<Message>) {
+      function receivedMsg (evt: CustomEvent<Message>): void {
         const msg = evt.detail
         if (msg.type === 'unsigned') {
           expect(uint8ArrayToString(msg.data)).to.equal('banana')
@@ -223,7 +223,9 @@ export default (common: TestSetup<PubSub, PubSubArgs>) => {
       ])
 
       await Promise.all(
-        Array.from({ length: 10 }, async (_, i) => await psB.publish(topic, uint8ArrayFromString('banana')))
+        Array.from({ length: 10 }, async (_, i) => {
+          await psB.publish(topic, uint8ArrayFromString('banana'))
+        })
       )
 
       return await defer.promise

@@ -135,7 +135,7 @@
     "@libp2p/interface-connection": "^3.0.0"
   },
   "devDependencies": {
-    "aegir": "^37.9.0"
+    "aegir": "^38.1.0"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts"
