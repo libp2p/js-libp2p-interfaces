@@ -15,25 +15,34 @@
  */
 
 import type { AbortOptions } from '@libp2p/interfaces'
-import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { DualDHT } from '@libp2p/interface-dht'
 import type { PeerStore } from '@libp2p/interface-peer-store'
 import type { PeerId } from '@libp2p/interface-peer-id'
-import type { Connection, Stream } from '@libp2p/interface-connection'
+import type { Stream } from '@libp2p/interface-connection'
 import type { PeerRouting } from '@libp2p/interface-peer-routing'
 import type { ContentRouting } from '@libp2p/interface-content-routing'
 import type { PubSub } from '@libp2p/interface-pubsub'
-import type { StreamHandler, StreamHandlerOptions, Topology } from '@libp2p/interface-registrar'
+import type { Registrar, StreamHandler, StreamHandlerOptions, Topology } from '@libp2p/interface-registrar'
 import type { Metrics } from '@libp2p/interface-metrics'
-import type { PeerInfo } from '@libp2p/interface-peer-info'
 import type { KeyChain } from '@libp2p/interface-keychain'
+import type { ConnectionManager, ConnectionManagerEvents, Dialer } from '@libp2p/interface-connection-manager'
+import type { PeerInfo } from '@libp2p/interface-peer-info/src'
+import type { EventEmitter } from '@libp2p/interfaces/src/events'
+
 
 /**
- * Once you have a libp2p instance, you can listen to several events it emits, so that you can be notified of relevant network events.
+ * Fetch service lookup function
  */
-export interface Libp2pEvents {
+export interface LookupFunction {
+  (key: string): Promise<Uint8Array | null>
+}
+
+/**
+ * Libp2p nodes implement this interface.
+ */
+export interface Libp2p extends ConnectionManager, Dialer, Registrar, EventEmitter<ConnectionManagerEvents>, Startable {
   /**
    * @example
    *
@@ -46,48 +55,6 @@ export interface Libp2pEvents {
    */
   'peer:discovery': CustomEvent<PeerInfo>
 
-  /**
-   * This event will be triggered anytime a new Connection is established to another peer.
-   *
-   * @example
-   *
-   * ```js
-   * libp2p.connectionManager.addEventListener('peer:connect', (event) => {
-   *   const connection = event.detail
-   *   // ...
-   * })
-   * ```
-   */
-  'peer:connect': CustomEvent<Connection>
-
-  /**
-   * This event will be triggered anytime we are disconnected from another peer, regardless of
-   * the circumstances of that disconnection. If we happen to have multiple connections to a
-   * peer, this event will **only** be triggered when the last connection is closed.
-   *
-   * @example
-   *
-   * ```js
-   * libp2p.connectionManager.addEventListener('peer:disconnect', (event) => {
-   *   const connection = event.detail
-   *   // ...
-   * })
-   * ```
-   */
-  'peer:disconnect': CustomEvent<Connection>
-}
-
-/**
- * Fetch service lookup function
- */
-export interface LookupFunction {
-  (key: string): Promise<Uint8Array | null>
-}
-
-/**
- * Libp2p nodes implement this interface.
- */
-export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
   /**
    * The PeerId is a unique identifier for a node on the network.
    *
@@ -309,46 +276,10 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
   getProtocols: () => string[]
 
   /**
-   * Return a list of all connections this node has open, optionally filtering
-   * by a PeerId
-   *
-   * @example
-   *
-   * ```js
-   * for (const connection of libp2p.getConnections()) {
-   *   console.log(peerId, connection.remoteAddr.toString())
-   *   // Logs the PeerId string and the observed remote multiaddr of each Connection
-   * }
-   * ```
-   */
-  getConnections: (peerId?: PeerId) => Connection[]
-
-  /**
    * Return a list of all peers we currently have a connection open to
    */
   getPeers: () => PeerId[]
 
-  /**
-   * Dials to the provided peer. If successful, the known metadata of the
-   * peer will be added to the nodes `peerStore`.
-   *
-   * If a PeerId is passed as the first argument, the peer will need to have known multiaddrs for it in the PeerStore.
-   *
-   * @example
-   *
-   * ```js
-   * const conn = await libp2p.dial(remotePeerId)
-   *
-   * // create a new stream within the connection
-   * const { stream, protocol } = await conn.newStream(['/echo/1.1.0', '/echo/1.0.0'])
-   *
-   * // protocol negotiated: 'echo/1.0.0' means that the other party only supports the older version
-   *
-   * // ...
-   * await conn.close()
-   * ```
-   */
-  dial: (peer: PeerId | Multiaddr, options?: AbortOptions) => Promise<Connection>
 
   /**
    * Dials to the provided peer and tries to handshake with the given protocols in order.
