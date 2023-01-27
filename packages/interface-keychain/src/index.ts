@@ -154,4 +154,15 @@ export interface KeyChain {
    * ```
    */
   findKeyByName: (name: string) => Promise<KeyInfo>
+
+  /**
+   * Rotate keychain password and re-encrypt all associated keys
+   *
+   * @example
+   *
+   * ```js
+   * await libp2p.keychain.rotateKeychainPass('oldPassword', 'newPassword')
+   * ```
+   */
+  rotateKeychainPass: (oldPass: string, newPass: string) => Promise<void>
 }
