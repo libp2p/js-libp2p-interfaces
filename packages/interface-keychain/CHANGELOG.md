@@ -1,3 +1,10 @@
+## [@libp2p/interface-keychain-v2.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-keychain-v2.0.3...@libp2p/interface-keychain-v2.0.4) (2023-01-27)
+
+
+### Bug Fixes
+
+* add missing method to keychain interface to rotate password ([#340](https://github.com/libp2p/js-libp2p-interfaces/issues/340)) ([db60895](https://github.com/libp2p/js-libp2p-interfaces/commit/db60895f9b86f627b1cb5c1bcabff69398e34b93))
+
 ## [@libp2p/interface-keychain-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-keychain-v2.0.2...@libp2p/interface-keychain-v2.0.3) (2023-01-18)
 
 
