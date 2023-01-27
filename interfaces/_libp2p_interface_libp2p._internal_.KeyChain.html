@@ -40,6 +40,7 @@
 <a href="_libp2p_interface_libp2p._internal_.KeyChain.html#listKeys" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>list<wbr/>Keys</span></a>
 <a href="_libp2p_interface_libp2p._internal_.KeyChain.html#removeKey" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>remove<wbr/>Key</span></a>
 <a href="_libp2p_interface_libp2p._internal_.KeyChain.html#renameKey" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>rename<wbr/>Key</span></a>
+<a href="_libp2p_interface_libp2p._internal_.KeyChain.html#rotateKeychainPass" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>rotate<wbr/>Keychain<wbr/>Pass</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
@@ -281,7 +282,32 @@
 <h5>newName: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_libp2p_interface_libp2p._internal_.KeyInfo.html" class="tsd-signature-type" data-tsd-kind="Interface">KeyInfo</a><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/interface-keychain/dist/src/index.d.ts:120</li></ul></aside></section></section></div>
+<li>Defined in packages/interface-keychain/dist/src/index.d.ts:120</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="rotateKeychainPass" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>rotate<wbr/>Keychain<wbr/>Pass</span><a href="#rotateKeychainPass" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">rotate<wbr/>Keychain<wbr/>Pass<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>oldPass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, newPass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span></div>
+<div class="tsd-type-declaration">
+<h4>Type declaration</h4>
+<ul class="tsd-parameters">
+<li class="tsd-parameter-signature">
+<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+<li class="tsd-signature" id="rotateKeychainPass.__type-20.__type-21"><span class="tsd-signature-symbol">(</span>oldPass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, newPass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Rotate keychain password and re-encrypt all associated keys</p>
+
+<h3>Example</h3><pre><code class="language-js"><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">keychain</span><span class="hl-1">.</span><span class="hl-6">rotateKeychainPass</span><span class="hl-1">(</span><span class="hl-3">&#39;oldPassword&#39;</span><span class="hl-1">, </span><span class="hl-3">&#39;newPassword&#39;</span><span class="hl-1">)</span>
+</code></pre>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>oldPass: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5>newPass: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
+<ul>
+<li>Defined in packages/interface-keychain/dist/src/index.d.ts:152</li></ul></aside></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -328,7 +354,7 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_dht._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.3</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.4</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_keychain._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.7</a></li>
@@ -400,5 +426,6 @@
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_libp2p._internal_.KeyChain.html#importPeer" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>import<wbr/>Peer</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_libp2p._internal_.KeyChain.html#listKeys" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>list<wbr/>Keys</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_libp2p._internal_.KeyChain.html#removeKey" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>remove<wbr/>Key</a></li>
-<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_libp2p._internal_.KeyChain.html#renameKey" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>rename<wbr/>Key</a></li></ul></li></ul></nav></div></div>
+<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_libp2p._internal_.KeyChain.html#renameKey" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>rename<wbr/>Key</a></li>
+<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_libp2p._internal_.KeyChain.html#rotateKeychainPass" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>rotate<wbr/>Keychain<wbr/>Pass</a></li></ul></li></ul></nav></div></div>
 <div class="overlay"></div><script src="../assets/main.js"></script></body></html>
