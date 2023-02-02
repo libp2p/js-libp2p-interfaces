@@ -50,6 +50,17 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
   getConnections: (peerId?: PeerId) => Connection[]
 
   /**
+   * Return a map of all connections with their associated PeerIds
+   *
+   * @example
+   *
+   * ```js
+   * const connectionsMap = libp2p.connectionManager.getConnectionsMap()
+   * ```
+   */
+  getConnectionsMap: () =>  Map<string, Connection[]>
+
+  /**
    * Open a connection to a remote peer
    *
    * @example
