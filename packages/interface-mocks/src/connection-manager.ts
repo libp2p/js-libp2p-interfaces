@@ -41,7 +41,7 @@ class MockNetwork {
 export const mockNetwork = new MockNetwork()
 
 class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager, Startable {
-  private connections: Connection[] = []
+  private readonly connections: Map<string, Connection[]> = new Map()
   private readonly components: MockNetworkComponents
   private started = false
 
@@ -49,6 +49,10 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     super()
 
     this.components = components
+  }
+
+  getConnectionsMap (): Map<string, Connection[]> {
+    return this.connections
   }
 
   isStarted (): boolean {
@@ -60,8 +64,10 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
   }
 
   async stop (): Promise<void> {
-    for (const connection of this.connections) {
-      await this.closeConnections(connection.remotePeer)
+    for (const connectionList of this.connections.values()) {
+      for (const connection of connectionList) {
+        await connection.close()
+      }
     }
 
     this.started = false
@@ -69,11 +75,16 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
 
   getConnections (peerId?: PeerId): Connection[] {
     if (peerId != null) {
-      return this.connections
-        .filter(c => c.remotePeer.toString() === peerId.toString())
+      return this.connections.get(peerId.toString()) ?? []
     }
 
-    return this.connections
+    let conns: Connection[] = []
+
+    for (const c of this.connections.values()) {
+      conns = conns.concat(c)
+    }
+
+    return conns
   }
 
   async openConnection (peerId: PeerId | Multiaddr): Promise<Connection> {
@@ -96,8 +107,8 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     const [aToB, bToA] = connectionPair(this.components, componentsB)
 
     // track connections
-    this.connections.push(aToB)
-    ;(componentsB.connectionManager as MockConnectionManager).connections.push(bToA)
+    this.connections.set(peerId.toString(), [aToB])
+    this.connections.set(componentsB.peerId.toString(), [bToA])
 
     this.components.connectionManager.safeDispatchEvent<Connection>('peer:connect', {
       detail: aToB
@@ -133,21 +144,11 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
       return
     }
 
-    const componentsB = mockNetwork.getNode(peerId)
-
-    for (const protocol of this.components.registrar.getProtocols()) {
-      this.components.registrar.getTopologies(protocol).forEach(topology => {
-        topology.onDisconnect(componentsB.peerId)
+    await Promise.all(
+      connections.map(async connection => {
+        await connection.close()
       })
-    }
-
-    for (const conn of connections) {
-      await conn.close()
-    }
-
-    this.connections = this.connections.filter(c => c.remotePeer.equals(peerId))
-
-    await componentsB.connectionManager?.closeConnections(this.components.peerId)
+    )
   }
 
   async acceptIncomingConnection (): Promise<boolean> {
