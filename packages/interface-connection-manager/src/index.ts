@@ -105,4 +105,14 @@ export interface Dialer {
    * After a dial attempt succeeds or fails, return the passed token to the pool
    */
   releaseToken: (token: number) => void
+
+  /**
+   * Get the current dial targets which are pending
+   */
+  getPendingDialTargets: () => Map<string, AbortOptions>
+
+  /**
+   * Returns true if the peer id is in the pending dials
+   */
+  isPendingDial: (peer: PeerId | Multiaddr) => boolean
 }
