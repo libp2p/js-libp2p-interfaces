@@ -109,7 +109,7 @@ export interface Dialer {
   /**
    * Get the current dial targets which are pending
    */
-  getPendingDialTargets: () => Map<string, AbortOptions>
+  getPendingDialTargets: () => Map<string, AbortController>
 
   /**
    * Returns true if the peer id is in the pending dials
