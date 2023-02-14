@@ -114,5 +114,5 @@ export interface Dialer {
   /**
    * Returns true if the peer id is in the pending dials
    */
-  isPendingDial: (peer: PeerId | Multiaddr) => boolean
+  hasPendingDial: (peer: PeerId | Multiaddr) => boolean
 }
