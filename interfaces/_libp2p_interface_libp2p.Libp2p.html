@@ -159,7 +159,7 @@
 let the network know they are providers for content, and get/put values to
 the DHT.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-0">for</span><span class="hl-1"> </span><span class="hl-0">await</span><span class="hl-1"> (</span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">peerInfo</span><span class="hl-1"> </span><span class="hl-4">of</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">contentRouting</span><span class="hl-1">.</span><span class="hl-6">findProviders</span><span class="hl-1">(</span><span class="hl-2">cid</span><span class="hl-1">)) {</span><br/><span class="hl-1">  </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">info</span><span class="hl-1">(</span><span class="hl-2">peerInfo</span><span class="hl-1">)</span><br/><span class="hl-1">  </span><span class="hl-7">// { id: PeerId(12D3Foo...), multiaddrs: [] ... }</span><br/><span class="hl-1">}</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-2">for</span><span class="hl-0"> </span><span class="hl-2">await</span><span class="hl-0"> (</span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">peerInfo</span><span class="hl-0"> </span><span class="hl-4">of</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">contentRouting</span><span class="hl-0">.</span><span class="hl-6">findProviders</span><span class="hl-0">(</span><span class="hl-3">cid</span><span class="hl-0">)) {</span><br/><span class="hl-0">  </span><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-6">info</span><span class="hl-0">(</span><span class="hl-3">peerInfo</span><span class="hl-0">)</span><br/><span class="hl-0">  </span><span class="hl-7">// { id: PeerId(12D3Foo...), multiaddrs: [] ... }</span><br/><span class="hl-0">}</span>
 </code></pre>
 </div><aside class="tsd-sources">
 <ul>
@@ -171,7 +171,7 @@ the DHT.</p>
 libp2p to store and find values such as provider records and also to discover
 information about peers.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-0">for</span><span class="hl-1"> </span><span class="hl-0">await</span><span class="hl-1"> (</span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">event</span><span class="hl-1"> </span><span class="hl-4">of</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">dht</span><span class="hl-1">.</span><span class="hl-6">findPeer</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">)) {</span><br/><span class="hl-1">  </span><span class="hl-7">// ...</span><br/><span class="hl-1">}</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-2">for</span><span class="hl-0"> </span><span class="hl-2">await</span><span class="hl-0"> (</span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">event</span><span class="hl-0"> </span><span class="hl-4">of</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">dht</span><span class="hl-0">.</span><span class="hl-6">findPeer</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">)) {</span><br/><span class="hl-0">  </span><span class="hl-7">// ...</span><br/><span class="hl-0">}</span>
 </code></pre>
 </div><aside class="tsd-sources">
 <ul>
@@ -190,7 +190,7 @@ information about peers.</p>
 peer will be added to the nodes <code>peerStore</code>.</p>
 <p>If a PeerId is passed as the first argument, the peer will need to have known multiaddrs for it in the PeerStore.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">conn</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">dial</span><span class="hl-1">(</span><span class="hl-2">remotePeerId</span><span class="hl-1">)</span><br/><br/><span class="hl-7">// create a new stream within the connection</span><br/><span class="hl-4">const</span><span class="hl-1"> { </span><span class="hl-5">stream</span><span class="hl-1">, </span><span class="hl-5">protocol</span><span class="hl-1"> } = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">conn</span><span class="hl-1">.</span><span class="hl-6">newStream</span><span class="hl-1">([</span><span class="hl-3">&#39;/echo/1.1.0&#39;</span><span class="hl-1">, </span><span class="hl-3">&#39;/echo/1.0.0&#39;</span><span class="hl-1">])</span><br/><br/><span class="hl-7">// protocol negotiated: &#39;echo/1.0.0&#39; means that the other party only supports the older version</span><br/><br/><span class="hl-7">// ...</span><br/><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">conn</span><span class="hl-1">.</span><span class="hl-6">close</span><span class="hl-1">()</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">conn</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">dial</span><span class="hl-0">(</span><span class="hl-3">remotePeerId</span><span class="hl-0">)</span><br/><br/><span class="hl-7">// create a new stream within the connection</span><br/><span class="hl-4">const</span><span class="hl-0"> { </span><span class="hl-5">stream</span><span class="hl-0">, </span><span class="hl-5">protocol</span><span class="hl-0"> } = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">conn</span><span class="hl-0">.</span><span class="hl-6">newStream</span><span class="hl-0">([</span><span class="hl-1">&#39;/echo/1.1.0&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;/echo/1.0.0&#39;</span><span class="hl-0">])</span><br/><br/><span class="hl-7">// protocol negotiated: &#39;echo/1.0.0&#39; means that the other party only supports the older version</span><br/><br/><span class="hl-7">// ...</span><br/><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">conn</span><span class="hl-0">.</span><span class="hl-6">close</span><span class="hl-0">()</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -217,7 +217,7 @@ peer will be added to the nodes <code>peerStore</code>.</p>
 If successful, the known metadata of the peer will be added to the nodes <code>peerStore</code>,
 and the <code>MuxedStream</code> will be returned together with the successful negotiated protocol.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">pipe</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;it-pipe&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> { </span><span class="hl-5">stream</span><span class="hl-1">, </span><span class="hl-5">protocol</span><span class="hl-1"> } = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">dialProtocol</span><span class="hl-1">(</span><span class="hl-2">remotePeerId</span><span class="hl-1">, </span><span class="hl-2">protocols</span><span class="hl-1">)</span><br/><br/><span class="hl-7">// Use this new stream like any other duplex stream</span><br/><span class="hl-6">pipe</span><span class="hl-1">([</span><span class="hl-8">1</span><span class="hl-1">, </span><span class="hl-8">2</span><span class="hl-1">, </span><span class="hl-8">3</span><span class="hl-1">], </span><span class="hl-2">stream</span><span class="hl-1">, </span><span class="hl-2">consume</span><span class="hl-1">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-2">import</span><span class="hl-0"> { </span><span class="hl-3">pipe</span><span class="hl-0"> } </span><span class="hl-2">from</span><span class="hl-0"> </span><span class="hl-1">&#39;it-pipe&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> { </span><span class="hl-5">stream</span><span class="hl-0">, </span><span class="hl-5">protocol</span><span class="hl-0"> } = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">dialProtocol</span><span class="hl-0">(</span><span class="hl-3">remotePeerId</span><span class="hl-0">, </span><span class="hl-3">protocols</span><span class="hl-0">)</span><br/><br/><span class="hl-7">// Use this new stream like any other duplex stream</span><br/><span class="hl-6">pipe</span><span class="hl-0">([</span><span class="hl-8">1</span><span class="hl-0">, </span><span class="hl-8">2</span><span class="hl-0">, </span><span class="hl-8">3</span><span class="hl-0">], </span><span class="hl-3">stream</span><span class="hl-0">, </span><span class="hl-3">consume</span><span class="hl-0">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -244,7 +244,7 @@ and the <code>MuxedStream</code> will be returned together with the successful n
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Sends a request to fetch the value associated with the given key from the given peer.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">value</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">fetch</span><span class="hl-1">(</span><span class="hl-2">otherPeerId</span><span class="hl-1">, </span><span class="hl-3">&#39;/some/key&#39;</span><span class="hl-1">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">value</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">fetch</span><span class="hl-0">(</span><span class="hl-3">otherPeerId</span><span class="hl-0">, </span><span class="hl-1">&#39;/some/key&#39;</span><span class="hl-0">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -278,7 +278,7 @@ values for fetch queries - see the <a href="https://github.com/libp2p/specs/tree
 <div class="tsd-comment tsd-typography"><p>Registers a new lookup callback that can map keys to values, for a given set of keys that
 share the same prefix</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">fetchService</span><span class="hl-1">.</span><span class="hl-6">registerLookupFunction</span><span class="hl-1">(</span><span class="hl-3">&#39;/prefix&#39;</span><span class="hl-1">, (</span><span class="hl-2">key</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> { ... })</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">fetchService</span><span class="hl-0">.</span><span class="hl-6">registerLookupFunction</span><span class="hl-0">(</span><span class="hl-1">&#39;/prefix&#39;</span><span class="hl-0">, (</span><span class="hl-3">key</span><span class="hl-0">) </span><span class="hl-4">=&gt;</span><span class="hl-0"> { ... })</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -299,7 +299,7 @@ share the same prefix</p>
 <div class="tsd-comment tsd-typography"><p>Registers a new lookup callback that can map keys to values, for a given set of keys that
 share the same prefix.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">fetchService</span><span class="hl-1">.</span><span class="hl-6">unregisterLookupFunction</span><span class="hl-1">(</span><span class="hl-3">&#39;/prefix&#39;</span><span class="hl-1">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">fetchService</span><span class="hl-0">.</span><span class="hl-6">unregisterLookupFunction</span><span class="hl-0">(</span><span class="hl-1">&#39;/prefix&#39;</span><span class="hl-0">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -325,7 +325,7 @@ share the same prefix.</p>
 <div class="tsd-comment tsd-typography"><p>Return a list of all connections this node has open, optionally filtering
 by a PeerId</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-0">for</span><span class="hl-1"> (</span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">connection</span><span class="hl-1"> </span><span class="hl-4">of</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">getConnections</span><span class="hl-1">()) {</span><br/><span class="hl-1">  </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">, </span><span class="hl-2">connection</span><span class="hl-1">.</span><span class="hl-2">remoteAddr</span><span class="hl-1">.</span><span class="hl-6">toString</span><span class="hl-1">())</span><br/><span class="hl-1">  </span><span class="hl-7">// Logs the PeerId string and the observed remote multiaddr of each Connection</span><br/><span class="hl-1">}</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-2">for</span><span class="hl-0"> (</span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">connection</span><span class="hl-0"> </span><span class="hl-4">of</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">getConnections</span><span class="hl-0">()) {</span><br/><span class="hl-0">  </span><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-6">log</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">, </span><span class="hl-3">connection</span><span class="hl-0">.</span><span class="hl-3">remoteAddr</span><span class="hl-0">.</span><span class="hl-6">toString</span><span class="hl-0">())</span><br/><span class="hl-0">  </span><span class="hl-7">// Logs the PeerId string and the observed remote multiaddr of each Connection</span><br/><span class="hl-0">}</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -352,7 +352,7 @@ announce addresses as well as observed addresses reported by peers.</p>
 <p>If Announce addrs are specified, configured listen addresses will be
 ignored though observed addresses will still be included.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">listenMa</span><span class="hl-1"> = </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">getMultiaddrs</span><span class="hl-1">()</span><br/><span class="hl-7">// [ &lt;Multiaddr 047f00000106f9ba - /ip4/127.0.0.1/tcp/63930&gt; ]</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">listenMa</span><span class="hl-0"> = </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">getMultiaddrs</span><span class="hl-0">()</span><br/><span class="hl-7">// [ &lt;Multiaddr 047f00000106f9ba - /ip4/127.0.0.1/tcp/63930&gt; ]</span>
 </code></pre>
 </div>
 <h4 class="tsd-returns-title">Returns <a href="https://multiformats.github.io/js-multiaddr/interfaces/index.Multiaddr.html" class="tsd-signature-type external" target="_blank">Multiaddr</a><span class="tsd-signature-symbol">[]</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
@@ -385,7 +385,7 @@ ignored though observed addresses will still be included.</p>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Returns a list of supported protocols</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">protocols</span><span class="hl-1"> = </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">getProtocols</span><span class="hl-1">()</span><br/><span class="hl-7">// [ &#39;/ipfs/ping/1.0.0&#39;, &#39;/ipfs/id/1.0.0&#39; ]</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">protocols</span><span class="hl-0"> = </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">getProtocols</span><span class="hl-0">()</span><br/><span class="hl-7">// [ &#39;/ipfs/ping/1.0.0&#39;, &#39;/ipfs/id/1.0.0&#39; ]</span>
 </code></pre>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
@@ -428,7 +428,7 @@ this may mean searching the DHT if the key is not present in the KeyStore.</p>
 <p><code>libp2p.handle(protocols, handler, options)</code></p>
 <p>In the event of a new handler for the same protocol being added, the first one is discarded.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-6">handler</span><span class="hl-1"> = ({ </span><span class="hl-2">connection</span><span class="hl-1">, </span><span class="hl-2">stream</span><span class="hl-1">, </span><span class="hl-2">protocol</span><span class="hl-1"> }) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">// use stream or connection according to the needs</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">handle</span><span class="hl-1">(</span><span class="hl-3">&#39;/echo/1.0.0&#39;</span><span class="hl-1">, </span><span class="hl-2">handler</span><span class="hl-1">, {</span><br/><span class="hl-1">  </span><span class="hl-2">maxInboundStreams:</span><span class="hl-1"> </span><span class="hl-8">5</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">maxOutboundStreams:</span><span class="hl-1"> </span><span class="hl-8">5</span><br/><span class="hl-1">})</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-6">handler</span><span class="hl-0"> = ({ </span><span class="hl-3">connection</span><span class="hl-0">, </span><span class="hl-3">stream</span><span class="hl-0">, </span><span class="hl-3">protocol</span><span class="hl-0"> }) </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-7">// use stream or connection according to the needs</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">handle</span><span class="hl-0">(</span><span class="hl-1">&#39;/echo/1.0.0&#39;</span><span class="hl-0">, </span><span class="hl-3">handler</span><span class="hl-0">, {</span><br/><span class="hl-0">  </span><span class="hl-3">maxInboundStreams:</span><span class="hl-0"> </span><span class="hl-8">5</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-3">maxOutboundStreams:</span><span class="hl-0"> </span><span class="hl-8">5</span><br/><span class="hl-0">})</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -455,7 +455,7 @@ this may mean searching the DHT if the key is not present in the KeyStore.</p>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Attempts to gracefully close an open connection to the given peer. If the connection is not closed in the grace period, it will be forcefully closed.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">hangUp</span><span class="hl-1">(</span><span class="hl-2">remotePeerId</span><span class="hl-1">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">hangUp</span><span class="hl-0">(</span><span class="hl-3">remotePeerId</span><span class="hl-0">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -482,14 +482,14 @@ this <a href="https://github.com/libp2p/specs/blob/master/identify/README.md">id
 <h5>agent<wbr/>Version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 <div class="tsd-comment tsd-typography"><p>Specifies the supported protocol version</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">identifyService</span><span class="hl-1">.</span><span class="hl-2">host</span><span class="hl-1">.</span><span class="hl-2">agentVersion</span><br/><span class="hl-7">// helia/1.0.0</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">identifyService</span><span class="hl-0">.</span><span class="hl-3">host</span><span class="hl-0">.</span><span class="hl-3">agentVersion</span><br/><span class="hl-7">// helia/1.0.0</span>
 </code></pre>
 </div></li>
 <li class="tsd-parameter">
 <h5>protocol<wbr/>Version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 <div class="tsd-comment tsd-typography"><p>Specifies the supported protocol version</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">identifyService</span><span class="hl-1">.</span><span class="hl-2">host</span><span class="hl-1">.</span><span class="hl-2">protocolVersion</span><br/><span class="hl-7">// ipfs/0.1.0</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">identifyService</span><span class="hl-0">.</span><span class="hl-3">host</span><span class="hl-0">.</span><span class="hl-3">protocolVersion</span><br/><span class="hl-7">// ipfs/0.1.0</span>
 </code></pre>
 </div></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
@@ -514,7 +514,7 @@ this <a href="https://github.com/libp2p/specs/blob/master/identify/README.md">id
 <div class="tsd-comment tsd-typography"><p>The keychain contains the keys used by the current node, and can create new
 keys, export them, import them, etc.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">keyInfo</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">keychain</span><span class="hl-1">.</span><span class="hl-6">createKey</span><span class="hl-1">(</span><span class="hl-3">&#39;new key&#39;</span><span class="hl-1">)</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">info</span><span class="hl-1">(</span><span class="hl-2">keyInfo</span><span class="hl-1">)</span><br/><span class="hl-7">// { id: &#39;...&#39;, name: &#39;new key&#39; }</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfo</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">createKey</span><span class="hl-0">(</span><span class="hl-1">&#39;new key&#39;</span><span class="hl-0">)</span><br/><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-6">info</span><span class="hl-0">(</span><span class="hl-3">keyInfo</span><span class="hl-0">)</span><br/><span class="hl-7">// { id: &#39;...&#39;, name: &#39;new key&#39; }</span>
 </code></pre>
 </div><aside class="tsd-sources">
 <ul>
@@ -525,7 +525,7 @@ keys, export them, import them, etc.</p>
 <div class="tsd-comment tsd-typography"><p>The metrics subsystem allows recording values to assess the health/performance
 of the running node.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">metric</span><span class="hl-1"> = </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">registerMetric</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-3">&#39;my-metric&#39;</span><br/><span class="hl-2">})</span><br/><br/><span class="hl-7">// later</span><br/><span class="hl-2">metric.update(5)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">metric</span><span class="hl-0"> = </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">registerMetric</span><span class="hl-0">({</span><br/><span class="hl-0">  </span><span class="hl-1">&#39;my-metric&#39;</span><br/><span class="hl-3">})</span><br/><br/><span class="hl-7">// later</span><br/><span class="hl-3">metric.update(5)</span>
 </code></pre>
 </div><aside class="tsd-sources">
 <ul>
@@ -537,7 +537,7 @@ of the running node.</p>
 <p>It is the hash of an RSA public key or, for Ed25519 or secp256k1 keys,
 the key itself.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">info</span><span class="hl-1">(</span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">peerId</span><span class="hl-1">)</span><br/><span class="hl-7">// PeerId(12D3Foo...)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-6">info</span><span class="hl-0">(</span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">peerId</span><span class="hl-0">)</span><br/><span class="hl-7">// PeerId(12D3Foo...)</span>
 </code></pre>
 </div><aside class="tsd-sources">
 <ul>
@@ -548,10 +548,10 @@ the key itself.</p>
 <div class="tsd-comment tsd-typography"><p>The peer routing subsystem allows the user to find peers on the network
 or to find peers close to binary keys.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">peerInfo</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">peerRouting</span><span class="hl-1">.</span><span class="hl-6">findPeer</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">)</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">info</span><span class="hl-1">(</span><span class="hl-2">peerInfo</span><span class="hl-1">)</span><br/><span class="hl-7">// { id: PeerId(12D3Foo...), multiaddrs: [] ... }</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">peerInfo</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">peerRouting</span><span class="hl-0">.</span><span class="hl-6">findPeer</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">)</span><br/><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-6">info</span><span class="hl-0">(</span><span class="hl-3">peerInfo</span><span class="hl-0">)</span><br/><span class="hl-7">// { id: PeerId(12D3Foo...), multiaddrs: [] ... }</span>
 </code></pre>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-0">for</span><span class="hl-1"> </span><span class="hl-0">await</span><span class="hl-1"> (</span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">peerInfo</span><span class="hl-1"> </span><span class="hl-4">of</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">peerRouting</span><span class="hl-1">.</span><span class="hl-6">getClosestPeers</span><span class="hl-1">(</span><span class="hl-2">key</span><span class="hl-1">)) {</span><br/><span class="hl-1">  </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">info</span><span class="hl-1">(</span><span class="hl-2">peerInfo</span><span class="hl-1">)</span><br/><span class="hl-1">  </span><span class="hl-7">// { id: PeerId(12D3Foo...), multiaddrs: [] ... }</span><br/><span class="hl-1">}</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-2">for</span><span class="hl-0"> </span><span class="hl-2">await</span><span class="hl-0"> (</span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">peerInfo</span><span class="hl-0"> </span><span class="hl-4">of</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">peerRouting</span><span class="hl-0">.</span><span class="hl-6">getClosestPeers</span><span class="hl-0">(</span><span class="hl-3">key</span><span class="hl-0">)) {</span><br/><span class="hl-0">  </span><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-6">info</span><span class="hl-0">(</span><span class="hl-3">peerInfo</span><span class="hl-0">)</span><br/><span class="hl-0">  </span><span class="hl-7">// { id: PeerId(12D3Foo...), multiaddrs: [] ... }</span><br/><span class="hl-0">}</span>
 </code></pre>
 </div><aside class="tsd-sources">
 <ul>
@@ -564,7 +564,7 @@ or to find peers close to binary keys.</p>
 <li>multiaddrs, supported protocols, etc.</li>
 </ul>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">peer</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">peerStore</span><span class="hl-1">.</span><span class="hl-6">get</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">)</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">info</span><span class="hl-1">(</span><span class="hl-2">peer</span><span class="hl-1">)</span><br/><span class="hl-7">// { id: PeerId(12D3Foo...), addresses: [] ... }</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">peer</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">peerStore</span><span class="hl-0">.</span><span class="hl-6">get</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">)</span><br/><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-6">info</span><span class="hl-0">(</span><span class="hl-3">peer</span><span class="hl-0">)</span><br/><span class="hl-7">// { id: PeerId(12D3Foo...), addresses: [] ... }</span>
 </code></pre>
 </div><aside class="tsd-sources">
 <ul>
@@ -581,7 +581,7 @@ or to find peers close to binary keys.</p>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Pings the given peer in order to obtain the operation latency</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">latency</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">ping</span><span class="hl-1">(</span><span class="hl-2">otherPeerId</span><span class="hl-1">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">latency</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">ping</span><span class="hl-0">(</span><span class="hl-3">otherPeerId</span><span class="hl-0">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -600,7 +600,7 @@ or to find peers close to binary keys.</p>
 <div class="tsd-comment tsd-typography"><p>The pubsub component implements a distributed <a href="https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">Publish-subscribe</a>
 network made up of libp2p nodes listening on various topics.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">.</span><span class="hl-6">addEventListener</span><span class="hl-1">(</span><span class="hl-3">&#39;message&#39;</span><span class="hl-1">, (</span><span class="hl-2">event</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">// ...</span><br/><span class="hl-1">})</span><br/><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">.</span><span class="hl-6">subscribe</span><span class="hl-1">(</span><span class="hl-3">&#39;my-topic&#39;</span><span class="hl-1">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">pubsub</span><span class="hl-0">.</span><span class="hl-6">addEventListener</span><span class="hl-0">(</span><span class="hl-1">&#39;message&#39;</span><span class="hl-0">, (</span><span class="hl-3">event</span><span class="hl-0">) </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-7">// ...</span><br/><span class="hl-0">})</span><br/><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">pubsub</span><span class="hl-0">.</span><span class="hl-6">subscribe</span><span class="hl-0">(</span><span class="hl-1">&#39;my-topic&#39;</span><span class="hl-0">)</span>
 </code></pre>
 </div><aside class="tsd-sources">
 <ul>
@@ -618,7 +618,7 @@ network made up of libp2p nodes listening on various topics.</p>
 <div class="tsd-comment tsd-typography"><p>Register a topology to be informed when peers are encountered that
 support the specified protocol</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">createTopology</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;@libp2p/topology&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">id</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">register</span><span class="hl-1">(</span><span class="hl-3">&#39;/echo/1.0.0&#39;</span><span class="hl-1">, </span><span class="hl-6">createTopology</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-6">onConnect</span><span class="hl-2">:</span><span class="hl-1"> (</span><span class="hl-2">peer</span><span class="hl-1">, </span><span class="hl-2">connection</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// handle connect</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  </span><span class="hl-6">onDisconnect</span><span class="hl-2">:</span><span class="hl-1"> (</span><span class="hl-2">peer</span><span class="hl-1">, </span><span class="hl-2">connection</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-7">// handle disconnect</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}))</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-2">import</span><span class="hl-0"> { </span><span class="hl-3">createTopology</span><span class="hl-0"> } </span><span class="hl-2">from</span><span class="hl-0"> </span><span class="hl-1">&#39;@libp2p/topology&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">id</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">register</span><span class="hl-0">(</span><span class="hl-1">&#39;/echo/1.0.0&#39;</span><span class="hl-0">, </span><span class="hl-6">createTopology</span><span class="hl-0">({</span><br/><span class="hl-0">  </span><span class="hl-6">onConnect</span><span class="hl-3">:</span><span class="hl-0"> (</span><span class="hl-3">peer</span><span class="hl-0">, </span><span class="hl-3">connection</span><span class="hl-0">) </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-7">// handle connect</span><br/><span class="hl-0">  },</span><br/><span class="hl-0">  </span><span class="hl-6">onDisconnect</span><span class="hl-3">:</span><span class="hl-0"> (</span><span class="hl-3">peer</span><span class="hl-0">, </span><span class="hl-3">connection</span><span class="hl-0">) </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-7">// handle disconnect</span><br/><span class="hl-0">  }</span><br/><span class="hl-0">}))</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -678,7 +678,7 @@ support the specified protocol</p>
 <div class="tsd-comment tsd-typography"><p>Removes the handler for each protocol. The protocol
 will no longer be supported on streams.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">unhandle</span><span class="hl-1">([</span><span class="hl-3">&#39;/echo/1.0.0&#39;</span><span class="hl-1">])</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">unhandle</span><span class="hl-0">([</span><span class="hl-1">&#39;/echo/1.0.0&#39;</span><span class="hl-0">])</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -702,7 +702,7 @@ will no longer be supported on streams.</p>
 <div class="tsd-comment tsd-typography"><p>Unregister topology to no longer be informed when peers connect or
 disconnect.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">id</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">register</span><span class="hl-1">(...)</span><br/><br/><span class="hl-2">libp2p</span><span class="hl-1">.</span><span class="hl-6">unregister</span><span class="hl-1">(</span><span class="hl-2">id</span><span class="hl-1">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">id</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">register</span><span class="hl-0">(...)</span><br/><br/><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-6">unregister</span><span class="hl-0">(</span><span class="hl-3">id</span><span class="hl-0">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -866,7 +866,7 @@ disconnect.</p>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.1.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.1.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.0.5</a>

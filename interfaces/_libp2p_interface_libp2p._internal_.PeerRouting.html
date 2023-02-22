@@ -47,7 +47,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Iterates over all peer routers in series to find the given peer. If the DHT is enabled, it will be tried first.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-7">// ...</span><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">peer</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">peerRouting</span><span class="hl-1">.</span><span class="hl-6">findPeer</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">, </span><span class="hl-2">options</span><span class="hl-1">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-7">// ...</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">peer</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">peerRouting</span><span class="hl-0">.</span><span class="hl-6">findPeer</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">, </span><span class="hl-3">options</span><span class="hl-0">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -73,7 +73,7 @@
 <div class="tsd-comment tsd-typography"><p>Iterates over all peer routers in series to get the closest peers of the given key.</p>
 <p>Once a content router succeeds, the iteration will stop. If the DHT is enabled, it will be queried first.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-7">// Iterate over the closest peers found for the given key</span><br/><span class="hl-0">for</span><span class="hl-1"> </span><span class="hl-0">await</span><span class="hl-1"> (</span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">peer</span><span class="hl-1"> </span><span class="hl-4">of</span><span class="hl-1"> </span><span class="hl-2">peerRouting</span><span class="hl-1">.</span><span class="hl-6">getClosestPeers</span><span class="hl-1">(</span><span class="hl-2">key</span><span class="hl-1">)) {</span><br/><span class="hl-1">  </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-2">peer</span><span class="hl-1">.</span><span class="hl-2">id</span><span class="hl-1">, </span><span class="hl-2">peer</span><span class="hl-1">.</span><span class="hl-2">multiaddrs</span><span class="hl-1">)</span><br/><span class="hl-1">}</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-7">// Iterate over the closest peers found for the given key</span><br/><span class="hl-2">for</span><span class="hl-0"> </span><span class="hl-2">await</span><span class="hl-0"> (</span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">peer</span><span class="hl-0"> </span><span class="hl-4">of</span><span class="hl-0"> </span><span class="hl-3">peerRouting</span><span class="hl-0">.</span><span class="hl-6">getClosestPeers</span><span class="hl-0">(</span><span class="hl-3">key</span><span class="hl-0">)) {</span><br/><span class="hl-0">  </span><span class="hl-3">console</span><span class="hl-0">.</span><span class="hl-6">log</span><span class="hl-0">(</span><span class="hl-3">peer</span><span class="hl-0">.</span><span class="hl-3">id</span><span class="hl-0">, </span><span class="hl-3">peer</span><span class="hl-0">.</span><span class="hl-3">multiaddrs</span><span class="hl-0">)</span><br/><span class="hl-0">}</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -142,7 +142,7 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.1.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.1.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.0.5</a>

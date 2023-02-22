@@ -55,7 +55,7 @@
 <div class="tsd-comment tsd-typography"><p>Add known addresses of a provided peer.
 If the peer is not known, it is set with the given addresses.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">peerStore</span><span class="hl-1">.</span><span class="hl-2">addressBook</span><span class="hl-1">.</span><span class="hl-6">add</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">, </span><span class="hl-2">multiaddr</span><span class="hl-1">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">peerStore</span><span class="hl-0">.</span><span class="hl-3">addressBook</span><span class="hl-0">.</span><span class="hl-6">add</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">, </span><span class="hl-3">multiaddr</span><span class="hl-0">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -102,7 +102,7 @@ into the AddressBook</p>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Remove stored addresses of a peer</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">peerStore</span><span class="hl-1">.</span><span class="hl-2">addressBook</span><span class="hl-1">.</span><span class="hl-6">delete</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">)</span><br/><span class="hl-7">// false</span><br/><span class="hl-2">peerStore</span><span class="hl-1">.</span><span class="hl-2">addressBook</span><span class="hl-1">.</span><span class="hl-6">set</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">, </span><span class="hl-2">multiaddr</span><span class="hl-1">)</span><br/><span class="hl-2">peerStore</span><span class="hl-1">.</span><span class="hl-2">addressBook</span><span class="hl-1">.</span><span class="hl-6">delete</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">)</span><br/><span class="hl-7">// true</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">peerStore</span><span class="hl-0">.</span><span class="hl-3">addressBook</span><span class="hl-0">.</span><span class="hl-6">delete</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">)</span><br/><span class="hl-7">// false</span><br/><span class="hl-3">peerStore</span><span class="hl-0">.</span><span class="hl-3">addressBook</span><span class="hl-0">.</span><span class="hl-6">set</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">, </span><span class="hl-3">multiaddr</span><span class="hl-0">)</span><br/><span class="hl-3">peerStore</span><span class="hl-0">.</span><span class="hl-3">addressBook</span><span class="hl-0">.</span><span class="hl-6">delete</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">)</span><br/><span class="hl-7">// true</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -124,7 +124,7 @@ into the AddressBook</p>
 <li class="tsd-signature" id="get.__type-6.__type-7"><span class="tsd-signature-symbol">(</span>peerId<span class="tsd-signature-symbol">: </span><a href="../types/_libp2p_interface_peer_store._internal_.PeerId.html" class="tsd-signature-type" data-tsd-kind="Type alias">PeerId</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_libp2p_interface_peer_store.Address.html" class="tsd-signature-type" data-tsd-kind="Interface">Address</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Return the known addresses of a peer</p>
-<pre><code class="language-js"><span class="hl-2">peerStore</span><span class="hl-1">.</span><span class="hl-2">addressBook</span><span class="hl-1">.</span><span class="hl-6">get</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">)</span><br/><span class="hl-7">// []</span><br/><span class="hl-2">peerStore</span><span class="hl-1">.</span><span class="hl-2">addressBook</span><span class="hl-1">.</span><span class="hl-6">set</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">, </span><span class="hl-2">multiaddr</span><span class="hl-1">)</span><br/><span class="hl-2">peerStore</span><span class="hl-1">.</span><span class="hl-2">addressBook</span><span class="hl-1">.</span><span class="hl-6">get</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">)</span><br/><span class="hl-7">// [</span><br/><span class="hl-7">// {</span><br/><span class="hl-7">//   multiaddr: /ip4/140.10.2.1/tcp/8000,</span><br/><span class="hl-7">//   ...</span><br/><span class="hl-7">// },</span><br/><span class="hl-7">// {</span><br/><span class="hl-7">//   multiaddr: /ip4/140.10.2.1/ws/8001</span><br/><span class="hl-7">//   ...</span><br/><span class="hl-7">// },</span><br/><span class="hl-7">// ]</span>
+<pre><code class="language-js"><span class="hl-3">peerStore</span><span class="hl-0">.</span><span class="hl-3">addressBook</span><span class="hl-0">.</span><span class="hl-6">get</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">)</span><br/><span class="hl-7">// []</span><br/><span class="hl-3">peerStore</span><span class="hl-0">.</span><span class="hl-3">addressBook</span><span class="hl-0">.</span><span class="hl-6">set</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">, </span><span class="hl-3">multiaddr</span><span class="hl-0">)</span><br/><span class="hl-3">peerStore</span><span class="hl-0">.</span><span class="hl-3">addressBook</span><span class="hl-0">.</span><span class="hl-6">get</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">)</span><br/><span class="hl-7">// [</span><br/><span class="hl-7">// {</span><br/><span class="hl-7">//   multiaddr: /ip4/140.10.2.1/tcp/8000,</span><br/><span class="hl-7">//   ...</span><br/><span class="hl-7">// },</span><br/><span class="hl-7">// {</span><br/><span class="hl-7">//   multiaddr: /ip4/140.10.2.1/ws/8001</span><br/><span class="hl-7">//   ...</span><br/><span class="hl-7">// },</span><br/><span class="hl-7">// ]</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -191,7 +191,7 @@ undefined if no Envelope is found</p>
 <p>Replacing stored multiaddrs might result in losing obtained certified addresses, which is not desirable.</p>
 <p>Consider using <code>addressBook.add()</code> if you&#39;re not sure this is what you want to do.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">peerStore</span><span class="hl-1">.</span><span class="hl-2">addressBook</span><span class="hl-1">.</span><span class="hl-6">add</span><span class="hl-1">(</span><span class="hl-2">peerId</span><span class="hl-1">, </span><span class="hl-2">multiaddr</span><span class="hl-1">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">peerStore</span><span class="hl-0">.</span><span class="hl-3">addressBook</span><span class="hl-0">.</span><span class="hl-6">add</span><span class="hl-0">(</span><span class="hl-3">peerId</span><span class="hl-0">, </span><span class="hl-3">multiaddr</span><span class="hl-0">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -260,7 +260,7 @@ undefined if no Envelope is found</p>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.1.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.1.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.0.5</a>
