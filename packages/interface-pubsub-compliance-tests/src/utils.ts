@@ -19,7 +19,13 @@ export async function createComponents (): Promise<MockNetworkComponents> {
     peerId: await createEd25519PeerId(),
     registrar: mockRegistrar()
   }
-  components.connectionManager = mockConnectionManager(components)
+
+  const config: any = {
+     maxConnections: 10,
+     minConnections: 10
+  }
+
+  components.connectionManager = mockConnectionManager(components, config)
 
   mockNetwork.addNode(components)
 

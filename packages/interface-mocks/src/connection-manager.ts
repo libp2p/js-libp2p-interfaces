@@ -2,18 +2,30 @@ import { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
-import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interface-connection-manager'
+import type { ConnectionManager, ConnectionManagerComponents, ConnectionManagerConfig, ConnectionManagerEvents, Dialer } from '@libp2p/interface-connection-manager'
 import { connectionPair } from './connection.js'
 import { CodeError } from '@libp2p/interfaces/errors'
 import type { Registrar } from '@libp2p/interface-registrar'
 import type { PubSub } from '@libp2p/interface-pubsub'
 import { isMultiaddr, Multiaddr } from '@multiformats/multiaddr'
+import type { Metrics } from '@libp2p/interface-metrics'
+import type { PeerStore } from '@libp2p/interface-peer-store'
+import type { Upgrader } from '@libp2p/interface-transport'
 
 export interface MockNetworkComponents {
   peerId: PeerId
   registrar: Registrar
   connectionManager: ConnectionManager
   pubsub?: PubSub
+  metrics?: Metrics
+  upgrader: Upgrader
+  peerStore: PeerStore
+  dialer: Dialer
+}
+
+export interface MockConnectionManagerConfig {
+  maxConnections: number
+  minConnections: number
 }
 
 class MockNetwork {
@@ -41,14 +53,23 @@ class MockNetwork {
 export const mockNetwork = new MockNetwork()
 
 class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager, Startable {
+  private readonly config: ConnectionManagerConfig
   private readonly connections: Map<string, Connection[]> = new Map()
   private readonly components: MockNetworkComponents
   private started = false
 
-  constructor (components: MockNetworkComponents) {
+  constructor (components: MockNetworkComponents, config: ConnectionManagerConfig) {
     super()
 
     this.components = components
+    this.config = config
+  }
+  getComponents(): ConnectionManagerComponents {
+    return this.components
+  }
+
+  getConfig (): ConnectionManagerConfig {
+    return this.config
   }
 
   getConnectionsMap (): Map<string, Connection[]> {
@@ -160,6 +181,6 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
   }
 }
 
-export function mockConnectionManager (components: MockNetworkComponents): ConnectionManager {
-  return new MockConnectionManager(components)
+export function mockConnectionManager (components: MockNetworkComponents, config: MockConnectionManagerConfig): ConnectionManager {
+  return new MockConnectionManager(components, config)
 }
