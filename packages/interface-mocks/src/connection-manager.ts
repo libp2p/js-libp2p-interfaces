@@ -64,7 +64,8 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     this.components = components
     this.config = config
   }
-  getComponents(): ConnectionManagerComponents {
+
+  getComponents (): ConnectionManagerComponents {
     return this.components
   }
 

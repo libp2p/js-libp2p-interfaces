@@ -21,8 +21,8 @@ export async function createComponents (): Promise<MockNetworkComponents> {
   }
 
   const config: any = {
-     maxConnections: 10,
-     minConnections: 10
+    maxConnections: 10,
+    minConnections: 10
   }
 
   components.connectionManager = mockConnectionManager(components, config)
