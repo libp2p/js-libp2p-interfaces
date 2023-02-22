@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v9.1.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.1.1...@libp2p/interface-mocks-v9.1.2) (2023-02-22)
+
+
+### Bug Fixes
+
+* replace err-code with CodeError ([#334](https://github.com/libp2p/js-libp2p-interfaces/issues/334)) ([a909d41](https://github.com/libp2p/js-libp2p-interfaces/commit/a909d418ce1128c771b682dc78bb48789d4b319a)), closes [js-libp2p#1269](https://github.com/libp2p/js-libp2p/issues/1269)
+
 ## [@libp2p/interface-mocks-v9.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.1.0...@libp2p/interface-mocks-v9.1.1) (2023-01-18)
 
 
