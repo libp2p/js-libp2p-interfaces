@@ -69,6 +69,11 @@ export interface ConnectionManagerConfig {
    * complete the connection upgrade - e.g. choosing connection encryption, muxer, etc
    */
   maxIncomingPendingConnections?: number
+
+  /**
+   * The abort signal to use for timeouts when opening connections to peers
+   */
+  outgoingDialTimeout?: number
 }
 
 export interface ConnectionManagerEvents {
