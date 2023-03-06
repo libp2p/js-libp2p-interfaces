@@ -37,7 +37,7 @@ export function mockMultiaddrConnPair (opts: MockMultiaddrConnPairOptions): { in
 
   const outbound: MultiaddrConnection = {
     ...outboundStream,
-    remoteAddr: remoteAddr.encapsulate(`/p2p/${remotePeer.toString()}`),
+    remoteAddr: remoteAddr.toString().includes(`/p2p/${remotePeer.toString()}`) ? remoteAddr : remoteAddr.encapsulate(`/p2p/${remotePeer.toString()}`),
     timeline: {
       open: Date.now()
     },
