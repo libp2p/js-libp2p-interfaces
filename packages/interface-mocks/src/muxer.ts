@@ -152,11 +152,10 @@ class MuxedStream {
 
             while (list.length > 0) {
               const available = Math.min(list.length, MAX_MESSAGE_SIZE)
-              const subList = list.subarray(0, available)
               const dataMsg: DataMessage = {
                 id,
                 type: 'data',
-                chunk: uint8ArrayToString(subList.slice(), 'base64'),
+                chunk: uint8ArrayToString(list.subarray(0, available), 'base64pad'),
                 direction: this.type
               }
 
@@ -344,7 +343,7 @@ class MockMuxer implements StreamMuxer {
     }
 
     if (message.type === 'data') {
-      muxedStream.input.push(new Uint8ArrayList(uint8ArrayFromString(message.chunk, 'base64')))
+      muxedStream.input.push(new Uint8ArrayList(uint8ArrayFromString(message.chunk, 'base64pad')))
     } else if (message.type === 'reset') {
       this.log('-> reset stream %s %s', muxedStream.type, muxedStream.stream.id)
       muxedStream.stream.reset()

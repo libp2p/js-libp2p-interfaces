@@ -40,12 +40,17 @@ class MockNetwork {
 
 export const mockNetwork = new MockNetwork()
 
+export interface MockConnectionManagerComponents {
+  peerId: PeerId
+  registrar: Registrar
+}
+
 class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager, Startable {
   private connections: Connection[] = []
-  private readonly components: MockNetworkComponents
+  private readonly components: MockConnectionManagerComponents
   private started = false
 
-  constructor (components: MockNetworkComponents) {
+  constructor (components: MockConnectionManagerComponents) {
     super()
 
     this.components = components
@@ -99,7 +104,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     this.connections.push(aToB)
     ;(componentsB.connectionManager as MockConnectionManager).connections.push(bToA)
 
-    this.components.connectionManager.safeDispatchEvent<Connection>('peer:connect', {
+    this.safeDispatchEvent<Connection>('peer:connect', {
       detail: aToB
     })
 
@@ -159,6 +164,6 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
   }
 }
 
-export function mockConnectionManager (components: MockNetworkComponents): ConnectionManager {
+export function mockConnectionManager (components: MockConnectionManagerComponents): ConnectionManager {
   return new MockConnectionManager(components)
 }
