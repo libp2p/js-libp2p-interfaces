@@ -4,7 +4,8 @@ import type { PeerInfo } from '@libp2p/interface-peer-info'
 
 export interface ContentRouting {
   /**
-   * Iterates over all content routers in parallel, in order to notify it is a provider of the given key.
+   * The implementation of this method should ensure that network peers know the
+   * caller can provide content that corresponds to the passed CID.
    *
    * @example
    *
@@ -16,9 +17,7 @@ export interface ContentRouting {
   provide: (cid: CID, options?: AbortOptions) => Promise<void>
 
   /**
-   * Iterates over all content routers in series to find providers of the given key.
-   *
-   * Once a content router succeeds, the iteration will stop. If the DHT is enabled, it will be queried first.
+   * Find the providers of the passed CID.
    *
    * @example
    *
@@ -32,7 +31,8 @@ export interface ContentRouting {
   findProviders: (cid: CID, options?: AbortOptions) => AsyncIterable<PeerInfo>
 
   /**
-   * Writes a value to a key in the DHT.
+   * Puts a value corresponding to the passed key in a way that can later be
+   * retrieved by another network peer using the get method.
    *
    * @example
    *
@@ -47,7 +47,7 @@ export interface ContentRouting {
   put: (key: Uint8Array, value: Uint8Array, options?: AbortOptions) => Promise<void>
 
   /**
-   * Queries the DHT for a value stored for a given key.
+   * Retrieves a value from the network corresponding to the passed key.
    *
    * @example
    *
