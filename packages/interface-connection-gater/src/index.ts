@@ -1,5 +1,6 @@
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { PeerId } from '@libp2p/interface-peer-id'
+import type { MultiaddrConnection } from '@libp2p/interface-connection'
 
 export interface ConnectionGater {
   /**

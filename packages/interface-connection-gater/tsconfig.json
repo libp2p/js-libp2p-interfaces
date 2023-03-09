@@ -8,6 +8,9 @@
   ],
   "references": [
     {
+      "path": "../interface-connection"
+    },
+    {
       "path": "../interface-peer-id"
     },
     {

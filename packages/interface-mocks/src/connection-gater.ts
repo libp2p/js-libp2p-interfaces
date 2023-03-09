@@ -1,4 +1,4 @@
-import type { ConnectionGater } from '@libp2p/interface-connection'
+import type { ConnectionGater } from '@libp2p/interface-connection-gater'
 
 export function mockConnectionGater (): ConnectionGater {
   return {

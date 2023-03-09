@@ -22,6 +22,7 @@
 - [`/packages/interface-connection-compliance-tests`](./packages/interface-connection-compliance-tests) Compliance tests for implementations of the libp2p Connection interface
 - [`/packages/interface-connection-encrypter`](./packages/interface-connection-encrypter) Connection Encrypter interface for libp2p
 - [`/packages/interface-connection-encrypter-compliance-tests`](./packages/interface-connection-encrypter-compliance-tests) Compliance tests for implementations of the libp2p Connection Encrypter interface
+- [`/packages/interface-connection-gater`](./packages/interface-connection-gater) Connection gater interface for libp2p
 - [`/packages/interface-connection-manager`](./packages/interface-connection-manager) Connection Manager interface for libp2p
 - [`/packages/interface-content-routing`](./packages/interface-content-routing) Content routing interface for libp2p
 - [`/packages/interface-dht`](./packages/interface-dht) DHT interface for libp2p

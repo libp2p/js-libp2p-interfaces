@@ -17,12 +17,12 @@
 ## Install
 
 ```console
-$ npm i @libp2p/interface-connection
+$ npm i @libp2p/interface-connection-gater
 ```
 
 ## API Docs
 
-- <https://libp2p.github.io/js-libp2p-interfaces/modules/_libp2p_interface_connection.html>
+- <https://libp2p.github.io/js-libp2p-interfaces/modules/_libp2p_interface_connection_gater.html>
 
 ## License
 

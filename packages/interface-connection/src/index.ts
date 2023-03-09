@@ -163,7 +163,7 @@ export function isConnection (other: any): other is Connection {
 }
 
 /**
- * @deprecated Please use the version from @libp2p/interface-connection-gater instead, this will be removed in a future release
+ * @deprecated Please use the version from `@libp2p/interface-connection-gater` instead, this will be removed in a future release
  */
 export interface ConnectionGater {
   /**

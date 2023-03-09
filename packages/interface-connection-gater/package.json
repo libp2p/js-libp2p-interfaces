@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Connection gater interface for libp2p",
   "license": "Apache-2.0 OR MIT",
-  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-connection#readme",
+  "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-connection-gater#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/libp2p/js-libp2p-interfaces.git"
@@ -47,10 +47,6 @@
     ".": {
       "types": "./dist/src/index.d.ts",
       "import": "./dist/src/index.js"
-    },
-    "./status": {
-      "types": "./dist/src/status.d.ts",
-      "import": "./dist/src/status.js"
     }
   },
   "eslintConfig": {
