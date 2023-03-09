@@ -1,3 +1,10 @@
+## [@libp2p/interface-registrar-v2.0.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-registrar-v2.0.8...@libp2p/interface-registrar-v2.0.9) (2023-03-09)
+
+
+### Documentation
+
+* update comments on registrar interface ([#348](https://github.com/libp2p/js-libp2p-interfaces/issues/348)) ([54e3af9](https://github.com/libp2p/js-libp2p-interfaces/commit/54e3af9cfbdfd27d1c3797b957a97931153337c6))
+
 ## [@libp2p/interface-registrar-v2.0.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-registrar-v2.0.7...@libp2p/interface-registrar-v2.0.8) (2023-01-18)
 
 
