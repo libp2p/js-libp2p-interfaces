@@ -62,15 +62,12 @@ export interface MockConnectionManagerComponents {
 }
 
 class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager, Startable {
-
   private readonly connections: Map<string, Connection[]> = new Map()
   private readonly components: MockConnectionManagerComponents
   private started = false
 
-
   constructor (components: MockConnectionManagerComponents) {
     super()
-
     this.components = components
   }
 
