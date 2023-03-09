@@ -4,7 +4,7 @@ import type { AbortOptions } from '@libp2p/interfaces'
 
 export interface PeerRouting {
   /**
-   * Iterates over all peer routers in series to find the given peer. If the DHT is enabled, it will be tried first.
+   * Searches the network for peer info corresponding to the passed peer id.
    *
    * @example
    *
@@ -16,9 +16,8 @@ export interface PeerRouting {
   findPeer: (peerId: PeerId, options?: AbortOptions) => Promise<PeerInfo>
 
   /**
-   * Iterates over all peer routers in series to get the closest peers of the given key.
-   *
-   * Once a content router succeeds, the iteration will stop. If the DHT is enabled, it will be queried first.
+   * Search the network for peers that are closer to the passed key. Peer
+   * info should be yielded in ever-increasing closeness to the key.
    *
    * @example
    *

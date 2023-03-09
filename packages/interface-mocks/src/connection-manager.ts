@@ -2,7 +2,7 @@ import { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
-import type { ConnectionManager, ConnectionManagerComponents, ConnectionManagerConfig, ConnectionManagerEvents, Dialer } from '@libp2p/interface-connection-manager'
+import type { ConnectionManager, ConnectionManagerEvents, Dialer } from '@libp2p/interface-connection-manager'
 import { connectionPair } from './connection.js'
 import { CodeError } from '@libp2p/interfaces/errors'
 import type { Registrar } from '@libp2p/interface-registrar'
@@ -52,25 +52,30 @@ class MockNetwork {
 
 export const mockNetwork = new MockNetwork()
 
+export interface MockConnectionManagerComponents {
+  peerId: PeerId
+  metrics?: Metrics
+  upgrader: Upgrader
+  peerStore: PeerStore
+  dialer: Dialer
+  registrar: Registrar
+}
+
 class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager, Startable {
-  private readonly config: ConnectionManagerConfig
+
   private readonly connections: Map<string, Connection[]> = new Map()
-  private readonly components: MockNetworkComponents
+  private readonly components: MockConnectionManagerComponents
   private started = false
 
-  constructor (components: MockNetworkComponents, config: ConnectionManagerConfig) {
+
+  constructor (components: MockConnectionManagerComponents) {
     super()
 
     this.components = components
-    this.config = config
   }
 
-  getComponents (): ConnectionManagerComponents {
+  getComponents (): MockConnectionManagerComponents {
     return this.components
-  }
-
-  getConfig (): ConnectionManagerConfig {
-    return this.config
   }
 
   getConnectionsMap (): Map<string, Connection[]> {
@@ -132,7 +137,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     this.connections.set(peerId.toString(), [aToB])
     this.connections.set(componentsB.peerId.toString(), [bToA])
 
-    this.components.connectionManager.safeDispatchEvent<Connection>('peer:connect', {
+    this.safeDispatchEvent<Connection>('peer:connect', {
       detail: aToB
     })
 
@@ -182,6 +187,6 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
   }
 }
 
-export function mockConnectionManager (components: MockNetworkComponents, config: MockConnectionManagerConfig): ConnectionManager {
-  return new MockConnectionManager(components, config)
+export function mockConnectionManager (components: MockConnectionManagerComponents): ConnectionManager {
+  return new MockConnectionManager(components)
 }

@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-v3.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v3.0.8...@libp2p/interface-connection-v3.1.0) (2023-03-09)
+
+
+### Features
+
+* split connection gater out into module ([#347](https://github.com/libp2p/js-libp2p-interfaces/issues/347)) ([1824744](https://github.com/libp2p/js-libp2p-interfaces/commit/18247442aa64c809d9e101ccbd0067ce48bdb80f))
+
 ## [@libp2p/interface-connection-v3.0.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v3.0.7...@libp2p/interface-connection-v3.0.8) (2023-01-18)
 
 

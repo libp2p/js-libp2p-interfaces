@@ -1,3 +1,27 @@
+## [@libp2p/interface-mocks-v9.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.1.3...@libp2p/interface-mocks-v9.2.0) (2023-03-09)
+
+
+### Features
+
+* split connection gater out into module ([#347](https://github.com/libp2p/js-libp2p-interfaces/issues/347)) ([1824744](https://github.com/libp2p/js-libp2p-interfaces/commit/18247442aa64c809d9e101ccbd0067ce48bdb80f))
+
+
+### Bug Fixes
+
+* update @libp2p/interface-connection-gater depdendency ([e53cf8b](https://github.com/libp2p/js-libp2p-interfaces/commit/e53cf8b26b83dcca553b934f171d07d817df15ca))
+
+
+### Dependencies
+
+* update sibling dependencies ([e72292f](https://github.com/libp2p/js-libp2p-interfaces/commit/e72292fe1e37ac55b041a09058365fb74de0e629))
+
+## [@libp2p/interface-mocks-v9.1.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.1.2...@libp2p/interface-mocks-v9.1.3) (2023-03-07)
+
+
+### Bug Fixes
+
+* dispatch connection event from mock upgrader ([#345](https://github.com/libp2p/js-libp2p-interfaces/issues/345)) ([b691b1f](https://github.com/libp2p/js-libp2p-interfaces/commit/b691b1fa28e23b549c32e89d6b7c98d6a50c7b8f))
+
 ## [@libp2p/interface-mocks-v9.1.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.1.1...@libp2p/interface-mocks-v9.1.2) (2023-02-22)
 
 

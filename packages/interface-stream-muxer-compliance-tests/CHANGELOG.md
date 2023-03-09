@@ -1,3 +1,10 @@
+## [@libp2p/interface-stream-muxer-compliance-tests-v6.0.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v6.0.7...@libp2p/interface-stream-muxer-compliance-tests-v6.0.8) (2023-03-07)
+
+
+### Bug Fixes
+
+* dispatch connection event from mock upgrader ([#345](https://github.com/libp2p/js-libp2p-interfaces/issues/345)) ([b691b1f](https://github.com/libp2p/js-libp2p-interfaces/commit/b691b1fa28e23b549c32e89d6b7c98d6a50c7b8f))
+
 ## [@libp2p/interface-stream-muxer-compliance-tests-v6.0.7](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v6.0.6...@libp2p/interface-stream-muxer-compliance-tests-v6.0.7) (2023-01-18)
 
 

@@ -47,7 +47,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const streams = await Promise.all(Array(expectedStreams).fill(0).map(() => dialer.newStream()))
+      const streams = await Promise.all(Array(expectedStreams).fill(0).map(async () => await dialer.newStream()))
 
       void Promise.all(
         streams.map(async stream => {
@@ -89,7 +89,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const streams = await Promise.all(Array(expectedStreams).fill(0).map(() => dialer.newStream()))
+      const streams = await Promise.all(Array(expectedStreams).fill(0).map(async () => await dialer.newStream()))
 
       void Promise.all(
         streams.map(async stream => {
@@ -132,7 +132,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const streams = await Promise.all(Array(expectedStreams).fill(0).map(() => dialer.newStream()))
+      const streams = await Promise.all(Array(expectedStreams).fill(0).map(async () => await dialer.newStream()))
 
       const streamPipes = streams.map(async stream => {
         await pipe(
@@ -201,7 +201,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
       void pipe(p[1], listener, p[1])
 
       const stream = await dialer.newStream()
-      const streams = await Promise.all(Array.from(Array(5), () => dialer.newStream()))
+      const streams = await Promise.all(Array.from(Array(5), async () => await dialer.newStream()))
       let closed = false
       const controllers: AbortController[] = []
 
