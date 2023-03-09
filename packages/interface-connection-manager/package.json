@@ -133,6 +133,7 @@
   },
   "dependencies": {
     "@libp2p/interface-connection": "^3.0.0",
+    "@libp2p/interface-connection-gater": "^1.0.0",
     "@libp2p/interface-metrics": "^4.0.5",
     "@libp2p/interface-peer-id": "^2.0.0",
     "@libp2p/interface-peer-store": "^1.2.8",
