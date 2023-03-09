@@ -50,6 +50,8 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
 <li class="tsd-signature" id="getHandler.__type.__type-1"><span class="tsd-signature-symbol">(</span>protocol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_libp2p_interface_pubsub_compliance_tests._internal_.StreamHandlerRecord.html" class="tsd-signature-type" data-tsd-kind="Interface">StreamHandlerRecord</a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Return the handler for the passed protocol</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -57,7 +59,7 @@
 <h5>protocol: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="_libp2p_interface_pubsub_compliance_tests._internal_.StreamHandlerRecord.html" class="tsd-signature-type" data-tsd-kind="Interface">StreamHandlerRecord</a></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/interface-registrar/dist/src/index.d.ts:28</li></ul></aside></section>
+<li>Defined in packages/interface-registrar/dist/src/index.d.ts:40</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="getProtocols" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Protocols</span><a href="#getProtocols" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">get<wbr/>Protocols<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span></div>
@@ -68,9 +70,11 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
 <li class="tsd-signature" id="getProtocols.__type-2.__type-3"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Return the list of protocols with registered handlers</p>
+</div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/interface-registrar/dist/src/index.d.ts:25</li></ul></aside></section>
+<li>Defined in packages/interface-registrar/dist/src/index.d.ts:28</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="getTopologies" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Topologies</span><a href="#getTopologies" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">get<wbr/>Topologies<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>protocol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="_libp2p_interface_pubsub_compliance_tests._internal_.Topology.html" class="tsd-signature-type" data-tsd-kind="Interface">Topology</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span></div>
@@ -81,6 +85,9 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
 <li class="tsd-signature" id="getTopologies.__type-4.__type-5"><span class="tsd-signature-symbol">(</span>protocol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_libp2p_interface_pubsub_compliance_tests._internal_.Topology.html" class="tsd-signature-type" data-tsd-kind="Interface">Topology</a><span class="tsd-signature-symbol">[]</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Return all topology handlers that wish to be informed about peers
+that support the passed protocol.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -88,7 +95,7 @@
 <h5>protocol: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="_libp2p_interface_pubsub_compliance_tests._internal_.Topology.html" class="tsd-signature-type" data-tsd-kind="Interface">Topology</a><span class="tsd-signature-symbol">[]</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/interface-registrar/dist/src/index.d.ts:31</li></ul></aside></section>
+<li>Defined in packages/interface-registrar/dist/src/index.d.ts:58</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="handle" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>handle</span><a href="#handle" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">handle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>protocol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, handler<span class="tsd-signature-symbol">: </span><a href="_libp2p_interface_pubsub_compliance_tests._internal_.StreamHandler.html" class="tsd-signature-type" data-tsd-kind="Interface">StreamHandler</a>, options<span class="tsd-signature-symbol">?: </span><a href="_libp2p_interface_pubsub_compliance_tests._internal_.StreamHandlerOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">StreamHandlerOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span></div>
@@ -99,6 +106,8 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
 <li class="tsd-signature" id="handle.__type-6.__type-7"><span class="tsd-signature-symbol">(</span>protocol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, handler<span class="tsd-signature-symbol">: </span><a href="_libp2p_interface_pubsub_compliance_tests._internal_.StreamHandler.html" class="tsd-signature-type" data-tsd-kind="Interface">StreamHandler</a>, options<span class="tsd-signature-symbol">?: </span><a href="_libp2p_interface_pubsub_compliance_tests._internal_.StreamHandlerOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">StreamHandlerOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Add a protocol handler</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -110,7 +119,7 @@
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> options: <a href="_libp2p_interface_pubsub_compliance_tests._internal_.StreamHandlerOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">StreamHandlerOptions</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/interface-registrar/dist/src/index.d.ts:26</li></ul></aside></section>
+<li>Defined in packages/interface-registrar/dist/src/index.d.ts:32</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="register" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>register</span><a href="#register" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">register<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>protocol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, topology<span class="tsd-signature-symbol">: </span><a href="_libp2p_interface_pubsub_compliance_tests._internal_.Topology.html" class="tsd-signature-type" data-tsd-kind="Interface">Topology</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span></div>
@@ -121,6 +130,12 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
 <li class="tsd-signature" id="register.__type-8.__type-9"><span class="tsd-signature-symbol">(</span>protocol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, topology<span class="tsd-signature-symbol">: </span><a href="_libp2p_interface_pubsub_compliance_tests._internal_.Topology.html" class="tsd-signature-type" data-tsd-kind="Interface">Topology</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Register a topology handler for a protocol - the topology will be
+invoked when peers are discovered on the network that support the
+passed protocol.</p>
+<p>An id will be returned that can later be used to unregister the
+topology.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -130,7 +145,7 @@
 <h5>topology: <a href="_libp2p_interface_pubsub_compliance_tests._internal_.Topology.html" class="tsd-signature-type" data-tsd-kind="Interface">Topology</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/interface-registrar/dist/src/index.d.ts:29</li></ul></aside></section>
+<li>Defined in packages/interface-registrar/dist/src/index.d.ts:49</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="unhandle" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>unhandle</span><a href="#unhandle" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">unhandle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>protocol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span></div>
@@ -141,6 +156,8 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
 <li class="tsd-signature" id="unhandle.__type-10.__type-11"><span class="tsd-signature-symbol">(</span>protocol<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Remove a protocol handler</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -148,7 +165,7 @@
 <h5>protocol: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/interface-registrar/dist/src/index.d.ts:27</li></ul></aside></section>
+<li>Defined in packages/interface-registrar/dist/src/index.d.ts:36</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="unregister" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>unregister</span><a href="#unregister" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">unregister<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span></div>
@@ -159,6 +176,8 @@
 <ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
 <li class="tsd-signature" id="unregister.__type-12.__type-13"><span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Remove the topology handler with the passed id.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -166,7 +185,7 @@
 <h5>id: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in packages/interface-registrar/dist/src/index.d.ts:30</li></ul></aside></section></section></div>
+<li>Defined in packages/interface-registrar/dist/src/index.d.ts:53</li></ul></aside></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -207,7 +226,7 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v1.3.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_manager._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_content_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.1</a>
@@ -223,7 +242,7 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.1.2</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.1.3</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.0.5</a>
@@ -238,7 +257,7 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_info._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.0.7</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v1.2.8</a>
@@ -256,13 +275,13 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.4</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.8</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.9</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_registrar._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v3.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_stream_muxer._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v6.0.7</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v6.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v2.1.1</a>

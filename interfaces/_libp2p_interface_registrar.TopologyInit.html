@@ -21,7 +21,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">TopologyInit</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-registrar/src/index.ts#L49">packages/interface-registrar/src/index.ts:49</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-registrar/src/index.ts#L81">packages/interface-registrar/src/index.ts:81</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -42,24 +42,29 @@
 <div class="tsd-comment tsd-typography"><p>maximum needed connections</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-registrar/src/index.ts#L58">packages/interface-registrar/src/index.ts:58</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-registrar/src/index.ts#L90">packages/interface-registrar/src/index.ts:90</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="min" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>min</span><a href="#min" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">min<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div>
 <div class="tsd-comment tsd-typography"><p>minimum needed connections</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-registrar/src/index.ts#L53">packages/interface-registrar/src/index.ts:53</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-registrar/src/index.ts#L85">packages/interface-registrar/src/index.ts:85</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="onConnect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>on<wbr/>Connect</span><a href="#onConnect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">on<wbr/>Connect<span class="tsd-signature-symbol">?:</span> <a href="_libp2p_interface_registrar.onConnectHandler.html" class="tsd-signature-type" data-tsd-kind="Interface">onConnectHandler</a></div><aside class="tsd-sources">
+<div class="tsd-signature">on<wbr/>Connect<span class="tsd-signature-symbol">?:</span> <a href="_libp2p_interface_registrar.onConnectHandler.html" class="tsd-signature-type" data-tsd-kind="Interface">onConnectHandler</a></div>
+<div class="tsd-comment tsd-typography"><p>Invoked when a new peer is connects that supports the configured
+protocol</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-registrar/src/index.ts#L59">packages/interface-registrar/src/index.ts:59</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-registrar/src/index.ts#L96">packages/interface-registrar/src/index.ts:96</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="onDisconnect" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>on<wbr/>Disconnect</span><a href="#onDisconnect" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">on<wbr/>Disconnect<span class="tsd-signature-symbol">?:</span> <a href="_libp2p_interface_registrar.onDisconnectHandler.html" class="tsd-signature-type" data-tsd-kind="Interface">onDisconnectHandler</a></div><aside class="tsd-sources">
+<div class="tsd-signature">on<wbr/>Disconnect<span class="tsd-signature-symbol">?:</span> <a href="_libp2p_interface_registrar.onDisconnectHandler.html" class="tsd-signature-type" data-tsd-kind="Interface">onDisconnectHandler</a></div>
+<div class="tsd-comment tsd-typography"><p>Invoked when a peer that supports the configured protocol disconnects</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-registrar/src/index.ts#L60">packages/interface-registrar/src/index.ts:60</a></li></ul></aside></section></section></div>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-registrar/src/index.ts#L101">packages/interface-registrar/src/index.ts:101</a></li></ul></aside></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -100,7 +105,7 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v1.3.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_manager._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_content_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.1</a>
@@ -116,7 +121,7 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.1.2</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v9.1.3</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.0.5</a>
@@ -131,7 +136,7 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_info._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.0.7</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v1.2.8</a>
@@ -149,13 +154,13 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.4</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="current tsd-kind-module"><a href="../modules/_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.8</a>
+<li class="current tsd-kind-module"><a href="../modules/_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.9</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_registrar._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v3.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_stream_muxer._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v6.0.7</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v6.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v2.1.1</a>
