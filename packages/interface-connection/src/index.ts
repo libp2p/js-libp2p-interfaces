@@ -162,6 +162,9 @@ export function isConnection (other: any): other is Connection {
   return other != null && Boolean(other[symbol])
 }
 
+/**
+ * @deprecated Please use the version from `@libp2p/interface-connection-gater` instead, this will be removed in a future release
+ */
 export interface ConnectionGater {
   /**
    * denyDialMultiaddr tests whether we're permitted to Dial the
