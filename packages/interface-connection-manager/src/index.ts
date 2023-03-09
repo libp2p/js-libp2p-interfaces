@@ -2,9 +2,9 @@ import type { AbortOptions } from '@libp2p/interfaces'
 import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Connection, ConnectionGater, MultiaddrConnection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
-import type { Multiaddr, Resolver } from '@multiformats/multiaddr'
+import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Metrics } from '@libp2p/interface-metrics'
-import type { AddressSorter, PeerStore } from '@libp2p/interface-peer-store'
+import type { PeerStore } from '@libp2p/interface-peer-store'
 import type { TransportManager, Upgrader } from '@libp2p/interface-transport'
 export interface ConnectionManagerComponents {
   peerId: PeerId
@@ -12,68 +12,6 @@ export interface ConnectionManagerComponents {
   upgrader: Upgrader
   peerStore: PeerStore
   dialer: Dialer
-}
-
-export interface ConnectionManagerConfig {
-  /**
-   * The maximum number of connections libp2p is willing to have before it starts disconnecting. Defaults to `Infinity`
-   */
-  maxConnections: number
-
-  /**
-   * The minimum number of connections below which libp2p not activate preemptive disconnections. Defaults to `0`.
-   */
-  minConnections: number
-
-  /**
-   * Sets the maximum event loop delay (measured in milliseconds) this node is willing to endure before it starts disconnecting peers. Defaults to `Infinity`.
-   */
-  maxEventLoopDelay?: number
-
-  /**
-   * Sets the poll interval (in milliseconds) for assessing the current state and determining if this peer needs to force a disconnect. Defaults to `2000` (2 seconds).
-   */
-  pollInterval?: number
-
-  /**
-   * Multiaddr resolvers to use when dialing
-   */
-  resolvers?: Record<string, Resolver>
-
-  /**
-   * On startup we try to dial any peer that has previously been
-   * tagged with KEEP_ALIVE up to this timeout in ms. (default: 60000)
-   */
-  startupReconnectTimeout?: number
-
-  /**
-   * A list of multiaddrs that will always be allowed (except if they are in the
-   * deny list) to open connections to this node even if we've reached maxConnections
-   */
-  allow?: string[]
-
-  /**
-   * A list of multiaddrs that will never be allowed to open connections to
-   * this node under any circumstances
-   */
-  deny?: string[]
-
-  /**
-   * If more than this many connections are opened per second by a single
-   * host, reject subsequent connections
-   */
-  inboundConnectionThreshold?: number
-
-  /**
-   * The maximum number of parallel incoming connections allowed that have yet to
-   * complete the connection upgrade - e.g. choosing connection encryption, muxer, etc
-   */
-  maxIncomingPendingConnections?: number
-
-  /**
-   * The abort signal to use for timeouts when opening connections to peers
-   */
-  outgoingDialTimeout?: number
 }
 
 export interface ConnectionManagerEvents {
@@ -165,60 +103,6 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
    * Return the components of the connection manager
    */
   getComponents: () => ConnectionManagerComponents
-
-  /**
-   * Return the configuration of the connection manager
-   */
-  getConfig: () => ConnectionManagerConfig
-}
-
-export interface DialerConfig {
-  /**
-   * Sort the known addresses of a peer before trying to dial
-   */
-  addressSorter?: AddressSorter
-
-  /**
-   * If true, try to connect to all discovered peers up to the connection manager limit
-   */
-  autoDial?: boolean
-
-  /**
-   * How long to wait between attempting to keep our number of concurrent connections
-   * above minConnections
-   */
-  autoDialInterval: number
-
-  /**
-   * How long a dial attempt is allowed to take
-   */
-  dialTimeout?: number
-
-  /**
-   * When a new inbound connection is opened, the upgrade process (e.g. protect,
-   * encrypt, multiplex etc) must complete within this number of ms.
-   */
-  inboundUpgradeTimeout: number
-
-  /**
-   * Number of max concurrent dials
-   */
-  maxParallelDials?: number
-
-  /**
-   * Number of max addresses to dial for a given peer
-   */
-  maxAddrsToDial?: number
-
-  /**
-   * Number of max concurrent dials per peer
-   */
-  maxDialsPerPeer?: number
-
-  /**
-   * Multiaddr resolvers to use when dialing
-   */
-  resolvers?: Record<string, Resolver>
 }
 
 export interface DialerComponents {
@@ -259,9 +143,4 @@ export interface Dialer {
    * Return the components of the dialer
    */
   getComponents: () => DialerComponents
-
-  /**
-   * Return the configuration of the dialer
-   */
-  getConfig: () => DialerConfig
 }
