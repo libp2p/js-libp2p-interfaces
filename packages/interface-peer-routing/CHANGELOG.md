@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-routing-v1.0.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-routing-v1.0.7...@libp2p/interface-peer-routing-v1.0.8) (2023-03-09)
+
+
+### Documentation
+
+* update content/peer routing interface comments ([#346](https://github.com/libp2p/js-libp2p-interfaces/issues/346)) ([8080944](https://github.com/libp2p/js-libp2p-interfaces/commit/8080944d3c3a81834c6b432843441996cd9e34e5))
+
 ## [@libp2p/interface-peer-routing-v1.0.7](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-routing-v1.0.6...@libp2p/interface-peer-routing-v1.0.7) (2023-01-18)
 
 
