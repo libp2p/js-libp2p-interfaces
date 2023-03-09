@@ -172,7 +172,7 @@ export interface ConnectionGater {
    *
    * Return true to prevent dialing the passed peer.
    */
-  denyDialPeer: (peerId: PeerId) => Promise<boolean>
+  denyDialPeer?: (peerId: PeerId) => Promise<boolean>
 
   /**
    * denyDialMultiaddr tests whether we're permitted to dial the specified
@@ -183,7 +183,7 @@ export interface ConnectionGater {
    *
    * Return true to prevent dialing the passed peer on the passed multiaddr.
    */
-  denyDialMultiaddr: (peerId: PeerId, multiaddr: Multiaddr) => Promise<boolean>
+  denyDialMultiaddr?: (peerId: PeerId, multiaddr: Multiaddr) => Promise<boolean>
 
   /**
    * denyInboundConnection tests whether an incipient inbound connection is allowed.
@@ -193,7 +193,7 @@ export interface ConnectionGater {
    *
    * Return true to deny the incoming passed connection.
    */
-  denyInboundConnection: (maConn: MultiaddrConnection) => Promise<boolean>
+  denyInboundConnection?: (maConn: MultiaddrConnection) => Promise<boolean>
 
   /**
    * denyOutboundConnection tests whether an incipient outbound connection is allowed.
@@ -203,7 +203,7 @@ export interface ConnectionGater {
    *
    * Return true to deny the incoming passed connection.
    */
-  denyOutboundConnection: (peerId: PeerId, maConn: MultiaddrConnection) => Promise<boolean>
+  denyOutboundConnection?: (peerId: PeerId, maConn: MultiaddrConnection) => Promise<boolean>
 
   /**
    * denyInboundEncryptedConnection tests whether a given connection, now encrypted,
@@ -215,7 +215,7 @@ export interface ConnectionGater {
    *
    * Return true to deny the passed secured connection.
    */
-  denyInboundEncryptedConnection: (peerId: PeerId, maConn: MultiaddrConnection) => Promise<boolean>
+  denyInboundEncryptedConnection?: (peerId: PeerId, maConn: MultiaddrConnection) => Promise<boolean>
 
   /**
    * denyOutboundEncryptedConnection tests whether a given connection, now encrypted,
@@ -227,7 +227,7 @@ export interface ConnectionGater {
    *
    * Return true to deny the passed secured connection.
    */
-  denyOutboundEncryptedConnection: (peerId: PeerId, maConn: MultiaddrConnection) => Promise<boolean>
+  denyOutboundEncryptedConnection?: (peerId: PeerId, maConn: MultiaddrConnection) => Promise<boolean>
 
   /**
    * denyInboundUpgradedConnection tests whether a fully capable connection is allowed.
@@ -237,7 +237,7 @@ export interface ConnectionGater {
    *
    * Return true to deny the passed upgraded connection.
    */
-  denyInboundUpgradedConnection: (peerId: PeerId, maConn: MultiaddrConnection) => Promise<boolean>
+  denyInboundUpgradedConnection?: (peerId: PeerId, maConn: MultiaddrConnection) => Promise<boolean>
 
   /**
    * denyOutboundUpgradedConnection tests whether a fully capable connection is allowed.
@@ -247,14 +247,44 @@ export interface ConnectionGater {
    *
    * Return true to deny the passed upgraded connection.
    */
-  denyOutboundUpgradedConnection: (peerId: PeerId, maConn: MultiaddrConnection) => Promise<boolean>
+  denyOutboundUpgradedConnection?: (peerId: PeerId, maConn: MultiaddrConnection) => Promise<boolean>
+
+  /**
+   * denyInboundRelayReservation tests whether a remote peer is allowed make a
+   * relay reservation on this node.
+   *
+   * Return true to deny the relay reservation.
+   */
+  denyInboundRelayReservation?: (source: PeerId) => Promise<boolean>
+
+  /**
+   * denyOutboundRelayedConnection tests whether a remote peer is allowed to open a relayed
+   * connection to the destination node.
+   *
+   * This is invoked on the relay server when a source client with a reservation instructs
+   * the server to relay a connection to a destination peer.
+   *
+   * Return true to deny the relayed connection.
+   */
+  denyOutboundRelayedConnection?: (source: PeerId, destination: PeerId) => Promise<boolean>
+
+  /**
+   * denyInboundRelayedConnection tests whether a remote peer is allowed to open a relayed
+   * connection to this node.
+   *
+   * This is invoked on the relay client when a remote relay has received an instruction to
+   * relay a connection to the client.
+   *
+   * Return true to deny the relayed connection.
+   */
+  denyInboundRelayedConnection?: (relay: PeerId, remotePeer: PeerId) => Promise<boolean>
 
   /**
    * Used by the address book to filter passed addresses.
    *
    * Return true to allow storing the passed multiaddr for the passed peer.
    */
-  filterMultiaddrForPeer: (peer: PeerId, multiaddr: Multiaddr) => Promise<boolean>
+  filterMultiaddrForPeer?: (peer: PeerId, multiaddr: Multiaddr) => Promise<boolean>
 }
 
 export interface ConnectionProtector {
