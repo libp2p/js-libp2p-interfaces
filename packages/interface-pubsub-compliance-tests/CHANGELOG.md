@@ -1,3 +1,10 @@
+## [@libp2p/interface-pubsub-compliance-tests-v5.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v5.0.1...@libp2p/interface-pubsub-compliance-tests-v5.0.2) (2023-03-10)
+
+
+### Bug Fixes
+
+* reject promise with error not string ([#350](https://github.com/libp2p/js-libp2p-interfaces/issues/350)) ([9435da9](https://github.com/libp2p/js-libp2p-interfaces/commit/9435da9a4015757b7945fdd55d142c4bd1950c59))
+
 ## [@libp2p/interface-pubsub-compliance-tests-v5.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v5.0.0...@libp2p/interface-pubsub-compliance-tests-v5.0.1) (2023-01-18)
 
 
