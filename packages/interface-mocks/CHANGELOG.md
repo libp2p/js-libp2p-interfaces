@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v9.2.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.2.0...@libp2p/interface-mocks-v9.2.1) (2023-03-10)
+
+
+### Bug Fixes
+
+* filter closed connections properly ([#349](https://github.com/libp2p/js-libp2p-interfaces/issues/349)) ([21021c3](https://github.com/libp2p/js-libp2p-interfaces/commit/21021c366579db5b45b93ea4446118f32aca0428))
+
 ## [@libp2p/interface-mocks-v9.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.1.3...@libp2p/interface-mocks-v9.2.0) (2023-03-09)
 
 
