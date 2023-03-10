@@ -150,7 +150,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
       await conn.close()
     }
 
-    this.connections = this.connections.filter(c => c.remotePeer.equals(peerId))
+    this.connections = this.connections.filter(c => !c.remotePeer.equals(peerId))
 
     await componentsB.connectionManager?.closeConnections(this.components.peerId)
   }
