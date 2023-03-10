@@ -162,13 +162,13 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
       psA.subscribe(topic)
 
       psB.topicValidators.set(topic, (peer, message) => {
-        if (peer.equals(componentsA.peerId)) {
-          defer.reject('Invalid peer id in topic validator fn')
+        if (!peer.equals(componentsA.peerId)) {
+          defer.reject(new Error('Invalid peer id in topic validator fn'))
           return TopicValidatorResult.Reject
         }
 
         if (uint8ArrayToString(message.data) !== 'hey') {
-          defer.reject('Invalid message in topic validator fn')
+          defer.reject(new Error('Invalid message in topic validator fn'))
           return TopicValidatorResult.Reject
         }
 
