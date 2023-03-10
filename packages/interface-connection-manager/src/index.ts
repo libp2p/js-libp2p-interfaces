@@ -81,9 +81,9 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
 
 export interface Dialer {
   /**
-   * Dial a peer or multiaddr and return the promise of a connection
+   * Dial a peer or multiaddr, or multiple multiaddrs and return the promise of a connection
    */
-  dial: (peer: PeerId | Multiaddr, options?: AbortOptions) => Promise<Connection>
+  dial: (peer: PeerId | Multiaddr | Multiaddr[], options?: AbortOptions) => Promise<Connection>
 
   /**
    * Request `num` dial tokens. Only the returned number of dials may be attempted.
