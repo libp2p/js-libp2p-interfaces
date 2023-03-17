@@ -21,6 +21,9 @@
       "path": "../interface-connection-encrypter-compliance-tests"
     },
     {
+      "path": "../interface-connection-gater"
+    },
+    {
       "path": "../interface-connection-manager"
     },
     {
