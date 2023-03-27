@@ -25,9 +25,8 @@ class MockNetwork {
   }
 
   getNode (peerId: PeerId | Multiaddr []): MockNetworkComponents {
-
     if (Array.isArray(peerId)) {
-      peerId = peerIdFromString(peerId[0].getPeerId() ?? "")
+      peerId = peerIdFromString(peerId[0].getPeerId() ?? '')
     }
 
     for (const components of this.components) {
