@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-discovery-compliance-tests-v2.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-discovery-compliance-tests-v2.0.5...@libp2p/interface-peer-discovery-compliance-tests-v2.0.6) (2023-03-17)
+
+
+### Dependencies
+
+* update @multiformats/multiaddr to 12.0.0 ([#354](https://github.com/libp2p/js-libp2p-interfaces/issues/354)) ([e0f327b](https://github.com/libp2p/js-libp2p-interfaces/commit/e0f327b5d54e240feabadce21a841629d633ec5e))
+
 ## [@libp2p/interface-peer-discovery-compliance-tests-v2.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-discovery-compliance-tests-v2.0.4...@libp2p/interface-peer-discovery-compliance-tests-v2.0.5) (2023-01-18)
 
 

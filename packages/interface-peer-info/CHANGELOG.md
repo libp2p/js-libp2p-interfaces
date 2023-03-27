@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-info-v1.0.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-info-v1.0.8...@libp2p/interface-peer-info-v1.0.9) (2023-03-17)
+
+
+### Dependencies
+
+* update @multiformats/multiaddr to 12.0.0 ([#354](https://github.com/libp2p/js-libp2p-interfaces/issues/354)) ([e0f327b](https://github.com/libp2p/js-libp2p-interfaces/commit/e0f327b5d54e240feabadce21a841629d633ec5e))
+
 ## [@libp2p/interface-peer-info-v1.0.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-info-v1.0.7...@libp2p/interface-peer-info-v1.0.8) (2023-01-18)
 
 

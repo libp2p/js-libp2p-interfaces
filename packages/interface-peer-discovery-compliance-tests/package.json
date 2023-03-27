@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-peer-discovery-compliance-tests",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Compliance tests for implementations of the libp2p Peer Discovery interface",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-peer-discovery-compliance-tests#readme",
@@ -135,7 +135,7 @@
     "@libp2p/interface-compliance-tests": "^3.0.0",
     "@libp2p/interface-peer-discovery": "^1.0.0",
     "@libp2p/interfaces": "^3.0.0",
-    "@multiformats/multiaddr": "^11.0.0",
+    "@multiformats/multiaddr": "^12.0.0",
     "aegir": "^38.1.0",
     "delay": "^5.0.0",
     "p-defer": "^4.0.0"

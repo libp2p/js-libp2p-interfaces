@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-transport-compliance-tests",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "Compliance tests for implementations of the libp2p Transport interface",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-transport-compliance-tests#readme",
@@ -138,7 +138,7 @@
     "@libp2p/interface-registrar": "^2.0.0",
     "@libp2p/interface-transport": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
-    "@multiformats/multiaddr": "^11.0.0",
+    "@multiformats/multiaddr": "^12.0.0",
     "aegir": "^38.1.0",
     "it-all": "^2.0.0",
     "it-drain": "^2.0.0",
