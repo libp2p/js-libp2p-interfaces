@@ -8,6 +8,7 @@ import { CodeError } from '@libp2p/interfaces/errors'
 import type { Registrar } from '@libp2p/interface-registrar'
 import type { PubSub } from '@libp2p/interface-pubsub'
 import { isMultiaddr, Multiaddr } from '@multiformats/multiaddr'
+import { peerIdFromString } from '@libp2p/peer-id'
 
 export interface MockNetworkComponents {
   peerId: PeerId
@@ -23,7 +24,12 @@ class MockNetwork {
     this.components.push(components)
   }
 
-  getNode (peerId: PeerId): MockNetworkComponents {
+  getNode (peerId: PeerId | Multiaddr []): MockNetworkComponents {
+
+    if (Array.isArray(peerId)) {
+      peerId = peerIdFromString(peerId[0].getPeerId() ?? "")
+    }
+
     for (const components of this.components) {
       if (peerId.equals(components.peerId)) {
         return components
@@ -72,7 +78,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     this.started = false
   }
 
-  getConnections (peerId?: PeerId): Connection[] {
+  getConnections (peerId?: PeerId | Multiaddr[]): Connection[] {
     if (peerId != null) {
       return this.connections
         .filter(c => c.remotePeer.toString() === peerId.toString())
@@ -81,7 +87,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     return this.connections
   }
 
-  async openConnection (peerId: PeerId | Multiaddr): Promise<Connection> {
+  async openConnection (peerId: PeerId | Multiaddr | Multiaddr[]): Promise<Connection> {
     if (this.components == null) {
       throw new CodeError('Not initialized', 'ERR_NOT_INITIALIZED')
     }
