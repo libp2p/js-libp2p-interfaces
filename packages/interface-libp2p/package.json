@@ -144,7 +144,8 @@
     "@libp2p/interface-pubsub": "^3.0.0",
     "@libp2p/interface-registrar": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
-    "@multiformats/multiaddr": "^12.0.0"
+    "@multiformats/multiaddr": "^12.0.0",
+    "progress-events": "^1.0.0"
   },
   "devDependencies": {
     "aegir": "^38.1.0"

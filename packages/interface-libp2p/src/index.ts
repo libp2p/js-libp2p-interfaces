@@ -29,6 +29,7 @@ import type { StreamHandler, StreamHandlerOptions, Topology } from '@libp2p/inte
 import type { Metrics } from '@libp2p/interface-metrics'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import type { KeyChain } from '@libp2p/interface-keychain'
+import type { ProgressEvent } from 'progress-events'
 
 /**
  * Once you have a libp2p instance, you can listen to several events it emits, so that you can be notified of relevant network events.
@@ -87,7 +88,14 @@ export interface LookupFunction {
 /**
  * Libp2p nodes implement this interface.
  */
-export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
+export interface Libp2p<
+  FindPeerProgressEvents extends ProgressEvent = ProgressEvent,
+  GetClosestPeersProgressEvents extends ProgressEvent = ProgressEvent,
+  ProvideProgressEvents extends ProgressEvent = ProgressEvent,
+  FindProvidersProgressEvents extends ProgressEvent = ProgressEvent,
+  PutProgressEvents extends ProgressEvent = ProgressEvent,
+  GetProgressEvents extends ProgressEvent = ProgressEvent
+> extends Startable, EventEmitter<Libp2pEvents> {
   /**
    * The PeerId is a unique identifier for a node on the network.
    *
@@ -138,7 +146,7 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * }
    * ```
    */
-  peerRouting: PeerRouting
+  peerRouting: PeerRouting<FindPeerProgressEvents, GetClosestPeersProgressEvents>
 
   /**
    * The content routing subsystem allows the user to find providers for content,
@@ -154,7 +162,7 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * }
    * ```
    */
-  contentRouting: ContentRouting
+  contentRouting: ContentRouting<ProvideProgressEvents, FindProvidersProgressEvents, PutProgressEvents, GetProgressEvents>
 
   /**
    * The keychain contains the keys used by the current node, and can create new
