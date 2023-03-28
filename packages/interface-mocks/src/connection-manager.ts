@@ -77,7 +77,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     this.started = false
   }
 
-  getConnections (peerId?: PeerId | Multiaddr[]): Connection[] {
+  getConnections (peerId?: PeerId): Connection[] {
     if (peerId != null) {
       return this.connections
         .filter(c => c.remotePeer.toString() === peerId.toString())
