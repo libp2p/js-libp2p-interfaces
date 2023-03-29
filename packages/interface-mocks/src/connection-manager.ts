@@ -1,7 +1,7 @@
 import { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interface-connection'
-import type { PeerId } from '@libp2p/interface-peer-id'
+import { isPeerId, PeerId } from '@libp2p/interface-peer-id'
 import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interface-connection-manager'
 import { connectionPair } from './connection.js'
 import { CodeError } from '@libp2p/interfaces/errors'
@@ -27,13 +27,11 @@ class MockNetwork {
   getNode (peerId: PeerId | Multiaddr []): MockNetworkComponents {
     if (Array.isArray(peerId) && peerId.length > 0) {
       peerId = peerIdFromString(peerId[0].getPeerId() ?? '')
-    } else {
-      peerId = peerId as PeerId
-    }
-
-    for (const components of this.components) {
-      if (peerId.equals(components.peerId)) {
-        return components
+    } else if (isPeerId(peerId)) {
+      for (const components of this.components) {
+        if (peerId.equals(components.peerId)) {
+          return components
+        }
       }
     }
 
@@ -97,11 +95,11 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
       throw new CodeError('Dialing multiaddrs not supported', 'ERR_NOT_SUPPORTED')
     }
 
-    let existingConnections
+    let existingConnections: Connection[] = []
 
-    if (Array.isArray(peerId)) {
+    if (Array.isArray(peerId) && peerId.length > 0) {
       existingConnections = this.getConnections(peerIdFromString(peerId[0].getPeerId() ?? ''))
-    } else {
+    } else if (isPeerId(peerId)) {
       existingConnections = this.getConnections(peerId)
     }
 
