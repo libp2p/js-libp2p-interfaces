@@ -97,7 +97,13 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
       throw new CodeError('Dialing multiaddrs not supported', 'ERR_NOT_SUPPORTED')
     }
 
-    const existingConnections = this.getConnections(peerId)
+    let existingConnections
+
+    if (Array.isArray(peerId)) {
+      existingConnections = this.getConnections(peerIdFromString(peerId[0].getPeerId() ?? ''))
+    } else {
+      existingConnections = this.getConnections(peerId)
+    }
 
     if (existingConnections.length > 0) {
       return existingConnections[0]
