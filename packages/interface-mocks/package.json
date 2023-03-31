@@ -163,7 +163,7 @@
     "it-map": "^2.0.0",
     "it-ndjson": "^1.0.0",
     "it-pair": "^2.0.2",
-    "it-pipe": "^2.0.3",
+    "it-pipe": "^3.0.0",
     "it-pushable": "^3.0.0",
     "it-stream-types": "^1.0.4",
     "merge-options": "^3.0.4",
