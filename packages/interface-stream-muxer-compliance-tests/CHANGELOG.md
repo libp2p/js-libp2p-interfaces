@@ -1,3 +1,10 @@
+## [@libp2p/interface-stream-muxer-compliance-tests-v6.0.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v6.0.8...@libp2p/interface-stream-muxer-compliance-tests-v6.0.9) (2023-04-04)
+
+
+### Dependencies
+
+* bump it-pipe from 2.0.5 to 3.0.1 ([#363](https://github.com/libp2p/js-libp2p-interfaces/issues/363)) ([625817b](https://github.com/libp2p/js-libp2p-interfaces/commit/625817b0bbbee276983c40a0604c8810a25abe8f))
+
 ## [@libp2p/interface-stream-muxer-compliance-tests-v6.0.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v6.0.7...@libp2p/interface-stream-muxer-compliance-tests-v6.0.8) (2023-03-07)
 
 

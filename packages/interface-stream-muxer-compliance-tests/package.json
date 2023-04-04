@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-stream-muxer-compliance-tests",
-  "version": "6.0.8",
+  "version": "6.0.9",
   "description": "Compliance tests for implementations of the libp2p Stream Muxer interface",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-stream-muxer-compliance-tests#readme",
