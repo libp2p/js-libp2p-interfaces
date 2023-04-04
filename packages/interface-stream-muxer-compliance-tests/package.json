@@ -142,7 +142,7 @@
     "it-drain": "^2.0.0",
     "it-map": "^2.0.0",
     "it-pair": "^2.0.2",
-    "it-pipe": "^2.0.3",
+    "it-pipe": "^3.0.1",
     "it-stream-types": "^1.0.4",
     "p-defer": "^4.0.0",
     "p-limit": "^4.0.0",
