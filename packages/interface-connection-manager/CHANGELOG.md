@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-manager-v1.4.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.3.8...@libp2p/interface-connection-manager-v1.4.0) (2023-04-05)
+
+
+### Features
+
+* support batch dialling ([#351](https://github.com/libp2p/js-libp2p-interfaces/issues/351)) ([e46b72b](https://github.com/libp2p/js-libp2p-interfaces/commit/e46b72b1731ff935a1f0d755cbaf6f3159060ed3))
+
 ## [@libp2p/interface-connection-manager-v1.3.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.3.7...@libp2p/interface-connection-manager-v1.3.8) (2023-03-17)
 
 
