@@ -1,13 +1,14 @@
 import { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interface-connection'
-import type { PeerId } from '@libp2p/interface-peer-id'
+import { isPeerId, PeerId } from '@libp2p/interface-peer-id'
 import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interface-connection-manager'
 import { connectionPair } from './connection.js'
 import { CodeError } from '@libp2p/interfaces/errors'
 import type { Registrar } from '@libp2p/interface-registrar'
 import type { PubSub } from '@libp2p/interface-pubsub'
 import { isMultiaddr, Multiaddr } from '@multiformats/multiaddr'
+import { peerIdFromString } from '@libp2p/peer-id'
 
 export interface MockNetworkComponents {
   peerId: PeerId
@@ -23,10 +24,14 @@ class MockNetwork {
     this.components.push(components)
   }
 
-  getNode (peerId: PeerId): MockNetworkComponents {
-    for (const components of this.components) {
-      if (peerId.equals(components.peerId)) {
-        return components
+  getNode (peerId: PeerId | Multiaddr []): MockNetworkComponents {
+    if (Array.isArray(peerId) && peerId.length > 0) {
+      peerId = peerIdFromString(peerId[0].getPeerId() ?? '')
+    } else if (isPeerId(peerId)) {
+      for (const components of this.components) {
+        if (peerId.equals(components.peerId)) {
+          return components
+        }
       }
     }
 
@@ -81,7 +86,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     return this.connections
   }
 
-  async openConnection (peerId: PeerId | Multiaddr): Promise<Connection> {
+  async openConnection (peerId: PeerId | Multiaddr | Multiaddr[]): Promise<Connection> {
     if (this.components == null) {
       throw new CodeError('Not initialized', 'ERR_NOT_INITIALIZED')
     }
@@ -90,7 +95,13 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
       throw new CodeError('Dialing multiaddrs not supported', 'ERR_NOT_SUPPORTED')
     }
 
-    const existingConnections = this.getConnections(peerId)
+    let existingConnections: Connection[] = []
+
+    if (Array.isArray(peerId) && peerId.length > 0) {
+      existingConnections = this.getConnections(peerIdFromString(peerId[0].getPeerId() ?? ''))
+    } else if (isPeerId(peerId)) {
+      existingConnections = this.getConnections(peerId)
+    }
 
     if (existingConnections.length > 0) {
       return existingConnections[0]

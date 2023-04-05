@@ -348,7 +348,7 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * await conn.close()
    * ```
    */
-  dial: (peer: PeerId | Multiaddr, options?: AbortOptions) => Promise<Connection>
+  dial: (peer: PeerId | Multiaddr | Multiaddr[], options?: AbortOptions) => Promise<Connection>
 
   /**
    * Dials to the provided peer and tries to handshake with the given protocols in order.
@@ -366,7 +366,7 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * pipe([1, 2, 3], stream, consume)
    * ```
    */
-  dialProtocol: (peer: PeerId | Multiaddr, protocols: string | string[], options?: AbortOptions) => Promise<Stream>
+  dialProtocol: (peer: PeerId | Multiaddr | Multiaddr[], protocols: string | string[], options?: AbortOptions) => Promise<Stream>
 
   /**
    * Attempts to gracefully close an open connection to the given peer. If the connection is not closed in the grace period, it will be forcefully closed.
