@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-manager-v1.5.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.4.1...@libp2p/interface-connection-manager-v1.5.0) (2023-04-11)
+
+
+### Features
+
+* add peer:prune event to connection manager ([#367](https://github.com/libp2p/js-libp2p-interfaces/issues/367)) ([45680c6](https://github.com/libp2p/js-libp2p-interfaces/commit/45680c614f082e1d02c5258559f3ee3b711e6a87))
+
 ## [@libp2p/interface-connection-manager-v1.4.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.4.0...@libp2p/interface-connection-manager-v1.4.1) (2023-04-11)
 
 
