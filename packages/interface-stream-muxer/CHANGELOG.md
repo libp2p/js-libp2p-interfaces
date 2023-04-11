@@ -1,3 +1,10 @@
+## [@libp2p/interface-stream-muxer-v3.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v3.0.5...@libp2p/interface-stream-muxer-v3.0.6) (2023-04-11)
+
+
+### Dependencies
+
+* update sibling dependencies ([b034810](https://github.com/libp2p/js-libp2p-interfaces/commit/b0348102e41dc18166e70063f4708a2b3544f4b6))
+
 ## [@libp2p/interface-stream-muxer-v3.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v3.0.4...@libp2p/interface-stream-muxer-v3.0.5) (2023-01-18)
 
 
