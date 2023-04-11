@@ -1,3 +1,15 @@
+## [@libp2p/interface-libp2p-v1.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.1.2...@libp2p/interface-libp2p-v1.2.0) (2023-04-11)
+
+
+### Features
+
+* support batch dialling ([#351](https://github.com/libp2p/js-libp2p-interfaces/issues/351)) ([e46b72b](https://github.com/libp2p/js-libp2p-interfaces/commit/e46b72b1731ff935a1f0d755cbaf6f3159060ed3))
+
+
+### Dependencies
+
+* update sibling dependencies ([b034810](https://github.com/libp2p/js-libp2p-interfaces/commit/b0348102e41dc18166e70063f4708a2b3544f4b6))
+
 ## [@libp2p/interface-libp2p-v1.1.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.1.1...@libp2p/interface-libp2p-v1.1.2) (2023-03-17)
 
 
