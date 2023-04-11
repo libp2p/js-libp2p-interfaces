@@ -1,3 +1,14 @@
+## [@libp2p/interface-connection-v4.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v3.1.1...@libp2p/interface-connection-v4.0.0) (2023-04-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove connection gater from interface-connection (#365)
+
+### Bug Fixes
+
+* remove connection gater from interface-connection ([#365](https://github.com/libp2p/js-libp2p-interfaces/issues/365)) ([1cc13d3](https://github.com/libp2p/js-libp2p-interfaces/commit/1cc13d3f0cbb9a82cdfca77af2a4deb5e20e8f6a))
+
 ## [@libp2p/interface-connection-v3.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v3.1.0...@libp2p/interface-connection-v3.1.1) (2023-03-17)
 
 
