@@ -165,7 +165,7 @@
     "it-pair": "^2.0.2",
     "it-pipe": "^3.0.1",
     "it-pushable": "^3.0.0",
-    "it-stream-types": "^1.0.4",
+    "it-stream-types": "^2.0.1",
     "merge-options": "^3.0.4",
     "uint8arraylist": "^2.1.2",
     "uint8arrays": "^4.0.2"
