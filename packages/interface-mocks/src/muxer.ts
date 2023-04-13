@@ -128,11 +128,13 @@ class MuxedStream {
           throw new CodeError('stream closed for writing', 'ERR_SINK_ENDED')
         }
 
-        source = abortableSource(source, anySignal([
+        const signal = anySignal([
           this.abortController.signal,
           this.resetController.signal,
           this.closeController.signal
-        ]))
+        ])
+
+        source = abortableSource(source, signal)
 
         try {
           if (this.type === 'initiator') {
@@ -195,6 +197,8 @@ class MuxedStream {
           this.input.end(err)
           onSinkEnd(err)
           return
+        } finally {
+          signal.clear()
         }
 
         this.log('sink ended')
