@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v9.3.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.1...@libp2p/interface-mocks-v9.3.2) (2023-04-13)
+
+
+### Dependencies
+
+* update any-signal to 4.x.x ([#369](https://github.com/libp2p/js-libp2p-interfaces/issues/369)) ([72be911](https://github.com/libp2p/js-libp2p-interfaces/commit/72be91176509f619e5d621463cb4ecc014fde0b7))
+
 ## [@libp2p/interface-mocks-v9.3.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.0...@libp2p/interface-mocks-v9.3.1) (2023-04-13)
 
 
