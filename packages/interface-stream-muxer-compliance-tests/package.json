@@ -138,7 +138,7 @@
     "abortable-iterator": "^4.0.2",
     "aegir": "^38.1.0",
     "delay": "^5.0.0",
-    "it-all": "^2.0.0",
+    "it-all": "^3.0.1",
     "it-drain": "^2.0.0",
     "it-map": "^2.0.0",
     "it-pair": "^2.0.2",
