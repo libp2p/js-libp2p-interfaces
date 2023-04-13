@@ -1,3 +1,10 @@
+## [@libp2p/interface-transport-compliance-tests-v3.0.11](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v3.0.10...@libp2p/interface-transport-compliance-tests-v3.0.11) (2023-04-13)
+
+
+### Dependencies
+
+* bump it-all from 2.0.1 to 3.0.1 ([#360](https://github.com/libp2p/js-libp2p-interfaces/issues/360)) ([1b439eb](https://github.com/libp2p/js-libp2p-interfaces/commit/1b439eb7503ed7e31e77f17ce0a685ea78d94442))
+
 ## [@libp2p/interface-transport-compliance-tests-v3.0.10](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-compliance-tests-v3.0.9...@libp2p/interface-transport-compliance-tests-v3.0.10) (2023-04-11)
 
 
