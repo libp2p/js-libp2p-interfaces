@@ -158,7 +158,7 @@
     "@libp2p/peer-id-factory": "^2.0.0",
     "@multiformats/multiaddr": "^12.0.0",
     "abortable-iterator": "^4.0.2",
-    "any-signal": "^3.0.1",
+    "any-signal": "^4.1.1",
     "it-handshake": "^4.0.0",
     "it-map": "^2.0.0",
     "it-ndjson": "^1.0.0",

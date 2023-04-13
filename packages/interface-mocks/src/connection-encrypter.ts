@@ -33,7 +33,7 @@ export function mockConnectionEncrypter (): ConnectionEncrypter {
       const remotePeer = peerIdFromBytes(remoteId.slice())
       shake.rest()
 
-      if (expectedPeer != null && !expectedPeer.equals(remotePeer)) {
+      if (expectedPeer?.equals(remotePeer) === false) {
         throw new UnexpectedPeerError()
       }
 
