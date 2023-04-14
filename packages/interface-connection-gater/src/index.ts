@@ -18,12 +18,12 @@ export interface ConnectionGater {
    * denyDialMultiaddr tests whether we're permitted to dial the specified
    * multiaddr for the given peer.
    *
-   * This is called by the dialer.connectToPeer implementation after it has
-   * resolved the peer's addrs, and prior to dialling each.
+   * This is called by the connection manager - if the peer id of the remote
+   * node is known it will be present in the multiaddr.
    *
    * Return true to prevent dialing the passed peer on the passed multiaddr.
    */
-  denyDialMultiaddr?: (peerId: PeerId, multiaddr: Multiaddr) => Promise<boolean>
+  denyDialMultiaddr: (multiaddr: Multiaddr) => Promise<boolean>
 
   /**
    * denyInboundConnection tests whether an incipient inbound connection is allowed.
