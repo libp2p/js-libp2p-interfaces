@@ -142,7 +142,7 @@
     "@libp2p/interface-connection": "^4.0.0",
     "@libp2p/interface-connection-encrypter": "^3.0.0",
     "@libp2p/interface-connection-gater": "^2.0.0",
-    "@libp2p/interface-connection-manager": "^1.0.0",
+    "@libp2p/interface-connection-manager": "^2.0.0",
     "@libp2p/interface-metrics": "^4.0.0",
     "@libp2p/interface-peer-discovery": "^1.0.0",
     "@libp2p/interface-peer-id": "^2.0.0",
