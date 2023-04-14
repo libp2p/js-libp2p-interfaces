@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-mocks",
-  "version": "9.3.4",
+  "version": "9.4.0",
   "description": "Mock implementations of several libp2p interfaces",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-mocks#readme",

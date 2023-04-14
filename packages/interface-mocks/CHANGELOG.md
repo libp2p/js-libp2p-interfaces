@@ -1,3 +1,11 @@
+## [@libp2p/interface-mocks-v9.4.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.4...@libp2p/interface-mocks-v9.4.0) (2023-04-14)
+
+
+### Features
+
+* expose get connection map method of connection manager ([#372](https://github.com/libp2p/js-libp2p-interfaces/issues/372)) ([fc7245b](https://github.com/libp2p/js-libp2p-interfaces/commit/fc7245b63764562f5ec66a5a0ba334caea80ed66))
+* expose get dial queue method of connection manager ([#371](https://github.com/libp2p/js-libp2p-interfaces/issues/371)) ([0c407aa](https://github.com/libp2p/js-libp2p-interfaces/commit/0c407aa0772c171bf6650e31fb20a3433df40b6b))
+
 ## [@libp2p/interface-mocks-v9.3.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.3...@libp2p/interface-mocks-v9.3.4) (2023-04-14)
 
 
