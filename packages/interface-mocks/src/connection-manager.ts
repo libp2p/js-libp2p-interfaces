@@ -90,7 +90,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
   getConnectionsMap (): PeerMap<Connection[]> {
     const map = new PeerMap<Connection[]>()
 
-    for (let conn of this.connections) {
+    for (const conn of this.connections) {
       const conns: Connection[] = map.get(conn.remotePeer) ?? []
       conns.push(conn)
 
