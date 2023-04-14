@@ -80,7 +80,7 @@ export interface PeerData {
   /**
    * Peer tags
    */
-  tags?: Record<string, TagOptions>
+  tags?: TagOptions[]
 
   /**
    * If this Peer has an RSA key, it's public key can be set with this property
@@ -192,6 +192,11 @@ export interface PeerStoreEvents {
 }
 
 export interface TagOptions {
+  /**
+   * A tag name
+   */
+  name: string
+
   /**
    * An optional tag value (1-100)
    */
