@@ -3,6 +3,7 @@ import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Connection, MultiaddrConnection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Multiaddr } from '@multiformats/multiaddr'
+import type { PeerMap } from '@libp2p/peer-collections'
 
 export interface ConnectionManagerEvents {
   /**
@@ -64,6 +65,17 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
    * ```
    */
   getConnections: (peerId?: PeerId) => Connection[]
+
+  /**
+   * Return a map of all connections with their associated PeerIds
+   *
+   * @example
+   *
+   * ```js
+   * const connectionsMap = libp2p.connectionManager.getConnectionsMap()
+   * ```
+   */
+  getConnectionsMap: () => PeerMap<Connection[]>
 
   /**
    * Open a connection to a remote peer
