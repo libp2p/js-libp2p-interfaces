@@ -2,7 +2,7 @@ import { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interface-connection'
 import { isPeerId, PeerId } from '@libp2p/interface-peer-id'
-import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interface-connection-manager'
+import type { ConnectionManager, ConnectionManagerEvents, PendingDial } from '@libp2p/interface-connection-manager'
 import { connectionPair } from './connection.js'
 import { CodeError } from '@libp2p/interfaces/errors'
 import type { Registrar } from '@libp2p/interface-registrar'
@@ -172,6 +172,10 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
 
   afterUpgradeInbound (): void {
 
+  }
+
+  getDialQueue (): PendingDial[] {
+    return []
   }
 }
 
