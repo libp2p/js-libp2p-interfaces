@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v9.3.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.3...@libp2p/interface-mocks-v9.3.4) (2023-04-14)
+
+
+### Dependencies
+
+* update sibling dependencies ([34b1627](https://github.com/libp2p/js-libp2p-interfaces/commit/34b1627458b2ada5e94e00cf4bcba41a77232090))
+
 ## [@libp2p/interface-mocks-v9.3.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.2...@libp2p/interface-mocks-v9.3.3) (2023-04-14)
 
 
