@@ -94,20 +94,3 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
    */
   afterUpgradeInbound: () => void
 }
-
-export interface Dialer {
-  /**
-   * Dial a peer or multiaddr, or multiple multiaddrs and return the promise of a connection
-   */
-  dial: (peer: PeerId | Multiaddr | Multiaddr[], options?: AbortOptions) => Promise<Connection>
-
-  /**
-   * Request `num` dial tokens. Only the returned number of dials may be attempted.
-   */
-  getTokens: (num: number) => number[]
-
-  /**
-   * After a dial attempt succeeds or fails, return the passed token to the pool
-   */
-  releaseToken: (token: number) => void
-}
