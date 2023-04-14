@@ -4,7 +4,7 @@ import type { MultiaddrConnection } from '@libp2p/interface-connection'
 
 export interface ConnectionGater {
   /**
-   * denyDialMultiaddr tests whether we're permitted to Dial the
+   * denyDialPeer tests whether we're permitted to Dial the
    * specified peer.
    *
    * This is called by the dialer.connectToPeer implementation before
@@ -16,14 +16,14 @@ export interface ConnectionGater {
 
   /**
    * denyDialMultiaddr tests whether we're permitted to dial the specified
-   * multiaddr for the given peer.
+   * multiaddr.
    *
    * This is called by the connection manager - if the peer id of the remote
    * node is known it will be present in the multiaddr.
    *
    * Return true to prevent dialing the passed peer on the passed multiaddr.
    */
-  denyDialMultiaddr: (multiaddr: Multiaddr) => Promise<boolean>
+  denyDialMultiaddr?: (multiaddr: Multiaddr) => Promise<boolean>
 
   /**
    * denyInboundConnection tests whether an incipient inbound connection is allowed.
