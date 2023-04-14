@@ -1,3 +1,14 @@
+## [@libp2p/interface-connection-manager-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.5.0...@libp2p/interface-connection-manager-v2.0.0) (2023-04-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* the Dialer interface has been removed
+
+### Bug Fixes
+
+* remove dialer interface from interface connection manager ([#364](https://github.com/libp2p/js-libp2p-interfaces/issues/364)) ([5fb8a34](https://github.com/libp2p/js-libp2p-interfaces/commit/5fb8a342150efbc8c0ac8b1ae76ec53dc9f60ee9))
+
 ## [@libp2p/interface-connection-manager-v1.5.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.4.1...@libp2p/interface-connection-manager-v1.5.0) (2023-04-11)
 
 
