@@ -49,9 +49,23 @@ export interface Peer {
 
 export interface PeerData {
   /**
-   * Peer's addresses containing its multiaddrs and metadata
+   * Peer's addresses containing its multiaddrs and metadata - multiaddrs
+   * passed here can be treated as certified if the `isCertifed` value is
+   * set to true.
+   *
+   * If both addresses and multiaddrs are specified they will be merged
+   * together with entries in addresses taking precedence.
    */
-  addresses?: Multiaddr[]
+  addresses?: Address[]
+
+  /**
+   * Peer's multiaddrs - any multiaddrs passed here will be treated as
+   * uncertified.
+   *
+   * If both addresses and multiaddrs are specified they will be merged
+   * together with entries in addresses taking precedence.
+   */
+  multiaddrs?: Multiaddr[]
 
   /**
    * Peer's supported protocols
@@ -71,7 +85,7 @@ export interface PeerData {
   /**
    * If this Peer has an RSA key, it's public key can be set with this property
    */
-  pubKey?: Uint8Array
+  publicKey?: Uint8Array
 
   /**
    * The last peer record envelope received
@@ -288,7 +302,7 @@ export interface PeerStore extends EventEmitter<PeerStoreEvents> {
    * })
    * ```
    */
-  set: (id: PeerId, data: PeerData) => Promise<void>
+  save: (id: PeerId, data: PeerData) => Promise<void>
 
   /**
    * Adds a peer to the peer store, merging any existing data.
@@ -296,10 +310,10 @@ export interface PeerStore extends EventEmitter<PeerStoreEvents> {
    * @example
    *
    * ```js
-   * await peerStore.update(peerId, {
+   * await peerStore.merge(peerId, {
    *   multiaddrs
    * })
    * ```
    */
-  update: (id: PeerId, data: PeerData) => Promise<void>
+  merge: (id: PeerId, data: PeerData) => Promise<void>
 }
