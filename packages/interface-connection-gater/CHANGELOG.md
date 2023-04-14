@@ -1,3 +1,14 @@
+## [@libp2p/interface-connection-gater-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-gater-v1.0.3...@libp2p/interface-connection-gater-v2.0.0) (2023-04-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* the peer id argument has been removed from the `denyDialMultiaddr` method of the connection gater
+
+### Bug Fixes
+
+* remove peer id argument from deny dial multiaddr ([#366](https://github.com/libp2p/js-libp2p-interfaces/issues/366)) ([aa3e000](https://github.com/libp2p/js-libp2p-interfaces/commit/aa3e0008a94d943df961da7756bf4cf6862bd4c1))
+
 ## [@libp2p/interface-connection-gater-v1.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-gater-v1.0.2...@libp2p/interface-connection-gater-v1.0.3) (2023-04-11)
 
 
