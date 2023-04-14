@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-gater-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-gater-v2.0.0...@libp2p/interface-connection-gater-v2.0.1) (2023-04-14)
+
+
+### Bug Fixes
+
+* make deny dial multiaddr optional ([#370](https://github.com/libp2p/js-libp2p-interfaces/issues/370)) ([6bf7a7e](https://github.com/libp2p/js-libp2p-interfaces/commit/6bf7a7e9fe2a77a43c5ddf114c26c4978c579d46))
+
 ## [@libp2p/interface-connection-gater-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-gater-v1.0.3...@libp2p/interface-connection-gater-v2.0.0) (2023-04-14)
 
 
