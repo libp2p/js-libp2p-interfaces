@@ -1,3 +1,17 @@
+## [@libp2p/interface-connection-encrypter-compliance-tests-v4.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-compliance-tests-v4.0.4...@libp2p/interface-connection-encrypter-compliance-tests-v4.0.5) (2023-04-13)
+
+
+### Dependencies
+
+* bump it-all from 2.0.1 to 3.0.1 ([#360](https://github.com/libp2p/js-libp2p-interfaces/issues/360)) ([1b439eb](https://github.com/libp2p/js-libp2p-interfaces/commit/1b439eb7503ed7e31e77f17ce0a685ea78d94442))
+
+## [@libp2p/interface-connection-encrypter-compliance-tests-v4.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-compliance-tests-v4.0.3...@libp2p/interface-connection-encrypter-compliance-tests-v4.0.4) (2023-04-11)
+
+
+### Dependencies
+
+* update sibling dependencies ([b034810](https://github.com/libp2p/js-libp2p-interfaces/commit/b0348102e41dc18166e70063f4708a2b3544f4b6))
+
 ## [@libp2p/interface-connection-encrypter-compliance-tests-v4.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-encrypter-compliance-tests-v4.0.2...@libp2p/interface-connection-encrypter-compliance-tests-v4.0.3) (2023-04-04)
 
 

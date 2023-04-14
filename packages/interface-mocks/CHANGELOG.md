@@ -1,3 +1,43 @@
+## [@libp2p/interface-mocks-v9.3.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.3...@libp2p/interface-mocks-v9.3.4) (2023-04-14)
+
+
+### Dependencies
+
+* update sibling dependencies ([34b1627](https://github.com/libp2p/js-libp2p-interfaces/commit/34b1627458b2ada5e94e00cf4bcba41a77232090))
+
+## [@libp2p/interface-mocks-v9.3.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.2...@libp2p/interface-mocks-v9.3.3) (2023-04-14)
+
+
+### Dependencies
+
+* update sibling dependencies ([3e743bb](https://github.com/libp2p/js-libp2p-interfaces/commit/3e743bba3d8ebd081907e74f02728a1e8476a147))
+
+## [@libp2p/interface-mocks-v9.3.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.1...@libp2p/interface-mocks-v9.3.2) (2023-04-13)
+
+
+### Dependencies
+
+* update any-signal to 4.x.x ([#369](https://github.com/libp2p/js-libp2p-interfaces/issues/369)) ([72be911](https://github.com/libp2p/js-libp2p-interfaces/commit/72be91176509f619e5d621463cb4ecc014fde0b7))
+
+## [@libp2p/interface-mocks-v9.3.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.0...@libp2p/interface-mocks-v9.3.1) (2023-04-13)
+
+
+### Dependencies
+
+* bump it-map from 2.0.1 to 3.0.2 ([#361](https://github.com/libp2p/js-libp2p-interfaces/issues/361)) ([c016269](https://github.com/libp2p/js-libp2p-interfaces/commit/c01626912eae85969bf2b1027b68a5242a4ae4d4))
+
+## [@libp2p/interface-mocks-v9.3.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.2.4...@libp2p/interface-mocks-v9.3.0) (2023-04-11)
+
+
+### Features
+
+* support batch dialling ([#351](https://github.com/libp2p/js-libp2p-interfaces/issues/351)) ([e46b72b](https://github.com/libp2p/js-libp2p-interfaces/commit/e46b72b1731ff935a1f0d755cbaf6f3159060ed3))
+
+
+### Dependencies
+
+* update sibling dependencies ([b034810](https://github.com/libp2p/js-libp2p-interfaces/commit/b0348102e41dc18166e70063f4708a2b3544f4b6))
+
 ## [@libp2p/interface-mocks-v9.2.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.2.3...@libp2p/interface-mocks-v9.2.4) (2023-04-04)
 
 
