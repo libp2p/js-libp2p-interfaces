@@ -4,6 +4,15 @@ import type { Connection, MultiaddrConnection } from '@libp2p/interface-connecti
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Multiaddr } from '@multiformats/multiaddr'
 
+export type PendingDialStatus = 'queued' | 'active' | 'error' | 'success'
+
+export interface PendingDial {
+  id: string
+  status: PendingDialStatus
+  peerId?: PeerId
+  multiaddrs: Multiaddr[]
+}
+
 export interface ConnectionManagerEvents {
   /**
    * This event will be triggered any time a new Connection is established to another peer.
@@ -93,4 +102,15 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
    * Invoked after upgrading a multiaddr connection has finished
    */
   afterUpgradeInbound: () => void
+
+  /**
+   * Return the list of in-progress or queued dials
+   *
+   * @example
+   *
+   * ```js
+   * const dials = libp2p.connectionManager.getDialQueue()
+   * ```
+   */
+  getDialQueue: () => PendingDial[]
 }
