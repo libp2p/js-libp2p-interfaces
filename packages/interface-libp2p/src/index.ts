@@ -75,6 +75,21 @@ export interface Libp2pEvents {
    * ```
    */
   'peer:disconnect': CustomEvent<Connection>
+
+  /**
+   * This event is triggered when the list of multiaddrs that this node listens
+   * on changes - for example a transport started listening on a new address.
+   *
+   * @example
+   *
+   * ```js
+   * libp2p.addEventListener('multiaddrs:change', (event) => {
+   *   const newAddresses = event.detail
+   *   // ...
+   * })
+   * ```
+   */
+  'multiaddrs:change': CustomEvent<Multiaddr[]>
 }
 
 /**
