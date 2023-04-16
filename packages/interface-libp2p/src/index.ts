@@ -29,12 +29,15 @@ import type { StreamHandler, StreamHandlerOptions, Topology } from '@libp2p/inte
 import type { Metrics } from '@libp2p/interface-metrics'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import type { KeyChain } from '@libp2p/interface-keychain'
+import type { Listener } from '@libp2p/interface-transport'
 
 /**
  * Once you have a libp2p instance, you can listen to several events it emits, so that you can be notified of relevant network events.
  */
 export interface Libp2pEvents {
   /**
+   * This event is dispatched when a new network peer is discovered.
+   *
    * @example
    *
    * ```js
@@ -47,7 +50,7 @@ export interface Libp2pEvents {
   'peer:discovery': CustomEvent<PeerInfo>
 
   /**
-   * This event will be triggered anytime a new Connection is established to another peer.
+   * This event will be dispatched anytime a new Connection is established to another peer.
    *
    * @example
    *
@@ -61,7 +64,7 @@ export interface Libp2pEvents {
   'peer:connect': CustomEvent<Connection>
 
   /**
-   * This event will be triggered anytime we are disconnected from another peer, regardless of
+   * This event will be dispatched anytime we are disconnected from another peer, regardless of
    * the circumstances of that disconnection. If we happen to have multiple connections to a
    * peer, this event will **only** be triggered when the last connection is closed.
    *
@@ -77,7 +80,20 @@ export interface Libp2pEvents {
   'peer:disconnect': CustomEvent<Connection>
 
   /**
-   * This event is triggered when the list of multiaddrs that this node listens
+   * This event is dispatched when the connection manager has more than the
+   * configured allowable max connections and has closed some connections to
+   * bring the node back under the limit.
+   */
+  'peer:prune': CustomEvent<PeerId[]>
+
+  /**
+   * This event is dispatched when the identify protocol has completed for
+   * a peer or the peer has pushed an identify update.
+   */
+  'peer:identify': CustomEvent<PeerId>
+
+  /**
+   * This event is dispatched when the list of multiaddrs that this node listens
    * on changes - for example a transport started listening on a new address.
    *
    * @example
@@ -90,6 +106,48 @@ export interface Libp2pEvents {
    * ```
    */
   'multiaddrs:change': CustomEvent<Multiaddr[]>
+
+  /**
+   * This event is dispatched when the list of protocols that this node supports
+   * changes - for example a new protocol handler was registered.
+   *
+   * @example
+   *
+   * ```js
+   * libp2p.addEventListener('protocols:change', (event) => {
+   *   const newAddresses = event.detail
+   *   // ...
+   * })
+   * ```
+   */
+  'protocols:change': CustomEvent<string[]>
+
+  /**
+   * This event is dispatched when a transport begins listening on a new address
+   */
+  'listener:listening': CustomEvent<Listener>
+
+  /**
+   * This event is dispatched when a transport tops listening on an address
+   */
+  'listener:close': CustomEvent<Listener>
+
+  /**
+   * This event is dispatched when the circuit relay service is advertised
+   * to network peers successfully
+   */
+  'relay:advert:success': CustomEvent
+
+  /**
+   * This event is dispatched when an error occurs while advertising the circuit
+   * relay service to network peers
+   */
+  'relay:advert:error': CustomEvent<Error>
+
+  /**
+   * This event is dispatched when a new relay is discovered on the network
+   */
+  'relay:discover': CustomEvent<PeerId>
 }
 
 /**
