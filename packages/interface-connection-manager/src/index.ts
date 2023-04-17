@@ -3,6 +3,16 @@ import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Connection, MultiaddrConnection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Multiaddr } from '@multiformats/multiaddr'
+import type { PeerMap } from '@libp2p/peer-collections'
+
+export type PendingDialStatus = 'queued' | 'active' | 'error' | 'success'
+
+export interface PendingDial {
+  id: string
+  status: PendingDialStatus
+  peerId?: PeerId
+  multiaddrs: Multiaddr[]
+}
 
 export interface ConnectionManagerEvents {
   /**
@@ -66,6 +76,17 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
   getConnections: (peerId?: PeerId) => Connection[]
 
   /**
+   * Return a map of all connections with their associated PeerIds
+   *
+   * @example
+   *
+   * ```js
+   * const connectionsMap = libp2p.connectionManager.getConnectionsMap()
+   * ```
+   */
+  getConnectionsMap: () => PeerMap<Connection[]>
+
+  /**
    * Open a connection to a remote peer
    *
    * @example
@@ -93,21 +114,15 @@ export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents>
    * Invoked after upgrading a multiaddr connection has finished
    */
   afterUpgradeInbound: () => void
-}
-
-export interface Dialer {
-  /**
-   * Dial a peer or multiaddr, or multiple multiaddrs and return the promise of a connection
-   */
-  dial: (peer: PeerId | Multiaddr | Multiaddr[], options?: AbortOptions) => Promise<Connection>
 
   /**
-   * Request `num` dial tokens. Only the returned number of dials may be attempted.
+   * Return the list of in-progress or queued dials
+   *
+   * @example
+   *
+   * ```js
+   * const dials = libp2p.connectionManager.getDialQueue()
+   * ```
    */
-  getTokens: (num: number) => number[]
-
-  /**
-   * After a dial attempt succeeds or fails, return the passed token to the pool
-   */
-  releaseToken: (token: number) => void
+  getDialQueue: () => PendingDial[]
 }

@@ -1,3 +1,22 @@
+## [@libp2p/interface-connection-manager-v2.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v2.0.0...@libp2p/interface-connection-manager-v2.1.0) (2023-04-14)
+
+
+### Features
+
+* expose get connection map method of connection manager ([#372](https://github.com/libp2p/js-libp2p-interfaces/issues/372)) ([fc7245b](https://github.com/libp2p/js-libp2p-interfaces/commit/fc7245b63764562f5ec66a5a0ba334caea80ed66))
+* expose get dial queue method of connection manager ([#371](https://github.com/libp2p/js-libp2p-interfaces/issues/371)) ([0c407aa](https://github.com/libp2p/js-libp2p-interfaces/commit/0c407aa0772c171bf6650e31fb20a3433df40b6b))
+
+## [@libp2p/interface-connection-manager-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.5.0...@libp2p/interface-connection-manager-v2.0.0) (2023-04-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* the Dialer interface has been removed
+
+### Bug Fixes
+
+* remove dialer interface from interface connection manager ([#364](https://github.com/libp2p/js-libp2p-interfaces/issues/364)) ([5fb8a34](https://github.com/libp2p/js-libp2p-interfaces/commit/5fb8a342150efbc8c0ac8b1ae76ec53dc9f60ee9))
+
 ## [@libp2p/interface-connection-manager-v1.5.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.4.1...@libp2p/interface-connection-manager-v1.5.0) (2023-04-11)
 
 

@@ -2,13 +2,14 @@ import { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interface-connection'
 import { isPeerId, PeerId } from '@libp2p/interface-peer-id'
-import type { ConnectionManager, ConnectionManagerEvents } from '@libp2p/interface-connection-manager'
+import type { ConnectionManager, ConnectionManagerEvents, PendingDial } from '@libp2p/interface-connection-manager'
 import { connectionPair } from './connection.js'
 import { CodeError } from '@libp2p/interfaces/errors'
 import type { Registrar } from '@libp2p/interface-registrar'
 import type { PubSub } from '@libp2p/interface-pubsub'
 import { isMultiaddr, Multiaddr } from '@multiformats/multiaddr'
 import { peerIdFromString } from '@libp2p/peer-id'
+import { PeerMap } from '@libp2p/peer-collections'
 
 export interface MockNetworkComponents {
   peerId: PeerId
@@ -84,6 +85,19 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     }
 
     return this.connections
+  }
+
+  getConnectionsMap (): PeerMap<Connection[]> {
+    const map = new PeerMap<Connection[]>()
+
+    for (const conn of this.connections) {
+      const conns: Connection[] = map.get(conn.remotePeer) ?? []
+      conns.push(conn)
+
+      map.set(conn.remotePeer, conns)
+    }
+
+    return map
   }
 
   async openConnection (peerId: PeerId | Multiaddr | Multiaddr[]): Promise<Connection> {
@@ -172,6 +186,10 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
 
   afterUpgradeInbound (): void {
 
+  }
+
+  getDialQueue (): PendingDial[] {
+    return []
   }
 }
 
