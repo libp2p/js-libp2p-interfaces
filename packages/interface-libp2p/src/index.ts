@@ -18,13 +18,11 @@ import type { AbortOptions } from '@libp2p/interfaces'
 import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { DualDHT } from '@libp2p/interface-dht'
 import type { PeerStore } from '@libp2p/interface-peer-store'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Connection, Stream } from '@libp2p/interface-connection'
 import type { PeerRouting } from '@libp2p/interface-peer-routing'
 import type { ContentRouting } from '@libp2p/interface-content-routing'
-import type { PubSub } from '@libp2p/interface-pubsub'
 import type { StreamHandler, StreamHandlerOptions, Topology } from '@libp2p/interface-registrar'
 import type { Metrics } from '@libp2p/interface-metrics'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
@@ -78,16 +76,31 @@ export interface Libp2pEvents {
 }
 
 /**
- * Fetch service lookup function
+ * A map of user defined services available on the libp2p node via the
+ * `services` key
+ *
+ * @example
+ *
+ * ```js
+ * const node = await createLibp2p({
+ *   // ...other options
+ *   services: {
+ *     myService: myService({
+ *       // ...service options
+ *     })
+ *   }
+ * })
+ *
+ * // invoke methods on the service
+ * node.services.myService.anOperation()
+ * ```
  */
-export interface LookupFunction {
-  (key: string): Promise<Uint8Array | null>
-}
+export type ServiceMap = Record<string, unknown>
 
 /**
  * Libp2p nodes implement this interface.
  */
-export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
+export interface Libp2p<T extends ServiceMap = {}> extends Startable, EventEmitter<Libp2pEvents> {
   /**
    * The PeerId is a unique identifier for a node on the network.
    *
@@ -177,7 +190,7 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * @example
    *
    * ```js
-   * const metric = libp2p.registerMetric({
+   * const metric = libp2p.metrics.registerMetric({
    *   'my-metric'
    * })
    *
@@ -186,98 +199,6 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * ```
    */
   metrics?: Metrics
-
-  /**
-   * The pubsub component implements a distributed [Publish-subscribe](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern)
-   * network made up of libp2p nodes listening on various topics.
-   *
-   * @example
-   *
-   * ```js
-   * libp2p.pubsub.addEventListener('message', (event) => {
-   *   // ...
-   * })
-   * libp2p.pubsub.subscribe('my-topic')
-   * ```
-   */
-  pubsub: PubSub
-
-  /**
-   * The [DHT](https://en.wikipedia.org/wiki/Distributed_hash_table) is used by
-   * libp2p to store and find values such as provider records and also to discover
-   * information about peers.
-   *
-   * @example
-   *
-   * ```js
-   * for await (const event of libp2p.dht.findPeer(peerId)) {
-   *   // ...
-   * }
-   * ```
-   */
-  dht: DualDHT
-
-  /**
-   * The fetch service allows registering and unregistering functions that supply
-   * values for fetch queries - see the [fetch spec](https://github.com/libp2p/specs/tree/master/fetch).
-   */
-  fetchService: {
-    /**
-     * Registers a new lookup callback that can map keys to values, for a given set of keys that
-     * share the same prefix
-     *
-     * @example
-     *
-     * ```js
-     * libp2p.fetchService.registerLookupFunction('/prefix', (key) => { ... })
-     * ```
-     */
-    registerLookupFunction: (prefix: string, lookup: LookupFunction) => void
-
-    /**
-     * Registers a new lookup callback that can map keys to values, for a given set of keys that
-     * share the same prefix.
-     *
-     * @example
-     *
-     * ```js
-     * libp2p.fetchService.unregisterLookupFunction('/prefix')
-     * ```
-     */
-    unregisterLookupFunction: (prefix: string, lookup?: LookupFunction) => void
-  }
-
-  /**
-   * The identify service supplies information about this node on request by network peers - see
-   * this [identify spec](https://github.com/libp2p/specs/blob/master/identify/README.md)
-   */
-  identifyService: {
-    host: {
-      /**
-       * Specifies the supported protocol version
-       *
-       * @example
-       *
-       * ```js
-       * libp2p.identifyService.host.protocolVersion
-       * // ipfs/0.1.0
-       * ```
-       */
-      protocolVersion: string
-
-      /**
-       * Specifies the supported protocol version
-       *
-       * @example
-       *
-       * ```js
-       * libp2p.identifyService.host.agentVersion
-       * // helia/1.0.0
-       * ```
-       */
-      agentVersion: string
-    }
-  }
 
   /**
    * Get a deduplicated list of peer advertising multiaddrs by concatenating
@@ -449,30 +370,14 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
   unregister: (id: string) => void
 
   /**
-   * Pings the given peer in order to obtain the operation latency
-   *
-   * @example
-   *
-   * ```js
-   * const latency = await libp2p.ping(otherPeerId)
-   * ```
-   */
-  ping: (peer: PeerId | Multiaddr, options?: AbortOptions) => Promise<number>
-
-  /**
-   * Sends a request to fetch the value associated with the given key from the given peer.
-   *
-   * @example
-   *
-   * ```js
-   * const value = await libp2p.fetch(otherPeerId, '/some/key')
-   * ```
-   */
-  fetch: (peer: PeerId | Multiaddr, key: string, options?: AbortOptions) => Promise<Uint8Array | null>
-
-  /**
    * Returns the public key for the passed PeerId. If the PeerId is of the 'RSA' type
    * this may mean searching the DHT if the key is not present in the KeyStore.
+   * A set of user defined services
    */
   getPublicKey: (peer: PeerId, options?: AbortOptions) => Promise<Uint8Array>
+
+  /**
+   * A set of user defined services
+   */
+  services: T
 }
