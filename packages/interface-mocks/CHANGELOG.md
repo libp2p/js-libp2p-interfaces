@@ -1,3 +1,22 @@
+## [@libp2p/interface-mocks-v10.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.4.0...@libp2p/interface-mocks-v10.0.0) (2023-04-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump it-stream-types from 1.0.5 to 2.0.1 (#362)
+
+### Dependencies
+
+* bump it-stream-types from 1.0.5 to 2.0.1 ([#362](https://github.com/libp2p/js-libp2p-interfaces/issues/362)) ([cdc7747](https://github.com/libp2p/js-libp2p-interfaces/commit/cdc774792beead63e0ded96bd6c23de0335a49e3))
+* update sibling dependencies ([4972cc6](https://github.com/libp2p/js-libp2p-interfaces/commit/4972cc6c4c43319730305b58f329d6cf4591517a))
+* update sibling dependencies ([a5b7b33](https://github.com/libp2p/js-libp2p-interfaces/commit/a5b7b33dccee52d03fce788d2876a398d6fd6d99))
+* update sibling dependencies ([99a862b](https://github.com/libp2p/js-libp2p-interfaces/commit/99a862baed66d4e83ba006a70c33561855c9682e))
+* update sibling dependencies ([e95dcc2](https://github.com/libp2p/js-libp2p-interfaces/commit/e95dcc28f0a8b42457a44155eb0dfb3d813b03c8))
+* update sibling dependencies ([3d23367](https://github.com/libp2p/js-libp2p-interfaces/commit/3d233676a17299bfa1b59d309543598176826523))
+* update sibling dependencies ([2b9ddda](https://github.com/libp2p/js-libp2p-interfaces/commit/2b9ddda88d2655d389bf5142f7131f333ab9f780))
+* update sibling dependencies ([bed9f4c](https://github.com/libp2p/js-libp2p-interfaces/commit/bed9f4c7b7044e974a70678762a51e79e018cf9b))
+* update sibling dependencies ([2f52a28](https://github.com/libp2p/js-libp2p-interfaces/commit/2f52a284b59c0a88b040f86da1f5d3f044727f2c))
+
 ## [@libp2p/interface-mocks-v9.4.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.4...@libp2p/interface-mocks-v9.4.0) (2023-04-14)
 
 
