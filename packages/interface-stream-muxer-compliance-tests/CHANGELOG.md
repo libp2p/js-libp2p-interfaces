@@ -1,3 +1,10 @@
+## [@libp2p/interface-stream-muxer-compliance-tests-v7.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v7.0.0...@libp2p/interface-stream-muxer-compliance-tests-v7.0.1) (2023-04-18)
+
+
+### Dependencies
+
+* update abortable iterator to 5.x.x ([#379](https://github.com/libp2p/js-libp2p-interfaces/issues/379)) ([d405e5b](https://github.com/libp2p/js-libp2p-interfaces/commit/d405e5b5db624d97f47588ef55c379debccfd160))
+
 ## [@libp2p/interface-stream-muxer-compliance-tests-v7.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v6.0.12...@libp2p/interface-stream-muxer-compliance-tests-v7.0.0) (2023-04-18)
 
 
