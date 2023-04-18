@@ -136,7 +136,7 @@
     "@libp2p/interface-connection-manager": "^2.0.0",
     "@libp2p/interface-mocks": "^9.0.0",
     "@libp2p/interface-peer-id": "^2.0.0",
-    "@libp2p/interface-pubsub": "^3.0.0",
+    "@libp2p/interface-pubsub": "^4.0.0",
     "@libp2p/interface-registrar": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@libp2p/peer-id-factory": "^2.0.0",

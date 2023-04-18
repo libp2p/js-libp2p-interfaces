@@ -141,7 +141,7 @@
     "@libp2p/interface-peer-info": "^1.0.0",
     "@libp2p/interface-peer-routing": "^1.0.0",
     "@libp2p/interface-peer-store": "^1.0.0",
-    "@libp2p/interface-pubsub": "^3.0.0",
+    "@libp2p/interface-pubsub": "^4.0.0",
     "@libp2p/interface-registrar": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@multiformats/multiaddr": "^12.0.0"

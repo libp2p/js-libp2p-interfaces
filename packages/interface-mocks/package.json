@@ -147,7 +147,7 @@
     "@libp2p/interface-peer-discovery": "^1.0.0",
     "@libp2p/interface-peer-id": "^2.0.0",
     "@libp2p/interface-peer-info": "^1.0.0",
-    "@libp2p/interface-pubsub": "^3.0.0",
+    "@libp2p/interface-pubsub": "^4.0.0",
     "@libp2p/interface-registrar": "^2.0.0",
     "@libp2p/interface-stream-muxer": "^3.0.0",
     "@libp2p/interface-transport": "^2.0.0",
