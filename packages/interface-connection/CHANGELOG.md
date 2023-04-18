@@ -1,3 +1,14 @@
+## [@libp2p/interface-connection-v5.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v4.0.0...@libp2p/interface-connection-v5.0.0) (2023-04-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump it-stream-types from 1.0.5 to 2.0.1 (#362)
+
+### Dependencies
+
+* bump it-stream-types from 1.0.5 to 2.0.1 ([#362](https://github.com/libp2p/js-libp2p-interfaces/issues/362)) ([cdc7747](https://github.com/libp2p/js-libp2p-interfaces/commit/cdc774792beead63e0ded96bd6c23de0335a49e3))
+
 ## [@libp2p/interface-connection-v4.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v3.1.1...@libp2p/interface-connection-v4.0.0) (2023-04-11)
 
 
