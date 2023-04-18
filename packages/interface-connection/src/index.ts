@@ -72,7 +72,7 @@ export interface StreamStat {
  * It may be encrypted and multiplexed depending on the
  * configuration of the nodes.
  */
-export interface Stream extends Duplex<AsyncGenerator<Uint8ArrayList>, Source<Uint8ArrayList | Uint8Array>> {
+export interface Stream extends Duplex<AsyncGenerator<Uint8ArrayList>, Source<Uint8ArrayList | Uint8Array>, Promise<void>> {
   /**
    * Closes the stream for **reading** *and* **writing**.
    *
