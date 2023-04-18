@@ -1,3 +1,15 @@
+## [@libp2p/interface-stream-muxer-v4.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v3.0.6...@libp2p/interface-stream-muxer-v4.0.0) (2023-04-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump it-stream-types from 1.0.5 to 2.0.1 (#362)
+
+### Dependencies
+
+* bump it-stream-types from 1.0.5 to 2.0.1 ([#362](https://github.com/libp2p/js-libp2p-interfaces/issues/362)) ([cdc7747](https://github.com/libp2p/js-libp2p-interfaces/commit/cdc774792beead63e0ded96bd6c23de0335a49e3))
+* update sibling dependencies ([2f52a28](https://github.com/libp2p/js-libp2p-interfaces/commit/2f52a284b59c0a88b040f86da1f5d3f044727f2c))
+
 ## [@libp2p/interface-stream-muxer-v3.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v3.0.5...@libp2p/interface-stream-muxer-v3.0.6) (2023-04-11)
 
 
