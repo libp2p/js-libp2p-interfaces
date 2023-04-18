@@ -9,7 +9,7 @@ import type { Transform, Source } from 'it-stream-types'
 import map from 'it-map'
 
 // A basic transform that does nothing to the data
-const transform = <T>(): Transform<T, T> => {
+const transform = <T>(): Transform<Source<T>, AsyncGenerator<T>> => {
   return (source: Source<T>) => (async function * () {
     for await (const chunk of source) {
       yield chunk

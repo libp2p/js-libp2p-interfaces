@@ -2,7 +2,7 @@ import { peerIdFromString } from '@libp2p/peer-id'
 import { pipe } from 'it-pipe'
 import { duplexPair } from 'it-pair/duplex'
 import type { MultiaddrConnection, Connection, Stream, ConnectionStat, Direction } from '@libp2p/interface-connection'
-import type { Duplex } from 'it-stream-types'
+import type { Duplex, Source } from 'it-stream-types'
 import { mockMuxer } from './muxer.js'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import { mockMultiaddrConnection } from './multiaddr-connection.js'
@@ -79,7 +79,7 @@ class MockConnection implements Connection {
     }
 
     const id = `${Math.random()}`
-    const stream: Stream = await this.muxer.newStream(id)
+    const stream = await this.muxer.newStream(id)
     const result = await mss.select(stream, protocols, options)
 
     const streamWithProtocol: Stream = {
@@ -170,7 +170,7 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
   return connection
 }
 
-export function mockStream (stream: Duplex<Uint8ArrayList, Uint8ArrayList | Uint8Array>): Stream {
+export function mockStream (stream: Duplex<AsyncGenerator<Uint8ArrayList>, Source<Uint8ArrayList | Uint8Array>>): Stream {
   return {
     ...stream,
     close: () => {},
