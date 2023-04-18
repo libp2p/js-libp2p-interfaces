@@ -133,7 +133,7 @@
   },
   "dependencies": {
     "@libp2p/interface-compliance-tests": "^3.0.0",
-    "@libp2p/interface-connection": "^4.0.0",
+    "@libp2p/interface-connection": "^5.0.0",
     "@libp2p/interface-connection-encrypter": "^3.0.0",
     "@libp2p/interface-peer-id": "^2.0.0",
     "@libp2p/peer-id-factory": "^2.0.0",
