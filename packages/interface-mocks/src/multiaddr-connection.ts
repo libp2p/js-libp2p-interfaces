@@ -6,7 +6,7 @@ import type { Duplex } from 'it-stream-types'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Multiaddr } from '@multiformats/multiaddr'
 
-export function mockMultiaddrConnection (source: Duplex<Uint8Array> & Partial<MultiaddrConnection>, peerId: PeerId): MultiaddrConnection {
+export function mockMultiaddrConnection (source: Duplex<AsyncGenerator<Uint8Array>> & Partial<MultiaddrConnection>, peerId: PeerId): MultiaddrConnection {
   const maConn: MultiaddrConnection = {
     async close () {
 

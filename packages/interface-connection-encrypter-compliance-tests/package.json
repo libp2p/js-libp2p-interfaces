@@ -142,7 +142,7 @@
     "it-all": "^3.0.1",
     "it-pair": "^2.0.2",
     "it-pipe": "^3.0.1",
-    "it-stream-types": "^1.0.4",
+    "it-stream-types": "^2.0.1",
     "uint8arrays": "^4.0.2"
   },
   "typedoc": {
