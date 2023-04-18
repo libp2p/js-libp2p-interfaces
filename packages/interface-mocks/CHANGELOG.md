@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v10.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v10.0.0...@libp2p/interface-mocks-v10.0.1) (2023-04-18)
+
+
+### Bug Fixes
+
+* specify stream sink return type ([#378](https://github.com/libp2p/js-libp2p-interfaces/issues/378)) ([e0641fc](https://github.com/libp2p/js-libp2p-interfaces/commit/e0641fcc2f2a6562e7f7d8e064ebd98c5cc6dccb))
+
 ## [@libp2p/interface-mocks-v10.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.4.0...@libp2p/interface-mocks-v10.0.0) (2023-04-18)
 
 
