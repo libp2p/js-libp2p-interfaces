@@ -134,7 +134,7 @@
   "dependencies": {
     "@libp2p/interface-compliance-tests": "^3.0.0",
     "@libp2p/interface-connection": "^5.0.0",
-    "@libp2p/interface-stream-muxer": "^3.0.0",
+    "@libp2p/interface-stream-muxer": "^4.0.0",
     "abortable-iterator": "^4.0.2",
     "aegir": "^38.1.0",
     "delay": "^5.0.0",
