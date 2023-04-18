@@ -170,7 +170,7 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
   return connection
 }
 
-export function mockStream (stream: Duplex<AsyncGenerator<Uint8ArrayList>, Source<Uint8ArrayList | Uint8Array>>): Stream {
+export function mockStream (stream: Duplex<AsyncGenerator<Uint8ArrayList>, Source<Uint8ArrayList | Uint8Array>, Promise<void>>): Stream {
   return {
     ...stream,
     close: () => {},
