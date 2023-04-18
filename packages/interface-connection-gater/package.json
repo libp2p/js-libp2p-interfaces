@@ -134,10 +134,7 @@
   "dependencies": {
     "@libp2p/interface-connection": "^4.0.0",
     "@libp2p/interface-peer-id": "^2.0.0",
-    "@libp2p/interfaces": "^3.0.0",
-    "@multiformats/multiaddr": "^12.0.0",
-    "it-stream-types": "^2.0.1",
-    "uint8arraylist": "^2.1.2"
+    "@multiformats/multiaddr": "^12.0.0"
   },
   "devDependencies": {
     "aegir": "^38.1.0"
