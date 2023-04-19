@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v10.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v10.0.2...@libp2p/interface-mocks-v10.0.3) (2023-04-19)
+
+
+### Bug Fixes
+
+* update mock duplex type ([#380](https://github.com/libp2p/js-libp2p-interfaces/issues/380)) ([5260314](https://github.com/libp2p/js-libp2p-interfaces/commit/52603142bc91aaeb192ebf9b3a7559e8a270b7bf))
+
 ## [@libp2p/interface-mocks-v10.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v10.0.1...@libp2p/interface-mocks-v10.0.2) (2023-04-18)
 
 
