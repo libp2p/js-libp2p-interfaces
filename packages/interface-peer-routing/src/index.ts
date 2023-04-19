@@ -1,8 +1,12 @@
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import type { AbortOptions } from '@libp2p/interfaces'
+import type { ProgressEvent, ProgressOptions } from 'progress-events'
 
-export interface PeerRouting {
+export interface PeerRouting<
+  FindPeerProgressEvents extends ProgressEvent = ProgressEvent,
+  GetClosestPeersProgressEvents extends ProgressEvent = ProgressEvent,
+> {
   /**
    * Searches the network for peer info corresponding to the passed peer id.
    *
@@ -13,7 +17,7 @@ export interface PeerRouting {
    * const peer = await peerRouting.findPeer(peerId, options)
    * ```
    */
-  findPeer: (peerId: PeerId, options?: AbortOptions) => Promise<PeerInfo>
+  findPeer: (peerId: PeerId, options?: AbortOptions & ProgressOptions<FindPeerProgressEvents>) => Promise<PeerInfo>
 
   /**
    * Search the network for peers that are closer to the passed key. Peer
@@ -28,5 +32,5 @@ export interface PeerRouting {
    * }
    * ```
    */
-  getClosestPeers: (key: Uint8Array, options?: AbortOptions) => AsyncIterable<PeerInfo>
+  getClosestPeers: (key: Uint8Array, options?: AbortOptions & ProgressOptions<GetClosestPeersProgressEvents>) => AsyncIterable<PeerInfo>
 }

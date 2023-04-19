@@ -1,8 +1,14 @@
 import type { CID } from 'multiformats/cid'
 import type { AbortOptions } from '@libp2p/interfaces'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
+import type { ProgressEvent, ProgressOptions } from 'progress-events'
 
-export interface ContentRouting {
+export interface ContentRouting<
+  ProvideProgressEvents extends ProgressEvent = ProgressEvent,
+  FindProvidersProgressEvents extends ProgressEvent = ProgressEvent,
+  PutProgressEvents extends ProgressEvent = ProgressEvent,
+  GetProgressEvents extends ProgressEvent = ProgressEvent
+> {
   /**
    * The implementation of this method should ensure that network peers know the
    * caller can provide content that corresponds to the passed CID.
@@ -14,7 +20,7 @@ export interface ContentRouting {
    * await contentRouting.provide(cid)
    * ```
    */
-  provide: (cid: CID, options?: AbortOptions) => Promise<void>
+  provide: (cid: CID, options?: AbortOptions & ProgressOptions<ProvideProgressEvents>) => Promise<void>
 
   /**
    * Find the providers of the passed CID.
@@ -28,7 +34,7 @@ export interface ContentRouting {
    * }
    * ```
    */
-  findProviders: (cid: CID, options?: AbortOptions) => AsyncIterable<PeerInfo>
+  findProviders: (cid: CID, options?: AbortOptions & ProgressOptions<FindProvidersProgressEvents>) => AsyncIterable<PeerInfo>
 
   /**
    * Puts a value corresponding to the passed key in a way that can later be
@@ -44,7 +50,7 @@ export interface ContentRouting {
    * await contentRouting.put(key, value)
    * ```
    */
-  put: (key: Uint8Array, value: Uint8Array, options?: AbortOptions) => Promise<void>
+  put: (key: Uint8Array, value: Uint8Array, options?: AbortOptions & ProgressOptions<PutProgressEvents>) => Promise<void>
 
   /**
    * Retrieves a value from the network corresponding to the passed key.
@@ -58,5 +64,5 @@ export interface ContentRouting {
    * const value = await contentRouting.get(key)
    * ```
    */
-  get: (key: Uint8Array, options?: AbortOptions) => Promise<Uint8Array>
+  get: (key: Uint8Array, options?: AbortOptions & ProgressOptions<GetProgressEvents>) => Promise<Uint8Array>
 }
