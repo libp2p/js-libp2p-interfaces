@@ -263,7 +263,7 @@ class MuxedStream {
 }
 
 class MockMuxer implements StreamMuxer {
-  public source: Source<Uint8Array>
+  public source: AsyncGenerator<Uint8Array>
   public input: Pushable<Uint8Array>
   public streamInput: Pushable<StreamMessage>
   public name: string
@@ -298,7 +298,7 @@ class MockMuxer implements StreamMuxer {
   }
 
   // receive incoming messages
-  async sink (source: Source<Uint8Array>): Promise<void> {
+  async sink (source: Source<Uint8ArrayList | Uint8Array>): Promise<void> {
     try {
       await pipe(
         abortableSource(source, this.closeController.signal),

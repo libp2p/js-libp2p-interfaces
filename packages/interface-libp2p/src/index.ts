@@ -159,6 +159,35 @@ export interface LookupFunction {
   (key: string): Promise<Uint8Array | null>
 }
 
+export type PendingDialStatus = 'queued' | 'active' | 'error' | 'success'
+
+/**
+ * An item in the dial queue
+ */
+export interface PendingDial {
+  /**
+   * A unique identifier for this dial
+   */
+  id: string
+
+  /**
+   * The current status of the dial
+   */
+  status: PendingDialStatus
+
+  /**
+   * If known, this is the peer id that libp2p expects to be dialling
+   */
+  peerId?: PeerId
+
+  /**
+   * The list of multiaddrs that will be dialled. The returned connection will
+   * use the first address that succeeds, all other dials part of this pending
+   * dial will be cancelled.
+   */
+  multiaddrs: Multiaddr[]
+}
+
 /**
  * Libp2p nodes implement this interface.
  */
@@ -397,6 +426,19 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * ```
    */
   getConnections: (peerId?: PeerId) => Connection[]
+
+  /**
+   * Return the list of dials currently in progress or queued to start
+   *
+   * @example
+   *
+   * ```js
+   * for (const pendingDial of libp2p.getDialQueue()) {
+   *   console.log(pendingDial)
+   * }
+   * ```
+   */
+  getDialQueue: () => PendingDial[]
 
   /**
    * Return a list of all peers we currently have a connection open to

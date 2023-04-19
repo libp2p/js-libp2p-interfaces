@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-connection-encrypter",
-  "version": "3.0.6",
+  "version": "4.0.0",
   "description": "Connection Encrypter interface for libp2p",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-connection-encrypter#readme",
@@ -153,8 +153,7 @@
   },
   "dependencies": {
     "@libp2p/interface-peer-id": "^2.0.0",
-    "it-stream-types": "^1.0.4",
-    "uint8arraylist": "^2.1.2"
+    "it-stream-types": "^2.0.1"
   },
   "devDependencies": {
     "aegir": "^38.1.0"
