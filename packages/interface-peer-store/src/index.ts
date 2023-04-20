@@ -206,7 +206,7 @@ export interface PeerStore {
   get: (peerId: PeerId) => Promise<Peer>
 
   /**
-   * Adds a peer to the peer store, replacing any existing data.
+   * Adds a peer to the peer store, overwriting any existing data
    *
    * @example
    *
@@ -216,10 +216,23 @@ export interface PeerStore {
    * })
    * ```
    */
-  save: (id: PeerId, data: PeerData) => Promise<void>
+  save: (id: PeerId, data: PeerData) => Promise<Peer>
 
   /**
-   * Adds a peer to the peer store, merging any existing data.
+   * Adds a peer to the peer store, overwriting only the passed fields
+   *
+   * @example
+   *
+   * ```js
+   * await peerStore.patch(peerId, {
+   *   multiaddrs
+   * })
+   * ```
+   */
+  patch: (id: PeerId, data: PeerData) => Promise<Peer>
+
+  /**
+   * Adds a peer to the peer store, deeply merging any existing data.
    *
    * @example
    *
@@ -229,5 +242,5 @@ export interface PeerStore {
    * })
    * ```
    */
-  merge: (id: PeerId, data: PeerData) => Promise<void>
+  merge: (id: PeerId, data: PeerData) => Promise<Peer>
 }
