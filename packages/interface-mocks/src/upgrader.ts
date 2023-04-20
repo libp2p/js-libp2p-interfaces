@@ -1,20 +1,22 @@
 import { mockConnection } from './connection.js'
-import type { Upgrader, UpgraderEvents, UpgraderOptions } from '@libp2p/interface-transport'
+import type { Upgrader, UpgraderOptions } from '@libp2p/interface-transport'
 import type { Connection, MultiaddrConnection } from '@libp2p/interface-connection'
 import type { Registrar } from '@libp2p/interface-registrar'
-import { CustomEvent, EventEmitter } from '@libp2p/interfaces/events'
+import type { EventEmitter } from '@libp2p/interfaces/events'
+import type { Libp2pEvents } from '@libp2p/interface-libp2p'
 
 export interface MockUpgraderInit {
   registrar?: Registrar
+  events: EventEmitter<Libp2pEvents>
 }
 
-class MockUpgrader extends EventEmitter<UpgraderEvents> implements Upgrader {
+class MockUpgrader implements Upgrader {
   private readonly registrar?: Registrar
+  private readonly events: EventEmitter<Libp2pEvents>
 
-  constructor (init: MockUpgraderInit = {}) {
-    super()
-
+  constructor (init: MockUpgraderInit) {
     this.registrar = init.registrar
+    this.events = init.events
   }
 
   async upgradeOutbound (multiaddrConnection: MultiaddrConnection, opts: UpgraderOptions = {}): Promise<Connection> {
@@ -24,7 +26,7 @@ class MockUpgrader extends EventEmitter<UpgraderEvents> implements Upgrader {
       ...opts
     })
 
-    this.dispatchEvent(new CustomEvent<Connection>('connection', { detail: connection }))
+    this.events.safeDispatchEvent('connection:open', { detail: connection })
 
     return connection
   }
@@ -36,12 +38,12 @@ class MockUpgrader extends EventEmitter<UpgraderEvents> implements Upgrader {
       ...opts
     })
 
-    this.dispatchEvent(new CustomEvent<Connection>('connection', { detail: connection }))
+    this.events.safeDispatchEvent('connection:open', { detail: connection })
 
     return connection
   }
 }
 
-export function mockUpgrader (init: MockUpgraderInit = {}): Upgrader {
+export function mockUpgrader (init: MockUpgraderInit): Upgrader {
   return new MockUpgrader(init)
 }

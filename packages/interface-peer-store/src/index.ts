@@ -4,14 +4,6 @@ import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Envelope } from '@libp2p/interface-record'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 
-/**
- * Event detail emitted when peer data changes
- */
-export interface PeerUpdate {
-  peer: Peer
-  previous?: Peer
-}
-
 export interface Address {
   /**
    * Peer multiaddr

@@ -19,7 +19,7 @@ import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { DualDHT } from '@libp2p/interface-dht'
-import type { PeerStore, PeerUpdate } from '@libp2p/interface-peer-store'
+import type { Peer, PeerStore } from '@libp2p/interface-peer-store'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Connection, Stream } from '@libp2p/interface-connection'
 import type { PeerRouting } from '@libp2p/interface-peer-routing'
@@ -30,6 +30,14 @@ import type { Metrics } from '@libp2p/interface-metrics'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import type { KeyChain } from '@libp2p/interface-keychain'
 import type { Listener } from '@libp2p/interface-transport'
+
+/**
+ * Event detail emitted when peer data changes
+ */
+export interface PeerUpdate {
+  peer: Peer
+  previous?: Peer
+}
 
 /**
  * Once you have a libp2p instance, you can listen to several events it emits,

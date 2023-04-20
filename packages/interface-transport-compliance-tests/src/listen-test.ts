@@ -8,7 +8,7 @@ import { isValidTick } from '@libp2p/interface-compliance-tests/is-valid-tick'
 import { mockUpgrader, mockRegistrar } from '@libp2p/interface-mocks'
 import defer from 'p-defer'
 import drain from 'it-drain'
-import { CustomEvent } from '@libp2p/interfaces/events'
+import { CustomEvent, EventEmitter } from '@libp2p/interfaces/events'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Transport, Upgrader } from '@libp2p/interface-transport'
 import type { TransportTestFixtures } from './index.js'
@@ -26,7 +26,8 @@ export default (common: TestSetup<TransportTestFixtures>): void => {
     before(async () => {
       registrar = mockRegistrar()
       upgrader = mockUpgrader({
-        registrar
+        registrar,
+        events: new EventEmitter()
       });
 
       ({ transport, addrs } = await common.setup())
