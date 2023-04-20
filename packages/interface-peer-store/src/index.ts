@@ -3,6 +3,14 @@ import type { Multiaddr } from '@multiformats/multiaddr'
 import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 
+/**
+ * Event detail emitted when peer data changes
+ */
+export interface PeerUpdate {
+  peer: Peer
+  previous?: Peer
+}
+
 export interface Address {
   /**
    * Peer multiaddr
@@ -117,7 +125,7 @@ export interface PeerMetadataChangeData {
   oldMetadata: Map<string, Uint8Array>
 }
 
-export type EventName = 'peer' | 'change:protocols' | 'change:multiaddrs' | 'change:pubkey' | 'change:metadata'
+export type EventName = 'peer' | 'peer:update' | 'self:peer:update'
 
 export interface PeerStoreEvents {
   /**
@@ -135,60 +143,36 @@ export interface PeerStoreEvents {
   'peer': CustomEvent<PeerInfo>
 
   /**
-   * This event is emitted when known protocols for a peer change
+   * This event is emitted when the stored data for a peer changes.
+   *
+   * If the peer store already contained data about the peer it will be set
+   * as the `previous` key on the event detail.
    *
    * @example
    *
    * ```js
-   * peerStore.addEventListener('change:protocols', (event) => {
-   *   const { peerId, protocols, oldProtocols } = event.detail
+   * peerStore.addEventListener('peer:update', (event) => {
+   *   const { peer, previous } = event.detail
    *   // ...
    * })
    * ```
    */
-  'change:protocols': CustomEvent<PeerProtocolsChangeData>
+  'peer:update': CustomEvent<PeerUpdate>
 
   /**
-   * This event is emitted when known multiaddrs for a peer change
+   * Similar to the 'peer:update' event, this event is dispatched when the
+   * updated peer is the current node.
    *
    * @example
    *
    * ```js
-   * peerStore.addEventListener('change:multiaddrs', (event) => {
-   *   const { peerId, multiaddrs, oldMultiaddrs } = event.detail
+   * peerStore.addEventListener('self:peer:update', (event) => {
+   *   const { peer, previous } = event.detail
    *   // ...
    * })
    * ```
    */
-  'change:multiaddrs': CustomEvent<PeerMultiaddrsChangeData>
-
-  /**
-   * This event is emitted when the public key for a peer changes
-   *
-   * @example
-   *
-   * ```js
-   * peerStore.addEventListener('change:pubkey', (event) => {
-   *   const { peerId, publicKey, oldPublicKey } = event.detail
-   *   // ...
-   * })
-   * ```
-   */
-  'change:pubkey': CustomEvent<PeerPublicKeyChangeData>
-
-  /**
-   * This event is emitted when known metadata for a peer changes
-   *
-   * @example
-   *
-   * ```js
-   * peerStore.addEventListener('change:metadata', (event) => {
-   *   const { peerId, metadata, oldMetadata } = event.detail
-   *   // ...
-   * })
-   * ```
-   */
-  'change:metadata': CustomEvent<PeerMetadataChangeData>
+  'self:peer:update': CustomEvent<PeerUpdate>
 }
 
 export interface TagOptions {
