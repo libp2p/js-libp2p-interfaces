@@ -74,18 +74,13 @@ export interface Listener extends EventEmitter<ListenerEvents> {
   close: () => Promise<void>
 }
 
-export interface UpgraderEvents {
-  'connection': CustomEvent<Connection>
-  'connectionEnd': CustomEvent<Connection>
-}
-
 export interface UpgraderOptions {
   skipEncryption?: boolean
   skipProtection?: boolean
   muxerFactory?: StreamMuxerFactory
 }
 
-export interface Upgrader extends EventEmitter<UpgraderEvents> {
+export interface Upgrader {
   /**
    * Upgrades an outbound connection on `transport.dial`.
    */
@@ -105,12 +100,7 @@ export function isTransport (other: any): other is Transport {
   return other != null && Boolean(other[symbol])
 }
 
-export interface TransportManagerEvents {
-  'listener:listening': CustomEvent<Listener>
-  'listener:close': CustomEvent<Listener>
-}
-
-export interface TransportManager extends EventEmitter<TransportManagerEvents> {
+export interface TransportManager {
   add: (transport: Transport) => void
   dial: (ma: Multiaddr, options?: any) => Promise<Connection>
   getAddrs: () => Multiaddr[]

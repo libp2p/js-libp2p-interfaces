@@ -1,14 +1,6 @@
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { EventEmitter } from '@libp2p/interfaces/events'
 
-export interface AddressManagerEvents {
-  /**
-   * Emitted when the current node's addresses change
-   */
-  'change:addresses': CustomEvent
-}
-
-export interface AddressManager extends EventEmitter<AddressManagerEvents> {
+export interface AddressManager {
   /**
    * Get peer listen multiaddrs
    */
