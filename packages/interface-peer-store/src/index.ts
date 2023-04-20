@@ -1,16 +1,9 @@
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { EventEmitter } from '@libp2p/interfaces/events'
-import type { PeerInfo } from '@libp2p/interface-peer-info'
 
 /**
- * Event detail emitted when peer data changes
+ * A multiaddr with an optional flag that indicates if its trustworthy
  */
-export interface PeerUpdate {
-  peer: Peer
-  previous?: Peer
-}
-
 export interface Address {
   /**
    * Peer multiaddr
@@ -23,6 +16,9 @@ export interface Address {
   isCertified: boolean
 }
 
+/**
+ * Data stored in the peer store about peers
+ */
 export interface Peer {
   /**
    * Peer's peer-id instance
@@ -55,6 +51,9 @@ export interface Peer {
   peerRecordEnvelope?: Uint8Array
 }
 
+/**
+ * Peer data used to update the peer store
+ */
 export interface PeerData {
   /**
    * Peer's addresses containing its multiaddrs and metadata - multiaddrs
@@ -101,80 +100,6 @@ export interface PeerData {
   peerRecordEnvelope?: Uint8Array
 }
 
-export interface PeerProtocolsChangeData {
-  peerId: PeerId
-  protocols: string[]
-  oldProtocols: string[]
-}
-
-export interface PeerMultiaddrsChangeData {
-  peerId: PeerId
-  multiaddrs: Multiaddr[]
-  oldMultiaddrs: Multiaddr[]
-}
-
-export interface PeerPublicKeyChangeData {
-  peerId: PeerId
-  publicKey?: Uint8Array
-  oldPublicKey?: Uint8Array
-}
-
-export interface PeerMetadataChangeData {
-  peerId: PeerId
-  metadata: Map<string, Uint8Array>
-  oldMetadata: Map<string, Uint8Array>
-}
-
-export type EventName = 'peer' | 'peer:update' | 'self:peer:update'
-
-export interface PeerStoreEvents {
-  /**
-   * This event is emitted when a new peer is added to the peerStore
-   *
-   * @example
-   *
-   * ```js
-   * peerStore.addEventListener('peer', (event) => {
-   *   const peerInfo = event.detail
-   *   // ...
-   * })
-   * ```
-   */
-  'peer': CustomEvent<PeerInfo>
-
-  /**
-   * This event is emitted when the stored data for a peer changes.
-   *
-   * If the peer store already contained data about the peer it will be set
-   * as the `previous` key on the event detail.
-   *
-   * @example
-   *
-   * ```js
-   * peerStore.addEventListener('peer:update', (event) => {
-   *   const { peer, previous } = event.detail
-   *   // ...
-   * })
-   * ```
-   */
-  'peer:update': CustomEvent<PeerUpdate>
-
-  /**
-   * Similar to the 'peer:update' event, this event is dispatched when the
-   * updated peer is the current node.
-   *
-   * @example
-   *
-   * ```js
-   * peerStore.addEventListener('self:peer:update', (event) => {
-   *   const { peer, previous } = event.detail
-   *   // ...
-   * })
-   * ```
-   */
-  'self:peer:update': CustomEvent<PeerUpdate>
-}
-
 export interface TagOptions {
   /**
    * A tag name
@@ -204,7 +129,7 @@ export interface Tag {
   value: number
 }
 
-export interface PeerStore extends EventEmitter<PeerStoreEvents> {
+export interface PeerStore {
   /**
    * Loop over every peer - the looping is async because we read from a
    * datastore but the peer operation is sync, this is to prevent
