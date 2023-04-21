@@ -1,3 +1,21 @@
+## [@libp2p/interface-mocks-v11.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v10.0.3...@libp2p/interface-mocks-v11.0.0) (2023-04-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* add libp2p events (#373)
+
+### Features
+
+* add libp2p events ([#373](https://github.com/libp2p/js-libp2p-interfaces/issues/373)) ([071c718](https://github.com/libp2p/js-libp2p-interfaces/commit/071c718808902858818ca86167b51b242b67a5a5))
+
+
+### Dependencies
+
+* update sibling dependencies ([a1b72f9](https://github.com/libp2p/js-libp2p-interfaces/commit/a1b72f90414536308befd07df2a003985951ceb7))
+* update sibling dependencies ([17ed429](https://github.com/libp2p/js-libp2p-interfaces/commit/17ed429d57e83cb38484ac52a0e0975a7d8af963))
+* update sibling dependencies ([6c18790](https://github.com/libp2p/js-libp2p-interfaces/commit/6c18790f6178053c69a8cd6bd289fd749d4e9633))
+
 ## [@libp2p/interface-mocks-v10.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v10.0.2...@libp2p/interface-mocks-v10.0.3) (2023-04-19)
 
 
