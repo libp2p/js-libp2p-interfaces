@@ -1,3 +1,10 @@
+## [@libp2p/interface-libp2p-v1.3.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.3.1...@libp2p/interface-libp2p-v1.3.2) (2023-04-21)
+
+
+### Dependencies
+
+* update sibling dependencies ([bc1588c](https://github.com/libp2p/js-libp2p-interfaces/commit/bc1588c70ffa35c1ba9c954090a7ac8087a22b0c))
+
 ## [@libp2p/interface-libp2p-v1.3.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.3.0...@libp2p/interface-libp2p-v1.3.1) (2023-04-18)
 
 
