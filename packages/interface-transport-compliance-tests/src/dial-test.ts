@@ -12,6 +12,7 @@ import type { Transport, Listener, Upgrader } from '@libp2p/interface-transport'
 import type { TransportTestFixtures, Connector } from './index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { Registrar } from '@libp2p/interface-registrar'
+import { EventEmitter } from '@libp2p/interfaces/events'
 
 export default (common: TestSetup<TransportTestFixtures>): void => {
   describe('dial', () => {
@@ -25,7 +26,8 @@ export default (common: TestSetup<TransportTestFixtures>): void => {
     before(async () => {
       registrar = mockRegistrar()
       upgrader = mockUpgrader({
-        registrar
+        registrar,
+        events: new EventEmitter()
       });
 
       ({ addrs, transport, connector } = await common.setup())

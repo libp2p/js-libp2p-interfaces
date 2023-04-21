@@ -1,8 +1,8 @@
-import { EventEmitter } from '@libp2p/interfaces/events'
+import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Connection } from '@libp2p/interface-connection'
 import { isPeerId, PeerId } from '@libp2p/interface-peer-id'
-import type { ConnectionManager, ConnectionManagerEvents, PendingDial } from '@libp2p/interface-connection-manager'
+import type { ConnectionManager, PendingDial } from '@libp2p/interface-connection-manager'
 import { connectionPair } from './connection.js'
 import { CodeError } from '@libp2p/interfaces/errors'
 import type { Registrar } from '@libp2p/interface-registrar'
@@ -10,12 +10,14 @@ import type { PubSub } from '@libp2p/interface-pubsub'
 import { isMultiaddr, Multiaddr } from '@multiformats/multiaddr'
 import { peerIdFromString } from '@libp2p/peer-id'
 import { PeerMap } from '@libp2p/peer-collections'
+import type { Libp2pEvents } from '@libp2p/interface-libp2p'
 
 export interface MockNetworkComponents {
   peerId: PeerId
   registrar: Registrar
   connectionManager: ConnectionManager
   pubsub?: PubSub
+  events: EventEmitter<Libp2pEvents>
 }
 
 class MockNetwork {
@@ -49,16 +51,15 @@ export const mockNetwork = new MockNetwork()
 export interface MockConnectionManagerComponents {
   peerId: PeerId
   registrar: Registrar
+  events: EventEmitter<Libp2pEvents>
 }
 
-class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implements ConnectionManager, Startable {
+class MockConnectionManager implements ConnectionManager, Startable {
   private connections: Connection[] = []
   private readonly components: MockConnectionManagerComponents
   private started = false
 
   constructor (components: MockConnectionManagerComponents) {
-    super()
-
     this.components = components
   }
 
@@ -129,7 +130,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
     this.connections.push(aToB)
     ;(componentsB.connectionManager as MockConnectionManager).connections.push(bToA)
 
-    this.safeDispatchEvent<Connection>('peer:connect', {
+    this.components.events.safeDispatchEvent('connection:open', {
       detail: aToB
     })
 
@@ -139,7 +140,7 @@ class MockConnectionManager extends EventEmitter<ConnectionManagerEvents> implem
       }
     }
 
-    componentsB.connectionManager.safeDispatchEvent<Connection>('peer:connect', {
+    componentsB.events.safeDispatchEvent('connection:open', {
       detail: bToA
     })
 
