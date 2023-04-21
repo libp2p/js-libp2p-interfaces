@@ -26,7 +26,8 @@ export interface Peer {
   id: PeerId
 
   /**
-   * Peer's addresses containing its multiaddrs
+   * Peer's addresses containing a list of multiaddrs and a isCertified field
+   * indicating if the address was loaded from a signed peer record or not
    */
   addresses: Address[]
 
@@ -43,7 +44,7 @@ export interface Peer {
   /**
    * Tags a peer has
    */
-  tags: Tag[]
+  tags: Map<string, Tag>
 
   /**
    * The last peer record envelope received
@@ -87,7 +88,7 @@ export interface PeerData {
   /**
    * Peer tags
    */
-  tags?: TagOptions[]
+  tags?: Map<string, TagOptions> | Record<string, TagOptions>
 
   /**
    * If this Peer has an RSA key, it's public key can be set with this property
@@ -102,11 +103,6 @@ export interface PeerData {
 
 export interface TagOptions {
   /**
-   * A tag name
-   */
-  name: string
-
-  /**
    * An optional tag value (1-100)
    */
   value?: number
@@ -118,11 +114,6 @@ export interface TagOptions {
 }
 
 export interface Tag {
-  /**
-   * The tag name
-   */
-  name: string
-
   /**
    * The tag value
    */
