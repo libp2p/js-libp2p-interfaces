@@ -16,12 +16,15 @@
 <li><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-peer-store</a></li>
 <li><a href="_libp2p_interface_peer_store.Peer.html">Peer</a></li></ul>
 <h1>Interface Peer</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>Data stored in the peer store about peers</p>
+</div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">Peer</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L19">packages/interface-peer-store/src/index.ts:19</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L22">packages/interface-peer-store/src/index.ts:22</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -34,52 +37,53 @@
 <a href="_libp2p_interface_peer_store.Peer.html#metadata" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>metadata</span></a>
 <a href="_libp2p_interface_peer_store.Peer.html#peerRecordEnvelope" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>peer<wbr/>Record<wbr/>Envelope?</span></a>
 <a href="_libp2p_interface_peer_store.Peer.html#protocols" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>protocols</span></a>
-<a href="_libp2p_interface_peer_store.Peer.html#pubKey" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>pub<wbr/>Key?</span></a>
+<a href="_libp2p_interface_peer_store.Peer.html#tags" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>tags</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="addresses" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>addresses</span><a href="#addresses" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></h3>
 <div class="tsd-signature">addresses<span class="tsd-signature-symbol">:</span> <a href="_libp2p_interface_peer_store.Address.html" class="tsd-signature-type" data-tsd-kind="Interface">Address</a><span class="tsd-signature-symbol">[]</span></div>
-<div class="tsd-comment tsd-typography"><p>Peer&#39;s addresses containing its multiaddrs and metadata</p>
+<div class="tsd-comment tsd-typography"><p>Peer&#39;s addresses containing a list of multiaddrs and a isCertified field
+indicating if the address was loaded from a signed peer record or not</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L28">packages/interface-peer-store/src/index.ts:28</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L32">packages/interface-peer-store/src/index.ts:32</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="id" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>id</span><a href="#id" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">id<span class="tsd-signature-symbol">:</span> <a href="../types/_libp2p_interface_peer_store._internal_.PeerId.html" class="tsd-signature-type" data-tsd-kind="Type alias">PeerId</a></div>
 <div class="tsd-comment tsd-typography"><p>Peer&#39;s peer-id instance</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L23">packages/interface-peer-store/src/index.ts:23</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L26">packages/interface-peer-store/src/index.ts:26</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="metadata" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>metadata</span><a href="#metadata" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">metadata<span class="tsd-signature-symbol">:</span> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" class="tsd-signature-type external" target="_blank">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array" class="tsd-signature-type external" target="_blank">Uint8Array</a><span class="tsd-signature-symbol">&gt;</span></div>
 <div class="tsd-comment tsd-typography"><p>Peer&#39;s metadata map</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L38">packages/interface-peer-store/src/index.ts:38</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L42">packages/interface-peer-store/src/index.ts:42</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="peerRecordEnvelope" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>peer<wbr/>Record<wbr/>Envelope</span><a href="#peerRecordEnvelope" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">peer<wbr/>Record<wbr/>Envelope<span class="tsd-signature-symbol">?:</span> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array" class="tsd-signature-type external" target="_blank">Uint8Array</a></div>
 <div class="tsd-comment tsd-typography"><p>The last peer record envelope received</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L48">packages/interface-peer-store/src/index.ts:48</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L52">packages/interface-peer-store/src/index.ts:52</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="protocols" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>protocols</span><a href="#protocols" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">protocols<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 <div class="tsd-comment tsd-typography"><p>Peer&#39;s supported protocols</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L33">packages/interface-peer-store/src/index.ts:33</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="pubKey" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>pub<wbr/>Key</span><a href="#pubKey" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">pub<wbr/>Key<span class="tsd-signature-symbol">?:</span> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array" class="tsd-signature-type external" target="_blank">Uint8Array</a></div>
-<div class="tsd-comment tsd-typography"><p>May be set if the key that this Peer has is an RSA key</p>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L37">packages/interface-peer-store/src/index.ts:37</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="tags" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>tags</span><a href="#tags" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">tags<span class="tsd-signature-symbol">:</span> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" class="tsd-signature-type external" target="_blank">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_libp2p_interface_peer_store.Tag.html" class="tsd-signature-type" data-tsd-kind="Interface">Tag</a><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-comment tsd-typography"><p>Tags a peer has</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L43">packages/interface-peer-store/src/index.ts:43</a></li></ul></aside></section></section></div>
+<li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-peer-store/src/index.ts#L47">packages/interface-peer-store/src/index.ts:47</a></li></ul></aside></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -133,13 +137,13 @@
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_keychain._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.7</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_libp2p.html">@libp2p/interface-<wbr/>libp2p -<wbr/> v1.3.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_libp2p.html">@libp2p/interface-<wbr/>libp2p -<wbr/> v1.3.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_libp2p._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v10.0.2</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v10.0.3</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.0.5</a>
@@ -157,7 +161,7 @@
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="current tsd-kind-module"><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v1.2.9</a>
+<li class="current tsd-kind-module"><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v2.0.0</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_store._internal_.html">&lt;internal&gt;</a></li></ul></li>
 <li class="tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v4.0.0</a>
@@ -197,5 +201,5 @@
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_peer_store.Peer.html#metadata" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>metadata</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_peer_store.Peer.html#peerRecordEnvelope" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>peer<wbr/>Record<wbr/>Envelope?</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_peer_store.Peer.html#protocols" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>protocols</a></li>
-<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_peer_store.Peer.html#pubKey" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>pub<wbr/>Key?</a></li></ul></li></ul></nav></div></div>
+<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_libp2p_interface_peer_store.Peer.html#tags" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>tags</a></li></ul></li></ul></nav></div></div>
 <div class="overlay"></div><script src="../assets/main.js"></script></body></html>
