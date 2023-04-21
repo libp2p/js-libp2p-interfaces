@@ -1,3 +1,14 @@
+## [@libp2p/interface-peer-store-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v1.2.9...@libp2p/interface-peer-store-v2.0.0) (2023-04-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* make peer store methods atomic (#368)
+
+### Bug Fixes
+
+* make peer store methods atomic ([#368](https://github.com/libp2p/js-libp2p-interfaces/issues/368)) ([47c8b78](https://github.com/libp2p/js-libp2p-interfaces/commit/47c8b78e72fbbf9548d88a5fe0df965444254708))
+
 ## [@libp2p/interface-peer-store-v1.2.9](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v1.2.8...@libp2p/interface-peer-store-v1.2.9) (2023-03-17)
 
 
