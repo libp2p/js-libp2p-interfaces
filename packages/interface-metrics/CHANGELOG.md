@@ -1,3 +1,10 @@
+## [@libp2p/interface-metrics-v4.0.7](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-metrics-v4.0.6...@libp2p/interface-metrics-v4.0.7) (2023-04-18)
+
+
+### Dependencies
+
+* update sibling dependencies ([2f52a28](https://github.com/libp2p/js-libp2p-interfaces/commit/2f52a284b59c0a88b040f86da1f5d3f044727f2c))
+
 ## [@libp2p/interface-metrics-v4.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-metrics-v4.0.5...@libp2p/interface-metrics-v4.0.6) (2023-04-11)
 
 

@@ -1,3 +1,51 @@
+## [@libp2p/interface-mocks-v10.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v10.0.2...@libp2p/interface-mocks-v10.0.3) (2023-04-19)
+
+
+### Bug Fixes
+
+* update mock duplex type ([#380](https://github.com/libp2p/js-libp2p-interfaces/issues/380)) ([5260314](https://github.com/libp2p/js-libp2p-interfaces/commit/52603142bc91aaeb192ebf9b3a7559e8a270b7bf))
+
+## [@libp2p/interface-mocks-v10.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v10.0.1...@libp2p/interface-mocks-v10.0.2) (2023-04-18)
+
+
+### Dependencies
+
+* update abortable iterator to 5.x.x ([#379](https://github.com/libp2p/js-libp2p-interfaces/issues/379)) ([d405e5b](https://github.com/libp2p/js-libp2p-interfaces/commit/d405e5b5db624d97f47588ef55c379debccfd160))
+
+## [@libp2p/interface-mocks-v10.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v10.0.0...@libp2p/interface-mocks-v10.0.1) (2023-04-18)
+
+
+### Bug Fixes
+
+* specify stream sink return type ([#378](https://github.com/libp2p/js-libp2p-interfaces/issues/378)) ([e0641fc](https://github.com/libp2p/js-libp2p-interfaces/commit/e0641fcc2f2a6562e7f7d8e064ebd98c5cc6dccb))
+
+## [@libp2p/interface-mocks-v10.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.4.0...@libp2p/interface-mocks-v10.0.0) (2023-04-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump it-stream-types from 1.0.5 to 2.0.1 (#362)
+
+### Dependencies
+
+* bump it-stream-types from 1.0.5 to 2.0.1 ([#362](https://github.com/libp2p/js-libp2p-interfaces/issues/362)) ([cdc7747](https://github.com/libp2p/js-libp2p-interfaces/commit/cdc774792beead63e0ded96bd6c23de0335a49e3))
+* update sibling dependencies ([4972cc6](https://github.com/libp2p/js-libp2p-interfaces/commit/4972cc6c4c43319730305b58f329d6cf4591517a))
+* update sibling dependencies ([a5b7b33](https://github.com/libp2p/js-libp2p-interfaces/commit/a5b7b33dccee52d03fce788d2876a398d6fd6d99))
+* update sibling dependencies ([99a862b](https://github.com/libp2p/js-libp2p-interfaces/commit/99a862baed66d4e83ba006a70c33561855c9682e))
+* update sibling dependencies ([e95dcc2](https://github.com/libp2p/js-libp2p-interfaces/commit/e95dcc28f0a8b42457a44155eb0dfb3d813b03c8))
+* update sibling dependencies ([3d23367](https://github.com/libp2p/js-libp2p-interfaces/commit/3d233676a17299bfa1b59d309543598176826523))
+* update sibling dependencies ([2b9ddda](https://github.com/libp2p/js-libp2p-interfaces/commit/2b9ddda88d2655d389bf5142f7131f333ab9f780))
+* update sibling dependencies ([bed9f4c](https://github.com/libp2p/js-libp2p-interfaces/commit/bed9f4c7b7044e974a70678762a51e79e018cf9b))
+* update sibling dependencies ([2f52a28](https://github.com/libp2p/js-libp2p-interfaces/commit/2f52a284b59c0a88b040f86da1f5d3f044727f2c))
+
+## [@libp2p/interface-mocks-v9.4.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.4...@libp2p/interface-mocks-v9.4.0) (2023-04-14)
+
+
+### Features
+
+* expose get connection map method of connection manager ([#372](https://github.com/libp2p/js-libp2p-interfaces/issues/372)) ([fc7245b](https://github.com/libp2p/js-libp2p-interfaces/commit/fc7245b63764562f5ec66a5a0ba334caea80ed66))
+* expose get dial queue method of connection manager ([#371](https://github.com/libp2p/js-libp2p-interfaces/issues/371)) ([0c407aa](https://github.com/libp2p/js-libp2p-interfaces/commit/0c407aa0772c171bf6650e31fb20a3433df40b6b))
+
 ## [@libp2p/interface-mocks-v9.3.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v9.3.3...@libp2p/interface-mocks-v9.3.4) (2023-04-14)
 
 

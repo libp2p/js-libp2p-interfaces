@@ -1,3 +1,18 @@
+## [@libp2p/interface-connection-manager-v2.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v2.1.0...@libp2p/interface-connection-manager-v2.1.1) (2023-04-18)
+
+
+### Dependencies
+
+* update sibling dependencies ([2f52a28](https://github.com/libp2p/js-libp2p-interfaces/commit/2f52a284b59c0a88b040f86da1f5d3f044727f2c))
+
+## [@libp2p/interface-connection-manager-v2.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v2.0.0...@libp2p/interface-connection-manager-v2.1.0) (2023-04-14)
+
+
+### Features
+
+* expose get connection map method of connection manager ([#372](https://github.com/libp2p/js-libp2p-interfaces/issues/372)) ([fc7245b](https://github.com/libp2p/js-libp2p-interfaces/commit/fc7245b63764562f5ec66a5a0ba334caea80ed66))
+* expose get dial queue method of connection manager ([#371](https://github.com/libp2p/js-libp2p-interfaces/issues/371)) ([0c407aa](https://github.com/libp2p/js-libp2p-interfaces/commit/0c407aa0772c171bf6650e31fb20a3433df40b6b))
+
 ## [@libp2p/interface-connection-manager-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v1.5.0...@libp2p/interface-connection-manager-v2.0.0) (2023-04-14)
 
 

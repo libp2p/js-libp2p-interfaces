@@ -1,7 +1,7 @@
 import type { Multiaddr } from '@multiformats/multiaddr'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type * as Status from './status.js'
-import type { Duplex } from 'it-stream-types'
+import type { Duplex, Source } from 'it-stream-types'
 import type { AbortOptions } from '@libp2p/interfaces'
 import type { Uint8ArrayList } from 'uint8arraylist'
 
@@ -72,7 +72,7 @@ export interface StreamStat {
  * It may be encrypted and multiplexed depending on the
  * configuration of the nodes.
  */
-export interface Stream extends Duplex<Uint8ArrayList, Uint8ArrayList | Uint8Array> {
+export interface Stream extends Duplex<AsyncGenerator<Uint8ArrayList>, Source<Uint8ArrayList | Uint8Array>, Promise<void>> {
   /**
    * Closes the stream for **reading** *and* **writing**.
    *
@@ -183,7 +183,7 @@ export interface MultiaddrConnectionTimeline {
  * a peer. It is a low-level primitive and is the raw connection
  * without encryption or stream multiplexing.
  */
-export interface MultiaddrConnection extends Duplex<Uint8Array> {
+export interface MultiaddrConnection extends Duplex<AsyncGenerator<Uint8Array>, Source<Uint8Array>, Promise<void>> {
   close: (err?: Error) => Promise<void>
   remoteAddr: Multiaddr
   timeline: MultiaddrConnectionTimeline

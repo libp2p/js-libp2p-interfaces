@@ -1,3 +1,10 @@
+## [@libp2p/interface-registrar-v2.0.11](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-registrar-v2.0.10...@libp2p/interface-registrar-v2.0.11) (2023-04-18)
+
+
+### Dependencies
+
+* update sibling dependencies ([2f52a28](https://github.com/libp2p/js-libp2p-interfaces/commit/2f52a284b59c0a88b040f86da1f5d3f044727f2c))
+
 ## [@libp2p/interface-registrar-v2.0.10](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-registrar-v2.0.9...@libp2p/interface-registrar-v2.0.10) (2023-04-11)
 
 
