@@ -12,6 +12,7 @@ export interface PendingDial {
   status: PendingDialStatus
   peerId?: PeerId
   multiaddrs: Multiaddr[]
+  promise: Promise<Connection>
 }
 
 export interface ConnectionManagerEvents {
