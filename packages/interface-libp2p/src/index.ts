@@ -447,7 +447,8 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
   /**
    * Cancel a pending dial by its id
    *
-   *  @example
+   * @example
+   *
    * ```js
    * const dialId = libp2p.getDialQueue()[0].id
    * libp2p.cancelDial(dialId)
