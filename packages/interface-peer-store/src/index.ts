@@ -81,14 +81,14 @@ export interface PeerData {
   protocols?: string[]
 
   /**
-   * Peer's metadata map
+   * Peer's metadata map. When merging pass undefined as values to remove metadata.
    */
-  metadata?: Map<string, Uint8Array> | Record<string, Uint8Array>
+  metadata?: Map<string, Uint8Array | undefined> | Record<string, Uint8Array | undefined>
 
   /**
-   * Peer tags
+   * Peer tags. When merging pass undefined as values to remove tags.
    */
-  tags?: Map<string, TagOptions> | Record<string, TagOptions>
+  tags?: Map<string, TagOptions | undefined> | Record<string, TagOptions | undefined>
 
   /**
    * If this Peer has an RSA key, it's public key can be set with this property
