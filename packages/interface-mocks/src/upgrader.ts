@@ -7,12 +7,12 @@ import type { Libp2pEvents } from '@libp2p/interface-libp2p'
 
 export interface MockUpgraderInit {
   registrar?: Registrar
-  events: EventEmitter<Libp2pEvents>
+  events?: EventEmitter<Libp2pEvents>
 }
 
 class MockUpgrader implements Upgrader {
   private readonly registrar?: Registrar
-  private readonly events: EventEmitter<Libp2pEvents>
+  private readonly events?: EventEmitter<Libp2pEvents>
 
   constructor (init: MockUpgraderInit) {
     this.registrar = init.registrar
@@ -26,7 +26,7 @@ class MockUpgrader implements Upgrader {
       ...opts
     })
 
-    this.events.safeDispatchEvent('connection:open', { detail: connection })
+    this.events?.safeDispatchEvent('connection:open', { detail: connection })
 
     return connection
   }
@@ -38,7 +38,7 @@ class MockUpgrader implements Upgrader {
       ...opts
     })
 
-    this.events.safeDispatchEvent('connection:open', { detail: connection })
+    this.events?.safeDispatchEvent('connection:open', { detail: connection })
 
     return connection
   }
