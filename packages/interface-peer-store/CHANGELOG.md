@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-store-v2.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v2.0.0...@libp2p/interface-peer-store-v2.0.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* allow deleting tags/metadata with undefined fields ([#384](https://github.com/libp2p/js-libp2p-interfaces/issues/384)) ([64598ec](https://github.com/libp2p/js-libp2p-interfaces/commit/64598ec27495d4de5c05b573fd2f3f902166b596))
+
 ## [@libp2p/interface-peer-store-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v1.2.9...@libp2p/interface-peer-store-v2.0.0) (2023-04-21)
 
 
