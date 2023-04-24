@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v11.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v11.0.0...@libp2p/interface-mocks-v11.0.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* make events optional in mock upgrader ([#385](https://github.com/libp2p/js-libp2p-interfaces/issues/385)) ([51f4aae](https://github.com/libp2p/js-libp2p-interfaces/commit/51f4aaea6ab216a1f60b899ecc25b7a325de988d))
+
 ## [@libp2p/interface-mocks-v11.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v10.0.3...@libp2p/interface-mocks-v11.0.0) (2023-04-21)
 
 
