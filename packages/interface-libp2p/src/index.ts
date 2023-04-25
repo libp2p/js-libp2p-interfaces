@@ -69,7 +69,7 @@ export interface Libp2pEvents {
   'peer:discovery': CustomEvent<PeerInfo>
 
   /**
-   * This event will be triggered anytime a new peer connects.
+   * This event will be triggered any time a new peer connects.
    *
    * @example
    *
@@ -83,7 +83,7 @@ export interface Libp2pEvents {
   'peer:connect': CustomEvent<PeerId>
 
   /**
-   * This event will be triggered anytime we are disconnected from another peer, regardless of
+   * This event will be triggered any time we are disconnected from another peer, regardless of
    * the circumstances of that disconnection. If we happen to have multiple connections to a
    * peer, this event will **only** be triggered when the last connection is closed.
    *
