@@ -590,10 +590,4 @@ export interface Libp2p extends Startable, EventEmitter<Libp2pEvents> {
    * ```
    */
   fetch: (peer: PeerId | Multiaddr, key: string, options?: AbortOptions) => Promise<Uint8Array | null>
-
-  /**
-   * Returns the public key for the passed PeerId. If the PeerId is of the 'RSA' type
-   * this may mean searching the DHT if the key is not present in the KeyStore.
-   */
-  getPublicKey: (peer: PeerId, options?: AbortOptions) => Promise<Uint8Array>
 }
