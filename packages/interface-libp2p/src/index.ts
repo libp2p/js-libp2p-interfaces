@@ -50,7 +50,7 @@ export interface PeerUpdate {
  * Once you have a libp2p instance, you can listen to several events it emits,
  * so that you can be notified of relevant network events.
  *
- * Event names are `noun:adjective` so the first part is the name of the object
+ * Event names are `noun:verb` so the first part is the name of the object
  * being acted on and the second is the action.
  */
 export interface Libp2pEvents {
