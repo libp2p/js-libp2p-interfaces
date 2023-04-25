@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-peer-store",
-  "version": "1.2.9",
+  "version": "2.0.1",
   "description": "Peer Store interface for libp2p",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-peer-store#readme",
@@ -154,7 +154,6 @@
   "dependencies": {
     "@libp2p/interface-peer-id": "^2.0.0",
     "@libp2p/interface-peer-info": "^1.0.0",
-    "@libp2p/interface-record": "^2.0.0",
     "@libp2p/interfaces": "^3.0.0",
     "@multiformats/multiaddr": "^12.0.0"
   },

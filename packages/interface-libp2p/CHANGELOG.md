@@ -1,3 +1,42 @@
+## [@libp2p/interface-libp2p-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.3.2...@libp2p/interface-libp2p-v2.0.0) (2023-04-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* add libp2p events (#373)
+
+### Features
+
+* add libp2p events ([#373](https://github.com/libp2p/js-libp2p-interfaces/issues/373)) ([071c718](https://github.com/libp2p/js-libp2p-interfaces/commit/071c718808902858818ca86167b51b242b67a5a5))
+
+
+### Dependencies
+
+* update sibling dependencies ([17ed429](https://github.com/libp2p/js-libp2p-interfaces/commit/17ed429d57e83cb38484ac52a0e0975a7d8af963))
+* update sibling dependencies ([4421374](https://github.com/libp2p/js-libp2p-interfaces/commit/4421374d85ac7d4e9cf0b1a4c5072e881e091b31))
+
+## [@libp2p/interface-libp2p-v1.3.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.3.1...@libp2p/interface-libp2p-v1.3.2) (2023-04-21)
+
+
+### Dependencies
+
+* update sibling dependencies ([bc1588c](https://github.com/libp2p/js-libp2p-interfaces/commit/bc1588c70ffa35c1ba9c954090a7ac8087a22b0c))
+
+## [@libp2p/interface-libp2p-v1.3.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.3.0...@libp2p/interface-libp2p-v1.3.1) (2023-04-18)
+
+
+### Dependencies
+
+* update sibling dependencies ([3d23367](https://github.com/libp2p/js-libp2p-interfaces/commit/3d233676a17299bfa1b59d309543598176826523))
+* update sibling dependencies ([2f52a28](https://github.com/libp2p/js-libp2p-interfaces/commit/2f52a284b59c0a88b040f86da1f5d3f044727f2c))
+
+## [@libp2p/interface-libp2p-v1.3.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.2.0...@libp2p/interface-libp2p-v1.3.0) (2023-04-17)
+
+
+### Features
+
+* expose dial queue inspection method ([#374](https://github.com/libp2p/js-libp2p-interfaces/issues/374)) ([973263f](https://github.com/libp2p/js-libp2p-interfaces/commit/973263f582d39a5b727c9fd90abeea7ed72a9aff))
+
 ## [@libp2p/interface-libp2p-v1.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.1.2...@libp2p/interface-libp2p-v1.2.0) (2023-04-11)
 
 

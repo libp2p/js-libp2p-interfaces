@@ -1,8 +1,10 @@
-import type { Duplex } from 'it-stream-types'
+import type { Duplex, Source } from 'it-stream-types'
 
-export function mockDuplex (): Duplex<Uint8Array> {
+export function mockDuplex (): Duplex<AsyncGenerator<Uint8Array>, Source<Uint8Array>, Promise<void>> {
   return {
-    source: [],
+    source: (async function * () {
+      yield * []
+    }()),
     sink: async () => {}
   }
 }

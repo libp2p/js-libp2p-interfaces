@@ -1,5 +1,4 @@
 import type { AbortOptions } from '@libp2p/interfaces'
-import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Connection, MultiaddrConnection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Multiaddr } from '@multiformats/multiaddr'
@@ -14,55 +13,7 @@ export interface PendingDial {
   multiaddrs: Multiaddr[]
 }
 
-export interface ConnectionManagerEvents {
-  /**
-   * This event will be triggered any time a new Connection is established to another peer.
-   *
-   * @example
-   *
-   * ```js
-   * libp2p.connectionManager.addEventListener('peer:connect', (event) => {
-   *   const connection = event.detail
-   *   // ...
-   * })
-   * ```
-   */
-  'peer:connect': CustomEvent<Connection>
-
-  /**
-   * This event will be triggered any time we are disconnected from another peer, regardless of
-   * the circumstances of that disconnection. If we happen to have multiple connections to a
-   * peer, this event will **only** be triggered when the last connection is closed.
-   *
-   * @example
-   *
-   * ```js
-   * libp2p.connectionManager.addEventListener('peer:disconnect', (event) => {
-   *   const connection = event.detail
-   *   // ...
-   * })
-   * ```
-   */
-  'peer:disconnect': CustomEvent<Connection>
-
-  /**
-   * This event will be triggered when the connection manager has more connections than the
-   * configured limit. The event detail contains the list of PeerIds from the connections
-   * that were closed to bring the node back under the max connections limit.
-   *
-   * @example
-   *
-   * ```js
-   * libp2p.connectionManager.addEventListener('peer:prune', (event) => {
-   *   const connection = event.detail
-   *   // ...
-   * })
-   * ```
-   */
-  'peer:prune': CustomEvent<PeerId[]>
-}
-
-export interface ConnectionManager extends EventEmitter<ConnectionManagerEvents> {
+export interface ConnectionManager {
   /**
    * Return connections, optionally filtering by a PeerId
    *

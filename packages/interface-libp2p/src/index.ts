@@ -18,7 +18,7 @@ import type { AbortOptions } from '@libp2p/interfaces'
 import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { PeerStore } from '@libp2p/interface-peer-store'
+import type { Address, Peer, PeerStore } from '@libp2p/interface-peer-store'
 import type { PeerId } from '@libp2p/interface-peer-id'
 import type { Connection, Stream } from '@libp2p/interface-connection'
 import type { PeerRouting } from '@libp2p/interface-peer-routing'
@@ -27,12 +27,34 @@ import type { StreamHandler, StreamHandlerOptions, Topology } from '@libp2p/inte
 import type { Metrics } from '@libp2p/interface-metrics'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import type { KeyChain } from '@libp2p/interface-keychain'
+import type { Listener } from '@libp2p/interface-transport'
 
 /**
- * Once you have a libp2p instance, you can listen to several events it emits, so that you can be notified of relevant network events.
+ * Used by the connection manager to sort addresses into order before dialling
+ */
+export interface AddressSorter {
+  (a: Address, b: Address): -1 | 0 | 1
+}
+
+/**
+ * Event detail emitted when peer data changes
+ */
+export interface PeerUpdate {
+  peer: Peer
+  previous?: Peer
+}
+
+/**
+ * Once you have a libp2p instance, you can listen to several events it emits,
+ * so that you can be notified of relevant network events.
+ *
+ * Event names are `noun:verb` so the first part is the name of the object
+ * being acted on and the second is the action.
  */
 export interface Libp2pEvents {
   /**
+   * This event is dispatched when a new network peer is discovered.
+   *
    * @example
    *
    * ```js
@@ -45,21 +67,21 @@ export interface Libp2pEvents {
   'peer:discovery': CustomEvent<PeerInfo>
 
   /**
-   * This event will be triggered anytime a new Connection is established to another peer.
+   * This event will be triggered any time a new peer connects.
    *
    * @example
    *
    * ```js
    * libp2p.connectionManager.addEventListener('peer:connect', (event) => {
-   *   const connection = event.detail
+   *   const peerId = event.detail
    *   // ...
    * })
    * ```
    */
-  'peer:connect': CustomEvent<Connection>
+  'peer:connect': CustomEvent<PeerId>
 
   /**
-   * This event will be triggered anytime we are disconnected from another peer, regardless of
+   * This event will be triggered any time we are disconnected from another peer, regardless of
    * the circumstances of that disconnection. If we happen to have multiple connections to a
    * peer, this event will **only** be triggered when the last connection is closed.
    *
@@ -67,12 +89,69 @@ export interface Libp2pEvents {
    *
    * ```js
    * libp2p.connectionManager.addEventListener('peer:disconnect', (event) => {
-   *   const connection = event.detail
+   *   const peerId = event.detail
    *   // ...
    * })
    * ```
    */
-  'peer:disconnect': CustomEvent<Connection>
+  'peer:disconnect': CustomEvent<PeerId>
+
+  /**
+   * This event is dispatched when the peer store data for a peer has been
+   * updated - e.g. their multiaddrs, protocols etc have changed.
+   *
+   * If they were previously known to this node, the old peer data will be
+   * set in the `previous` field.
+   *
+   * This may be in response to the identify protocol running, a manual
+   * update or some other event.
+   */
+  'peer:update': CustomEvent<PeerUpdate>
+
+  /**
+   * This event is dispatched when the current node's peer record changes -
+   * for example a transport started listening on a new address or a new
+   * protocol handler was registered.
+   *
+   * @example
+   *
+   * ```js
+   * libp2p.addEventListener('self:peer:update', (event) => {
+   *   const { peer } = event.detail
+   *   // ...
+   * })
+   * ```
+   */
+  'self:peer:update': CustomEvent<PeerUpdate>
+
+  /**
+   * This event is dispatched when a transport begins listening on a new address
+   */
+  'transport:listening': CustomEvent<Listener>
+
+  /**
+   * This event is dispatched when a transport stops listening on an address
+   */
+  'transport:close': CustomEvent<Listener>
+
+  /**
+   * This event is dispatched when the connection manager has more than the
+   * configured allowable max connections and has closed some connections to
+   * bring the node back under the limit.
+   */
+  'connection:prune': CustomEvent<Connection[]>
+
+  /**
+   * This event notifies listeners when new incoming or outgoing connections
+   * are opened.
+   */
+  'connection:open': CustomEvent<Connection>
+
+  /**
+   * This event notifies listeners when incoming or outgoing connections are
+   * closed.
+   */
+  'connection:close': CustomEvent<Connection>
 }
 
 /**
@@ -96,6 +175,35 @@ export interface Libp2pEvents {
  * ```
  */
 export type ServiceMap = Record<string, unknown>
+
+export type PendingDialStatus = 'queued' | 'active' | 'error' | 'success'
+
+/**
+ * An item in the dial queue
+ */
+export interface PendingDial {
+  /**
+   * A unique identifier for this dial
+   */
+  id: string
+
+  /**
+   * The current status of the dial
+   */
+  status: PendingDialStatus
+
+  /**
+   * If known, this is the peer id that libp2p expects to be dialling
+   */
+  peerId?: PeerId
+
+  /**
+   * The list of multiaddrs that will be dialled. The returned connection will
+   * use the first address that succeeds, all other dials part of this pending
+   * dial will be cancelled.
+   */
+  multiaddrs: Multiaddr[]
+}
 
 /**
  * Libp2p nodes implement this interface.
@@ -243,6 +351,19 @@ export interface Libp2p<T extends ServiceMap = {}> extends Startable, EventEmitt
    * ```
    */
   getConnections: (peerId?: PeerId) => Connection[]
+
+  /**
+   * Return the list of dials currently in progress or queued to start
+   *
+   * @example
+   *
+   * ```js
+   * for (const pendingDial of libp2p.getDialQueue()) {
+   *   console.log(pendingDial)
+   * }
+   * ```
+   */
+  getDialQueue: () => PendingDial[]
 
   /**
    * Return a list of all peers we currently have a connection open to

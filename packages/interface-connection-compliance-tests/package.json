@@ -1,6 +1,6 @@
 {
   "name": "@libp2p/interface-connection-compliance-tests",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Compliance tests for implementations of the libp2p Connection interface",
   "license": "Apache-2.0 OR MIT",
   "homepage": "https://github.com/libp2p/js-libp2p-interfaces/tree/master/packages/interface-connection-compliance-tests#readme",
@@ -133,7 +133,7 @@
   },
   "dependencies": {
     "@libp2p/interface-compliance-tests": "^3.0.0",
-    "@libp2p/interface-connection": "^4.0.0",
+    "@libp2p/interface-connection": "^5.0.0",
     "aegir": "^38.1.0",
     "sinon": "^15.0.0",
     "ts-sinon": "^2.0.2"

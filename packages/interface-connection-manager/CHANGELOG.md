@@ -1,3 +1,21 @@
+## [@libp2p/interface-connection-manager-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v2.1.1...@libp2p/interface-connection-manager-v3.0.0) (2023-04-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* add libp2p events (#373)
+
+### Features
+
+* add libp2p events ([#373](https://github.com/libp2p/js-libp2p-interfaces/issues/373)) ([071c718](https://github.com/libp2p/js-libp2p-interfaces/commit/071c718808902858818ca86167b51b242b67a5a5))
+
+## [@libp2p/interface-connection-manager-v2.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v2.1.0...@libp2p/interface-connection-manager-v2.1.1) (2023-04-18)
+
+
+### Dependencies
+
+* update sibling dependencies ([2f52a28](https://github.com/libp2p/js-libp2p-interfaces/commit/2f52a284b59c0a88b040f86da1f5d3f044727f2c))
+
 ## [@libp2p/interface-connection-manager-v2.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-manager-v2.0.0...@libp2p/interface-connection-manager-v2.1.0) (2023-04-14)
 
 

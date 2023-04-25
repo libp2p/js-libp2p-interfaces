@@ -1,6 +1,7 @@
-import type { Duplex } from 'it-stream-types'
+import type { Duplex, Source } from 'it-stream-types'
 import type { Direction, Stream } from '@libp2p/interface-connection'
 import type { AbortOptions } from '@libp2p/interfaces'
+import type { Uint8ArrayList } from 'uint8arraylist'
 
 export interface StreamMuxerFactory {
   /**
@@ -17,7 +18,7 @@ export interface StreamMuxerFactory {
 /**
  * A libp2p stream muxer
  */
-export interface StreamMuxer extends Duplex<Uint8Array> {
+export interface StreamMuxer extends Duplex<AsyncGenerator<Uint8Array>, Source<Uint8ArrayList | Uint8Array>, Promise<void>> {
   /**
    * The protocol used to select this muxer during connection opening
    */

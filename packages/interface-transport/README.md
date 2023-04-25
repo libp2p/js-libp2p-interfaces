@@ -130,7 +130,7 @@ A valid transport (one that follows the interface defined) must implement the fo
 Upgraders have 2 methods: `upgradeOutbound` and `upgradeInbound`.
 
 - `upgradeOutbound` must be called and returned by `transport.dial`.
-- `upgradeInbound` must be called and the results must be passed to the `createListener` `handlerFunction` and the `connection` event handler, anytime a new connection is created.
+- `upgradeInbound` must be called and the results must be passed to the `createListener` `handlerFunction` and the `connection` event handler, any time a new connection is created.
 
 ```js
 const connection = await upgrader.upgradeOutbound(multiaddrConnection)

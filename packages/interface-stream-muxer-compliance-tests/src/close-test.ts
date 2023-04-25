@@ -302,7 +302,6 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
 
       // Source should be done
       void Promise.resolve().then(async () => {
-        // @ts-expect-error next is part of the iterable protocol
         expect(await stream.source.next()).to.have.property('done', true)
         await stream.sink(data)
       })
