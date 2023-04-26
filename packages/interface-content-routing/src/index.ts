@@ -10,10 +10,10 @@ import type { PeerInfo } from '@libp2p/interface-peer-info'
  * @example
  *
  * ```js
- * import { symbol, ContentRouting } from '@libp2p/content-routing'
+ * import { contentRouting, ContentRouting } from '@libp2p/content-routing'
  *
  * class MyContentRouter implements ContentRouting {
- *   get [symbol] () {
+ *   get [contentRouting] () {
  *     return this
  *   }
  *
@@ -21,7 +21,7 @@ import type { PeerInfo } from '@libp2p/interface-peer-info'
  * }
  * ```
  */
-export const symbol = Symbol.for('@libp2p/content-routing')
+export const contentRouting = Symbol.for('@libp2p/content-routing')
 
 export interface ContentRouting {
   /**

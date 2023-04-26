@@ -10,10 +10,10 @@ import type { AbortOptions } from '@libp2p/interfaces'
  * @example
  *
  * ```js
- * import { symbol, PeerRouting } from '@libp2p/peer-routing'
+ * import { peerRouting, PeerRouting } from '@libp2p/peer-routing'
  *
  * class MyPeerRouter implements PeerRouting {
- *   get [symbol] () {
+ *   get [peerRouting] () {
  *     return this
  *   }
  *
@@ -21,7 +21,7 @@ import type { AbortOptions } from '@libp2p/interfaces'
  * }
  * ```
  */
-export const symbol = Symbol.for('@libp2p/peer-routing')
+export const peerRouting = Symbol.for('@libp2p/peer-routing')
 
 export interface PeerRouting {
   /**
