@@ -2,6 +2,27 @@ import type { PeerId } from '@libp2p/interface-peer-id'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import type { AbortOptions } from '@libp2p/interfaces'
 
+/**
+ * Any object that implements this Symbol as a property should return a
+ * PeerRouting instance as the property value, similar to how
+ * `Symbol.Iterable` can be used to return an `Iterable` from an `Iterator`.
+ *
+ * @example
+ *
+ * ```js
+ * import { symbol, PeerRouting } from '@libp2p/peer-routing'
+ *
+ * class MyPeerRouter implements PeerRouting {
+ *   get [symbol] () {
+ *     return this
+ *   }
+ *
+ *   // ...other methods
+ * }
+ * ```
+ */
+export const symbol = Symbol.for('@libp2p/peer-routing')
+
 export interface PeerRouting {
   /**
    * Searches the network for peer info corresponding to the passed peer id.
