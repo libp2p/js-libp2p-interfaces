@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-discovery-v1.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-discovery-v1.0.5...@libp2p/interface-peer-discovery-v1.1.0) (2023-04-27)
+
+
+### Features
+
+* add routing symbols ([#388](https://github.com/libp2p/js-libp2p-interfaces/issues/388)) ([9ee7691](https://github.com/libp2p/js-libp2p-interfaces/commit/9ee76915d2b8298d99557e105c4f71d585e97e7d))
+
 ## [@libp2p/interface-peer-discovery-v1.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-discovery-v1.0.4...@libp2p/interface-peer-discovery-v1.0.5) (2023-01-18)
 
 
