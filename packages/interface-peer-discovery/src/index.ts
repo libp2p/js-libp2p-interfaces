@@ -1,7 +1,6 @@
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import type { EventEmitter } from '@libp2p/interfaces/events'
 
-
 /**
  * Any object that implements this Symbol as a property should return a
  * PeerDiscovery instance as the property value, similar to how
