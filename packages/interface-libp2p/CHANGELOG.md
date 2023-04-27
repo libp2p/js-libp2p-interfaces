@@ -1,3 +1,19 @@
+## [@libp2p/interface-libp2p-v3.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v2.0.0...@libp2p/interface-libp2p-v3.0.0) (2023-04-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* pubsub, dht, ping, fetch and identify have been removed - re-enable these by passing them as services
+
+### Features
+
+* allow user defined services ([#375](https://github.com/libp2p/js-libp2p-interfaces/issues/375)) ([13cf442](https://github.com/libp2p/js-libp2p-interfaces/commit/13cf442ff29acbe28cf75431dee02bfefd9a4e40))
+
+
+### Documentation
+
+* fix typos in docs ([#386](https://github.com/libp2p/js-libp2p-interfaces/issues/386)) ([8ec2cdc](https://github.com/libp2p/js-libp2p-interfaces/commit/8ec2cdcc5deed76e0c673a75c27bf7a2e931eea1))
+
 ## [@libp2p/interface-libp2p-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v1.3.2...@libp2p/interface-libp2p-v2.0.0) (2023-04-21)
 
 
