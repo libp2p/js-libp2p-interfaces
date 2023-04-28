@@ -45,6 +45,34 @@ export interface PeerUpdate {
 }
 
 /**
+ * A address this node knows about
+ */
+export interface NodeAddress {
+  /**
+   * This address as a multiaddr
+   */
+  multiaddr: Multiaddr
+
+  /**
+   * If `true`, this address is advertised to the network via peer records and the
+   * Identify protocols
+   */
+  announce?: boolean
+
+  /**
+   * If `true`, this address was observed by remote peers and communicated back to
+   * this node via the AutoNAT protocol
+   */
+  observed?: boolean
+
+  /**
+   * Only set on `observed` addresses - if `true` the node has confidence that this
+   * address is publicly routable and remote peers can dial it
+   */
+  confidence?: boolean
+}
+
+/**
  * Once you have a libp2p instance, you can listen to several events it emits,
  * so that you can be notified of relevant network events.
  *
@@ -324,6 +352,22 @@ export interface Libp2p<T extends ServiceMap = {}> extends Startable, EventEmitt
    * ```
    */
   getMultiaddrs: () => Multiaddr[]
+
+  /**
+   * Returns a list of address this node is listening on and the status
+   * of those addresses
+   *
+   * @example
+   *
+   * ```js
+   * const listenMa = libp2p.getAddresses()
+   * // [{
+   * //   multiaddr: <Multiaddr 047f00000106f9ba - /ip4/127.0.0.1/tcp/63930>
+   * //   announce: true
+   * // }]
+   * ```
+   */
+  getAddresses: () => NodeAddress[]
 
   /**
    * Returns a list of supported protocols
