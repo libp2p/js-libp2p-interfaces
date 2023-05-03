@@ -136,7 +136,7 @@
     "@libp2p/interface-connection": "^5.0.0",
     "@libp2p/interface-stream-muxer": "^4.0.0",
     "abortable-iterator": "^5.0.0",
-    "aegir": "^38.1.0",
+    "aegir": "^39.0.4",
     "delay": "^5.0.0",
     "it-all": "^3.0.1",
     "it-drain": "^3.0.1",
