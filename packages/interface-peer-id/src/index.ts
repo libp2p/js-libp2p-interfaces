@@ -3,15 +3,20 @@ import type { MultihashDigest } from 'multiformats/hashes/interface'
 
 export type PeerIdType = 'RSA' | 'Ed25519' | 'secp256k1'
 
-interface BasePeerId {
+/**
+ * Minimal PeerId object that can be serialized using structuredClone
+ */
+export interface PeerIdObject {
   readonly type: PeerIdType
   readonly multihash: MultihashDigest
   readonly privateKey?: Uint8Array
   readonly publicKey?: Uint8Array
-
+}
+interface BasePeerId extends PeerIdObject {
   toString: () => string
   toCID: () => CID
   toBytes: () => Uint8Array
+  toObject: () => PeerIdObject
   equals: (other: PeerId | Uint8Array | string) => boolean
 }
 
