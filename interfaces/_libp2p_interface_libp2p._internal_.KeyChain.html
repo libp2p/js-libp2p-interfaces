@@ -56,7 +56,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Create a key in the keychain.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfo</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">createKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;RSA&#39;</span><span class="hl-0">, </span><span class="hl-9">4096</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">keyInfo</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">createKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;RSA&#39;</span><span class="hl-1">, </span><span class="hl-9">4096</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -83,7 +83,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Export an existing key as a PEM encrypted PKCS #8 string.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">createKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;RSA&#39;</span><span class="hl-0">, </span><span class="hl-9">4096</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">pemKey</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">exportKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;password123&#39;</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">createKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;RSA&#39;</span><span class="hl-1">, </span><span class="hl-9">4096</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">pemKey</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">exportKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;password123&#39;</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -108,7 +108,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Export an existing key as a PeerId</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">peerId</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">exportPeerId</span><span class="hl-0">(</span><span class="hl-1">&#39;key-name&#39;</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">peerId</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">exportPeerId</span><span class="hl-1">(</span><span class="hl-2">&#39;key-name&#39;</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -131,7 +131,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Find a key by it&#39;s id.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfo</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">createKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;RSA&#39;</span><span class="hl-0">, </span><span class="hl-9">4096</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfo2</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">findKeyById</span><span class="hl-0">(</span><span class="hl-3">keyInfo</span><span class="hl-0">.</span><span class="hl-3">id</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">keyInfo</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">createKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;RSA&#39;</span><span class="hl-1">, </span><span class="hl-9">4096</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">keyInfo2</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">findKeyById</span><span class="hl-1">(</span><span class="hl-4">keyInfo</span><span class="hl-1">.</span><span class="hl-4">id</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -154,7 +154,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Find a key by it&#39;s name.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfo</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">createKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;RSA&#39;</span><span class="hl-0">, </span><span class="hl-9">4096</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfo2</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">findKeyByName</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">keyInfo</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">createKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;RSA&#39;</span><span class="hl-1">, </span><span class="hl-9">4096</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">keyInfo2</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">findKeyByName</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -177,7 +177,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Import a new key from a PEM encoded PKCS #8 string.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">createKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;RSA&#39;</span><span class="hl-0">, </span><span class="hl-9">4096</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">pemKey</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">exportKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;password123&#39;</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfo</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">importKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTestImport&#39;</span><span class="hl-0">, </span><span class="hl-3">pemKey</span><span class="hl-0">, </span><span class="hl-1">&#39;password123&#39;</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">createKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;RSA&#39;</span><span class="hl-1">, </span><span class="hl-9">4096</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">pemKey</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">exportKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;password123&#39;</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">keyInfo</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">importKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTestImport&#39;</span><span class="hl-1">, </span><span class="hl-4">pemKey</span><span class="hl-1">, </span><span class="hl-2">&#39;password123&#39;</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -204,7 +204,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Import a new key from a PeerId with a private key component</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfo</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">importPeer</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTestImport&#39;</span><span class="hl-0">, </span><span class="hl-6">peerIdFromString</span><span class="hl-0">(</span><span class="hl-1">&#39;12D3Foo...&#39;</span><span class="hl-0">))</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">keyInfo</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">importPeer</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTestImport&#39;</span><span class="hl-1">, </span><span class="hl-0">peerIdFromString</span><span class="hl-1">(</span><span class="hl-2">&#39;12D3Foo...&#39;</span><span class="hl-1">))</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -229,7 +229,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>List all the keys.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfos</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">listKeys</span><span class="hl-0">()</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">keyInfos</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">listKeys</span><span class="hl-1">()</span>
 </code></pre>
 </div>
 <h4 class="tsd-returns-title">Returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="_libp2p_interface_libp2p._internal_.KeyInfo.html" class="tsd-signature-type" data-tsd-kind="Interface">KeyInfo</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
@@ -247,7 +247,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Removes a key from the keychain.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">createKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;RSA&#39;</span><span class="hl-0">, </span><span class="hl-9">4096</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfo</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">removeKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">createKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;RSA&#39;</span><span class="hl-1">, </span><span class="hl-9">4096</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">keyInfo</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">removeKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -270,7 +270,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Rename a key in the keychain.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">createKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;RSA&#39;</span><span class="hl-0">, </span><span class="hl-9">4096</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">keyInfo</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">renameKey</span><span class="hl-0">(</span><span class="hl-1">&#39;keyTest&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;keyNewNtest&#39;</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">createKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;RSA&#39;</span><span class="hl-1">, </span><span class="hl-9">4096</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">keyInfo</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">renameKey</span><span class="hl-1">(</span><span class="hl-2">&#39;keyTest&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;keyNewNtest&#39;</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -295,7 +295,7 @@
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Rotate keychain password and re-encrypt all associated keys</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">keychain</span><span class="hl-0">.</span><span class="hl-6">rotateKeychainPass</span><span class="hl-0">(</span><span class="hl-1">&#39;oldPassword&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;newPassword&#39;</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">keychain</span><span class="hl-1">.</span><span class="hl-0">rotateKeychainPass</span><span class="hl-1">(</span><span class="hl-2">&#39;oldPassword&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;newPassword&#39;</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -329,91 +329,91 @@
 <ul>
 <li class="current"><a href="../modules.html">Documentation</a>
 <ul>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_address_manager.html">@libp2p/interface-<wbr/>address-<wbr/>manager -<wbr/> v3.0.0</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_compliance_tests.html">@libp2p/interface-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.6</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v5.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_address_manager.html">@libp2p/interface-<wbr/>address-<wbr/>manager -<wbr/> v3.0.1</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_compliance_tests.html">@libp2p/interface-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.7</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v5.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.8</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.9</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_gater.html">@libp2p/interface-<wbr/>connection-<wbr/>gater -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_gater.html">@libp2p/interface-<wbr/>connection-<wbr/>gater -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_gater._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_manager._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.1.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_content_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_dht._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.4</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_keychain._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.7</a></li>
-<li class="current tsd-kind-module"><a href="../modules/_libp2p_interface_libp2p.html">@libp2p/interface-<wbr/>libp2p -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.8</a></li>
+<li class="current tsd-kind-module"><a href="../modules/_libp2p_interface_libp2p.html">@libp2p/interface-<wbr/>libp2p -<wbr/> v3.0.1</a>
 <ul>
 <li class="current tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_libp2p._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.7</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v11.0.2</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v11.0.3</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.1.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_discovery._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery_compliance_tests.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.6</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery_compliance_tests.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_discovery_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_id.html">@libp2p/interface-<wbr/>peer-<wbr/>id -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_id.html">@libp2p/interface-<wbr/>peer-<wbr/>id -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_id._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.9</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.10</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_info._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.1.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_store._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_pubsub._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub_compliance_tests.html">@libp2p/interface-<wbr/>pubsub-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.5</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub_compliance_tests.html">@libp2p/interface-<wbr/>pubsub-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.6</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_pubsub_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record.html">@libp2p/interface-<wbr/>record -<wbr/> v2.0.6</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record.html">@libp2p/interface-<wbr/>record -<wbr/> v2.0.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_record._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.4</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.11</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.12</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_registrar._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_stream_muxer._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v7.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v7.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v4.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v4.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_transport._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport_compliance_tests.html">@libp2p/interface-<wbr/>transport-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport_compliance_tests.html">@libp2p/interface-<wbr/>transport-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_transport_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interfaces.html">@libp2p/interfaces -<wbr/> v3.3.1</a></li></ul></li></ul></div></details></nav>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interfaces.html">@libp2p/interfaces -<wbr/> v3.3.2</a></li></ul></li></ul></div></details></nav>
 <nav class="tsd-navigation secondary menu-sticky">
 <ul>
 <li class="current tsd-kind-interface tsd-parent-kind-module"><a href="_libp2p_interface_libp2p._internal_.KeyChain.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-interface)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-256-path"></rect><path d="M9.51 16V15.016H11.298V8.224H9.51V7.24H14.19V8.224H12.402V15.016H14.19V16H9.51Z" fill="var(--color-text)" id="icon-256-text"></path></svg><span>Key<wbr/>Chain</span></a>

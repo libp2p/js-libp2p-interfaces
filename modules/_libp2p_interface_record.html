@@ -14,7 +14,7 @@
 <ul class="tsd-breadcrumb">
 <li><a href="../modules.html">Documentation</a></li>
 <li><a href="_libp2p_interface_record.html">@libp2p/interface-record</a></li></ul>
-<h1>Module @libp2p/interface-record - v2.0.6</h1></div><aside class="tsd-sources">
+<h1>Module @libp2p/interface-record - v2.0.7</h1></div><aside class="tsd-sources">
 <ul>
 <li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-record/src/index.ts#L1">packages/interface-record/src/index.ts:1</a></li></ul></aside>
 <section class="tsd-panel-group">
@@ -50,7 +50,7 @@
 <a href="#install" id="install" style="color: inherit; text-decoration: none;">
   <h2>Install</h2>
 </a>
-<pre><code class="language-console"><span class="hl-0">$ </span><span class="hl-1">npm</span><span class="hl-0"> </span><span class="hl-1">i</span><span class="hl-0"> </span><span class="hl-1">@libp2p/interface-record</span>
+<pre><code class="language-console"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> </span><span class="hl-2">@libp2p/interface-record</span>
 </code></pre>
 <p>A libp2p node needs to store data in a public location (e.g. a DHT), or rely on potentially untrustworthy intermediaries to relay information. Libp2p provides an all-purpose data container called <strong>envelope</strong>, which includes a signature of the data, so that it its authenticity can be verified.</p>
 <p>The record represents the data that will be stored inside the <strong>envelope</strong> when distributing records across the network. The <code>interface-record</code> aims to guarantee that any type of record created is compliant with the libp2p <strong>envelope</strong>.</p>
@@ -60,13 +60,13 @@
 <a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
   <h2>Usage</h2>
 </a>
-<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">tests</span><span class="hl-0"> = </span><span class="hl-6">require</span><span class="hl-0">(</span><span class="hl-1">&#39;libp2p-interfaces-compliance-tests/record&#39;</span><span class="hl-0">)</span><br/><span class="hl-6">describe</span><span class="hl-0">(</span><span class="hl-1">&#39;your record&#39;</span><span class="hl-0">, () </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-6">tests</span><span class="hl-0">({</span><br/><span class="hl-0">    </span><span class="hl-4">async</span><span class="hl-0"> </span><span class="hl-6">setup</span><span class="hl-0"> () {</span><br/><span class="hl-0">      </span><span class="hl-2">return</span><span class="hl-0"> </span><span class="hl-3">YourRecord</span><br/><span class="hl-0">    },</span><br/><span class="hl-0">    </span><span class="hl-4">async</span><span class="hl-0"> </span><span class="hl-6">teardown</span><span class="hl-0"> () {</span><br/><span class="hl-0">      </span><span class="hl-7">// cleanup resources created by setup()</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">  })</span><br/><span class="hl-0">})</span>
+<pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">tests</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;libp2p-interfaces-compliance-tests/record&#39;</span><span class="hl-1">)</span><br/><span class="hl-0">describe</span><span class="hl-1">(</span><span class="hl-2">&#39;your record&#39;</span><span class="hl-1">, () </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-0">tests</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-5">async</span><span class="hl-1"> </span><span class="hl-0">setup</span><span class="hl-1"> () {</span><br/><span class="hl-1">      </span><span class="hl-3">return</span><span class="hl-1"> </span><span class="hl-4">YourRecord</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">    </span><span class="hl-5">async</span><span class="hl-1"> </span><span class="hl-0">teardown</span><span class="hl-1"> () {</span><br/><span class="hl-1">      </span><span class="hl-7">// cleanup resources created by setup()</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  })</span><br/><span class="hl-1">})</span>
 </code></pre>
 
 <a href="#create-record" id="create-record" style="color: inherit; text-decoration: none;">
   <h2>Create Record</h2>
 </a>
-<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">multicodec</span><span class="hl-0"> = </span><span class="hl-6">require</span><span class="hl-0">(</span><span class="hl-1">&#39;multicodec&#39;</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">Record</span><span class="hl-0"> = </span><span class="hl-6">require</span><span class="hl-0">(</span><span class="hl-1">&#39;libp2p-interfaces/src/record&#39;</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> { </span><span class="hl-5">fromString</span><span class="hl-0"> } = </span><span class="hl-6">require</span><span class="hl-0">(</span><span class="hl-1">&#39;uint8arrays/from-string&#39;</span><span class="hl-0">)</span><br/><span class="hl-7">// const Protobuf = require(&#39;./record.proto&#39;)</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">ENVELOPE_DOMAIN_PEER_RECORD</span><span class="hl-0"> = </span><span class="hl-1">&#39;libp2p-peer-record&#39;</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">ENVELOPE_PAYLOAD_TYPE_PEER_RECORD</span><span class="hl-0"> = </span><span class="hl-6">fromString</span><span class="hl-0">(</span><span class="hl-1">&#39;0301&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;hex&#39;</span><span class="hl-0">)</span><br/><br/><span class="hl-7">/**</span><br/><span class="hl-7"> * </span><span class="hl-4">@implements</span><span class="hl-7"> </span><span class="hl-8">{import(&#39;libp2p-interfaces/src/record/types&#39;).Record}</span><br/><span class="hl-7"> */</span><br/><span class="hl-4">class</span><span class="hl-0"> </span><span class="hl-8">PeerRecord</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-4">constructor</span><span class="hl-0"> (</span><span class="hl-3">peerId</span><span class="hl-0">, </span><span class="hl-3">multiaddrs</span><span class="hl-0">, </span><span class="hl-3">seqNumber</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-4">this</span><span class="hl-0">.</span><span class="hl-3">domain</span><span class="hl-0"> = </span><span class="hl-5">ENVELOPE_DOMAIN_PEER_RECORD</span><br/><span class="hl-0">    </span><span class="hl-4">this</span><span class="hl-0">.</span><span class="hl-3">codec</span><span class="hl-0"> = </span><span class="hl-5">ENVELOPE_PAYLOAD_TYPE_PEER_RECORD</span><br/><span class="hl-0">  }</span><br/><br/><span class="hl-0">  </span><span class="hl-7">/**</span><br/><span class="hl-7">   * Marshal a record to be used in an envelope.</span><br/><span class="hl-7">   *</span><br/><span class="hl-7">   * </span><span class="hl-4">@returns</span><span class="hl-7"> </span><span class="hl-8">{Uint8Array}</span><br/><span class="hl-7">   */</span><br/><span class="hl-0">  </span><span class="hl-6">marshal</span><span class="hl-0"> () {</span><br/><span class="hl-0">    </span><span class="hl-7">// Implement and return using Protobuf</span><br/><span class="hl-0">  }</span><br/><br/><span class="hl-0">  </span><span class="hl-7">/**</span><br/><span class="hl-7">   * Returns true if `this` record equals the `other`.</span><br/><span class="hl-7">   *</span><br/><span class="hl-7">   * </span><span class="hl-4">@param</span><span class="hl-7"> </span><span class="hl-8">{PeerRecord}</span><span class="hl-7"> </span><span class="hl-3">other</span><br/><span class="hl-7">   * </span><span class="hl-4">@returns</span><span class="hl-7"> </span><span class="hl-8">{other is Record}</span><br/><span class="hl-7">   */</span><br/><span class="hl-0">  </span><span class="hl-6">equals</span><span class="hl-0"> (</span><span class="hl-3">other</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-7">// Verify</span><br/><span class="hl-0">  }</span><br/><span class="hl-0">}</span>
+<pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">multicodec</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;multicodec&#39;</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">Record</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;libp2p-interfaces/src/record&#39;</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">fromString</span><span class="hl-1"> } = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;uint8arrays/from-string&#39;</span><span class="hl-1">)</span><br/><span class="hl-7">// const Protobuf = require(&#39;./record.proto&#39;)</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">ENVELOPE_DOMAIN_PEER_RECORD</span><span class="hl-1"> = </span><span class="hl-2">&#39;libp2p-peer-record&#39;</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">ENVELOPE_PAYLOAD_TYPE_PEER_RECORD</span><span class="hl-1"> = </span><span class="hl-0">fromString</span><span class="hl-1">(</span><span class="hl-2">&#39;0301&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;hex&#39;</span><span class="hl-1">)</span><br/><br/><span class="hl-7">/**</span><br/><span class="hl-7"> * </span><span class="hl-5">@implements</span><span class="hl-7"> </span><span class="hl-8">{import(&#39;libp2p-interfaces/src/record/types&#39;).Record}</span><br/><span class="hl-7"> */</span><br/><span class="hl-5">class</span><span class="hl-1"> </span><span class="hl-8">PeerRecord</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">constructor</span><span class="hl-1"> (</span><span class="hl-4">peerId</span><span class="hl-1">, </span><span class="hl-4">multiaddrs</span><span class="hl-1">, </span><span class="hl-4">seqNumber</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-5">this</span><span class="hl-1">.</span><span class="hl-4">domain</span><span class="hl-1"> = </span><span class="hl-6">ENVELOPE_DOMAIN_PEER_RECORD</span><br/><span class="hl-1">    </span><span class="hl-5">this</span><span class="hl-1">.</span><span class="hl-4">codec</span><span class="hl-1"> = </span><span class="hl-6">ENVELOPE_PAYLOAD_TYPE_PEER_RECORD</span><br/><span class="hl-1">  }</span><br/><br/><span class="hl-1">  </span><span class="hl-7">/**</span><br/><span class="hl-7">   * Marshal a record to be used in an envelope.</span><br/><span class="hl-7">   *</span><br/><span class="hl-7">   * </span><span class="hl-5">@returns</span><span class="hl-7"> </span><span class="hl-8">{Uint8Array}</span><br/><span class="hl-7">   */</span><br/><span class="hl-1">  </span><span class="hl-0">marshal</span><span class="hl-1"> () {</span><br/><span class="hl-1">    </span><span class="hl-7">// Implement and return using Protobuf</span><br/><span class="hl-1">  }</span><br/><br/><span class="hl-1">  </span><span class="hl-7">/**</span><br/><span class="hl-7">   * Returns true if `this` record equals the `other`.</span><br/><span class="hl-7">   *</span><br/><span class="hl-7">   * </span><span class="hl-5">@param</span><span class="hl-7"> </span><span class="hl-8">{PeerRecord}</span><span class="hl-7"> </span><span class="hl-4">other</span><br/><span class="hl-7">   * </span><span class="hl-5">@returns</span><span class="hl-7"> </span><span class="hl-8">{other is Record}</span><br/><span class="hl-7">   */</span><br/><span class="hl-1">  </span><span class="hl-0">equals</span><span class="hl-1"> (</span><span class="hl-4">other</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-7">// Verify</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
 </code></pre>
 
 <a href="#api" id="api" style="color: inherit; text-decoration: none;">
@@ -153,91 +153,91 @@
 <ul>
 <li class="current"><a href="../modules.html">Documentation</a>
 <ul>
-<li class="tsd-kind-module"><a href="_libp2p_interface_address_manager.html">@libp2p/interface-<wbr/>address-<wbr/>manager -<wbr/> v3.0.0</a></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_compliance_tests.html">@libp2p/interface-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.6</a></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v5.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_address_manager.html">@libp2p/interface-<wbr/>address-<wbr/>manager -<wbr/> v3.0.1</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_compliance_tests.html">@libp2p/interface-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.7</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v5.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.8</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.9</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection_encrypter.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_encrypter.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection_encrypter._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection_encrypter_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection_gater.html">@libp2p/interface-<wbr/>connection-<wbr/>gater -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_gater.html">@libp2p/interface-<wbr/>connection-<wbr/>gater -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection_gater._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection_manager._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.1.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_content_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_dht._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.4</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_keychain._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.7</a></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_libp2p.html">@libp2p/interface-<wbr/>libp2p -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.8</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_libp2p.html">@libp2p/interface-<wbr/>libp2p -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_libp2p._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.7</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v11.0.2</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v11.0.3</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.1.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_discovery._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_discovery_compliance_tests.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.6</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_discovery_compliance_tests.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_discovery_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_id.html">@libp2p/interface-<wbr/>peer-<wbr/>id -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_id.html">@libp2p/interface-<wbr/>peer-<wbr/>id -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_id._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.9</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.10</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_info._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.1.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_store._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_pubsub._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_pubsub_compliance_tests.html">@libp2p/interface-<wbr/>pubsub-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.5</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_pubsub_compliance_tests.html">@libp2p/interface-<wbr/>pubsub-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.6</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_pubsub_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="current selected tsd-kind-module"><a href="_libp2p_interface_record.html">@libp2p/interface-<wbr/>record -<wbr/> v2.0.6</a>
+<li class="current selected tsd-kind-module"><a href="_libp2p_interface_record.html">@libp2p/interface-<wbr/>record -<wbr/> v2.0.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_record._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.4</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_record_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.11</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.12</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_registrar._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_stream_muxer._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v7.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v7.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_stream_muxer_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v4.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v4.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_transport._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_transport_compliance_tests.html">@libp2p/interface-<wbr/>transport-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_transport_compliance_tests.html">@libp2p/interface-<wbr/>transport-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_transport_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interfaces.html">@libp2p/interfaces -<wbr/> v3.3.1</a></li></ul></li></ul></div></details></nav>
+<li class="tsd-kind-module"><a href="_libp2p_interfaces.html">@libp2p/interfaces -<wbr/> v3.3.2</a></li></ul></li></ul></div></details></nav>
 <nav class="tsd-navigation secondary menu-sticky">
 <ul>
 <li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_libp2p_interface_record.Envelope.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>Envelope</a></li>

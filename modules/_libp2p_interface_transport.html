@@ -14,7 +14,7 @@
 <ul class="tsd-breadcrumb">
 <li><a href="../modules.html">Documentation</a></li>
 <li><a href="_libp2p_interface_transport.html">@libp2p/interface-transport</a></li></ul>
-<h1>Module @libp2p/interface-transport - v4.0.1</h1></div><aside class="tsd-sources">
+<h1>Module @libp2p/interface-transport - v4.0.2</h1></div><aside class="tsd-sources">
 <ul>
 <li>Defined in <a href="https://github.com/libp2p/js-libp2p-interfaces/blob/master/packages/interface-transport/src/index.ts#L1">packages/interface-transport/src/index.ts:1</a></li></ul></aside>
 <section class="tsd-panel-group">
@@ -63,7 +63,7 @@
 <a href="#install" id="install" style="color: inherit; text-decoration: none;">
   <h2>Install</h2>
 </a>
-<pre><code class="language-console"><span class="hl-0">$ </span><span class="hl-1">npm</span><span class="hl-0"> </span><span class="hl-1">i</span><span class="hl-0"> </span><span class="hl-1">@libp2p/interface-transport</span>
+<pre><code class="language-console"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> </span><span class="hl-2">@libp2p/interface-transport</span>
 </code></pre>
 <p>The primary goal of this module is to enable developers to pick and swap their transport module as they see fit for their libp2p installation, without having to go through shims or compatibility issues. This module and test suite were heavily inspired by abstract-blob-store, interface-stream-muxer and others.</p>
 <p>Publishing a test suite as a module lets multiple modules all ensure compatibility since they use the same test suite.</p>
@@ -95,7 +95,7 @@
 <a href="#nodejs" id="nodejs" style="color: inherit; text-decoration: none;">
   <h2>Node.js</h2>
 </a>
-<pre><code class="language-js"><span class="hl-7">/* eslint-env mocha */</span><br/><span class="hl-1">&#39;use strict&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">tests</span><span class="hl-0"> = </span><span class="hl-6">require</span><span class="hl-0">(</span><span class="hl-1">&#39;libp2p-interfaces-compliance-tests/transport&#39;</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">multiaddr</span><span class="hl-0"> = </span><span class="hl-6">require</span><span class="hl-0">(</span><span class="hl-1">&#39;@multiformats/multiaddr&#39;</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">YourTransport</span><span class="hl-0"> = </span><span class="hl-6">require</span><span class="hl-0">(</span><span class="hl-1">&#39;../src&#39;</span><span class="hl-0">)</span><br/><br/><span class="hl-6">describe</span><span class="hl-0">(</span><span class="hl-1">&#39;compliance&#39;</span><span class="hl-0">, () </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-6">tests</span><span class="hl-0">({</span><br/><span class="hl-0">    </span><span class="hl-6">setup</span><span class="hl-0"> (</span><span class="hl-3">init</span><span class="hl-0">) {</span><br/><span class="hl-0">      </span><span class="hl-4">let</span><span class="hl-0"> </span><span class="hl-3">transport</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-6">YourTransport</span><span class="hl-0">(</span><span class="hl-3">init</span><span class="hl-0">)</span><br/><br/><span class="hl-0">      </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">addrs</span><span class="hl-0"> = [</span><br/><span class="hl-0">        </span><span class="hl-6">multiaddr</span><span class="hl-0">(</span><span class="hl-1">&#39;valid-multiaddr-for-your-transport&#39;</span><span class="hl-0">),</span><br/><span class="hl-0">        </span><span class="hl-6">multiaddr</span><span class="hl-0">(</span><span class="hl-1">&#39;valid-multiaddr2-for-your-transport&#39;</span><span class="hl-0">)</span><br/><span class="hl-0">      ]</span><br/><br/><span class="hl-0">      </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">network</span><span class="hl-0"> = </span><span class="hl-6">require</span><span class="hl-0">(</span><span class="hl-1">&#39;my-network-lib&#39;</span><span class="hl-0">)</span><br/><span class="hl-0">      </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">connect</span><span class="hl-0"> = </span><span class="hl-3">network</span><span class="hl-0">.</span><span class="hl-3">connect</span><br/><span class="hl-0">      </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">connector</span><span class="hl-0"> = {</span><br/><span class="hl-0">        </span><span class="hl-6">delay</span><span class="hl-0"> (</span><span class="hl-3">delayMs</span><span class="hl-0">) {</span><br/><span class="hl-0">          </span><span class="hl-7">// Add a delay in the connection mechanism for the transport</span><br/><span class="hl-0">          </span><span class="hl-7">// (this is used by the dial tests)</span><br/><span class="hl-0">          </span><span class="hl-3">network</span><span class="hl-0">.</span><span class="hl-6">connect</span><span class="hl-0"> = (...</span><span class="hl-3">args</span><span class="hl-0">) </span><span class="hl-4">=&gt;</span><span class="hl-0"> </span><span class="hl-6">setTimeout</span><span class="hl-0">(() </span><span class="hl-4">=&gt;</span><span class="hl-0"> </span><span class="hl-6">connect</span><span class="hl-0">(...</span><span class="hl-3">args</span><span class="hl-0">), </span><span class="hl-3">delayMs</span><span class="hl-0">)</span><br/><span class="hl-0">        },</span><br/><span class="hl-0">        </span><span class="hl-6">restore</span><span class="hl-0"> () {</span><br/><span class="hl-0">          </span><span class="hl-7">// Restore the connection mechanism to normal</span><br/><span class="hl-0">          </span><span class="hl-3">network</span><span class="hl-0">.</span><span class="hl-3">connect</span><span class="hl-0"> = </span><span class="hl-3">connect</span><br/><span class="hl-0">        }</span><br/><span class="hl-0">      }</span><br/><br/><span class="hl-0">      </span><span class="hl-2">return</span><span class="hl-0"> { </span><span class="hl-3">transport</span><span class="hl-0">, </span><span class="hl-3">addrs</span><span class="hl-0">, </span><span class="hl-3">connector</span><span class="hl-0"> }</span><br/><span class="hl-0">    },</span><br/><span class="hl-0">    </span><span class="hl-6">teardown</span><span class="hl-0"> () {</span><br/><span class="hl-0">      </span><span class="hl-7">// Clean up any resources created by setup()</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">  })</span><br/><span class="hl-0">})</span>
+<pre><code class="language-js"><span class="hl-7">/* eslint-env mocha */</span><br/><span class="hl-2">&#39;use strict&#39;</span><br/><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">tests</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;libp2p-interfaces-compliance-tests/transport&#39;</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">multiaddr</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;@multiformats/multiaddr&#39;</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">YourTransport</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;../src&#39;</span><span class="hl-1">)</span><br/><br/><span class="hl-0">describe</span><span class="hl-1">(</span><span class="hl-2">&#39;compliance&#39;</span><span class="hl-1">, () </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-0">tests</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-0">setup</span><span class="hl-1"> (</span><span class="hl-4">init</span><span class="hl-1">) {</span><br/><span class="hl-1">      </span><span class="hl-5">let</span><span class="hl-1"> </span><span class="hl-4">transport</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">YourTransport</span><span class="hl-1">(</span><span class="hl-4">init</span><span class="hl-1">)</span><br/><br/><span class="hl-1">      </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">addrs</span><span class="hl-1"> = [</span><br/><span class="hl-1">        </span><span class="hl-0">multiaddr</span><span class="hl-1">(</span><span class="hl-2">&#39;valid-multiaddr-for-your-transport&#39;</span><span class="hl-1">),</span><br/><span class="hl-1">        </span><span class="hl-0">multiaddr</span><span class="hl-1">(</span><span class="hl-2">&#39;valid-multiaddr2-for-your-transport&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">      ]</span><br/><br/><span class="hl-1">      </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">network</span><span class="hl-1"> = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;my-network-lib&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">      </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">connect</span><span class="hl-1"> = </span><span class="hl-4">network</span><span class="hl-1">.</span><span class="hl-4">connect</span><br/><span class="hl-1">      </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">connector</span><span class="hl-1"> = {</span><br/><span class="hl-1">        </span><span class="hl-0">delay</span><span class="hl-1"> (</span><span class="hl-4">delayMs</span><span class="hl-1">) {</span><br/><span class="hl-1">          </span><span class="hl-7">// Add a delay in the connection mechanism for the transport</span><br/><span class="hl-1">          </span><span class="hl-7">// (this is used by the dial tests)</span><br/><span class="hl-1">          </span><span class="hl-4">network</span><span class="hl-1">.</span><span class="hl-0">connect</span><span class="hl-1"> = (...</span><span class="hl-4">args</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-0">setTimeout</span><span class="hl-1">(() </span><span class="hl-5">=&gt;</span><span class="hl-1"> </span><span class="hl-0">connect</span><span class="hl-1">(...</span><span class="hl-4">args</span><span class="hl-1">), </span><span class="hl-4">delayMs</span><span class="hl-1">)</span><br/><span class="hl-1">        },</span><br/><span class="hl-1">        </span><span class="hl-0">restore</span><span class="hl-1"> () {</span><br/><span class="hl-1">          </span><span class="hl-7">// Restore the connection mechanism to normal</span><br/><span class="hl-1">          </span><span class="hl-4">network</span><span class="hl-1">.</span><span class="hl-4">connect</span><span class="hl-1"> = </span><span class="hl-4">connect</span><br/><span class="hl-1">        }</span><br/><span class="hl-1">      }</span><br/><br/><span class="hl-1">      </span><span class="hl-3">return</span><span class="hl-1"> { </span><span class="hl-4">transport</span><span class="hl-1">, </span><span class="hl-4">addrs</span><span class="hl-1">, </span><span class="hl-4">connector</span><span class="hl-1"> }</span><br/><span class="hl-1">    },</span><br/><span class="hl-1">    </span><span class="hl-0">teardown</span><span class="hl-1"> () {</span><br/><span class="hl-1">      </span><span class="hl-7">// Clean up any resources created by setup()</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  })</span><br/><span class="hl-1">})</span>
 </code></pre>
 
 <a href="#api" id="api" style="color: inherit; text-decoration: none;">
@@ -135,7 +135,7 @@
 <li><code>upgradeOutbound</code> must be called and returned by <code>transport.dial</code>.</li>
 <li><code>upgradeInbound</code> must be called and the results must be passed to the <code>createListener</code> <code>handlerFunction</code> and the <code>connection</code> event handler, any time a new connection is created.</li>
 </ul>
-<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">connection</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">upgrader</span><span class="hl-0">.</span><span class="hl-6">upgradeOutbound</span><span class="hl-0">(</span><span class="hl-3">multiaddrConnection</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">connection</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">upgrader</span><span class="hl-0">.</span><span class="hl-6">upgradeInbound</span><span class="hl-0">(</span><span class="hl-3">multiaddrConnection</span><span class="hl-0">)</span>
+<pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">connection</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">upgrader</span><span class="hl-1">.</span><span class="hl-0">upgradeOutbound</span><span class="hl-1">(</span><span class="hl-4">multiaddrConnection</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">connection</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">upgrader</span><span class="hl-1">.</span><span class="hl-0">upgradeInbound</span><span class="hl-1">(</span><span class="hl-4">multiaddrConnection</span><span class="hl-1">)</span>
 </code></pre>
 <p>The <code>Upgrader</code> methods take a <a href="#multiaddrconnection">MultiaddrConnection</a> and will return an <code>interface-connection</code> instance.</p>
 
@@ -184,7 +184,7 @@
   <h3>Canceling a dial</h3>
 </a>
 <p>Dials may be cancelled using an <code>AbortController</code>:</p>
-<pre><code class="language-Javascript"><span class="hl-4">const</span><span class="hl-0"> { </span><span class="hl-5">AbortError</span><span class="hl-0"> } = </span><span class="hl-6">require</span><span class="hl-0">(</span><span class="hl-1">&#39;libp2p-interfaces/src/transport/errors&#39;</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">controller</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-6">AbortController</span><span class="hl-0">()</span><br/><span class="hl-2">try</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">conn</span><span class="hl-0"> = </span><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">mytransport</span><span class="hl-0">.</span><span class="hl-6">dial</span><span class="hl-0">(</span><span class="hl-3">ma</span><span class="hl-0">, { </span><span class="hl-3">signal:</span><span class="hl-0"> </span><span class="hl-3">controller</span><span class="hl-0">.</span><span class="hl-3">signal</span><span class="hl-0"> })</span><br/><span class="hl-0">  </span><span class="hl-7">// Do stuff with conn here ...</span><br/><span class="hl-0">} </span><span class="hl-2">catch</span><span class="hl-0"> (</span><span class="hl-3">err</span><span class="hl-0">: </span><span class="hl-8">any</span><span class="hl-0">) {</span><br/><span class="hl-0">  </span><span class="hl-2">if</span><span class="hl-0">(</span><span class="hl-3">err</span><span class="hl-0">.</span><span class="hl-3">code</span><span class="hl-0"> === </span><span class="hl-3">AbortError</span><span class="hl-0">.</span><span class="hl-3">code</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-7">// Dial was aborted, just bail out</span><br/><span class="hl-0">    </span><span class="hl-2">return</span><br/><span class="hl-0">  }</span><br/><span class="hl-0">  </span><span class="hl-2">throw</span><span class="hl-0"> </span><span class="hl-3">err</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-7">// ----</span><br/><span class="hl-7">// In some other part of the code:</span><br/><span class="hl-0">  </span><span class="hl-3">controller</span><span class="hl-0">.</span><span class="hl-6">abort</span><span class="hl-0">()</span><br/><span class="hl-7">// ----</span>
+<pre><code class="language-Javascript"><span class="hl-5">const</span><span class="hl-1"> { </span><span class="hl-6">AbortError</span><span class="hl-1"> } = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&#39;libp2p-interfaces/src/transport/errors&#39;</span><span class="hl-1">)</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">controller</span><span class="hl-1"> = </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">AbortController</span><span class="hl-1">()</span><br/><span class="hl-3">try</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">conn</span><span class="hl-1"> = </span><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">mytransport</span><span class="hl-1">.</span><span class="hl-0">dial</span><span class="hl-1">(</span><span class="hl-4">ma</span><span class="hl-1">, { </span><span class="hl-4">signal:</span><span class="hl-1"> </span><span class="hl-4">controller</span><span class="hl-1">.</span><span class="hl-4">signal</span><span class="hl-1"> })</span><br/><span class="hl-1">  </span><span class="hl-7">// Do stuff with conn here ...</span><br/><span class="hl-1">} </span><span class="hl-3">catch</span><span class="hl-1"> (</span><span class="hl-4">err</span><span class="hl-1">: </span><span class="hl-8">any</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-3">if</span><span class="hl-1">(</span><span class="hl-4">err</span><span class="hl-1">.</span><span class="hl-4">code</span><span class="hl-1"> === </span><span class="hl-4">AbortError</span><span class="hl-1">.</span><span class="hl-4">code</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-7">// Dial was aborted, just bail out</span><br/><span class="hl-1">    </span><span class="hl-3">return</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">  </span><span class="hl-3">throw</span><span class="hl-1"> </span><span class="hl-4">err</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-7">// ----</span><br/><span class="hl-7">// In some other part of the code:</span><br/><span class="hl-1">  </span><span class="hl-4">controller</span><span class="hl-1">.</span><span class="hl-0">abort</span><span class="hl-1">()</span><br/><span class="hl-7">// ----</span>
 </code></pre>
 
 <a href="#filtering-addresses" id="filtering-addresses" style="color: inherit; text-decoration: none;">
@@ -318,91 +318,91 @@ Filter returns an array of <code>multiaddr</code>.</p>
 <ul>
 <li class="current"><a href="../modules.html">Documentation</a>
 <ul>
-<li class="tsd-kind-module"><a href="_libp2p_interface_address_manager.html">@libp2p/interface-<wbr/>address-<wbr/>manager -<wbr/> v3.0.0</a></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_compliance_tests.html">@libp2p/interface-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.6</a></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v5.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_address_manager.html">@libp2p/interface-<wbr/>address-<wbr/>manager -<wbr/> v3.0.1</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_compliance_tests.html">@libp2p/interface-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.7</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v5.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.8</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.9</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection_encrypter.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_encrypter.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection_encrypter._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection_encrypter_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection_gater.html">@libp2p/interface-<wbr/>connection-<wbr/>gater -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_gater.html">@libp2p/interface-<wbr/>connection-<wbr/>gater -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection_gater._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_connection_manager._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.1.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_content_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_dht._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.4</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_keychain._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.7</a></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_libp2p.html">@libp2p/interface-<wbr/>libp2p -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.8</a></li>
+<li class="tsd-kind-module"><a href="_libp2p_interface_libp2p.html">@libp2p/interface-<wbr/>libp2p -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_libp2p._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.7</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v11.0.2</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v11.0.3</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.1.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_discovery._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_discovery_compliance_tests.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.6</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_discovery_compliance_tests.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_discovery_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_id.html">@libp2p/interface-<wbr/>peer-<wbr/>id -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_id.html">@libp2p/interface-<wbr/>peer-<wbr/>id -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_id._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.9</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.10</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_info._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.1.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_peer_store._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_pubsub._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_pubsub_compliance_tests.html">@libp2p/interface-<wbr/>pubsub-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.5</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_pubsub_compliance_tests.html">@libp2p/interface-<wbr/>pubsub-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.6</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_pubsub_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_record.html">@libp2p/interface-<wbr/>record -<wbr/> v2.0.6</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_record.html">@libp2p/interface-<wbr/>record -<wbr/> v2.0.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_record._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.4</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_record_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.11</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.12</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_registrar._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_stream_muxer._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v7.0.1</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v7.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_stream_muxer_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="current selected tsd-kind-module"><a href="_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v4.0.1</a>
+<li class="current selected tsd-kind-module"><a href="_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v4.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_transport._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interface_transport_compliance_tests.html">@libp2p/interface-<wbr/>transport-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="_libp2p_interface_transport_compliance_tests.html">@libp2p/interface-<wbr/>transport-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="_libp2p_interface_transport_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="_libp2p_interfaces.html">@libp2p/interfaces -<wbr/> v3.3.1</a></li></ul></li></ul></div></details></nav>
+<li class="tsd-kind-module"><a href="_libp2p_interfaces.html">@libp2p/interfaces -<wbr/> v3.3.2</a></li></ul></li></ul></div></details></nav>
 <nav class="tsd-navigation secondary menu-sticky">
 <ul>
 <li class="tsd-kind-enum tsd-parent-kind-module"><a href="../enums/_libp2p_interface_transport.FaultTolerance.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8-path"></use><use href="#icon-8-text"></use></svg>Fault<wbr/>Tolerance</a></li>

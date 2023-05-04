@@ -28,7 +28,7 @@ etc</p>
 <h4>Type Parameters</h4>
 <ul class="tsd-type-parameters">
 <li>
-<h4>Events<span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span> = <a href="_libp2p_interface_mocks._internal_.PubSubEvents.html" class="tsd-signature-type" data-tsd-kind="Interface">PubSubEvents</a></h4></li></ul></section> 
+<h4>Events<span class="tsd-signature-symbol"> extends </span><a href="https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type" class="tsd-signature-type external" target="_blank">Record</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span> = <a href="_libp2p_interface_mocks._internal_.PubSubEvents.html" class="tsd-signature-type" data-tsd-kind="Interface">PubSubEvents</a></h4></li></ul></section> 
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
@@ -96,7 +96,7 @@ etc</p>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Gets a list of the PeerIds that are subscribed to one topic.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">peerIds</span><span class="hl-0"> = </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">pubsub</span><span class="hl-0">.</span><span class="hl-6">getSubscribers</span><span class="hl-0">(</span><span class="hl-3">topic</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">peerIds</span><span class="hl-1"> = </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">pubsub</span><span class="hl-1">.</span><span class="hl-0">getSubscribers</span><span class="hl-1">(</span><span class="hl-4">topic</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -118,7 +118,7 @@ etc</p>
 <li class="tsd-signature" id="getTopics.__type-4.__type-5"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Gets a list of topics the node is subscribed to.</p>
-<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">topics</span><span class="hl-0"> = </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">pubsub</span><span class="hl-0">.</span><span class="hl-6">getTopics</span><span class="hl-0">()</span>
+<pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">topics</span><span class="hl-1"> = </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">pubsub</span><span class="hl-1">.</span><span class="hl-0">getTopics</span><span class="hl-1">()</span>
 </code></pre>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4></li></ul></li></ul></div><aside class="tsd-sources">
@@ -153,7 +153,7 @@ using unsigned messages.</p>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Publishes messages to the given topic.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">topic</span><span class="hl-0"> = </span><span class="hl-1">&#39;topic&#39;</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">data</span><span class="hl-0"> = </span><span class="hl-6">uint8ArrayFromString</span><span class="hl-0">(</span><span class="hl-1">&#39;data&#39;</span><span class="hl-0">)</span><br/><br/><span class="hl-2">await</span><span class="hl-0"> </span><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">pubsub</span><span class="hl-0">.</span><span class="hl-6">publish</span><span class="hl-0">(</span><span class="hl-3">topic</span><span class="hl-0">, </span><span class="hl-3">data</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">topic</span><span class="hl-1"> = </span><span class="hl-2">&#39;topic&#39;</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">data</span><span class="hl-1"> = </span><span class="hl-0">uint8ArrayFromString</span><span class="hl-1">(</span><span class="hl-2">&#39;data&#39;</span><span class="hl-1">)</span><br/><br/><span class="hl-3">await</span><span class="hl-1"> </span><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">pubsub</span><span class="hl-1">.</span><span class="hl-0">publish</span><span class="hl-1">(</span><span class="hl-4">topic</span><span class="hl-1">, </span><span class="hl-4">data</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -178,7 +178,7 @@ using unsigned messages.</p>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Subscribes to a pubsub topic.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">topic</span><span class="hl-0"> = </span><span class="hl-1">&#39;topic&#39;</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-6">handler</span><span class="hl-0"> = (</span><span class="hl-3">msg</span><span class="hl-0">) </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-2">if</span><span class="hl-0"> (</span><span class="hl-3">msg</span><span class="hl-0">.</span><span class="hl-3">topic</span><span class="hl-0"> === </span><span class="hl-3">topic</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-7">// msg.data - pubsub data received</span><br/><span class="hl-0">  }</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">pubsub</span><span class="hl-0">.</span><span class="hl-6">addEventListener</span><span class="hl-0">(</span><span class="hl-1">&#39;message&#39;</span><span class="hl-0">, </span><span class="hl-3">handler</span><span class="hl-0">)</span><br/><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">pubsub</span><span class="hl-0">.</span><span class="hl-6">subscribe</span><span class="hl-0">(</span><span class="hl-3">topic</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">topic</span><span class="hl-1"> = </span><span class="hl-2">&#39;topic&#39;</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-0">handler</span><span class="hl-1"> = (</span><span class="hl-4">msg</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">if</span><span class="hl-1"> (</span><span class="hl-4">msg</span><span class="hl-1">.</span><span class="hl-4">topic</span><span class="hl-1"> === </span><span class="hl-4">topic</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-7">// msg.data - pubsub data received</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">pubsub</span><span class="hl-1">.</span><span class="hl-0">addEventListener</span><span class="hl-1">(</span><span class="hl-2">&#39;message&#39;</span><span class="hl-1">, </span><span class="hl-4">handler</span><span class="hl-1">)</span><br/><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">pubsub</span><span class="hl-1">.</span><span class="hl-0">subscribe</span><span class="hl-1">(</span><span class="hl-4">topic</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -196,7 +196,7 @@ using unsigned messages.</p>
 before its propagations. They are stored in a map where keys are the topic name and
 values are the validators.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">topic</span><span class="hl-0"> = </span><span class="hl-1">&#39;topic&#39;</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-6">validateMessage</span><span class="hl-0"> = (</span><span class="hl-3">msgTopic</span><span class="hl-0">, </span><span class="hl-3">msg</span><span class="hl-0">) </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">input</span><span class="hl-0"> = </span><span class="hl-6">uint8ArrayToString</span><span class="hl-0">(</span><span class="hl-3">msg</span><span class="hl-0">.</span><span class="hl-3">data</span><span class="hl-0">)</span><br/><span class="hl-0">  </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">validInputs</span><span class="hl-0"> = [</span><span class="hl-1">&#39;a&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;b&#39;</span><span class="hl-0">, </span><span class="hl-1">&#39;c&#39;</span><span class="hl-0">]</span><br/><br/><span class="hl-0">  </span><span class="hl-2">if</span><span class="hl-0"> (!</span><span class="hl-3">validInputs</span><span class="hl-0">.</span><span class="hl-6">includes</span><span class="hl-0">(</span><span class="hl-3">input</span><span class="hl-0">)) {</span><br/><span class="hl-0">    </span><span class="hl-2">throw</span><span class="hl-0"> </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-6">Error</span><span class="hl-0">(</span><span class="hl-1">&#39;no valid input received&#39;</span><span class="hl-0">)</span><br/><span class="hl-0">  }</span><br/><span class="hl-0">}</span><br/><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">pubsub</span><span class="hl-0">.</span><span class="hl-3">topicValidators</span><span class="hl-0">.</span><span class="hl-6">set</span><span class="hl-0">(</span><span class="hl-3">topic</span><span class="hl-0">, </span><span class="hl-3">validateMessage</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">topic</span><span class="hl-1"> = </span><span class="hl-2">&#39;topic&#39;</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-0">validateMessage</span><span class="hl-1"> = (</span><span class="hl-4">msgTopic</span><span class="hl-1">, </span><span class="hl-4">msg</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">input</span><span class="hl-1"> = </span><span class="hl-0">uint8ArrayToString</span><span class="hl-1">(</span><span class="hl-4">msg</span><span class="hl-1">.</span><span class="hl-4">data</span><span class="hl-1">)</span><br/><span class="hl-1">  </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">validInputs</span><span class="hl-1"> = [</span><span class="hl-2">&#39;a&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;b&#39;</span><span class="hl-1">, </span><span class="hl-2">&#39;c&#39;</span><span class="hl-1">]</span><br/><br/><span class="hl-1">  </span><span class="hl-3">if</span><span class="hl-1"> (!</span><span class="hl-4">validInputs</span><span class="hl-1">.</span><span class="hl-0">includes</span><span class="hl-1">(</span><span class="hl-4">input</span><span class="hl-1">)) {</span><br/><span class="hl-1">    </span><span class="hl-3">throw</span><span class="hl-1"> </span><span class="hl-5">new</span><span class="hl-1"> </span><span class="hl-0">Error</span><span class="hl-1">(</span><span class="hl-2">&#39;no valid input received&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span><br/><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">pubsub</span><span class="hl-1">.</span><span class="hl-4">topicValidators</span><span class="hl-1">.</span><span class="hl-0">set</span><span class="hl-1">(</span><span class="hl-4">topic</span><span class="hl-1">, </span><span class="hl-4">validateMessage</span><span class="hl-1">)</span>
 </code></pre>
 </div><aside class="tsd-sources">
 <ul>
@@ -213,7 +213,7 @@ values are the validators.</p>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Unsubscribes from a pubsub topic.</p>
 
-<h3>Example</h3><pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">topic</span><span class="hl-0"> = </span><span class="hl-1">&#39;topic&#39;</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-6">handler</span><span class="hl-0"> = (</span><span class="hl-3">msg</span><span class="hl-0">) </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">  </span><span class="hl-7">// msg.data - pubsub data received</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">pubsub</span><span class="hl-0">.</span><span class="hl-6">removeEventListener</span><span class="hl-0">(</span><span class="hl-3">topic</span><span class="hl-0"> </span><span class="hl-3">handler</span><span class="hl-0">)</span><br/><span class="hl-3">libp2p</span><span class="hl-0">.</span><span class="hl-3">pubsub</span><span class="hl-0">.</span><span class="hl-6">unsubscribe</span><span class="hl-0">(</span><span class="hl-3">topic</span><span class="hl-0">)</span>
+<h3>Example</h3><pre><code class="language-js"><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-6">topic</span><span class="hl-1"> = </span><span class="hl-2">&#39;topic&#39;</span><br/><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-0">handler</span><span class="hl-1"> = (</span><span class="hl-4">msg</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">// msg.data - pubsub data received</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">pubsub</span><span class="hl-1">.</span><span class="hl-0">removeEventListener</span><span class="hl-1">(</span><span class="hl-4">topic</span><span class="hl-1"> </span><span class="hl-4">handler</span><span class="hl-1">)</span><br/><span class="hl-4">libp2p</span><span class="hl-1">.</span><span class="hl-4">pubsub</span><span class="hl-1">.</span><span class="hl-0">unsubscribe</span><span class="hl-1">(</span><span class="hl-4">topic</span><span class="hl-1">)</span>
 </code></pre>
 </div>
 <div class="tsd-parameters">
@@ -342,91 +342,91 @@ values are the validators.</p>
 <ul>
 <li class="current"><a href="../modules.html">Documentation</a>
 <ul>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_address_manager.html">@libp2p/interface-<wbr/>address-<wbr/>manager -<wbr/> v3.0.0</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_compliance_tests.html">@libp2p/interface-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.6</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v5.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_address_manager.html">@libp2p/interface-<wbr/>address-<wbr/>manager -<wbr/> v3.0.1</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_compliance_tests.html">@libp2p/interface-<wbr/>compliance-<wbr/>tests -<wbr/> v3.0.7</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection.html">@libp2p/interface-<wbr/>connection -<wbr/> v5.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.8</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.9</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter_compliance_tests.html">@libp2p/interface-<wbr/>connection-<wbr/>encrypter-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_encrypter_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_gater.html">@libp2p/interface-<wbr/>connection-<wbr/>gater -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_gater.html">@libp2p/interface-<wbr/>connection-<wbr/>gater -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_gater._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_connection_manager.html">@libp2p/interface-<wbr/>connection-<wbr/>manager -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_connection_manager._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.1.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_content_routing.html">@libp2p/interface-<wbr/>content-<wbr/>routing -<wbr/> v2.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_content_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_dht.html">@libp2p/interface-<wbr/>dht -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_dht._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.4</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keychain.html">@libp2p/interface-<wbr/>keychain -<wbr/> v2.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_keychain._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.7</a></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_libp2p.html">@libp2p/interface-<wbr/>libp2p -<wbr/> v3.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_keys.html">@libp2p/interface-<wbr/>keys -<wbr/> v1.0.8</a></li>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_libp2p.html">@libp2p/interface-<wbr/>libp2p -<wbr/> v3.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_libp2p._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.7</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_metrics.html">@libp2p/interface-<wbr/>metrics -<wbr/> v4.0.8</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_metrics._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="current tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v11.0.2</a>
+<li class="current tsd-kind-module"><a href="../modules/_libp2p_interface_mocks.html">@libp2p/interface-<wbr/>mocks -<wbr/> v11.0.3</a>
 <ul>
 <li class="current tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_mocks._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.1.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery -<wbr/> v1.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_discovery._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery_compliance_tests.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.6</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_discovery_compliance_tests.html">@libp2p/interface-<wbr/>peer-<wbr/>discovery-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_discovery_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_id.html">@libp2p/interface-<wbr/>peer-<wbr/>id -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_id.html">@libp2p/interface-<wbr/>peer-<wbr/>id -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_id._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.9</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_info.html">@libp2p/interface-<wbr/>peer-<wbr/>info -<wbr/> v1.0.10</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_info._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.1.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_routing.html">@libp2p/interface-<wbr/>peer-<wbr/>routing -<wbr/> v1.1.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_routing._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v2.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_peer_store.html">@libp2p/interface-<wbr/>peer-<wbr/>store -<wbr/> v2.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_peer_store._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub.html">@libp2p/interface-<wbr/>pubsub -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_pubsub._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub_compliance_tests.html">@libp2p/interface-<wbr/>pubsub-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.5</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_pubsub_compliance_tests.html">@libp2p/interface-<wbr/>pubsub-<wbr/>compliance-<wbr/>tests -<wbr/> v5.0.6</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_pubsub_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record.html">@libp2p/interface-<wbr/>record -<wbr/> v2.0.6</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record.html">@libp2p/interface-<wbr/>record -<wbr/> v2.0.7</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_record._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.4</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests.html">@libp2p/interface-<wbr/>record-<wbr/>compliance-<wbr/>tests -<wbr/> v2.0.5</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_record_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.11</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_registrar.html">@libp2p/interface-<wbr/>registrar -<wbr/> v2.0.12</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_registrar._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_stream_muxer._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v7.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests.html">@libp2p/interface-<wbr/>stream-<wbr/>muxer-<wbr/>compliance-<wbr/>tests -<wbr/> v7.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_stream_muxer_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v4.0.1</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport.html">@libp2p/interface-<wbr/>transport -<wbr/> v4.0.2</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_transport._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport_compliance_tests.html">@libp2p/interface-<wbr/>transport-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.0</a>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interface_transport_compliance_tests.html">@libp2p/interface-<wbr/>transport-<wbr/>compliance-<wbr/>tests -<wbr/> v4.0.1</a>
 <ul>
 <li class="tsd-kind-module tsd-parent-kind-module"><a href="../modules/_libp2p_interface_transport_compliance_tests._internal_.html">&lt;internal&gt;</a></li></ul></li>
-<li class="tsd-kind-module"><a href="../modules/_libp2p_interfaces.html">@libp2p/interfaces -<wbr/> v3.3.1</a></li></ul></li></ul></div></details></nav>
+<li class="tsd-kind-module"><a href="../modules/_libp2p_interfaces.html">@libp2p/interfaces -<wbr/> v3.3.2</a></li></ul></li></ul></div></details></nav>
 <nav class="tsd-navigation secondary menu-sticky">
 <ul>
 <li class="current tsd-kind-interface tsd-parent-kind-module"><a href="_libp2p_interface_mocks._internal_.PubSub.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-interface)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-256-path"></rect><path d="M9.51 16V15.016H11.298V8.224H9.51V7.24H14.19V8.224H12.402V15.016H14.19V16H9.51Z" fill="var(--color-text)" id="icon-256-text"></path></svg><span>Pub<wbr/>Sub</span></a>
