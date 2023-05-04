@@ -1,10 +1,10 @@
-import { expect } from 'aegir/chai'
-import { pipe } from 'it-pipe'
-import * as PeerIdFactory from '@libp2p/peer-id-factory'
-import all from 'it-all'
-import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import peers from '@libp2p/interface-compliance-tests/peers'
 import { UnexpectedPeerError } from '@libp2p/interface-connection-encrypter/errors'
+import * as PeerIdFactory from '@libp2p/peer-id-factory'
+import { expect } from 'aegir/chai'
+import all from 'it-all'
+import { pipe } from 'it-pipe'
+import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import { createMaConnPair } from './utils/index.js'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { ConnectionEncrypter } from '@libp2p/interface-connection-encrypter'
@@ -59,7 +59,7 @@ export default (common: TestSetup<ConnectionEncrypter>): void => {
       const result = await pipe(
         [input],
         outboundResult.conn,
-        async (source) => await all(source)
+        async (source) => all(source)
       )
 
       expect(result).to.eql([input])

@@ -1,6 +1,6 @@
-import type { CID } from 'multiformats/cid'
-import type { AbortOptions } from '@libp2p/interfaces'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
+import type { AbortOptions } from '@libp2p/interfaces'
+import type { CID } from 'multiformats/cid'
 
 /**
  * Any object that implements this Symbol as a property should return a

@@ -14,9 +14,6 @@
       "path": "../interface-content-routing"
     },
     {
-      "path": "../interface-dht"
-    },
-    {
       "path": "../interface-keychain"
     },
     {
@@ -35,10 +32,10 @@
       "path": "../interface-peer-store"
     },
     {
-      "path": "../interface-pubsub"
+      "path": "../interface-registrar"
     },
     {
-      "path": "../interface-registrar"
+      "path": "../interface-transport"
     },
     {
       "path": "../interfaces"

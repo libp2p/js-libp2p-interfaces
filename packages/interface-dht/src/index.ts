@@ -1,8 +1,8 @@
+import type { PeerDiscovery } from '@libp2p/interface-peer-discovery'
 import type { PeerId } from '@libp2p/interface-peer-id'
-import type { CID } from 'multiformats/cid'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
 import type { AbortOptions } from '@libp2p/interfaces'
-import type { PeerDiscovery } from '@libp2p/interface-peer-discovery'
+import type { CID } from 'multiformats/cid'
 
 /**
  * The types of events emitted during DHT queries

@@ -7,9 +7,7 @@ export class UnexpectedPeerError extends Error {
     this.code = UnexpectedPeerError.code
   }
 
-  static get code (): string {
-    return 'ERR_UNEXPECTED_PEER'
-  }
+  static readonly code = 'ERR_UNEXPECTED_PEER'
 }
 
 export class InvalidCryptoExchangeError extends Error {
@@ -20,9 +18,7 @@ export class InvalidCryptoExchangeError extends Error {
     this.code = InvalidCryptoExchangeError.code
   }
 
-  static get code (): string {
-    return 'ERR_INVALID_CRYPTO_EXCHANGE'
-  }
+  static readonly code = 'ERR_INVALID_CRYPTO_EXCHANGE'
 }
 
 export class InvalidCryptoTransmissionError extends Error {
@@ -33,7 +29,5 @@ export class InvalidCryptoTransmissionError extends Error {
     this.code = InvalidCryptoTransmissionError.code
   }
 
-  static get code (): string {
-    return 'ERR_INVALID_CRYPTO_TRANSMISSION'
-  }
+  static readonly code = 'ERR_INVALID_CRYPTO_TRANSMISSION'
 }

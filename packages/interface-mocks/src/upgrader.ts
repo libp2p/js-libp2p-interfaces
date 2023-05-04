@@ -1,9 +1,9 @@
 import { mockConnection } from './connection.js'
-import type { Upgrader, UpgraderOptions } from '@libp2p/interface-transport'
 import type { Connection, MultiaddrConnection } from '@libp2p/interface-connection'
-import type { Registrar } from '@libp2p/interface-registrar'
-import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Libp2pEvents } from '@libp2p/interface-libp2p'
+import type { Registrar } from '@libp2p/interface-registrar'
+import type { Upgrader, UpgraderOptions } from '@libp2p/interface-transport'
+import type { EventEmitter } from '@libp2p/interfaces/events'
 
 export interface MockUpgraderInit {
   registrar?: Registrar
@@ -44,6 +44,6 @@ class MockUpgrader implements Upgrader {
   }
 }
 
-export function mockUpgrader (init: MockUpgraderInit): Upgrader {
+export function mockUpgrader (init: MockUpgraderInit = {}): Upgrader {
   return new MockUpgrader(init)
 }

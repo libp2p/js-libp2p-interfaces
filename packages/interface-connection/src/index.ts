@@ -1,8 +1,8 @@
-import type { Multiaddr } from '@multiformats/multiaddr'
-import type { PeerId } from '@libp2p/interface-peer-id'
 import type * as Status from './status.js'
-import type { Duplex, Source } from 'it-stream-types'
+import type { PeerId } from '@libp2p/interface-peer-id'
 import type { AbortOptions } from '@libp2p/interfaces'
+import type { Multiaddr } from '@multiformats/multiaddr'
+import type { Duplex, Source } from 'it-stream-types'
 import type { Uint8ArrayList } from 'uint8arraylist'
 
 export interface ConnectionTimeline {

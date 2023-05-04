@@ -14,13 +14,9 @@ export class AbortError extends Error {
     this.type = AbortError.type
   }
 
-  static get code (): string {
-    return 'ABORT_ERR'
-  }
+  static readonly code = 'ABORT_ERR'
 
-  static get type (): string {
-    return 'aborted'
-  }
+  static readonly type = 'aborted'
 }
 
 export class CodeError<T extends Record<string, any> = Record<string, never>> extends Error {

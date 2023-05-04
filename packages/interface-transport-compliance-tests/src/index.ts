@@ -1,6 +1,6 @@
 import dial from './dial-test.js'
-import listen from './listen-test.js'
 import filter from './filter-test.js'
+import listen from './listen-test.js'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Transport } from '@libp2p/interface-transport'
 import type { Multiaddr } from '@multiformats/multiaddr'

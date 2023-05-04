@@ -1,12 +1,12 @@
 import { expect } from 'aegir/chai'
+import all from 'it-all'
+import drain from 'it-drain'
 import { duplexPair } from 'it-pair/duplex'
 import { pipe } from 'it-pipe'
 import pLimit from 'p-limit'
-import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import drain from 'it-drain'
-import all from 'it-all'
-import type { StreamMuxer, StreamMuxerInit } from '@libp2p/interface-stream-muxer'
 import { Uint8ArrayList } from 'uint8arraylist'
+import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import type { StreamMuxer, StreamMuxerInit } from '@libp2p/interface-stream-muxer'
 
 export default async (createMuxer: (init?: StreamMuxerInit) => Promise<StreamMuxer>, nStreams: number, nMsg: number, limit?: number): Promise<void> => {
   const [dialerSocket, listenerSocket] = duplexPair<Uint8Array>()
@@ -40,7 +40,7 @@ export default async (createMuxer: (init?: StreamMuxerInit) => Promise<StreamMux
         }
       }()),
       stream,
-      async (source) => await all(source)
+      async (source) => all(source)
     )
 
     expect(res).to.be.eql([])

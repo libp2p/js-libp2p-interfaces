@@ -1,16 +1,16 @@
 /* eslint max-nested-callbacks: ["error", 8] */
-import { pipe } from 'it-pipe'
-import { duplexPair } from 'it-pair/duplex'
 import { abortableSource } from 'abortable-iterator'
-import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import drain from 'it-drain'
 import { expect } from 'aegir/chai'
 import delay from 'delay'
+import all from 'it-all'
+import drain from 'it-drain'
+import { duplexPair } from 'it-pair/duplex'
+import { pipe } from 'it-pipe'
+import pDefer from 'p-defer'
+import { Uint8ArrayList } from 'uint8arraylist'
+import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
-import pDefer from 'p-defer'
-import all from 'it-all'
-import { Uint8ArrayList } from 'uint8arraylist'
 
 function randomBuffer (): Uint8Array {
   return uint8ArrayFromString(Math.random().toString())
@@ -47,7 +47,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const streams = await Promise.all(Array(expectedStreams).fill(0).map(async () => await dialer.newStream()))
+      const streams = await Promise.all(Array(expectedStreams).fill(0).map(async () => dialer.newStream()))
 
       void Promise.all(
         streams.map(async stream => {
@@ -89,7 +89,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const streams = await Promise.all(Array(expectedStreams).fill(0).map(async () => await dialer.newStream()))
+      const streams = await Promise.all(Array(expectedStreams).fill(0).map(async () => dialer.newStream()))
 
       void Promise.all(
         streams.map(async stream => {
@@ -132,7 +132,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
       void pipe(p[0], dialer, p[0])
       void pipe(p[1], listener, p[1])
 
-      const streams = await Promise.all(Array(expectedStreams).fill(0).map(async () => await dialer.newStream()))
+      const streams = await Promise.all(Array(expectedStreams).fill(0).map(async () => dialer.newStream()))
 
       const streamPipes = streams.map(async stream => {
         await pipe(
@@ -201,7 +201,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
       void pipe(p[1], listener, p[1])
 
       const stream = await dialer.newStream()
-      const streams = await Promise.all(Array.from(Array(5), async () => await dialer.newStream()))
+      const streams = await Promise.all(Array.from(Array(5), async () => dialer.newStream()))
       let closed = false
       const controllers: AbortController[] = []
 

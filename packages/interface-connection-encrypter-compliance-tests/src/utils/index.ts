@@ -1,5 +1,5 @@
-import { duplexPair } from 'it-pair/duplex'
 import { multiaddr } from '@multiformats/multiaddr'
+import { duplexPair } from 'it-pair/duplex'
 import type { MultiaddrConnection } from '@libp2p/interface-connection'
 import type { Duplex, Source } from 'it-stream-types'
 
