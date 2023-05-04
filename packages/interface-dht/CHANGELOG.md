@@ -1,3 +1,10 @@
+## [@libp2p/interface-dht-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-dht-v2.0.2...@libp2p/interface-dht-v2.0.3) (2023-05-04)
+
+
+### Dependencies
+
+* update sibling dependencies ([45cf513](https://github.com/libp2p/js-libp2p-interfaces/commit/45cf513090d2a069bb6752ad2e231df65c76df36))
+
 ## [@libp2p/interface-dht-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-dht-v2.0.1...@libp2p/interface-dht-v2.0.2) (2023-05-04)
 
 
