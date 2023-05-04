@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-discovery-compliance-tests-v2.0.8](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-discovery-compliance-tests-v2.0.7...@libp2p/interface-peer-discovery-compliance-tests-v2.0.8) (2023-05-04)
+
+
+### Dependencies
+
+* update sibling dependencies ([45cf513](https://github.com/libp2p/js-libp2p-interfaces/commit/45cf513090d2a069bb6752ad2e231df65c76df36))
+
 ## [@libp2p/interface-peer-discovery-compliance-tests-v2.0.7](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-discovery-compliance-tests-v2.0.6...@libp2p/interface-peer-discovery-compliance-tests-v2.0.7) (2023-05-04)
 
 
