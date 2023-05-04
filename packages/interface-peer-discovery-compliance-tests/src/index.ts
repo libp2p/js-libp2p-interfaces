@@ -1,8 +1,8 @@
-import { expect } from 'aegir/chai'
+import { start, stop } from '@libp2p/interfaces/startable'
 import { isMultiaddr } from '@multiformats/multiaddr'
+import { expect } from 'aegir/chai'
 import delay from 'delay'
 import pDefer from 'p-defer'
-import { start, stop } from '@libp2p/interfaces/startable'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { PeerDiscovery } from '@libp2p/interface-peer-discovery'
 

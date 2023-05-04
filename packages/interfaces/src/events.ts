@@ -17,7 +17,7 @@ interface Listener {
  * etc
  */
 export class EventEmitter<EventMap extends Record<string, any>> extends EventTarget {
-  #listeners: Map<any, Listener[]> = new Map()
+  #listeners = new Map<any, Listener[]>()
 
   listenerCount (type: string): number {
     const listeners = this.#listeners.get(type)

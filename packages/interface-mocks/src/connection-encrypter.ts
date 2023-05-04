@@ -1,12 +1,12 @@
+import { UnexpectedPeerError } from '@libp2p/interface-connection-encrypter/errors'
 import { peerIdFromBytes } from '@libp2p/peer-id'
+import { multiaddr } from '@multiformats/multiaddr'
 import { handshake } from 'it-handshake'
+import map from 'it-map'
 import { duplexPair } from 'it-pair/duplex'
 import { pipe } from 'it-pipe'
-import { UnexpectedPeerError } from '@libp2p/interface-connection-encrypter/errors'
-import { multiaddr } from '@multiformats/multiaddr'
 import type { ConnectionEncrypter } from '@libp2p/interface-connection-encrypter'
 import type { Transform, Source } from 'it-stream-types'
-import map from 'it-map'
 
 // A basic transform that does nothing to the data
 const transform = <T>(): Transform<Source<T>, AsyncGenerator<T>> => {

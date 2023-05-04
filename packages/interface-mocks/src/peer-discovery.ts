@@ -1,9 +1,9 @@
-import { multiaddr } from '@multiformats/multiaddr'
-import * as PeerIdFactory from '@libp2p/peer-id-factory'
+import { symbol } from '@libp2p/interface-peer-discovery'
 import { EventEmitter } from '@libp2p/interfaces/events'
+import * as PeerIdFactory from '@libp2p/peer-id-factory'
+import { multiaddr } from '@multiformats/multiaddr'
 import type { PeerDiscovery, PeerDiscoveryEvents } from '@libp2p/interface-peer-discovery'
 import type { PeerInfo } from '@libp2p/interface-peer-info'
-import { symbol } from '@libp2p/interface-peer-discovery'
 
 interface MockDiscoveryInit {
   discoveryDelay?: number
@@ -24,13 +24,9 @@ export class MockDiscovery extends EventEmitter<PeerDiscoveryEvents> implements 
     this._isRunning = false
   }
 
-  get [symbol] (): true {
-    return true
-  }
+  readonly [symbol] = true
 
-  get [Symbol.toStringTag] (): string {
-    return 'MockDiscovery'
-  }
+  readonly [Symbol.toStringTag] = 'MockDiscovery'
 
   start (): void {
     this._isRunning = true

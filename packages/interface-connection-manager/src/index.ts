@@ -1,8 +1,8 @@
-import type { AbortOptions } from '@libp2p/interfaces'
 import type { Connection, MultiaddrConnection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
-import type { Multiaddr } from '@multiformats/multiaddr'
+import type { AbortOptions } from '@libp2p/interfaces'
 import type { PeerMap } from '@libp2p/peer-collections'
+import type { Multiaddr } from '@multiformats/multiaddr'
 
 export type PendingDialStatus = 'queued' | 'active' | 'error' | 'success'
 

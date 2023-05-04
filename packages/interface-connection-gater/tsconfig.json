@@ -12,9 +12,6 @@
     },
     {
       "path": "../interface-peer-id"
-    },
-    {
-      "path": "../interfaces"
     }
   ]
 }

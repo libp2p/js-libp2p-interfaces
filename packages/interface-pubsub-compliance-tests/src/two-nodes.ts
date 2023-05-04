@@ -1,17 +1,17 @@
 /* eslint max-nested-callbacks: ["error", 6] */
-import { expect } from 'aegir/chai'
-import sinon from 'sinon'
-import pDefer from 'p-defer'
-import pWaitFor from 'p-wait-for'
-import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
-import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { createComponents, waitForSubscriptionUpdate } from './utils.js'
-import type { TestSetup } from '@libp2p/interface-compliance-tests'
-import type { Message, PubSub } from '@libp2p/interface-pubsub'
-import type { PubSubArgs, PubSubComponents } from './index.js'
-import { start, stop } from '@libp2p/interfaces/startable'
 import { mockNetwork } from '@libp2p/interface-mocks'
 import { TopicValidatorResult } from '@libp2p/interface-pubsub'
+import { start, stop } from '@libp2p/interfaces/startable'
+import { expect } from 'aegir/chai'
+import pDefer from 'p-defer'
+import pWaitFor from 'p-wait-for'
+import sinon from 'sinon'
+import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
+import { createComponents, waitForSubscriptionUpdate } from './utils.js'
+import type { PubSubArgs, PubSubComponents } from './index.js'
+import type { TestSetup } from '@libp2p/interface-compliance-tests'
+import type { Message, PubSub } from '@libp2p/interface-pubsub'
 
 const topic = 'foo'
 
@@ -83,7 +83,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
       })
       psA.subscribe(topic)
 
-      return await defer.promise
+      return defer.promise
     })
 
     it('Publish to a topic in nodeA', async () => {
@@ -110,7 +110,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
 
       await psA.publish(topic, uint8ArrayFromString('hey'))
 
-      return await defer.promise
+      return defer.promise
     })
 
     it('Publish to a topic in nodeB', async () => {
@@ -153,7 +153,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
 
       await psB.publish(topic, uint8ArrayFromString('banana'))
 
-      return await defer.promise
+      return defer.promise
     })
 
     it('validate topic message', async () => {
@@ -184,7 +184,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
 
       await psA.publish(topic, uint8ArrayFromString('hey'))
 
-      return await defer.promise
+      return defer.promise
     })
 
     it('Publish 10 msg to a topic in nodeB', async () => {
@@ -228,7 +228,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
         })
       )
 
-      return await defer.promise
+      return defer.promise
     })
 
     it('Unsubscribe from topic in nodeA', async () => {
@@ -267,7 +267,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
       psA.unsubscribe(topic)
       expect(psA.getTopics()).to.be.empty()
 
-      return await defer.promise
+      return defer.promise
     })
   })
 }

@@ -1,17 +1,17 @@
-import { expect } from 'aegir/chai'
-import sinon from 'sinon'
-import pDefer from 'p-defer'
-import pWaitFor from 'p-wait-for'
-import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
-import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import type { TestSetup } from '@libp2p/interface-compliance-tests'
-import type { Message, PubSub } from '@libp2p/interface-pubsub'
-import type { PubSubArgs } from './index.js'
-import { start, stop } from '@libp2p/interfaces/startable'
-import { createComponents } from './utils.js'
-import { pEvent } from 'p-event'
 import { mockNetwork } from '@libp2p/interface-mocks'
+import { start, stop } from '@libp2p/interfaces/startable'
+import { expect } from 'aegir/chai'
+import pDefer from 'p-defer'
+import { pEvent } from 'p-event'
+import pWaitFor from 'p-wait-for'
+import sinon from 'sinon'
+import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
+import { createComponents } from './utils.js'
+import type { PubSubArgs } from './index.js'
+import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { MockNetworkComponents } from '@libp2p/interface-mocks'
+import type { Message, PubSub } from '@libp2p/interface-pubsub'
 
 export default (common: TestSetup<PubSub, PubSubArgs>): void => {
   describe('pubsub connection handlers', () => {
@@ -116,7 +116,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
       it('should get notified of connected peers on dial', async () => {
         await componentsA.connectionManager.openConnection(componentsB.peerId)
 
-        return await Promise.all([
+        return Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
           pWaitFor(() => psB.getPeers().length === 1)
         ])
@@ -190,7 +190,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
 
         await componentsA.connectionManager.openConnection(componentsB.peerId)
 
-        return await Promise.all([
+        return Promise.all([
           pWaitFor(() => psA.getPeers().length === 1),
           pWaitFor(() => psB.getPeers().length === 1)
         ])

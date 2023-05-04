@@ -1,17 +1,17 @@
 /* eslint max-nested-callbacks: ["error", 6] */
+import { mockNetwork } from '@libp2p/interface-mocks'
+import { start, stop } from '@libp2p/interfaces/startable'
 import { expect } from 'aegir/chai'
-import sinon from 'sinon'
+import delay from 'delay'
 import pDefer from 'p-defer'
 import pWaitFor from 'p-wait-for'
-import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
+import sinon from 'sinon'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import { createComponents, waitForSubscriptionUpdate } from './utils.js'
+import type { PubSubArgs, PubSubComponents } from './index.js'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Message, PubSub } from '@libp2p/interface-pubsub'
-import type { PubSubArgs, PubSubComponents } from './index.js'
-import { start, stop } from '@libp2p/interfaces/startable'
-import delay from 'delay'
-import { mockNetwork } from '@libp2p/interface-mocks'
 
 export default (common: TestSetup<PubSub, PubSubArgs>): void => {
   describe('pubsub with multiple nodes', function () {
@@ -125,7 +125,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
             once: true
           })
 
-          return await defer.promise
+          return defer.promise
         })
 
         it('publish on node a', async () => {
@@ -175,7 +175,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
             }
           }
 
-          return await defer.promise
+          return defer.promise
         })
 
         // since the topology is the same, just the publish
@@ -231,7 +231,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
               }
             }
 
-            return await defer.promise
+            return defer.promise
           })
         })
       })
@@ -397,7 +397,7 @@ export default (common: TestSetup<PubSub, PubSubArgs>): void => {
             }
           }
 
-          return await defer.promise
+          return defer.promise
         })
       })
     })

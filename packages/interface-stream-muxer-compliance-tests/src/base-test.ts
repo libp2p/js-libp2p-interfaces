@@ -1,19 +1,19 @@
+import { isValidTick } from '@libp2p/interface-compliance-tests/is-valid-tick'
 import { expect } from 'aegir/chai'
-import { duplexPair } from 'it-pair/duplex'
-import { pipe } from 'it-pipe'
+import all from 'it-all'
 import drain from 'it-drain'
 import map from 'it-map'
-import all from 'it-all'
+import { duplexPair } from 'it-pair/duplex'
+import { pipe } from 'it-pipe'
 import defer from 'p-defer'
-import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
+import { Uint8ArrayList } from 'uint8arraylist'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
-import { isValidTick } from '@libp2p/interface-compliance-tests/is-valid-tick'
-import type { DeferredPromise } from 'p-defer'
+import { toString as uint8ArrayToString } from 'uint8arrays/to-string'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Stream } from '@libp2p/interface-connection'
 import type { StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
 import type { Source, Duplex } from 'it-stream-types'
-import { Uint8ArrayList } from 'uint8arraylist'
+import type { DeferredPromise } from 'p-defer'
 
 async function drainAndClose (stream: Duplex<any>): Promise<void> {
   await pipe([], stream, drain)
@@ -185,8 +185,8 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
         listenerChunks,
         dialerChunks
       ] = await Promise.all([
-        pipe(listenerStream, toString, async (source) => await all(source)),
-        pipe(dialerStream, toString, async (source) => await all(source))
+        pipe(listenerStream, toString, async (source) => all(source)),
+        pipe(dialerStream, toString, async (source) => all(source))
       ])
 
       expect(listenerChunks).to.be.eql(['hey'])
