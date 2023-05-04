@@ -1,3 +1,14 @@
+## [@libp2p/interface-peer-discovery-v2.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-discovery-v1.1.1...@libp2p/interface-peer-discovery-v2.0.0) (2023-05-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* the `symbol` export is now named `peerDiscovery` and the getter with that name should return an instance of `PeerDiscovery`
+
+### Features
+
+* rename peer discovery symbol to peerDiscovery ([#394](https://github.com/libp2p/js-libp2p-interfaces/issues/394)) ([5957c77](https://github.com/libp2p/js-libp2p-interfaces/commit/5957c77718df6e6336ca22386d8c03a045fd1d89))
+
 ## [@libp2p/interface-peer-discovery-v1.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-discovery-v1.1.0...@libp2p/interface-peer-discovery-v1.1.1) (2023-05-04)
 
 
