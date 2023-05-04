@@ -14,20 +14,20 @@
  * ```
  */
 
+import type { Connection, Stream } from '@libp2p/interface-connection'
+import type { ContentRouting } from '@libp2p/interface-content-routing'
+import type { KeyChain } from '@libp2p/interface-keychain'
+import type { Metrics } from '@libp2p/interface-metrics'
+import type { PeerId } from '@libp2p/interface-peer-id'
+import type { PeerInfo } from '@libp2p/interface-peer-info'
+import type { PeerRouting } from '@libp2p/interface-peer-routing'
+import type { Address, Peer, PeerStore } from '@libp2p/interface-peer-store'
+import type { StreamHandler, StreamHandlerOptions, Topology } from '@libp2p/interface-registrar'
+import type { Listener } from '@libp2p/interface-transport'
 import type { AbortOptions } from '@libp2p/interfaces'
 import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Startable } from '@libp2p/interfaces/startable'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { Address, Peer, PeerStore } from '@libp2p/interface-peer-store'
-import type { PeerId } from '@libp2p/interface-peer-id'
-import type { Connection, Stream } from '@libp2p/interface-connection'
-import type { PeerRouting } from '@libp2p/interface-peer-routing'
-import type { ContentRouting } from '@libp2p/interface-content-routing'
-import type { StreamHandler, StreamHandlerOptions, Topology } from '@libp2p/interface-registrar'
-import type { Metrics } from '@libp2p/interface-metrics'
-import type { PeerInfo } from '@libp2p/interface-peer-info'
-import type { KeyChain } from '@libp2p/interface-keychain'
-import type { Listener } from '@libp2p/interface-transport'
 
 /**
  * Used by the connection manager to sort addresses into order before dialling
@@ -208,7 +208,7 @@ export interface PendingDial {
 /**
  * Libp2p nodes implement this interface.
  */
-export interface Libp2p<T extends ServiceMap = {}> extends Startable, EventEmitter<Libp2pEvents> {
+export interface Libp2p<T extends ServiceMap = Record<string, unknown>> extends Startable, EventEmitter<Libp2pEvents> {
   /**
    * The PeerId is a unique identifier for a node on the network.
    *

@@ -1,9 +1,9 @@
 import tests from '@libp2p/interface-connection-compliance-tests'
-import { connectionPair } from '../src/connection.js'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'
+import { pipe } from 'it-pipe'
+import { connectionPair } from '../src/connection.js'
 import { mockRegistrar } from '../src/registrar.js'
 import type { Connection } from '@libp2p/interface-connection'
-import { pipe } from 'it-pipe'
 
 describe('mock connection compliance tests', () => {
   let connections: Connection[] = []

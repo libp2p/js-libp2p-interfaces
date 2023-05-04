@@ -1,7 +1,7 @@
-import type { PeerId } from '@libp2p/interface-peer-id'
-import type { Pushable } from 'it-pushable'
-import type { EventEmitter } from '@libp2p/interfaces/events'
 import type { Stream } from '@libp2p/interface-connection'
+import type { PeerId } from '@libp2p/interface-peer-id'
+import type { EventEmitter } from '@libp2p/interfaces/events'
+import type { Pushable } from 'it-pushable'
 import type { Uint8ArrayList } from 'uint8arraylist'
 
 /**

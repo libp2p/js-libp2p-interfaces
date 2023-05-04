@@ -1,11 +1,11 @@
-import type { IncomingStreamData, Registrar, StreamHandler, Topology, StreamHandlerOptions, StreamHandlerRecord } from '@libp2p/interface-registrar'
+import merge from 'merge-options'
 import type { Connection } from '@libp2p/interface-connection'
 import type { PeerId } from '@libp2p/interface-peer-id'
-import merge from 'merge-options'
+import type { IncomingStreamData, Registrar, StreamHandler, Topology, StreamHandlerOptions, StreamHandlerRecord } from '@libp2p/interface-registrar'
 
 export class MockRegistrar implements Registrar {
-  private readonly topologies: Map<string, Array<{ id: string, topology: Topology }>> = new Map()
-  private readonly handlers: Map<string, StreamHandlerRecord> = new Map()
+  private readonly topologies = new Map<string, Array<{ id: string, topology: Topology }>>()
+  private readonly handlers = new Map<string, StreamHandlerRecord>()
 
   getProtocols (): string[] {
     return Array.from(this.handlers.keys()).sort()

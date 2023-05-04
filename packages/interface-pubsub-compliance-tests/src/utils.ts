@@ -1,10 +1,10 @@
+import { mockConnectionManager, mockRegistrar, mockNetwork } from '@libp2p/interface-mocks'
+import { createEd25519PeerId } from '@libp2p/peer-id-factory'
 import { pEvent } from 'p-event'
 import pWaitFor from 'p-wait-for'
-import type { PubSub, SubscriptionChangeData } from '@libp2p/interface-pubsub'
-import type { PeerId } from '@libp2p/interface-peer-id'
-import { createEd25519PeerId } from '@libp2p/peer-id-factory'
-import { mockConnectionManager, mockRegistrar, mockNetwork } from '@libp2p/interface-mocks'
 import type { MockNetworkComponents } from '@libp2p/interface-mocks'
+import type { PeerId } from '@libp2p/interface-peer-id'
+import type { PubSub, SubscriptionChangeData } from '@libp2p/interface-pubsub'
 
 export async function waitForSubscriptionUpdate (a: PubSub, b: PeerId): Promise<void> {
   await pWaitFor(async () => {

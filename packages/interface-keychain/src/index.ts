@@ -20,8 +20,8 @@
  * ```
  */
 
-import type { Multibase } from 'multiformats/bases/interface'
 import type { PeerId } from '@libp2p/interface-peer-id'
+import type { Multibase } from 'multiformats/bases/interface'
 
 export interface KeyInfo {
   /**

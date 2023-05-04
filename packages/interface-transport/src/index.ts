@@ -1,8 +1,8 @@
+import type { Connection, MultiaddrConnection } from '@libp2p/interface-connection'
+import type { StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
 import type { AbortOptions } from '@libp2p/interfaces'
 import type { EventEmitter } from '@libp2p/interfaces/events'
-import type { StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
 import type { Multiaddr } from '@multiformats/multiaddr'
-import type { Connection, MultiaddrConnection } from '@libp2p/interface-connection'
 import type { Duplex } from 'it-stream-types'
 
 export const symbol = Symbol.for('@libp2p/transport')

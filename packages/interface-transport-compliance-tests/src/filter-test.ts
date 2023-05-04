@@ -1,7 +1,7 @@
 import { expect } from 'aegir/chai'
+import type { TransportTestFixtures } from './index.js'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { Transport } from '@libp2p/interface-transport'
-import type { TransportTestFixtures } from './index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
 
 export default (common: TestSetup<TransportTestFixtures>): void => {

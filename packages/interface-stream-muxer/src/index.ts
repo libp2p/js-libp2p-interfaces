@@ -1,6 +1,6 @@
-import type { Duplex, Source } from 'it-stream-types'
 import type { Direction, Stream } from '@libp2p/interface-connection'
 import type { AbortOptions } from '@libp2p/interfaces'
+import type { Duplex, Source } from 'it-stream-types'
 import type { Uint8ArrayList } from 'uint8arraylist'
 
 export interface StreamMuxerFactory {
