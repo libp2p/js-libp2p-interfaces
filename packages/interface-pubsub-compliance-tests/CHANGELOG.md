@@ -1,3 +1,10 @@
+## [@libp2p/interface-pubsub-compliance-tests-v5.0.6](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v5.0.5...@libp2p/interface-pubsub-compliance-tests-v5.0.6) (2023-05-04)
+
+
+### Dependencies
+
+* bump aegir from 38.1.8 to 39.0.5 ([#393](https://github.com/libp2p/js-libp2p-interfaces/issues/393)) ([31f3797](https://github.com/libp2p/js-libp2p-interfaces/commit/31f3797b24f7c23f3f16e9db3a230bd5f7cd5175))
+
 ## [@libp2p/interface-pubsub-compliance-tests-v5.0.5](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-pubsub-compliance-tests-v5.0.4...@libp2p/interface-pubsub-compliance-tests-v5.0.5) (2023-04-21)
 
 
