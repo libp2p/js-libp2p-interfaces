@@ -146,7 +146,7 @@
     "it-stream-types": "^2.0.1",
     "p-defer": "^4.0.0",
     "p-limit": "^4.0.0",
-    "uint8arraylist": "^2.1.2",
+    "uint8arraylist": "^2.4.3",
     "uint8arrays": "^4.0.2"
   },
   "typedoc": {

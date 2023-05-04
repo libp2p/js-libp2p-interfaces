@@ -9,15 +9,6 @@
   "references": [
     {
       "path": "../interface-peer-id"
-    },
-    {
-      "path": "../interface-peer-info"
-    },
-    {
-      "path": "../interface-record"
-    },
-    {
-      "path": "../interfaces"
     }
   ]
 }

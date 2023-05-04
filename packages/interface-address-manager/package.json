@@ -132,7 +132,6 @@
     "release": "aegir release"
   },
   "dependencies": {
-    "@libp2p/interfaces": "^3.0.0",
     "@multiformats/multiaddr": "^12.0.0"
   },
   "devDependencies": {
