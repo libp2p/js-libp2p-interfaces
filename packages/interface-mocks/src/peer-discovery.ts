@@ -1,4 +1,4 @@
-import { symbol } from '@libp2p/interface-peer-discovery'
+import { peerDiscovery } from '@libp2p/interface-peer-discovery'
 import { EventEmitter } from '@libp2p/interfaces/events'
 import * as PeerIdFactory from '@libp2p/peer-id-factory'
 import { multiaddr } from '@multiformats/multiaddr'
@@ -24,9 +24,7 @@ export class MockDiscovery extends EventEmitter<PeerDiscoveryEvents> implements 
     this._isRunning = false
   }
 
-  readonly [symbol] = true
-
-  readonly [Symbol.toStringTag] = 'MockDiscovery'
+  readonly [peerDiscovery] = this
 
   start (): void {
     this._isRunning = true

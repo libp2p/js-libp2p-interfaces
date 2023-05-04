@@ -26,4 +26,4 @@ export interface PeerDiscoveryEvents {
   'peer': CustomEvent<PeerInfo>
 }
 
-export type PeerDiscovery = EventEmitter<PeerDiscoveryEvents>
+export interface PeerDiscovery extends EventEmitter<PeerDiscoveryEvents> {}
