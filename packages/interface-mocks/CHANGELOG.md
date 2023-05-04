@@ -1,3 +1,19 @@
+## [@libp2p/interface-mocks-v12.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v11.0.3...@libp2p/interface-mocks-v12.0.0) (2023-05-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* the `symbol` export is now named `peerDiscovery` and the getter with that name should return an instance of `PeerDiscovery`
+
+### Features
+
+* rename peer discovery symbol to peerDiscovery ([#394](https://github.com/libp2p/js-libp2p-interfaces/issues/394)) ([5957c77](https://github.com/libp2p/js-libp2p-interfaces/commit/5957c77718df6e6336ca22386d8c03a045fd1d89))
+
+
+### Dependencies
+
+* update sibling dependencies ([45cf513](https://github.com/libp2p/js-libp2p-interfaces/commit/45cf513090d2a069bb6752ad2e231df65c76df36))
+
 ## [@libp2p/interface-mocks-v11.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v11.0.2...@libp2p/interface-mocks-v11.0.3) (2023-05-04)
 
 
