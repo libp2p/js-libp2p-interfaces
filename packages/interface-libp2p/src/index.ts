@@ -48,8 +48,8 @@ export interface PeerUpdate {
  * Peer data signed by the remote Peer's public key
  */
 export interface SignedPeerRecord {
-  multiaddrs: Multiaddr[]
-  sequenceNumber: bigint
+  addresses: Multiaddr[]
+  seq: bigint
 }
 
 /**
