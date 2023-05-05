@@ -45,6 +45,63 @@ export interface PeerUpdate {
 }
 
 /**
+ * Peer data signed by the remote Peer's public key
+ */
+export interface SignedPeerRecord {
+  multiaddrs: Multiaddr[]
+  sequenceNumber: bigint
+}
+
+/**
+ * Data returned from a successful identify response
+ */
+export interface IdentifyResult {
+  /**
+   * The remote Peer's PeerId
+   */
+  peerId: PeerId
+
+  /**
+   * The unsigned addresses they are listening on. Note - any multiaddrs present
+   * in the signed peer record should be preferred to the value here.
+   */
+  listenAddrs: Multiaddr[]
+
+  /**
+   * The protocols the remote peer supports
+   */
+  protocols: string[]
+
+  /**
+   * The remote protocol version
+   */
+  protocolVersion?: string
+
+  /**
+   * The remote agent version
+   */
+  agentVersion?: string
+
+  /**
+   * The public key part of the remote PeerId - this is only useful for older
+   * RSA-based PeerIds, the more modern Ed25519 and secp256k1 types have the
+   * public key embedded in them
+   */
+  publicKey?: Uint8Array
+
+  /**
+   * If set this is the address that the remote peer saw the identify request
+   * originate from
+   */
+  observedAddr?: Multiaddr
+
+  /**
+   * If sent by the remote peer this is the deserialized signed peer record
+   */
+  signedPeerRecord?: SignedPeerRecord
+}
+
+/**
  * Once you have a libp2p instance, you can listen to several events it emits,
  * so that you can be notified of relevant network events.
  *
@@ -72,7 +129,7 @@ export interface Libp2pEvents {
    * @example
    *
    * ```js
-   * libp2p.connectionManager.addEventListener('peer:connect', (event) => {
+   * libp2p.addEventListener('peer:connect', (event) => {
    *   const peerId = event.detail
    *   // ...
    * })
@@ -88,13 +145,29 @@ export interface Libp2pEvents {
    * @example
    *
    * ```js
-   * libp2p.connectionManager.addEventListener('peer:disconnect', (event) => {
+   * libp2p.addEventListener('peer:disconnect', (event) => {
    *   const peerId = event.detail
    *   // ...
    * })
    * ```
    */
   'peer:disconnect': CustomEvent<PeerId>
+
+  /**
+   * This event is dispatched after a remote peer has successfully responded to the identify
+   * protocol. Note that for this to be emitted, both peers must have an identify service
+   * configured.
+   *
+   * @example
+   *
+   * ```js
+   * libp2p.addEventListener('peer:identify', (event) => {
+   *   const identifyResult = event.detail
+   *   // ...
+   * })
+   * ```
+   */
+  'peer:identify': CustomEvent<IdentifyResult>
 
   /**
    * This event is dispatched when the peer store data for a peer has been
