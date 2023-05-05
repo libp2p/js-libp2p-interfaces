@@ -1,3 +1,10 @@
+## [@libp2p/interface-libp2p-v3.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v3.0.1...@libp2p/interface-libp2p-v3.1.0) (2023-05-05)
+
+
+### Features
+
+* add peer:identify event to libp2p ([#395](https://github.com/libp2p/js-libp2p-interfaces/issues/395)) ([6aee82a](https://github.com/libp2p/js-libp2p-interfaces/commit/6aee82ad81a752f204ec27838ccd6de4908aeb0e))
+
 ## [@libp2p/interface-libp2p-v3.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v3.0.0...@libp2p/interface-libp2p-v3.0.1) (2023-05-04)
 
 
