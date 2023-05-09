@@ -202,7 +202,7 @@ export interface PeerStore {
    * @example
    *
    * ```js
-   * await peerStore.set(peerId, {
+   * await peerStore.save(peerId, {
    *   multiaddrs
    * })
    * ```
