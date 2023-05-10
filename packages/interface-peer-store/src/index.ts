@@ -234,4 +234,19 @@ export interface PeerStore {
    * ```
    */
   merge: (id: PeerId, data: PeerData) => Promise<Peer>
+
+  /**
+   * Unmarshal and verify a signed peer record, extract the multiaddrs and
+   * overwrite the stored addresses for the peer.
+   *
+   * Optionally pass an expected PeerId to verify that the peer record was
+   * signed by that peer.
+   *
+   * @example
+   *
+   * ```js
+   * await peerStore.consumePeerRecord(buf, expectedPeer)
+   * ```
+   */
+  consumePeerRecord: (buf: Uint8Array, expectedPeer?: PeerId) => Promise<boolean>
 }
