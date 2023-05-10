@@ -1,3 +1,15 @@
+## [@libp2p/interface-peer-store-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v2.0.2...@libp2p/interface-peer-store-v2.0.3) (2023-05-10)
+
+
+### Bug Fixes
+
+* expose peerstore consume peer record method ([#398](https://github.com/libp2p/js-libp2p-interfaces/issues/398)) ([80222b8](https://github.com/libp2p/js-libp2p-interfaces/commit/80222b8474396aaa070fb44d859965ab14080f48))
+
+
+### Trivial Changes
+
+* correct the peerStore.save doc ([#397](https://github.com/libp2p/js-libp2p-interfaces/issues/397)) ([6998722](https://github.com/libp2p/js-libp2p-interfaces/commit/69987220a1038318d3798260af517873a30c838f))
+
 ## [@libp2p/interface-peer-store-v2.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v2.0.1...@libp2p/interface-peer-store-v2.0.2) (2023-05-04)
 
 
