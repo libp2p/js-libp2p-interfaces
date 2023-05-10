@@ -1,3 +1,10 @@
+## [@libp2p/interface-mocks-v12.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v12.0.0...@libp2p/interface-mocks-v12.0.1) (2023-05-10)
+
+
+### Bug Fixes
+
+* emit peer:connect events from mock connection manager ([#399](https://github.com/libp2p/js-libp2p-interfaces/issues/399)) ([836dcf3](https://github.com/libp2p/js-libp2p-interfaces/commit/836dcf3d0fbdd00686f662260940c5600db25c09))
+
 ## [@libp2p/interface-mocks-v12.0.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-mocks-v11.0.3...@libp2p/interface-mocks-v12.0.0) (2023-05-04)
 
 
