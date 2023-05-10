@@ -140,6 +140,8 @@ class MockConnectionManager implements ConnectionManager, Startable {
       }
     }
 
+    this.components.events.safeDispatchEvent('peer:connect', { detail: componentsB.peerId })
+
     componentsB.events.safeDispatchEvent('connection:open', {
       detail: bToA
     })
@@ -149,6 +151,8 @@ class MockConnectionManager implements ConnectionManager, Startable {
         topology.onConnect(this.components.peerId, bToA)
       }
     }
+
+    componentsB.events.safeDispatchEvent('peer:connect', { detail: this.components.peerId })
 
     return aToB
   }
@@ -178,7 +182,15 @@ class MockConnectionManager implements ConnectionManager, Startable {
 
     this.connections = this.connections.filter(c => !c.remotePeer.equals(peerId))
 
+    if (this.connections.filter(c => !c.remotePeer.equals(peerId)).length === 0) {
+      componentsB.events.safeDispatchEvent('peer:disconnect', { detail: peerId })
+    }
+
     await componentsB.connectionManager?.closeConnections(this.components.peerId)
+
+    if (componentsB.connectionManager?.getConnectionsMap().get(this.components.peerId) == null) {
+      componentsB.events.safeDispatchEvent('peer:disconnect', { detail: this.components.peerId })
+    }
   }
 
   async acceptIncomingConnection (): Promise<boolean> {
