@@ -1,3 +1,10 @@
+## [@libp2p/interface-transport-v4.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-v4.0.2...@libp2p/interface-transport-v4.0.3) (2023-05-15)
+
+
+### Bug Fixes
+
+* expose getListeners method from the transport manager ([#400](https://github.com/libp2p/js-libp2p-interfaces/issues/400)) ([94dc4ed](https://github.com/libp2p/js-libp2p-interfaces/commit/94dc4ed0320473b160618d19dddc6e038f5050e6))
+
 ## [@libp2p/interface-transport-v4.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-transport-v4.0.1...@libp2p/interface-transport-v4.0.2) (2023-05-04)
 
 
