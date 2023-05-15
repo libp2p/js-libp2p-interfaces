@@ -105,6 +105,7 @@ export interface TransportManager {
   dial: (ma: Multiaddr, options?: any) => Promise<Connection>
   getAddrs: () => Multiaddr[]
   getTransports: () => Transport[]
+  getListeners: () => Listener[]
   transportForMultiaddr: (ma: Multiaddr) => Transport | undefined
   listen: (addrs: Multiaddr[]) => Promise<void>
   remove: (key: string) => Promise<void>
