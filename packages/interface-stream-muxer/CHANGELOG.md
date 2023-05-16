@@ -1,3 +1,10 @@
+## [@libp2p/interface-stream-muxer-v4.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v4.0.1...@libp2p/interface-stream-muxer-v4.1.0) (2023-05-16)
+
+
+### Features
+
+* add abstract stream class ([#402](https://github.com/libp2p/js-libp2p-interfaces/issues/402)) ([920aa9e](https://github.com/libp2p/js-libp2p-interfaces/commit/920aa9ec2e44ce0bafbfa1f61864079313837020))
+
 ## [@libp2p/interface-stream-muxer-v4.0.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v4.0.0...@libp2p/interface-stream-muxer-v4.0.1) (2023-05-04)
 
 
