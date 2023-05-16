@@ -44,8 +44,30 @@ export interface ConnectionStat {
 }
 
 export interface StreamTimeline {
+  /**
+   * A timestamp of when the stream was opened
+   */
   open: number
+
+  /**
+   * A timestamp of when the stream was closed for both reading and writing
+   */
   close?: number
+
+  /**
+   * A timestamp of when the stream was closed for reading
+   */
+  closeRead?: number
+
+  /**
+   * A timestamp of when the stream was closed for writing
+   */
+  closeWrite?: number
+
+  /**
+   * A timestamp of when the stream was reset
+   */
+  reset?: number
 }
 
 export interface StreamStat {
