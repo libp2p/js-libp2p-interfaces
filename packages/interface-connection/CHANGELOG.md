@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-v5.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v5.0.2...@libp2p/interface-connection-v5.1.0) (2023-05-16)
+
+
+### Features
+
+* add closeRead and closeWrite to stream timeline properties ([#401](https://github.com/libp2p/js-libp2p-interfaces/issues/401)) ([b1de032](https://github.com/libp2p/js-libp2p-interfaces/commit/b1de0327cc6128b52ff1ceabe333481fb8a24bcb))
+
 ## [@libp2p/interface-connection-v5.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v5.0.1...@libp2p/interface-connection-v5.0.2) (2023-05-04)
 
 
