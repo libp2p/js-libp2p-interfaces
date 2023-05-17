@@ -1,3 +1,10 @@
+## [@libp2p/interface-stream-muxer-v4.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v4.1.0...@libp2p/interface-stream-muxer-v4.1.1) (2023-05-17)
+
+
+### Bug Fixes
+
+* update interface stream muxer config ([#403](https://github.com/libp2p/js-libp2p-interfaces/issues/403)) ([12633e2](https://github.com/libp2p/js-libp2p-interfaces/commit/12633e28eae8e9e26429c29e6d0ecb8df8933a25))
+
 ## [@libp2p/interface-stream-muxer-v4.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v4.0.1...@libp2p/interface-stream-muxer-v4.1.0) (2023-05-16)
 
 
