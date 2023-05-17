@@ -1,3 +1,10 @@
+## [@libp2p/interface-stream-muxer-compliance-tests-v7.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v7.0.2...@libp2p/interface-stream-muxer-compliance-tests-v7.0.3) (2023-05-17)
+
+
+### Bug Fixes
+
+* handle thrown errors ([#405](https://github.com/libp2p/js-libp2p-interfaces/issues/405)) ([57dfaec](https://github.com/libp2p/js-libp2p-interfaces/commit/57dfaec4c98f13a09fcfa2541c21b163a30c11d2))
+
 ## [@libp2p/interface-stream-muxer-compliance-tests-v7.0.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-compliance-tests-v7.0.1...@libp2p/interface-stream-muxer-compliance-tests-v7.0.2) (2023-05-04)
 
 
