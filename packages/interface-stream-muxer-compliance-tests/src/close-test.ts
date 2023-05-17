@@ -81,7 +81,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
         direction: 'inbound',
         onIncomingStream: (stream) => {
           openedStreams++
-          void pipe(stream, stream)
+          void pipe(stream, stream).catch(() => {})
         }
       })
 
@@ -124,7 +124,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
         direction: 'inbound',
         onIncomingStream: (stream) => {
           openedStreams++
-          void pipe(stream, stream)
+          void pipe(stream, stream).catch(() => {})
         }
       })
 
@@ -193,7 +193,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
       const listener = listenerFactory.createStreamMuxer({
         direction: 'inbound',
         onIncomingStream: (stream) => {
-          void pipe(stream, stream)
+          void pipe(stream, stream).catch(() => {})
         }
       })
 
