@@ -81,7 +81,7 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
         direction: 'inbound',
         onIncomingStream: (stream) => {
           openedStreams++
-          void pipe(stream, stream)
+          void pipe(stream, stream).catch(err => {})
         }
       })
 
