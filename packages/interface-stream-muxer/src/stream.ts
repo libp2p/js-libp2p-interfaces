@@ -86,7 +86,7 @@ export abstract class AbstractStream implements Stream {
       onEnd: () => {
         // already sent a reset message
         if (this.stat.timeline.reset !== null) {
-          let res = this.sendCloseRead()
+          const res = this.sendCloseRead()
 
           if (isPromise(res)) {
             res.catch(err => {
@@ -179,7 +179,7 @@ export abstract class AbstractStream implements Stream {
     try {
       // need to call this here as the sink method returns in the catch block
       // when the close controller is aborted
-      let res = this.sendCloseWrite()
+      const res = this.sendCloseWrite()
 
       if (isPromise(res)) {
         res.catch(err => {
@@ -241,16 +241,16 @@ export abstract class AbstractStream implements Stream {
       for await (let data of source) {
         while (data.length > 0) {
           if (data.length <= this.maxDataSize) {
-            let res = this.sendData(data instanceof Uint8Array ? new Uint8ArrayList(data) : data)
+            const res = this.sendData(data instanceof Uint8Array ? new Uint8ArrayList(data) : data)
 
-            if (isPromise(res)) {
+            if (isPromise(res)) { // eslint-disable-line max-depth
               await res
             }
 
             break
           }
           data = data instanceof Uint8Array ? new Uint8ArrayList(data) : data
-          let res = this.sendData(data.sublist(0, this.maxDataSize))
+          const res = this.sendData(data.sublist(0, this.maxDataSize))
 
           if (isPromise(res)) {
             await res
@@ -282,7 +282,7 @@ export abstract class AbstractStream implements Stream {
       } else {
         log.trace('%s stream %s error', this.stat.direction, this.id, err)
         try {
-          let res = this.sendReset()
+          const res = this.sendReset()
 
           if (isPromise(res)) {
             await res
@@ -296,13 +296,14 @@ export abstract class AbstractStream implements Stream {
 
       this.streamSource.end(err)
       this.onSinkEnd(err)
-      return
+
+      throw err
     } finally {
       signal.clear()
     }
 
     try {
-      let res = this.sendCloseWrite()
+      const res = this.sendCloseWrite()
 
       if (isPromise(res)) {
         await res
