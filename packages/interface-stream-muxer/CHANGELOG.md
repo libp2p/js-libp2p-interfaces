@@ -1,3 +1,10 @@
+## [@libp2p/interface-stream-muxer-v4.1.2](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v4.1.1...@libp2p/interface-stream-muxer-v4.1.2) (2023-05-17)
+
+
+### Bug Fixes
+
+* allow stream methods to be async ([#404](https://github.com/libp2p/js-libp2p-interfaces/issues/404)) ([cfcd6d7](https://github.com/libp2p/js-libp2p-interfaces/commit/cfcd6d751990990746ee7ae7c199b938667df4d8))
+
 ## [@libp2p/interface-stream-muxer-v4.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-stream-muxer-v4.1.0...@libp2p/interface-stream-muxer-v4.1.1) (2023-05-17)
 
 
