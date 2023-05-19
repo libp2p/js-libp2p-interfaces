@@ -1,3 +1,10 @@
+## [@libp2p/interface-libp2p-v3.2.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v3.1.0...@libp2p/interface-libp2p-v3.2.0) (2023-05-19)
+
+
+### Features
+
+* add start/stop events to libp2p interface ([#407](https://github.com/libp2p/js-libp2p-interfaces/issues/407)) ([016c1e8](https://github.com/libp2p/js-libp2p-interfaces/commit/016c1e82b060c93c80546cd8c493ec6e6c97cbec))
+
 ## [@libp2p/interface-libp2p-v3.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-libp2p-v3.0.1...@libp2p/interface-libp2p-v3.1.0) (2023-05-05)
 
 
