@@ -303,7 +303,7 @@ export interface PendingDial {
 /**
  * Libp2p nodes implement this interface.
  */
-export interface Libp2p<T extends ServiceMap = Record<string, unknown>> extends Startable, EventEmitter<Libp2pEvents<T>> {
+export interface Libp2p<T extends ServiceMap = ServiceMap> extends Startable, EventEmitter<Libp2pEvents<T>> {
   /**
    * The PeerId is a unique identifier for a node on the network.
    *
