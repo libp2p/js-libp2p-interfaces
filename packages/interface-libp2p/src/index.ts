@@ -228,11 +228,23 @@ export interface Libp2pEvents<T extends ServiceMap = ServiceMap> {
 
   /**
    * This event notifies listeners that the node has started
+   *
+   * ```js
+   * libp2p.addEventListener('start', (event) => {
+   *   console.info(libp2p.isStarted()) // true
+   * })
+   * ```
    */
   'start': CustomEvent<Libp2p<T>>
 
   /**
    * This event notifies listeners that the node has stopped
+   *
+   * ```js
+   * libp2p.addEventListener('stop', (event) => {
+   *   console.info(libp2p.isStarted()) // false
+   * })
+   * ```
    */
   'stop': CustomEvent<Libp2p<T>>
 }
