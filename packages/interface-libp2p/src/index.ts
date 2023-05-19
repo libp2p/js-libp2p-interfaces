@@ -108,7 +108,7 @@ export interface IdentifyResult {
  * Event names are `noun:verb` so the first part is the name of the object
  * being acted on and the second is the action.
  */
-export interface Libp2pEvents {
+export interface Libp2pEvents<T extends ServiceMap = ServiceMap> {
   /**
    * This event is dispatched when a new network peer is discovered.
    *
@@ -225,6 +225,28 @@ export interface Libp2pEvents {
    * closed.
    */
   'connection:close': CustomEvent<Connection>
+
+  /**
+   * This event notifies listeners that the node has started
+   *
+   * ```js
+   * libp2p.addEventListener('start', (event) => {
+   *   console.info(libp2p.isStarted()) // true
+   * })
+   * ```
+   */
+  'start': CustomEvent<Libp2p<T>>
+
+  /**
+   * This event notifies listeners that the node has stopped
+   *
+   * ```js
+   * libp2p.addEventListener('stop', (event) => {
+   *   console.info(libp2p.isStarted()) // false
+   * })
+   * ```
+   */
+  'stop': CustomEvent<Libp2p<T>>
 }
 
 /**
@@ -281,7 +303,7 @@ export interface PendingDial {
 /**
  * Libp2p nodes implement this interface.
  */
-export interface Libp2p<T extends ServiceMap = Record<string, unknown>> extends Startable, EventEmitter<Libp2pEvents> {
+export interface Libp2p<T extends ServiceMap = ServiceMap> extends Startable, EventEmitter<Libp2pEvents<T>> {
   /**
    * The PeerId is a unique identifier for a node on the network.
    *
