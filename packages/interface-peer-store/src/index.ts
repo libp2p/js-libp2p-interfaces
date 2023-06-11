@@ -120,6 +120,26 @@ export interface Tag {
   value: number
 }
 
+/**
+ * A predicate by which to filter lists of peers
+ */
+export interface PeerQueryFilter { (peer: Peer): boolean }
+
+/**
+ * A predicate by which to sort lists of peers
+ */
+export interface PeerQueryOrder { (a: Peer, b: Peer): -1 | 0 | 1 }
+
+/**
+ * A query for getting lists of peers
+ */
+export interface PeerQuery {
+  filters?: PeerQueryFilter[]
+  orders?: PeerQueryOrder[]
+  limit?: number
+  offset?: number
+}
+
 export interface PeerStore {
   /**
    * Loop over every peer - the looping is async because we read from a
@@ -136,7 +156,7 @@ export interface PeerStore {
    * })
    * ```
    */
-  forEach: (fn: (peer: Peer) => void) => Promise<void>
+  forEach: (fn: (peer: Peer) => void, query?: PeerQuery) => Promise<void>
 
   /**
    * Returns all peers in the peer store.
@@ -149,7 +169,7 @@ export interface PeerStore {
    * }
    * ```
    */
-  all: () => Promise<Peer[]>
+  all: (query?: PeerQuery) => Promise<Peer[]>
 
   /**
    * Delete all data stored for the passed peer
