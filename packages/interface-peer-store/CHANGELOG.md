@@ -1,3 +1,10 @@
+## [@libp2p/interface-peer-store-v2.0.4](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v2.0.3...@libp2p/interface-peer-store-v2.0.4) (2023-06-11)
+
+
+### Bug Fixes
+
+* add peer store query interfaces ([#412](https://github.com/libp2p/js-libp2p-interfaces/issues/412)) ([0247215](https://github.com/libp2p/js-libp2p-interfaces/commit/0247215b8132096884af22499d8a6828281861d0))
+
 ## [@libp2p/interface-peer-store-v2.0.3](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-peer-store-v2.0.2...@libp2p/interface-peer-store-v2.0.3) (2023-05-10)
 
 
