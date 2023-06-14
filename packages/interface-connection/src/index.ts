@@ -158,6 +158,15 @@ export interface Stream extends Duplex<AsyncGenerator<Uint8ArrayList>, Source<Ui
   metadata: Record<string, any>
 }
 
+export interface NewStreamOptions extends AbortOptions {
+  /**
+   * If specified, and no handler has been registered with the registrar for the
+   * successfully negotiated protocol, use this as the max outbound stream limit
+   * for the protocol
+   */
+  maxOutboundStreams?: number
+}
+
 /**
  * A Connection is a high-level representation of a connection
  * to a remote peer that may have been secured by encryption and
@@ -172,7 +181,7 @@ export interface Connection {
   tags: string[]
   streams: Stream[]
 
-  newStream: (multicodecs: string | string[], options?: AbortOptions) => Promise<Stream>
+  newStream: (multicodecs: string | string[], options?: NewStreamOptions) => Promise<Stream>
   addStream: (stream: Stream) => void
   removeStream: (id: string) => void
   close: () => Promise<void>
