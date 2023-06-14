@@ -1,3 +1,10 @@
+## [@libp2p/interface-connection-v5.1.1](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v5.1.0...@libp2p/interface-connection-v5.1.1) (2023-06-14)
+
+
+### Bug Fixes
+
+* add maxOutboundStreams option to connection.newStream ([#415](https://github.com/libp2p/js-libp2p-interfaces/issues/415)) ([45ae18f](https://github.com/libp2p/js-libp2p-interfaces/commit/45ae18fe30436dedf418e0fa328f1af9a18a9a98))
+
 ## [@libp2p/interface-connection-v5.1.0](https://github.com/libp2p/js-libp2p-interfaces/compare/@libp2p/interface-connection-v5.0.2...@libp2p/interface-connection-v5.1.0) (2023-05-16)
 
 
