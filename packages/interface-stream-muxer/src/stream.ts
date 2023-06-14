@@ -163,7 +163,10 @@ export abstract class AbstractStream implements Stream {
       return
     }
 
-    this.streamSource.end()
+    // this has to be done after the current macrotask has finished https://github.com/libp2p/js-libp2p/issues/1793
+    Promise.resolve().then(() => {
+      this.streamSource.end()
+    })
   }
 
   // Close for writing
@@ -174,23 +177,26 @@ export abstract class AbstractStream implements Stream {
       return
     }
 
-    this.closeController.abort()
+    // this has to be done after the current macrotask has finished https://github.com/libp2p/js-libp2p/issues/1793
+    Promise.resolve().then(() => {
+      this.closeController.abort()
 
-    try {
-      // need to call this here as the sink method returns in the catch block
-      // when the close controller is aborted
-      const res = this.sendCloseWrite()
+      try {
+        // need to call this here as the sink method returns in the catch block
+        // when the close controller is aborted
+        const res = this.sendCloseWrite()
 
-      if (isPromise(res)) {
-        res.catch(err => {
-          log.error('error while sending close write', err)
-        })
+        if (isPromise(res)) {
+          res.catch(err => {
+            log.error('error while sending close write', err)
+          })
+        }
+      } catch (err) {
+        log.trace('%s stream %s error sending close', this.stat.direction, this.id, err)
       }
-    } catch (err) {
-      log.trace('%s stream %s error sending close', this.stat.direction, this.id, err)
-    }
 
-    this.onSinkEnd()
+      this.onSinkEnd()
+    })
   }
 
   // Close for reading and writing (local error)
@@ -239,6 +245,7 @@ export abstract class AbstractStream implements Stream {
       }
 
       for await (let data of source) {
+        console.info('stream sink got data from source')
         while (data.length > 0) {
           if (data.length <= this.maxDataSize) {
             const res = this.sendData(data instanceof Uint8Array ? new Uint8ArrayList(data) : data)
@@ -260,6 +267,8 @@ export abstract class AbstractStream implements Stream {
         }
       }
     } catch (err: any) {
+      console.info('stream sink ended')
+
       if (err.type === 'aborted' && err.message === 'The operation was aborted') {
         if (this.closeController.signal.aborted) {
           return
