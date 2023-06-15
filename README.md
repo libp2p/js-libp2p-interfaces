@@ -1,3 +1,5 @@
+# 📁 Archived - these modules have been merged into [js-libp2p](https://github.com/libp2p/js-libp2p)
+
 # js-libp2p-interfaces <!-- omit in toc -->
 
 [![libp2p.io](https://img.shields.io/badge/project-libp2p-yellow.svg?style=flat-square)](http://libp2p.io/)
