@@ -180,11 +180,6 @@ export interface Connection {
   remotePeer: PeerId
   tags: string[]
   streams: Stream[]
-
-  newStream: (multicodecs: string | string[], options?: NewStreamOptions) => Promise<Stream>
-  addStream: (stream: Stream) => void
-  removeStream: (id: string) => void
-  close: () => Promise<void>
 }
 
 export const symbol = Symbol.for('@libp2p/connection')
