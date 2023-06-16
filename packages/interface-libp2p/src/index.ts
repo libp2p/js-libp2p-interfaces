@@ -461,6 +461,18 @@ export interface Libp2p<T extends ServiceMap = ServiceMap> extends Startable, Ev
   getDialQueue: () => PendingDial[]
 
   /**
+   * Cancel a pending dial by its id
+   *
+   * @example
+   *
+   * ```js
+   * const dialId = libp2p.getDialQueue()[0].id
+   * libp2p.cancelDial(dialId)
+   * ```
+   */
+  cancelDial: (id: string) => void
+
+  /**
    * Return a list of all peers we currently have a connection open to
    */
   getPeers: () => PeerId[]

@@ -76,4 +76,18 @@ export interface ConnectionManager {
    * ```
    */
   getDialQueue: () => PendingDial[]
+
+  /**
+   * Cancel a pending dial by removing it from the queue and rejecting all promises associated with it
+   *
+   * @param {string} id - The id of the dial to cancel
+   *
+   * @example
+   *
+   * ```js
+   * const dialId = libp2p.connectionManager.getDialQueue()[0].id
+   * libp2p.connectionManager.cancelDial(dial-id)
+   * ```
+   */
+  cancelDial: (id: string) => void
 }
