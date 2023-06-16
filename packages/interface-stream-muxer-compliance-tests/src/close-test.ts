@@ -9,8 +9,10 @@ import { pipe } from 'it-pipe'
 import pDefer from 'p-defer'
 import { Uint8ArrayList } from 'uint8arraylist'
 import { fromString as uint8ArrayFromString } from 'uint8arrays/from-string'
+import { pbStream } from 'it-pb-stream'
 import type { TestSetup } from '@libp2p/interface-compliance-tests'
 import type { StreamMuxerFactory } from '@libp2p/interface-stream-muxer'
+import { Message } from './fixtures/pb/message.js'
 
 function randomBuffer (): Uint8Array {
   return uint8ArrayFromString(Math.random().toString())
@@ -341,6 +343,52 @@ export default (common: TestSetup<StreamMuxerFactory>): void => {
       stream.closeWrite()
       stream.closeRead()
       await deferred.promise
+    })
+
+    it('can close a stream gracefully', async () => {
+      const deferred = pDefer<Message>()
+
+      const p = duplexPair<Uint8Array>()
+      const dialerFactory = await common.setup()
+      const dialer = dialerFactory.createStreamMuxer({ direction: 'outbound' })
+
+      const listenerFactory = await common.setup()
+      const listener = listenerFactory.createStreamMuxer({
+        direction: 'inbound',
+        onIncomingStream: (stream) => {
+          const pb = pbStream(stream)
+          console.info('--> pb.read')
+          void pb.readPB(Message)
+            .then(message => {
+              deferred.resolve(message)
+              console.info('--> read end close stream')
+              pb.unwrap().close()
+            })
+            .catch(err => {
+              deferred.reject(err)
+            })
+        }
+      })
+
+      void pipe(p[0], dialer, p[0])
+      void pipe(p[1], listener, p[1])
+
+      const message = {
+        message: 'hello world',
+        value: 5,
+        flag: true
+      }
+
+      const stream = await dialer.newStream()
+      const pb = pbStream(stream)
+
+      console.info('--> pb.write')
+      pb.writePB(message, Message)
+
+      console.info('--> write end close stream')
+      pb.unwrap().close()
+
+      await expect(deferred.promise).to.eventually.deep.equal(message)
     })
   })
 }

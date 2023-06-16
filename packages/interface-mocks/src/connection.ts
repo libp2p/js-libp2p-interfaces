@@ -82,19 +82,13 @@ class MockConnection implements Connection {
     const stream = await this.muxer.newStream(id)
     const result = await mss.select(stream, protocols, options)
 
-    const streamWithProtocol: Stream = {
-      ...stream,
-      ...result.stream,
-      stat: {
-        ...stream.stat,
-        direction: 'outbound',
-        protocol: result.protocol
-      }
-    }
+    stream.sink = result.stream.sink
+    stream.source = result.stream.source
+    stream.stat.protocol = result.protocol
 
-    this.streams.push(streamWithProtocol)
+    this.streams.push(stream)
 
-    return streamWithProtocol
+    return stream
   }
 
   addStream (stream: Stream): void {
@@ -136,7 +130,9 @@ export function mockConnection (maConn: MultiaddrConnection, opts: MockConnectio
         mss.handle(muxedStream, registrar.getProtocols())
           .then(({ stream, protocol }) => {
             log('%s: incoming stream opened on %s', direction, protocol)
-            muxedStream = { ...muxedStream, ...stream }
+
+            muxedStream.sink = stream.sink
+            muxedStream.source = stream.source
             muxedStream.stat.protocol = protocol
 
             connection.addStream(muxedStream)
